@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La Créature du Marais — Tancrède Charon</title>
+<meta name="description" content="La Créature du Marais, surnommée Cul-Pointu, de son vrai nom Tancrède Charon : artiste underground normand basé à Rouen. Biographie, discographie, clips.">
+<meta property="og:title" content="La Créature du Marais">
+<meta property="og:image" content="https://lacreaturedumarais.fr/images/entete.jpg">
+<link rel="icon" href="images/blason.png">
+<link rel="canonical" href="https://lacreaturedumarais.fr/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{--red:#800000;--blue:#000080;--yel:#ffcc00;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html{font-size:calc(100vw/120)}
+body{background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.01em;min-height:100vh}
+a{color:inherit}
+a:focus-visible{outline:.2rem solid #fff;outline-offset:.2rem}
+header{position:relative;height:14.8125rem;border-bottom:.5rem solid var(--red);background:#000;overflow:hidden}
+header::before{content:"";position:absolute;inset:0;opacity:.5;
+background:repeating-linear-gradient(60deg,transparent 0 4.3rem,rgba(255,204,0,.3) 4.3rem calc(4.3rem + 1px)),repeating-linear-gradient(-60deg,transparent 0 4.3rem,rgba(255,204,0,.3) 4.3rem calc(4.3rem + 1px)),conic-gradient(from 45deg,rgba(128,0,0,.6) 0 25%,rgba(0,0,128,.65) 0 50%,rgba(128,0,0,.6) 0 75%,rgba(0,0,128,.65) 0) 0 0/5rem 8.6rem;
+-webkit-mask-image:linear-gradient(90deg,transparent 14%,#000 36%,#000 62%,transparent 80%);mask-image:linear-gradient(90deg,transparent 14%,#000 36%,#000 62%,transparent 80%)}
+.logo{position:absolute;left:1.75rem;top:1.75rem;width:15.25rem;height:auto;display:block}
+.droite{position:absolute;right:0;top:0;height:14.3125rem;width:auto;display:block}
+.soc{position:absolute;left:19rem;width:60rem;top:0;height:14.3125rem;display:flex;justify-content:center;align-items:center;gap:2.2rem}
+.soc a{display:flex;flex-direction:column;align-items:center;gap:.5rem;text-decoration:none;color:var(--yel)}
+.ic{width:4.4rem;height:5.6rem;border:.19rem solid var(--red);outline:1px solid var(--yel);outline-offset:-.4rem;border-radius:2.2rem 2.2rem 0 0;background:#000;display:grid;place-items:center;box-shadow:0 0 1rem rgba(220,0,0,.55)}
+.soc svg{width:2rem;height:2rem;margin-top:.7rem;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.soc a:hover .ic,.soc a:focus-visible .ic{background:var(--blue)}
+.soc small{font-size:1.4rem;line-height:1;color:#fff}
+.wrap{display:grid;grid-template-columns:27.5625rem 1fr;min-height:max(calc(100vh - 14.8125rem),52.7rem)}
+nav{display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem 1fr;border-right:.5625rem solid var(--red)}
+nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;text-decoration:none;border-bottom:.5rem solid var(--red)}
+nav a:last-child{border-bottom:0;padding-bottom:2rem}
+nav a:nth-child(2){padding-top:.6rem}
+nav span{background:var(--yel);color:#000;font-size:3.625rem;line-height:.8;padding:.04em .1em 0;outline:1px solid #000;outline-offset:-1px}
+nav small{background:var(--yel);color:#000;font-size:2.5rem;line-height:.8;padding:.04em .08em 0;outline:1px solid #000;outline-offset:-1px}
+nav a:hover span,nav a[aria-current] span{background:#fff}
+main{background:var(--blue);padding:2.75rem 2.4rem 4rem}
+.pg{display:none}
+.pg.on,.nojs .pg{display:block}
+.pg p{margin-bottom:1.7rem;max-width:86rem}
+h2{font:400 3.625rem/.8 "Bebas Neue",sans-serif;background:var(--yel);color:#000;display:inline-block;padding:.04em .1em 0;margin:.4rem 0 2rem}
+h3{font-weight:400;font-size:2.4rem;line-height:1;color:var(--yel);margin:2.6rem 0 1rem}
+ul.d{list-style:none;padding:0;max-width:86rem}
+ul.d li{padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.3)}
+ul.d b{color:var(--yel);font-weight:400;margin-right:1.2rem}
+ol{columns:2 24rem;column-gap:3rem;padding-left:3rem;max-width:86rem;line-height:2.4rem}
+li::marker{color:var(--yel)}
+li{break-inside:avoid}
+.btn{display:inline-block;background:var(--yel);color:#000;text-decoration:none;font-size:2.4rem;line-height:.8;padding:.3rem .5rem .15rem;margin:.4rem .8rem .4rem 0}
+.btn:hover{background:#fff}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(22rem,1fr));gap:1.2rem;max-width:90rem}
+figure{background:#000;border:.25rem solid #000}
+figure img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+figure.sq img{aspect-ratio:1}
+figcaption{padding:.4rem .7rem;font-size:1.6rem;line-height:1.2}
+.lyr{grid-template-columns:repeat(auto-fill,minmax(20rem,1fr))}
+.lyr img,.cov img{aspect-ratio:1}
+.gal a{display:block;outline-offset:-.25rem}
+.gal a:hover,.gal a:focus-visible{outline:.25rem solid var(--yel)}
+#lb{position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;padding:1rem;cursor:zoom-out}
+#lb.on{display:flex}
+#lb img{max-width:100%;max-height:100%;object-fit:contain}
+@media (max-width:899px){
+html{font-size:16px}
+header{height:auto;padding-bottom:0}
+header::before{display:none}
+.logo{position:static;margin:1rem}
+.soc{position:static;width:auto;height:auto;padding:.5rem 0 1rem;flex-wrap:wrap}
+.soc small{display:none}
+.droite{position:static;height:auto;width:100%}
+.wrap{grid-template-columns:1fr}
+nav{display:flex;flex-wrap:wrap;border-right:0;border-bottom:.5rem solid var(--red)}
+nav a{flex:1 1 45%;padding:1rem .4rem!important;border-bottom:0!important}
+nav span{font-size:2.4rem}nav small{font-size:1.6rem}
+main{padding:1.5rem 1.2rem 3rem;font-size:1.7rem;line-height:1.25}
+h2,.btn{font-size:2rem}
+}
+</style>
+</head>
+<body class="nojs">
+<header>
+<h1 style="position:absolute;left:-9999px">La Créature du Marais — Tancrède Charon</h1>
+<a href="#bio" aria-label="Puanteur Putride Productions"><img class="logo" src="images/entete-logo.png" alt="Blason Puanteur Putride Productions"></a>
+<div class="soc" role="group" aria-label="Réseaux sociaux"><a href="https://www.instagram.com/lacreaturedumarais/" aria-label="Instagram @lacreaturedumarais" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r=".6"/></svg></span><small>@lacreaturedumarais</small></a><a href="https://www.tiktok.com/@lacreaturedumarais" aria-label="TikTok @lacreaturedumarais" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v11.3a3.4 3.4 0 1 1-3.4-3.4"/><path d="M14 3c.4 2.5 2.1 4.1 4.6 4.3"/></svg></span><small>@lacreaturedumarais</small></a><a href="https://www.youtube.com/@lacreaturedumarais" aria-label="YouTube @lacreaturedumarais" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9.3v5.4l4.8-2.7z"/></svg></span><small>@lacreaturedumarais</small></a><a href="https://x.com/TancredeCharon" aria-label="X (Twitter) @TancredeCharon" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4l14 16M19 4L5 20"/></svg></span><small>@TancredeCharon</small></a></div>
+<img class="droite" src="images/entete-droite.png" alt="La Créature du Marais, Tancrède Charon en robe noire tenant une lance">
+</header>
+<div class="wrap">
+<nav aria-label="Navigation principale">
+<a href="#bio"><span>BIOGRAPHIE</span></a>
+<a href="#disco"><span>DISCOGRAPHIE</span></a>
+<a href="#clips"><span>CLIPS</span></a>
+<a href="#contact"><span>CONTACT</span></a>
+<a href="#merch"><span>MERCH</span><small>(PROCHAINEMENT)</small></a>
+</nav>
+<main>
+<section class="pg on" id="bio">
+<p>La Créature du Marais, surnommée « Cul-Pointu », de son vrai nom Tancrède Charon, est un artiste underground normand basé en sa capitale : Rouen.</p>
+<p>Son univers met en scène une « post-France » en ruines, hantée par la perte du sacré, l'isolement et la sensation d'effondrement culturel. Rouen y devient une ville mentale et symbolique : cité gothique, marécage spirituel, refuge brumeux d'un poète errant entre désir de pureté et fascination pour la chute.</p>
+<p>Influencé par Baudelaire, Rabelais, Villon, Huysmans, Verlaine ou Céline, Tancrède mêle romantisme noir, catholicisme mystique, poésie médiévale et culture internet dans une écriture où le sublime côtoie constamment l'ordurier. Son œuvre explore la culpabilité, la solitude, l'amour obsessionnel, le péché, la honte et le besoin impossible de rédemption. Les figures féminines y apparaissent comme des muses idéalisées puis détruites par le désir, tandis que la religion devient à la fois refuge, obsession et combat intérieur. Derrière la provocation, l'humour noir et l'outrance volontaire se dessine surtout le portrait d'une bête hantée par la peur de la damnation, la nostalgie d'un absolu inaccessible et le sentiment de se repentir trop tard dans un monde vidé d'espoir.</p>
+</section>
+<section class="pg" id="disco">
+<h2>DISCOGRAPHIE</h2>
+<ul class="d">
+<li><b>2025</b>Jubilé (single)</li>
+<li><b>2024</b>Confiteor (34 titres, environ 2 h)</li>
+<li><b>2023</b>Omerta434 : Chyren</li>
+<li><b>2022</b>Omerta434</li>
+<li><b>2021</b>Les Machines Infernales</li>
+</ul>
+<h3>CONFITEOR · CUL-POINTU · 11 SEPTEMBRE 2024</h3>
+<ol><li>Aimant et mal-aimé</li><li>La côte Sainte-Catherine</li><li>Mourir sans mourir</li><li>Lugubre Beauté</li><li>Solution Finale</li><li>Nabuchodonosor</li><li>Caverne</li><li>La Tentation Incarnée</li><li>In Morte Sumus</li><li>Gravats d'Hier</li><li>Le Caveau des Artistes</li><li>O Salutaris Hostia</li><li>L'Excommunié</li><li>Oasis</li><li>Lubricité</li><li>Le Monstre</li><li>Licencieuserie Interdite pour Cause de Racisme Assumé</li><li>Le Soleil disparaît</li><li>Le Proscrit des Cent Vedettes</li><li>Oraison</li><li>La Nausée de Tout</li><li>La Nuit du 15 octobre</li><li>La Régente de mes Soucis</li><li>Ora pro me ad Dominum Deum nostrum</li><li>Charia Blanche</li><li>Domine, salvam fac Galliam</li><li>Ego te Glorifico</li><li>Qu'on m'accorde mon Ève</li><li>Le Signe</li><li>Dis, ferme un instant les yeux</li><li>Le sot valet de cœur</li><li>Panégyrique de l'Inconscience</li><li>Chimaera Rothomagensis</li><li>La Chute</li></ol>
+<p style="margin-top:1.5rem"><a class="btn" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J">SPOTIFY</a><a class="btn" href="https://cul-pointu.bandcamp.com/track/ora-pro-me-ad-dominum-deum-nostrum">BANDCAMP</a><a class="btn" href="https://music.apple.com/us/artist/cul-pointu/1535689871">APPLE MUSIC</a><a class="btn" href="https://soundcloud.com/puanteurputride">ARCHIVES SOUNDCLOUD</a></p>
+<h3>POCHETTES</h3>
+<div class="gal cov"><figure class="sq"><img src="images/pochette-jubile.jpg" alt="Pochette Jubilé (2025)" loading="lazy"><figcaption>Jubilé (2025)</figcaption></figure><figure class="sq"><img src="images/pochette-omerta434.jpg" alt="Pochette Omerta434 (2022)" loading="lazy"><figcaption>Omerta434 (2022)</figcaption></figure><figure class="sq"><img src="images/pochette-machines-infernales.jpg" alt="Pochette Les Machines Infernales (2021)" loading="lazy"><figcaption>Les Machines Infernales (2021)</figcaption></figure><figure class="sq"><img src="images/odium-fidei.jpg" alt="Pochette In odium fidei" loading="lazy"><figcaption>In odium fidei</figcaption></figure><figure class="sq"><img src="images/prenez-garde.jpg" alt="Pochette Prenez garde au ver du baptistère" loading="lazy"><figcaption>Prenez garde au ver du baptistère</figcaption></figure></div>
+<h3>OMERTA434 · LES PAROLES</h3>
+<div class="gal lyr"><figure><a href="images/omerta434-01-preambule.jpg" data-t="Préambule"><img src="images/omerta434-01-preambule-mini.jpg" alt="Paroles de Préambule" loading="lazy"></a><figcaption>1. Préambule</figcaption></figure><figure><a href="images/omerta434-02-chambre-de-sodome.jpg" data-t="La Chambre de Sodome"><img src="images/omerta434-02-chambre-de-sodome-mini.jpg" alt="Paroles de La Chambre de Sodome" loading="lazy"></a><figcaption>2. La Chambre de Sodome</figcaption></figure><figure><a href="images/omerta434-03-possede-par-les-bras-de-morphee.jpg" data-t="Possédé par les bras de Morphée"><img src="images/omerta434-03-possede-par-les-bras-de-morphee-mini.jpg" alt="Paroles de Possédé par les bras de Morphée" loading="lazy"></a><figcaption>3. Possédé par les bras de Morphée</figcaption></figure><figure><a href="images/omerta434-04-arriere-gout.jpg" data-t="Arrière-goût"><img src="images/omerta434-04-arriere-gout-mini.jpg" alt="Paroles de Arrière-goût" loading="lazy"></a><figcaption>4. Arrière-goût</figcaption></figure><figure><a href="images/omerta434-05-perdition.jpg" data-t="Perdition"><img src="images/omerta434-05-perdition-mini.jpg" alt="Paroles de Perdition" loading="lazy"></a><figcaption>5. Perdition</figcaption></figure><figure><a href="images/omerta434-06-filature.jpg" data-t="Filature"><img src="images/omerta434-06-filature-mini.jpg" alt="Paroles de Filature" loading="lazy"></a><figcaption>6. Filature</figcaption></figure><figure><a href="images/omerta434-07-putrides-emanations.jpg" data-t="Putrides émanations"><img src="images/omerta434-07-putrides-emanations-mini.jpg" alt="Paroles de Putrides émanations" loading="lazy"></a><figcaption>7. Putrides émanations</figcaption></figure><figure><a href="images/omerta434-08-transition.jpg" data-t="Transition"><img src="images/omerta434-08-transition-mini.jpg" alt="Paroles de Transition" loading="lazy"></a><figcaption>8. Transition</figcaption></figure><figure><a href="images/omerta434-09-romance.jpg" data-t="Romance"><img src="images/omerta434-09-romance-mini.jpg" alt="Paroles de Romance" loading="lazy"></a><figcaption>9. Romance</figcaption></figure><figure><a href="images/omerta434-10-avancee-a-tatons.jpg" data-t="Avancée à tâtons"><img src="images/omerta434-10-avancee-a-tatons-mini.jpg" alt="Paroles de Avancée à tâtons" loading="lazy"></a><figcaption>10. Avancée à tâtons</figcaption></figure><figure><a href="images/omerta434-11-lenfer-cest-les-autres.jpg" data-t="L'Enfer, c'est les autres"><img src="images/omerta434-11-lenfer-cest-les-autres-mini.jpg" alt="Paroles de L'Enfer, c'est les autres" loading="lazy"></a><figcaption>11. L'Enfer, c'est les autres</figcaption></figure><figure><a href="images/omerta434-12-la-nuit-nuptiale-a-rouen.jpg" data-t="La nuit nuptiale à Rouen"><img src="images/omerta434-12-la-nuit-nuptiale-a-rouen-mini.jpg" alt="Paroles de La nuit nuptiale à Rouen" loading="lazy"></a><figcaption>12. La nuit nuptiale à Rouen</figcaption></figure><figure><a href="images/omerta434-13-les-champs-sombres-et-chaotiques.jpg" data-t="Les champs sombres et chaotiques"><img src="images/omerta434-13-les-champs-sombres-et-chaotiques-mini.jpg" alt="Paroles de Les champs sombres et chaotiques" loading="lazy"></a><figcaption>13. Les champs sombres et chaotiques</figcaption></figure><figure><a href="images/omerta434-14-jesus-et-hades.jpg" data-t="Jésus et Hadès"><img src="images/omerta434-14-jesus-et-hades-mini.jpg" alt="Paroles de Jésus et Hadès" loading="lazy"></a><figcaption>14. Jésus et Hadès</figcaption></figure><figure><a href="images/omerta434-15-epilogue.jpg" data-t="Épilogue"><img src="images/omerta434-15-epilogue-mini.jpg" alt="Paroles de Épilogue" loading="lazy"></a><figcaption>15. Épilogue</figcaption></figure></div>
+</section>
+<section class="pg" id="clips">
+<h2>CLIPS</h2>
+<div class="gal"><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=La%20Chute" target="_blank" rel="noopener" aria-label="Voir le clip La Chute sur YouTube" title="La Chute"><img src="images/chute.jpg" alt="Image du clip La Chute" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=La%20c%C3%B4te%20Sainte-Catherine" target="_blank" rel="noopener" aria-label="Voir le clip La côte Sainte-Catherine sur YouTube" title="La côte Sainte-Catherine"><img src="images/cote-sainte-catherine.jpg" alt="Image du clip La côte Sainte-Catherine" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=Chimaera%20Rothomagensis" target="_blank" rel="noopener" aria-label="Voir le clip Chimaera Rothomagensis sur YouTube" title="Chimaera Rothomagensis"><img src="images/chimaera.jpg" alt="Image du clip Chimaera Rothomagensis" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=Dis%2C%20ferme%20un%20instant%20les%20yeux" target="_blank" rel="noopener" aria-label="Voir le clip Dis, ferme un instant les yeux sur YouTube" title="Dis, ferme un instant les yeux"><img src="images/dis-ferme.jpg" alt="Image du clip Dis, ferme un instant les yeux" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=D%C3%A9monia" target="_blank" rel="noopener" aria-label="Voir le clip Démonia sur YouTube" title="Démonia"><img src="images/demonia.jpg" alt="Image du clip Démonia" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=%C3%89ph%C3%A9belle" target="_blank" rel="noopener" aria-label="Voir le clip Éphébelle sur YouTube" title="Éphébelle"><img src="images/ephebelle.jpg" alt="Image du clip Éphébelle" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=JB" target="_blank" rel="noopener" aria-label="Voir le clip JB sur YouTube" title="JB"><img src="images/jb.jpg" alt="Image du clip JB" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=Lait%20de%20nuit" target="_blank" rel="noopener" aria-label="Voir le clip Lait de nuit sur YouTube" title="Lait de nuit"><img src="images/lait-nuit.jpg" alt="Image du clip Lait de nuit" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=Les%20mis%C3%A9rables" target="_blank" rel="noopener" aria-label="Voir le clip Les misérables sur YouTube" title="Les misérables"><img src="images/miserables.jpg" alt="Image du clip Les misérables" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=La%20ruelle" target="_blank" rel="noopener" aria-label="Voir le clip La ruelle sur YouTube" title="La ruelle"><img src="images/ruelle.jpg" alt="Image du clip La ruelle" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=Le%20tr%C3%B4ne" target="_blank" rel="noopener" aria-label="Voir le clip Le trône sur YouTube" title="Le trône"><img src="images/trone.jpg" alt="Image du clip Le trône" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=Monsieur%20Clerg%C3%A9" target="_blank" rel="noopener" aria-label="Voir le clip Monsieur Clergé sur YouTube" title="Monsieur Clergé"><img src="images/monsieur-clerge.jpg" alt="Image du clip Monsieur Clergé" loading="lazy"></a></figure><figure><a href="https://www.youtube.com/@lacreaturedumarais/search?query=Scatholique" target="_blank" rel="noopener" aria-label="Voir le clip Scatholique sur YouTube" title="Scatholique"><img src="images/scatholique.jpg" alt="Image du clip Scatholique" loading="lazy"></a></figure></div>
+<p style="margin-top:1.5rem"><a class="btn" href="https://www.youtube.com/@lacreaturedumarais/videos" target="_blank" rel="noopener">TOUS LES CLIPS SUR YOUTUBE</a></p>
+</section>
+<section class="pg" id="contact">
+<h2>CONTACT</h2>
+<p><a class="btn" href="mailto:puanteur.putride.productions@gmail.com">PUANTEUR.PUTRIDE.PRODUCTIONS@GMAIL.COM</a></p>
+<p><a class="btn" href="https://www.instagram.com/lacreaturedumarais/">INSTAGRAM</a><a class="btn" href="https://www.tiktok.com/@lacreaturedumarais">TIKTOK</a><a class="btn" href="https://www.youtube.com/@lacreaturedumarais">YOUTUBE</a><a class="btn" href="https://x.com/TancredeCharon">X / TWITTER</a></p>
+</section>
+<section class="pg" id="merch">
+<h2>MERCH</h2>
+<p>Prochainement.</p>
+</section>
+</main>
+</div>
+<div id="lb" role="dialog" aria-label="Paroles" aria-modal="true"><img alt=""></div>
+<script>
+(function(){var b=document.body,s=[].slice.call(document.querySelectorAll(".pg")),n=[].slice.call(document.querySelectorAll("nav a"));
+b.classList.remove("nojs");
+function go(){var id=(location.hash||"#bio").slice(1);if(!document.getElementById(id))id="bio";
+s.forEach(function(e){e.classList.toggle("on",e.id===id)});
+n.forEach(function(a){a.getAttribute("href")==="#"+id?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
+window.scrollTo(0,0)}
+window.addEventListener("hashchange",go);go();
+var lb=document.getElementById("lb"),li=lb.querySelector("img");
+document.querySelectorAll(".lyr a").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();li.src=a.href;li.alt="Paroles de "+a.dataset.t;lb.classList.add("on")})});
+lb.addEventListener("click",function(){lb.classList.remove("on")});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")lb.classList.remove("on")})})();
+</script>
+</body>
+</html>
