@@ -24,8 +24,8 @@ header{position:relative;display:flex;height:14.8125rem;border-bottom:.5rem soli
 .cre .ci picture,.cre .ci img{display:block;width:100%;height:100%}
 .mid{position:relative;flex:none;width:52.9rem;height:14.3125rem}
 .mid>img{display:block;width:100%;height:100%}
-.mid .pf{position:absolute;left:50.4%;top:9.6rem;transform:translateX(-50%);gap:1.7rem}
-.mid .pf a{width:3.8rem;height:3.8rem}
+.mid a{position:absolute;top:67.05%;width:7.56%;height:26.82%;border-radius:50%}
+.mid a:hover{box-shadow:0 0 1.2rem rgba(255,60,60,.9)}
 .ppp{position:relative;flex:1 1 0;min-width:0;height:14.3125rem;display:block;text-decoration:none}
 .ppp .lg{position:absolute;right:2.71rem;top:2.31rem;display:block;height:8.93rem;width:auto}
 .pf{display:flex;gap:1.55rem}
@@ -98,7 +98,7 @@ h2,.btn{font-size:2rem}.alb b{font-size:2.2rem}
 .nav-icon svg{width:3.2rem;height:3.2rem;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 nav a[aria-current] .nav-icon{color:#fff!important}
 nav a:hover .nav-icon{color:#fc0!important}
-nav a:last-child{align-self:start;height:11rem}
+@media (min-width:900px){nav a:last-child{align-self:start;height:11rem}}
 .nav-txt{outline:0!important;background:none!important;padding:0!important;display:block;color:var(--r);font-size:3.4rem;line-height:.9;text-shadow:0 0 .7rem rgba(255,0,0,.55),0 0 .2rem #000;text-align:center}
 nav a[aria-current] .nav-txt{color:#fff;text-shadow:0 0 .2rem #000}
 nav a:hover .nav-txt{color:#fc0;text-shadow:0 0 .2rem #000}
@@ -145,7 +145,8 @@ nav a:hover .nav-txt{color:#fc0;text-shadow:0 0 .2rem #000}
   .gal{grid-template-columns:1fr;gap:1rem}
   .mobile-footer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:1.2rem .8rem 2rem;background:#000;border-top:.25rem solid var(--r)}
   .mobile-socials{display:flex;gap:.55rem;flex-wrap:nowrap;justify-content:center}
-  .mobile-socials a{width:2.55rem;height:2.55rem}
+  .mobile-socials a{display:block;width:2.55rem;height:2.55rem;border-radius:50%;box-shadow:none}
+  .mobile-socials a img{display:block;width:100%;height:100%;border-radius:50%}
   .mobile-ppp{display:flex;align-items:center;justify-content:center;gap:.65rem;text-decoration:none}
   .mobile-ppp .lg{height:6rem;width:auto;mix-blend-mode:screen}
 }
@@ -165,7 +166,7 @@ a:has(img){-webkit-touch-callout:none}
 <header>
 <h1 style="position:absolute;left:-9999px">La Créature du Marais — Tancrède Charon</h1>
 <div class="cre"><a class="ci" href="#accueil" aria-label="La Créature du Marais, accueil"><picture><source media="(max-width:899px)" srcset="images/entete-creature-v3.jpg"/><img alt="La Créature du Marais" src="images/entete-creature-v4.jpg"/></picture></a></div>
-<div class="mid"><img alt="Plateformes" src="images/entete-milieu.png"/><div class="pf"><a aria-label="Deezer" class="f" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle class="c" cx="30" cy="30" r="29"></circle><path class="g" d="M30 45L17 32c-4-4-3-11 2-12 4-1 8 1 11 5 3-4 7-6 11-5 5 1 6 8 2 12z"></path></svg></a><a aria-label="Apple Music" class="f" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle class="c" cx="30" cy="30" r="29"></circle><path class="g" d="M25 17l15-3v22a5 5 0 1 1-3-4.500V21l-9 2v16a5 5 0 1 1-3-4.500z"></path></svg></a><a aria-label="Spotify" class="f" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle class="c" cx="30" cy="30" r="29"></circle><path class="g" d="M16 24c9-3 20-2 28 2l-2 3c-7-4-17-5-24-2zM18 31c8-2 16-1 23 3l-2 3c-6-3-14-4-20-2zM20 38c6-1 12 0 17 3l-2 3c-5-3-10-3-14-2z"></path></svg></a><a aria-label="Instagram" class="" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28.5"></circle><rect height="28" rx="8" width="28" x="16" y="16"></rect><circle cx="30" cy="30" r="6.500"></circle><circle cx="38.500" cy="21.500" fill="currentColor" r="1"></circle></svg></a><a aria-label="YouTube" class="" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28.5"></circle><rect height="22" rx="7" width="32" x="14" y="19"></rect><path d="M27 25v10l9-5z" fill="currentColor"></path></svg></a><a aria-label="X" class="" href="https://x.com/TancredeCharon" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28.5"></circle><path d="M19 17l22 26M41 17L19 43"></path></svg></a><a aria-label="TikTok" class="" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28.5"></circle><path d="M32 17v18a5.500 5.500 0 1 1-5.500-5.500"></path><path d="M32 17c.5 4 3 6.500 7 7"></path></svg></a></div></div>
+<div class="mid"><img alt="Plateformes" src="images/entete-milieu.png"/><a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank" style="left:15.54%"></a><a aria-label="Apple Music" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank" style="left:25.69%"></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank" style="left:36.21%"></a><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank" style="left:46.41%"></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank" style="left:57.10%"></a><a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" target="_blank" style="left:67.57%"></a><a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank" style="left:77.82%"></a></div>
 <a aria-label="Archives PUANTEUR PUTRIDE Productions" class="ppp" href="#archives"><img alt="PUANTEUR PUTRIDE Productions" class="lg" src="images/logo-ppp-entete.jpg"/></a>
 </header>
 <div class="wrap">
@@ -180,7 +181,7 @@ a:has(img){-webkit-touch-callout:none}
 <section class="pg on" id="accueil"><p>La Créature du Marais, surnommée "Cul-Pointu", de son vrai nom Tancrède Charon est un artiste underground normand basé en sa capitale : Rouen.</p>
 <figure class="ib" style="margin-top:.5rem"><img alt="La Créature du Marais lisant un magazine" loading="lazy" src="images/accueil-demonia.jpg"/></figure>
 <p>Son univers met en scène une « post-France » en ruines, hantée par la perte du sacré, l'isolement et la sensation d'effondrement culturel. Rouen y devient une ville mentale et symbolique : cité gothique, marécage spirituel, refuge brumeux d'un poète errant entre désir de pureté et fascination pour la chute.</p>
-<!-- emplacement image « jb » : <figure class="ib"><img alt="" src="images/accueil-jb.jpg"/></figure> -->
+<figure class="ib"><img alt="Jb" loading="lazy" src="images/accueil-jb.jpg"/></figure>
 <p>Influencé par Baudelaire, Rabelais, Villon, Huysmans, Verlaine ou Céline, Tancrède mêle romantisme noir, catholicisme mystique, poésie médiévale et culture internet dans une écriture où le sublime côtoie constamment l'ordurier. Son œuvre explore la culpabilité, la solitude, l'amour obsessionnel, le péché, la honte et le besoin impossible de rédemption. Les figures féminines y apparaissent comme des muses idéalisées puis détruites par le désir, tandis que la religion devient à la fois refuge, obsession et combat intérieur. Derrière la provocation, l'humour noir et l'outrance volontaire se dessine surtout le portrait d'une bête hantée par la peur de la damnation, la nostalgie d'un absolu inaccessible et le sentiment de se repentir trop tard dans un monde vidé d'espoir.</p><div class="clr"></div></section>
 <section class="pg" id="biographie"><h2>BIOGRAPHIE</h2><p>La Créature du Marais, surnommée "Cul-Pointu", de son vrai nom Tancrède Charon est un artiste underground normand associé à la ville de Rouen et au projet-label PUANTEUR PUTRIDE Productions.</p>
 <p>Son univers mêle musique expérimentale, poésie décadente, chant parlé, dark ambient, esthétique black metal et autofiction performative. Bien plus qu'un simple projet musical, il constitue une œuvre totale où se confondent personnage, esthétique, confession intime et mise en scène artistique.</p>
@@ -316,7 +317,7 @@ b.appendChild(f)}
 else{b.innerHTML="<a class='btn' target='_blank' rel='noopener' href='https://genius.com/search?q="+encodeURIComponent("Cul-Pointu "+t)+"'>PAROLES · OUVRIR SUR GENIUS →</a>"}})})
 })();
 </script>
-<footer aria-label="Réseaux sociaux et PUANTEUR PUTRIDE Productions" class="mobile-footer"><div class="pf mobile-socials"><a aria-label="Deezer" class="f" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle class="c" cx="30" cy="30" r="29"></circle><path class="g" d="M30 45L17 32c-4-4-3-11 2-12 4-1 8 1 11 5 3-4 7-6 11-5 5 1 6 8 2 12z"></path></svg></a><a aria-label="Apple Music" class="f" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle class="c" cx="30" cy="30" r="29"></circle><path class="g" d="M25 17l15-3v22a5 5 0 1 1-3-4.500V21l-9 2v16a5 5 0 1 1-3-4.500z"></path></svg></a><a aria-label="Spotify" class="f" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle class="c" cx="30" cy="30" r="29"></circle><path class="g" d="M16 24c9-3 20-2 28 2l-2 3c-7-4-17-5-24-2zM18 31c8-2 16-1 23 3l-2 3c-6-3-14-4-20-2zM20 38c6-1 12 0 17 3l-2 3c-5-3-10-3-14-2z"></path></svg></a><a aria-label="Instagram" class="" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28.5"></circle><rect height="28" rx="8" width="28" x="16" y="16"></rect><circle cx="30" cy="30" r="6.500"></circle><circle cx="38.500" cy="21.500" fill="currentColor" r="1"></circle></svg></a><a aria-label="YouTube" class="" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28.5"></circle><rect height="22" rx="7" width="32" x="14" y="19"></rect><path d="M27 25v10l9-5z" fill="currentColor"></path></svg></a><a aria-label="X" class="" href="https://x.com/TancredeCharon" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28.5"></circle><path d="M19 17l22 26M41 17L19 43"></path></svg></a><a aria-label="TikTok" class="" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28.5"></circle><path d="M32 17v18a5.500 5.500 0 1 1-5.500-5.500"></path><path d="M32 17c.5 4 3 6.500 7 7"></path></svg></a></div><a aria-label="Archives PUANTEUR PUTRIDE Productions" class="mobile-ppp" href="#archives"><img alt="PUANTEUR PUTRIDE Productions" class="lg" src="images/logo-ppp-entete.jpg"/></a></footer><script>
+<footer aria-label="Réseaux sociaux et PUANTEUR PUTRIDE Productions" class="mobile-footer"><div class="pf mobile-socials"><a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank"><img alt="" src="images/icone-deezer.png"/></a><a aria-label="Apple Music" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank"><img alt="" src="images/icone-apple-music.png"/></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img alt="" src="images/icone-spotify.png"/></a><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img alt="" src="images/icone-instagram.png"/></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img alt="" src="images/icone-youtube.png"/></a><a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" target="_blank"><img alt="" src="images/icone-x.png"/></a><a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank"><img alt="" src="images/icone-tiktok.png"/></a></div><a aria-label="Archives PUANTEUR PUTRIDE Productions" class="mobile-ppp" href="#archives"><img alt="PUANTEUR PUTRIDE Productions" class="lg" src="images/logo-ppp-entete.jpg"/></a></footer><script>
 (function(){
 function im(e){return e.target&&e.target.tagName==="IMG"}
 document.addEventListener("contextmenu",function(e){if(im(e)||(e.target.closest&&e.target.closest("a")&&e.target.closest("a").querySelector("img")))e.preventDefault()});
@@ -333,15 +334,21 @@ if(h){f.removeAttribute("hidden");b.setAttribute("aria-expanded","true");documen
 else{f.setAttribute("hidden","");b.setAttribute("aria-expanded","false")}});
 f.addEventListener("submit",function(e){e.preventDefault();
 if(f.elements["_honey"].value)return;
-var d={email:f.elements.email.value.trim(),objet:f.elements.objet.value.trim(),message:f.elements.message.value.trim(),_subject:"[Site] "+f.elements.objet.value.trim(),_template:"table",_captcha:"false"};
+var em=f.elements.email.value.trim(),ob=f.elements.objet.value.trim(),ms=f.elements.message.value.trim();
+var mt="mailto:puanteur.putride.productions@gmail.com?subject="+encodeURIComponent(ob)+"&body="+encodeURIComponent(ms+"\n\n— "+em);
 var btn=f.querySelector("button");btn.disabled=true;st.className="mf-st";st.textContent="Envoi en cours…";
-fetch("https://formsubmit.co/ajax/puanteur.putride.productions@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(d)})
-.then(function(r){return r.json()}).then(function(j){
-if(j&&(j.success==="true"||j.success===true)){st.className="mf-st ok";st.textContent="Message envoyé.";f.reset()}
-else{throw new Error("ko")}})
-.catch(function(){st.className="mf-st ko";st.innerHTML="Échec de l’envoi. Écrivez directement à <a href='mailto:puanteur.putride.productions@gmail.com'>puanteur.putride.productions@gmail.com</a>."})
+function fail(t){st.className="mf-st ko";st.innerHTML=t+" <a href=\""+mt+"\">Ouvrir dans ma messagerie</a>"}
+fetch("https://formsubmit.co/ajax/puanteur.putride.productions@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({email:em,objet:ob,message:ms,_subject:"[Site] "+ob,_template:"table",_captcha:"false"})})
+.then(function(r){return r.json().catch(function(){return {}}).then(function(j){return {ok:r.ok,j:j}})})
+.then(function(x){var j=x.j||{},m=String(j.message||"");
+if(j.success==="true"||j.success===true){st.className="mf-st ok";st.textContent="Message envoyé.";f.reset()}
+else{console.error("FormSubmit",x.ok,j);
+if(/activat/i.test(m))fail("Le service d’envoi doit être activé : ouvrez le mail de confirmation « FormSubmit » reçu sur l’adresse du site (voir aussi les spams) et cliquez sur le lien.");
+else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
+.catch(function(err){console.error(err);fail("Impossible de joindre le service d’envoi (connexion ou bloqueur de publicités).")})
 .then(function(){btn.disabled=false});
 });
+
 })();
 </script>
 </body>
