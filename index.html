@@ -269,6 +269,20 @@ nav a{flex:1 1 0}
 .tour-gallery .ph a:hover img{transform:scale(1.025)}
 .tour-gallery .ph a:hover{outline:.25rem solid var(--r)}
 @media (max-width:899px){.tour-gallery{grid-template-columns:1fr 1fr;gap:.8rem}.tour-gallery .ph a{border-width:.18rem}}
+
+/* Nouvelles : galerie limitée à deux rangées jusqu'à demande d'extension */
+.pgrid[data-limited-gallery] .nw:nth-child(n+7){display:none}
+.pgrid[data-limited-gallery].expanded .nw{display:block}
+.gallery-more{margin:1rem 0 2rem;cursor:pointer}
+.news-article{margin:0 0 3rem;padding:0 0 2rem;border-bottom:1px solid var(--r)}
+.news-article h3{color:var(--r);letter-spacing:.04em}
+.news-meta{font-size:1.1rem;color:var(--r);letter-spacing:.04em}
+@media(max-width:899px){.pgrid[data-limited-gallery]{grid-template-columns:1fr 1fr}.pgrid[data-limited-gallery] .nw:nth-child(n+5){display:none}.pgrid[data-limited-gallery].expanded .nw{display:block}.news-article .dm-wrap{display:flex;flex-wrap:wrap;align-items:flex-start;gap:1rem}.news-article .dm{flex:0 0 min(100%,18rem)}.news-article .dm-copy{flex:1 1 100%;min-width:0}.news-article .dm-copy .bio{display:block}.news-article .dm-copy .bio p{overflow-wrap:anywhere}}
+/* Agrandissement sur la page, jamais de navigation vers le fichier */
+#photo-lightbox{cursor:zoom-out}#photo-lightbox img{max-width:96vw;max-height:94vh;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.sf .roman{font-family:'Religath Demo',serif;letter-spacing:.18em;font-size:1.2rem}.sf .culpointu{font-family:'Park Lane NF',serif;letter-spacing:.08em}.sf .n{font-family:'Religath Demo','Park Lane NF',serif;color:#f0d52b;letter-spacing:.06em}
+.sf p:not(.n){font-family:'Park Lane NF','Times New Roman',serif}
+
 </style>
 </head>
 <body class="nojs">
@@ -309,7 +323,7 @@ nav a{flex:1 1 0}
 <div class="blk"><h2>NOUVELLES</h2>
 <p class="sub">Il y a des choses qui puent à Rouen</p>
 <p class="desc">En plein tournage du prochain clip, consacré au second single du prochain album de la Créature du Marais. Quelques images prises sur le terrain donnent un aperçu de cette nouvelle séquence.</p>
-<div class="pgrid" data-gallery-list="actu" data-empty="NOUVELLES À VENIR"></div><p><a class="btn" href="#nouvelles">TOUTES LES NOUVELLES →</a></p></div>
+<div class="pgrid" data-gallery-list="actu" data-empty="NOUVELLES À VENIR" data-limited-gallery></div><button class="btn gallery-more" type="button" data-expand-gallery>VOIR LA SUITE ↓</button><p><a class="btn" href="#nouvelles">TOUTES LES NOUVELLES →</a></p></div>
 </section>
 <section class="pg" data-title="Biographie" id="biographie"><h2>BIOGRAPHIE</h2><p>La Créature du Marais, surnommée "Cul-Pointu", de son vrai nom Tancrède Charon est un artiste underground normand associé à la ville de Rouen et au projet-label PUANTEUR PUTRIDE Productions.</p>
 <p>Son univers mêle musique expérimentale, poésie décadente, chant parlé, dark ambient, esthétique black metal et autofiction performative. Bien plus qu'un simple projet musical, il constitue une œuvre totale où se confondent personnage, esthétique, confession intime et mise en scène artistique.</p>
@@ -433,7 +447,10 @@ nav a{flex:1 1 0}
 <!-- Pour ajouter une photo : <a class="nw" href="images/….jpg"><img alt="…" src="images/….jpg"/></a> dans la div ci-dessous -->
 <div class="tour-gallery" data-empty="PHOTOS DU TOURNAGE À VENIR" data-gallery="dis"></div>
 </section>
-<section class="pg" data-title="Actualités" id="nouvelles"><h2>ACTUALITÉS</h2><div class="dm-wrap"><a class="dm" href="#album-jubile"><b>JUBILÉ</b><span class="dt">06/12/2025</span><img alt="Pochette Jubilé" src="images/pochette-jubile.jpg"/></a><div class="dm-copy"><h3>PREMIER SINGLE DU PROCHAIN ALBUM DE LA CRÉATURE</h3></div></div><p class="desc">En plein tournage du prochain clip, consacré au second single du prochain album de la Créature du Marais. Quelques images prises sur le terrain donnent un aperçu de cette nouvelle séquence.</p><div class="pgrid" data-gallery-list="actu" data-empty="ACTUALITÉS À VENIR"></div></section>
+<section class="pg" data-title="Nouvelles" id="nouvelles"><h2>NOUVELLES</h2>
+<div class="news-article" data-published="2026-10-19"><h3>TOURNAGE DU PROCHAIN CLIP</h3><p class="desc">En plein tournage du prochain clip, consacré au second single du prochain album de la Créature du Marais. Quelques images prises sur le terrain donnent un aperçu de cette nouvelle séquence.</p><div class="pgrid" data-gallery-list="actu" data-empty="NOUVELLES À VENIR" data-limited-gallery></div><button class="btn gallery-more" type="button" data-expand-gallery>VOIR LA SUITE ↓</button></div>
+<article class="news-article jubilee-news" data-published="2025-12-06"><h3>PREMIER SINGLE DU PROCHAIN ALBUM DE LA CRÉATURE</h3><div class="dm-wrap"><a class="dm" href="#album-jubile"><b>JUBILÉ</b><span class="dt">06/12/2025</span><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/></a><div class="dm-copy"><div class="bio"><p>Avec Jubilé, la Créature ouvre une nouvelle phase de son œuvre. Là où Confiteor apparaissait comme une fresque monumentale de 34 morceaux, saturée de visions catholiques, de provocations, de romantisme noir et de déchéance personnelle, ce nouveau single agit comme un condensé plus frontal et plus maîtrisé de cette mythologie.</p><p>Confiteor relevait encore de l'errance : accumulation de fragments, confessions éclatées, personnages grotesques, obsessions sexuelles, ruines spirituelles et dérives urbaines se mêlaient dans un vaste journal halluciné. Jubilé marque au contraire une forme de recentrage. La provocation y laisse davantage place à la liturgie, la dispersion à la célébration, comme si la Créature du Marais transformait désormais ses décombres intérieurs en cour des miracles.</p><p>C'est une mutation esthétique. L'univers reste hanté par le péché, le salut impossible et la fascination du sacré, mais l'écriture devient plus brute, presque impie. Là où les précédents projets exposaient la chute, Jubilé semble en célébrer les vestiges.</p><p>À travers ce morceau, Tancrède poursuit ainsi la construction de son personnage de poète maudit contemporain : moins chroniqueur de sa propre décomposition que maître de cérémonie d'un monde déjà effondré. Jubilé apparaît alors comme le premier manifeste d'une nouvelle époque pour PUANTEUR PUTRIDE Productions, où la confession devient rite et où la ruine devient célébration.</p></div><p class="news-meta">06/12/2025 · Single · 1 titre · 3 min 34 s</p><p><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a> <a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a> <a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIC</a> <a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a></p></div></div></article>
+</section>
 <section class="pg" data-title="Contact" id="contact"><h2>CONTACT</h2>
 <p><a aria-controls="mailbox" aria-expanded="false" class="btn" href="mailto:puanteur.putride.productions@gmail.com" id="mailbtn">PUANTEUR.PUTRIDE.PRODUCTIONS@GMAIL.COM</a><a class="btn" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank">INSTAGRAM</a></p>
 <form class="mf" hidden="" id="mailbox" method="post">
@@ -491,7 +508,12 @@ d.addEventListener("toggle",function(){if(!d.open||d.dataset.l)return;d.dataset.
 var t=d.dataset.t,g=G[t],b=d.querySelector(".ly");
 if(g){var id=g.id,f=document.createElement("iframe");
 f.title="Paroles de "+t;f.className="lyf";f.setAttribute("loading","lazy");
-f.srcdoc="<!doctype html><html><head><meta charset='utf-8'><base target='_blank'><style>html,body{margin:0;padding:0;background:#fff;color:#000;color-scheme:light}body{padding:.5rem;font:16px/1.4 Arial,sans-serif}</style></head><body><div id='rg_embed_link_"+id+"' class='rg_embed_link' data-song-id='"+id+"'><a href='"+g.url+"'>Paroles de “"+t.replace(/&/g,"&amp;")+"” — Cul-Pointu</a></div><script crossorigin src='https://genius.com/songs/"+id+"/embed.js'><\/script></body></html>";
+f.srcdoc="<!doctype html><html><head><meta charset='utf-8'><base target='_blank'><style>html,body{margin:0;padding:0;background:#fff;color:#000;color-scheme:light}body{padding:.5rem;font:16px/1.4 Arial,sans-serif}</style></head><body><div id='rg_embed_link_"+id+"' class='rg_embed_link' data-song-id='"+id+"'><a href='"+g.url+"'>Paroles de “"+t.replace(/&/g,"&amp;")+"” — Cul-Pointu</a></div><script crossorigin src='https://genius.com/songs/"+id+"/embed.js'><\/script><script>
+(function(){
+ document.addEventListener('click',function(e){var img=e.target.closest('img');if(!img||img.closest('a')||img.closest('button')||img.closest('video'))return;var src=img.currentSrc||img.src;if(!src)return;e.preventDefault();var old=document.getElementById('photo-lightbox');if(old)old.remove();var box=document.createElement('div');box.id='photo-lightbox';box.style.cssText='position:fixed;z-index:99999;inset:0;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:2rem';var big=document.createElement('img');big.src=src;big.alt=img.alt||'';big.draggable=false;box.appendChild(big);box.addEventListener('click',function(){box.remove()});document.addEventListener('keydown',function close(ev){if(ev.key==='Escape'){box.remove();document.removeEventListener('keydown',close)}});document.body.appendChild(box);});
+})();
+</script>
+</body></html>";
 function fit(){try{var h=f.contentDocument.documentElement.scrollHeight;if(h>40)f.style.height=h+"px"}catch(e){}}
 f.addEventListener("load",function(){fit();var n=0,iv=setInterval(function(){fit();if(++n>40)clearInterval(iv)},500);
 try{if(window.ResizeObserver)new ResizeObserver(fit).observe(f.contentDocument.body)}catch(e){}});
@@ -541,7 +563,7 @@ mp.addEventListener("keydown",function(e){if(e.key==="Escape"){closeM();sb.focus
 })();
 </script>
 <footer aria-label="Réseaux sociaux et PUANTEUR PUTRIDE Productions" class="mobile-footer"><div class="pf mobile-socials"><a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank"><img alt="" src="images/icone-deezer.png"/></a><a aria-label="Apple Music" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank"><img alt="" src="images/icone-apple-music.png"/></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img alt="" src="images/icone-spotify.png"/></a><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img alt="" src="images/icone-instagram.png"/></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img alt="" src="images/icone-youtube.png"/></a><a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" target="_blank"><img alt="" src="images/icone-x.png"/></a><a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank"><img alt="" src="images/icone-tiktok.png"/></a></div><a aria-label="Archives PUANTEUR PUTRIDE Productions" class="mobile-ppp" href="#archives"><img alt="PUANTEUR PUTRIDE Productions" class="lg" src="images/logo-ppp-entete.jpg"/></a></footer>
-<footer class="sf"><p class="n">LA CRÉATURE DU MARAIS</p><p>Cul-Pointu</p><p>© MMXXVI</p></footer>
+<footer class="sf"><p class="n">LA CRÉATURE DU MARAIS</p><p class="culpointu">CUL-POINTU</p><p class="roman">MMXXVI</p></footer>
 <script>
 (function(){
 function im(e){return e.target&&e.target.tagName==="IMG"}
@@ -642,7 +664,7 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
     (mediaLists[key]||[]).forEach(function(file){
       var isVideo=/\.mp4$/i.test(file);
       var path='SECTIONS/'+(key==='actu'?'actu':'ustensiles')+'/'+file;
-      var card=document.createElement('a'); card.className='nw'; card.href=path;
+      var card=document.createElement('a'); card.className='nw'; card.href='#';
       card.setAttribute('aria-label',isVideo?'Vidéo du tournage':file.replace(/\.[^.]+$/,''));
       if(isVideo){
         var video=document.createElement('video'); video.src=path; video.controls=true; video.preload='metadata';
@@ -655,6 +677,18 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
       grid.appendChild(card);
     });
   });
+  // Les boutons affichent la suite sans quitter la page.
+  document.querySelectorAll('[data-expand-gallery]').forEach(function(btn){
+    btn.addEventListener('click',function(){var grid=btn.parentElement.querySelector('[data-limited-gallery]');if(!grid)return;var expanded=grid.classList.toggle('expanded');btn.textContent=expanded?'RÉDUIRE ↑':'VOIR LA SUITE ↓';});
+  });
+  // Toute nouvelle actualité datée la plus récente passe automatiquement en tête.
+  var newsContainer=document.querySelector('#nouvelles');
+  if(newsContainer){var articles=[].slice.call(newsContainer.querySelectorAll('.news-article'));articles.sort(function(a,b){return (b.getAttribute('data-published')||'').localeCompare(a.getAttribute('data-published')||'');});articles.forEach(function(a){newsContainer.appendChild(a);});}
+})();
+</script>
+<script>
+(function(){
+ document.addEventListener('click',function(e){var img=e.target.closest('img');if(!img||img.closest('a')||img.closest('button')||img.closest('video'))return;var src=img.currentSrc||img.src;if(!src)return;e.preventDefault();var old=document.getElementById('photo-lightbox');if(old)old.remove();var box=document.createElement('div');box.id='photo-lightbox';box.style.cssText='position:fixed;z-index:99999;inset:0;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:2rem';var big=document.createElement('img');big.src=src;big.alt=img.alt||'';big.draggable=false;box.appendChild(big);box.addEventListener('click',function(){box.remove()});document.addEventListener('keydown',function close(ev){if(ev.key==='Escape'){box.remove();document.removeEventListener('keydown',close)}});document.body.appendChild(box);});
 })();
 </script>
 </body>
