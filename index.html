@@ -174,6 +174,9 @@ header{overflow:visible;z-index:30}
 .dm{display:block;text-decoration:none;width:max-content;max-width:100%}
 .dm b{font-weight:400;display:inline-block;background:#fc0;color:#000;font-size:5rem;line-height:.8;padding:.04em .1em 0}
 .dm:hover b{background:#fff}
+.dm-wrap{display:flex;align-items:flex-start;gap:2.2rem;max-width:90rem}.dm-copy{flex:1;min-width:0}.dm-copy h3{margin:.2rem 0 1rem}.dm-copy p{max-width:55rem}
+@media (max-width:899px){.dm-wrap{gap:1rem}.dm-copy h3{font-size:1.2rem;margin:.1rem 0 .6rem}.dm-copy p{font-size:1rem}.dm img{width:10rem;height:10rem}}
+
 .dm .dt{display:block;font-size:2.6rem;margin:.6rem 0 1rem}
 .dm img{display:block;width:24rem;height:24rem;max-width:100%;object-fit:cover;border:.2rem solid #000}
 .ec{color:var(--r);font-size:2.6rem;letter-spacing:.06em;margin:1.4rem 0 .3rem!important;text-shadow:0 0 .7rem rgba(255,0,0,.55)}
@@ -297,13 +300,13 @@ nav a{flex:1 1 0}
 <p>Influencé par Baudelaire, Rabelais, Villon, Huysmans, Verlaine ou Céline, Tancrède mêle romantisme noir, catholicisme mystique, poésie médiévale et culture internet dans une écriture où le sublime côtoie constamment l'ordurier. Son œuvre explore la culpabilité, la solitude, l'amour obsessionnel, le péché, la honte et le besoin impossible de rédemption. Les figures féminines y apparaissent comme des muses idéalisées puis détruites par le désir, tandis que la religion devient à la fois refuge, obsession et combat intérieur. Derrière la provocation, l'humour noir et l'outrance volontaire se dessine surtout le portrait d'une bête hantée par la peur de la damnation, la nostalgie d'un absolu inaccessible et le sentiment de se repentir trop tard dans un monde vidé d'espoir.</p>
 <div class="clr"></div>
 <div class="blk"><h2>DERNIER MÉFAIT</h2>
-<a class="dm" href="#album-jubile"><b>JUBILÉ</b><span class="dt">06.12.2025</span><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/></a>
+<div class="dm-wrap"><a class="dm" href="#album-jubile"><b>JUBILÉ</b><span class="dt">06.12.2025</span><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/></a><div class="dm-copy"><h3>PREMIER SINGLE DU PROCHAIN ALBUM DE LA CRÉATURE</h3><p class="desc">Avec <em>Jubilé</em>, la Créature ouvre un nouveau chapitre : une célébration sombre où la liturgie, la chute et les vestiges du sacré se mêlent à son univers décadent. Ce single annonce la direction du prochain album.</p></div></div>
 <p class="ec">ÉCOUTER</p>
 <p><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIC</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a></p></div>
 <div class="blk"><h2>ACTUALITÉS</h2>
 <p class="sub">Il y a des choses qui puent à Rouen</p>
-<!-- Pour ajouter une image : <a class="nw" href="#"><img alt="…" src="images/….jpg"/></a> à l'intérieur de la div ci-dessous (le message « à venir » disparaît tout seul) -->
-<div class="pgrid" data-empty="ACTUALITÉS À VENIR"></div></div>
+<p class="desc">En plein tournage du prochain clip, consacré au second single du prochain album de la Créature du Marais. Quelques images prises sur le terrain donnent un aperçu de cette nouvelle séquence.</p>
+<div class="pgrid" data-gallery-list="actu" data-empty="ACTUALITÉS À VENIR"></div></div>
 </section>
 <section class="pg" data-title="Biographie" id="biographie"><h2>BIOGRAPHIE</h2><p>La Créature du Marais, surnommée "Cul-Pointu", de son vrai nom Tancrède Charon est un artiste underground normand associé à la ville de Rouen et au projet-label PUANTEUR PUTRIDE Productions.</p>
 <p>Son univers mêle musique expérimentale, poésie décadente, chant parlé, dark ambient, esthétique black metal et autofiction performative. Bien plus qu'un simple projet musical, il constitue une œuvre totale où se confondent personnage, esthétique, confession intime et mise en scène artistique.</p>
@@ -444,7 +447,7 @@ nav a{flex:1 1 0}
 <section class="pg" data-title="Objets liturgiques" id="archive-objets">
 <p><a class="back" href="#archives">← ARCHIVES</a></p>
 <h2>OBJETS LITURGIQUES</h2>
-<div class="pgrid" data-empty="EN COURS DE CLASSEMENT"></div>
+<div class="pgrid" data-gallery-list="objets" data-empty="EN COURS DE CLASSEMENT"></div>
 </section>
 <section class="pg" data-title="Dossiers compromettants" id="archive-dossiers">
 <p><a class="back" href="#archives">← ARCHIVES</a></p>
@@ -458,7 +461,8 @@ nav a{flex:1 1 0}
 </section>
 <section class="pg" data-title="Ustensiles" id="ustensiles">
 <h2>USTENSILES</h2>
-<div class="pgrid" data-empty="EN COURS DE CLASSEMENT"></div>
+<p>Les objets présentés ici sont également classés dans la rubrique « Objets liturgiques » des archives.</p>
+<div class="pgrid" data-gallery-list="objets" data-empty="EN COURS DE CLASSEMENT"></div>
 </section>
 </main>
 </div>
@@ -618,6 +622,36 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
     var im=document.createElement('img'); im.src=src; im.alt=alt; im.style.cssText='max-width:96vw;max-height:94vh;object-fit:contain;border:.2rem solid #000';
     box.appendChild(im); box.addEventListener('click',function(){box.remove();}); document.body.appendChild(box);
   }
+
+  // Les médias proviennent du dossier SECTIONS fourni avec le site.
+  // Ajouter un objet dans "objets" le publie automatiquement dans les deux rubriques.
+  var mediaLists = {
+    actu: [
+      'AQP_2pyxcxJsDU8uNR5r8L6USJu0ugDaBSDSuAixuPIJVRZTXHMfzoLzASnPt_qBGgOEHrYV1ycn0aGOq2XOOJSk465e2bHUGzOOjRmr_w.mp4',
+      'bosch.jpg','cote2.jpg','cote5.jpg','dive1.jpg','egout.jpg','ephebellelui.jpg','farce.jpg',
+      'marcheu1.jpg','marcheu2.jpg','marcheu3.jpg','miseretag.jpg','miséreux.jpg','pg1.jpg',
+      'phrygien.jpg','poisson1.jpg','pq2.jpg'
+    ],
+    objets: ['clysteres.jpg','clysteres2.jpg','masque.jpg','mouche.jpg','poisson5.jpg','poisson6.jpg','poisson7.jpg','rat.jpg','recolte.jpg','salon1.jpg','salon2.jpg']
+  };
+  document.querySelectorAll('[data-gallery-list]').forEach(function(grid){
+    var key=grid.getAttribute('data-gallery-list');
+    (mediaLists[key]||[]).forEach(function(file){
+      var isVideo=/\.mp4$/i.test(file);
+      var path='SECTIONS/'+(key==='actu'?'actu':'ustensiles')+'/'+file;
+      var card=document.createElement('a'); card.className='nw'; card.href=path;
+      card.setAttribute('aria-label',isVideo?'Vidéo du tournage':file.replace(/\.[^.]+$/,''));
+      if(isVideo){
+        var video=document.createElement('video'); video.src=path; video.controls=true; video.preload='metadata';
+        video.style.cssText='width:100%;height:100%;object-fit:cover'; video.setAttribute('aria-label','Vidéo du tournage du prochain clip');
+        card.style.aspectRatio='4/3'; card.appendChild(video);
+        card.addEventListener('click',function(e){e.preventDefault();});
+      } else {
+        var img=document.createElement('img'); img.src=path; img.alt=file.replace(/\.[^.]+$/,'').replace(/[-_]/g,' '); img.loading='lazy'; card.appendChild(img);
+      }
+      grid.appendChild(card);
+    });
+  });
 })();
 </script>
 </body>
