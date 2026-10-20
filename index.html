@@ -237,10 +237,9 @@ header{overflow:visible;z-index:30}
 .ec{color:var(--r);font-size:2.6rem;letter-spacing:.06em;margin:1.4rem 0 .3rem!important;text-shadow:0 0 .7rem rgba(255,0,0,.55)}
 .pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:1.2rem;max-width:90rem}
 .pgrid:empty::before{content:attr(data-empty);grid-column:1/-1;display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;aspect-ratio:16/5;border:.25rem solid var(--r);background:#000;color:var(--r);font-size:2.4rem;letter-spacing:.06em}
-.nw{display:block;aspect-ratio:4/3;border:.25rem solid #000;background:#000;overflow:hidden}
-.nw:has(img){aspect-ratio:auto;height:auto}
-.nw-image{display:block;width:100%;aspect-ratio:4/3;background:#000;overflow:hidden}
-.nw-image img{display:block;width:100%;height:100%;object-fit:contain;background:#000}
+.nw{display:flex;flex-direction:column;min-width:0;text-decoration:none}
+.nw-image{display:block;width:100%;height:auto}
+.nw-image img{display:block;width:100%;height:auto;object-fit:initial}
 .nw-title{display:block;padding:.4rem .5rem;color:#fff;text-align:center;font-size:1.5rem;line-height:1.1}
 a.nw:hover{outline:.25rem solid var(--r)}
 .cgal{display:grid;grid-template-columns:minmax(0,1fr);gap:1.8rem;max-width:90rem}
@@ -350,8 +349,9 @@ nav a{flex:1 1 0}
 .msp .sr:not(.on){display:none}
 .sr a,.sr .sn{font-size:1.15rem}.sr small{font-size:.85rem}
 }
-.ph{margin:0}.ph>a{display:block;aspect-ratio:4/3;background:#000;overflow:hidden}
-.ph img{display:block;width:100%;height:100%;object-fit:contain;border:0;background:#000}
+.ph{margin:0;border:0;background:transparent}
+.ph>a{display:block;height:auto}
+.ph img{display:block;width:100%;height:auto;object-fit:initial;border:0}
 .ph figcaption{padding:.4rem .2rem;color:#fff;text-align:center;font-size:1.35rem;line-height:1.1}
 .ph figcaption{color:#fff;font-size:1.7rem;line-height:1.05;margin-top:.45rem}
 .desc{max-width:90rem}
@@ -361,10 +361,10 @@ nav a{flex:1 1 0}
    Placez les photos directement dans images/ en conservant leurs noms. */
 .tour-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:1.2rem;max-width:90rem}
 .tour-gallery .ph{margin:0}
-.tour-gallery .ph a{display:block;border:.25rem solid #000;background:#000}
+.tour-gallery .ph a{display:block;border:0;background:transparent}
 .tour-gallery .ph img{border:0}
 .tour-gallery .ph a:hover{outline:.25rem solid var(--r)}
-@media (max-width:899px){.tour-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}.tour-gallery .ph a{border-width:.18rem}}
+@media (max-width:899px){.tour-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}}
 
 /* ===== v11 : Religath, vitrail, ombres, lightbox, nouvelles, pied de page ===== */
 @font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
@@ -398,7 +398,7 @@ main .cc p{font-size:2rem}
 .jb .meta{max-width:none;margin:0 0 1.4rem;font:400 1.7rem/1.2 "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.02em}
 /* lightbox */
 #lb{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.96);display:flex;align-items:center;justify-content:center;cursor:zoom-out}
-#lb img{max-width:94vw;max-height:86vh;object-fit:contain;border:.2rem solid #000;pointer-events:none}
+#lb img{max-width:94vw;max-height:86vh;object-fit:contain;pointer-events:none}
 #lb button{position:absolute;background:#000;color:var(--r);border:.2rem solid var(--r);font:400 3.4rem/1 "Bebas Neue",Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 #lb button:hover,#lb button:focus-visible{background:var(--r);color:#000;outline:0}
 #lb .lb-x{top:1rem;right:1rem;width:5rem;height:5rem;font-size:2.8rem}
@@ -649,7 +649,7 @@ main .cc p{font-size:2rem}
 <section class="pg" data-title="Objets liturgiques" id="archive-objets">
 <p><a class="back" href="#archives">← ARCHIVES</a></p>
 <h2>OBJETS LITURGIQUES</h2>
-<div class="pgrid" data-gallery-list="objets" data-empty="EN COURS DE CLASSEMENT"></div>
+<div class="pgrid" data-fold="toggle" data-gallery-list="objets" data-empty="EN COURS DE CLASSEMENT"></div>
 </section>
 <section class="pg" data-title="Dossiers compromettants" id="archive-dossiers">
 <p><a class="back" href="#archives">← ARCHIVES</a></p>
