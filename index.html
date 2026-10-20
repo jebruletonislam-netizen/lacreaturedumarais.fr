@@ -55,6 +55,10 @@ a.btn[href*="spotify.com"]:hover,a.btn[href*="youtube.com"]:hover,a.btn[href*="d
 .alb b{font-weight:400;background:#fc0;color:#000;font-size:3rem;line-height:.8;padding:.04em .1em 0;display:inline-block}
 .alb:hover b{background:#fff}
 .ah h2{background:#fc0;color:#000;border:0;text-shadow:none;padding:.04em .1em 0;line-height:.8}.alb span{display:block;margin-top:.7rem}
+.alb.has-album-excerpt{margin-bottom:.35rem}
+.album-excerpt{font:400 1.45rem/1.2 "Religath","Cinzel",Georgia,serif;margin:0 0 1.8rem 13.2rem}
+.album-excerpt a{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
+.album-excerpt a:hover{color:#fff}
 .ah{display:flex;gap:2.4rem;align-items:flex-start;margin-bottom:1.8rem}.ah img{width:17rem;height:17rem}
 .back{text-decoration:none;color:var(--r)}.back:hover{color:#fff}
 .bio h3{margin-top:2rem}.bio ul{margin:0 0 1.7rem 2.4rem;max-width:80rem}
@@ -189,7 +193,7 @@ header{overflow:visible;z-index:30}
 .pgrid:empty::before{content:attr(data-empty);grid-column:1/-1;display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;aspect-ratio:16/5;border:.25rem solid var(--r);background:#000;color:var(--r);font-size:2.4rem;letter-spacing:.06em}
 .nw{display:block;aspect-ratio:4/3;border:.25rem solid #000;background:#000;overflow:hidden}
 .nw:has(img){aspect-ratio:auto;height:auto}
-.nw img{display:block;width:100%;height:auto;object-fit:contain}
+.nw img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:#000}
 .nw-title{display:block;padding:.4rem .5rem;color:#fff;text-align:center;font-size:1.5rem;line-height:1.1}
 a.nw:hover{outline:.25rem solid var(--r)}
 .cgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(40rem,1fr));gap:1.8rem;max-width:90rem}
@@ -262,7 +266,9 @@ nav a{flex:1 1 0}
 .msp .sr:not(.on){display:none}
 .sr a,.sr .sn{font-size:1.15rem}.sr small{font-size:.85rem}
 }
-.ph{margin:0}.ph img{display:block;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;border:.25rem solid #000;background:#000}
+.ph{margin:0}.ph>a{display:block;aspect-ratio:4/3;background:#000;overflow:hidden}
+.ph img{display:block;width:100%;height:100%;object-fit:contain;border:0;background:#000}
+.ph figcaption{padding:.4rem .2rem;color:#fff;text-align:center;font-size:1.35rem;line-height:1.1}
 .ph figcaption{color:#fff;font-size:1.7rem;line-height:1.05;margin-top:.45rem}
 .desc{max-width:90rem}
 @media (max-width:899px){.ph figcaption{font-size:1.05rem}.pgrid:has(.ph){grid-template-columns:1fr 1fr}}
@@ -277,7 +283,7 @@ nav a{flex:1 1 0}
 @media (max-width:899px){.tour-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}.tour-gallery .ph a{border-width:.18rem}}
 
 /* ===== v11 : Religath, vitrail, ombres, lightbox, nouvelles, pied de page ===== */
-@font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-display:swap}
+@font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
 main{isolation:isolate}
 main>section{position:relative;z-index:1}
 main::before{height:3.4rem;background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.18) 45%,rgba(0,0,0,0))}
@@ -331,6 +337,8 @@ main .cc p{font-size:2rem}
   #lb .lb-p,#lb .lb-n{width:3.2rem;height:4.4rem;margin-top:-2.2rem;font-size:2.4rem}
   #lb .lb-c{font-size:1.1rem}
   .nw-title{font-size:1rem;padding:.3rem .25rem}
+  .ph figcaption{font-size:.9rem;padding:.35rem .15rem}
+  .album-excerpt{font-size:.9rem;margin-left:6.5rem}
   .sf-t{width:11.2rem}
   .sf p.sf-c{font-size:1.15rem;margin-top:.1rem}
 }
@@ -397,6 +405,11 @@ main .cc p{font-size:2rem}
 <p>Confiteor relevait encore de l'errance : accumulation de fragments, confessions éclatées, personnages grotesques, obsessions sexuelles, ruines spirituelles et dérives urbaines se mêlaient dans un vaste journal halluciné. Jubilé marque au contraire une forme de recentrage. La provocation y laisse davantage place à la liturgie, la dispersion à la célébration, comme si la Créature du Marais transformait désormais ses décombres intérieurs en cour des miracles.</p>
 <p>C'est une mutation esthétique. L'univers reste hanté par le péché, le salut impossible et la fascination du sacré, mais l'écriture devient plus brute, presque impie. Là où les précédents projets exposaient la chute, Jubilé semble en célébrer les vestiges.</p>
 <p>À travers ce morceau, Tancrède poursuit ainsi la construction de son personnage de poète maudit contemporain : moins chroniqueur de sa propre décomposition que maître de cérémonie d'un monde déjà effondré. Jubilé apparaît alors comme le premier manifeste d'une nouvelle époque pour PUANTEUR PUTRIDE Productions, où la confession devient rite et où la ruine devient célébration.</p></div>
+</section>
+<section class="pg" data-title="In Odium Fidei" id="album-in-odium-fidei">
+<p><a class="back" href="#discographie">← DISCOGRAPHIE</a></p>
+<div class="ah"><img alt="Pochette In Odium Fidei" src="images/odium-fidei.jpg"/><div><h2>In Odium Fidei</h2><p>Prochain album</p></div></div>
+<h3>TITRES · CLIQUER SUR UN TITRE POUR LIRE LES PAROLES</h3><div class="tl"><details data-t="Jubilé"><summary><b>2.</b>Jubilé</summary><div class="ly"></div></details></div>
 </section>
 <section class="pg" data-title="Confiteor" id="album-confiteor">
 <p><a class="back" href="#discographie">← DISCOGRAPHIE</a></p>
@@ -554,6 +567,14 @@ var G={"Jubilé":{"id":12796434,"url":"https://genius.com/Cul-pointu-jubile-lyri
 var P=[].slice.call(document.querySelectorAll(".pg")),N=[].slice.call(document.querySelectorAll("nav a"));
 document.body.classList.remove("nojs");
 var OPEN=null;
+var jubileeCard=document.querySelector('#discographie .alb[href="#album-jubile"]');
+if(jubileeCard){
+  var excerpt=document.createElement('p');excerpt.className='album-excerpt';
+  excerpt.appendChild(document.createTextNode('extrait de '));
+  var albumLink=document.createElement('a');albumLink.href='#album-in-odium-fidei';albumLink.textContent='In Odium Fidei';
+  excerpt.appendChild(albumLink);jubileeCard.classList.add('has-album-excerpt');
+  jubileeCard.parentNode.insertBefore(excerpt,jubileeCard.nextSibling);
+}
 function go(){var id=(location.hash||"#accueil").slice(1),cur=document.getElementById(id);
 if(!cur||!cur.classList.contains("pg")){id="accueil";cur=document.getElementById(id)}
 P.forEach(function(e){var on=e.id===id;e.classList.toggle("on",on);
@@ -671,20 +692,21 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
       'souslepontilelacroix','verificationfocus'
     ],
     chimaera:[
-      'allumertorche','angenoir1','angenoir2','angenoiraitrestmaclou','angenoirdevantchapelle2','angenoirdevantchapelle3',
-      'angenoirdevantchapellestlouis','angenoirsetapeleculplacedelarougemare','devant_la_demeure_des_vampires',
-      'devant la demeure des vampires','devant la demeure des vampires 2','devantblason','devantblason1',
-      'echecdeteindretorchedansflaquedevanttavernestamant','eteingnagedetorche','fontaine1','fontaine2','matos','muséevide',
-      'torche','torche1','torcheeteinteruestromain','torchenuitdevanteglisesstejeannedarc'
+      'allumagetorche','angenoir1','angenoirblasonrouen','angenoir2','angenoiraitrestmaclou',
+      'angenoirdevantchapellestlouis','angenoirdevantchapelle2','angenoirdevantchapelle3',
+      'angenoirsetapeleculplacedelarougemare','devant la demeure des vampires','devant la demeure des vampires 2',
+      'devantblason','devantblason1','torche','torcheeteinteruestromain','muséevide','fontaine1',
+      'torchenuitdevanteglisesstejeannedarc'
     ],
     dis:[
       'diva','diva2','enbasdesescaliersduprofesseursida','extrait','instructionscamera','instructionscamera2','rigole','rigole2'
     ]
   };
   var exts=['jpg','jpeg','webp','png','JPG','JPEG','WEBP','PNG'];
+  var photoExtensions={bateauseinenocturne:'png',muséevide:'png',torchenuitdevanteglisesstejeannedarc:'png'};
   var titres={cote:'La côte Sainte-Catherine',chimaera:'Chimaera Rothomagensis',dis:'Dis, ferme un instant les yeux'};
   var photoTitles={
-    allumagetorche:'Allumage de la torche',angenoirblasonrouen:'Ange noir devant le blason de Rouen',
+    allumagetorche:'Allumage de la torche',angenoirblasonrouen:'Ange noir devant le blason gravé de Rouen',
     aupiedelacote:'Au pied de la côte',avectorchecote:'Avec la torche sur la côte',bateauseinenocturne:'Bateau nocturne sur la Seine',
     'branle la torche':'La torche brandie',cavecamisole:'Dans la cave, en camisole',
     cotestecatherineavecactrice:'L’actrice sur la côte Sainte-Catherine',
@@ -697,19 +719,22 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
     'faire joujou avec la torche au pied de la cote':'Jouer avec la torche au pied de la côte',
     nuittorchecote:'Nuit à la torche sur la côte',remisevetementspanorama:'Remise des vêtements · panorama',
     souslepontilelacroix:'Sous le pont de l’île Lacroix',verificationfocus:'Vérification du focus',
-    allumertorche:'Allumage de la torche',angenoir1:'Ange noir · 1',angenoir2:'Ange noir · 2',
+    allumertorche:'Allumage de la torche',angenoir1:'Ange noir devant une gravure du blason normand',
+    angenoir2:'Ange noir sur un socle du pont Boieldieu',
     angenoiraitrestmaclou:'Ange noir à l’aître Saint-Maclou',
-    angenoirdevantchapelle2:'Ange noir devant la chapelle · 2',angenoirdevantchapelle3:'Ange noir devant la chapelle · 3',
-    angenoirdevantchapellestlouis:'Ange noir devant la chapelle Saint-Louis',
-    angenoirsetapeleculplacedelarougemare:'Ange noir place de la Rougemare',
-    'devant la demeure des vampires':'Devant la demeure des vampires',
-    'devant la demeure des vampires 2':'Devant la demeure des vampires · 2',
-    devantblason:'Devant le blason',devantblason1:'Devant le blason · 1',
+    angenoirdevantchapelle2:'Ange noir devant la chapelle Saint-Louis · 2',angenoirdevantchapelle3:'Ange noir devant la chapelle Saint-Louis · 3',
+    angenoirdevantchapellestlouis:'Ange noir devant la chapelle Saint-Louis · 1',
+    angenoirsetapeleculplacedelarougemare:'L’ange noir se claque le cul place de la Rougemare',
+    'devant la demeure des vampires':'Ange noir devant le Vampirium · 1',
+    'devant la demeure des vampires 2':'Ange noir devant le Vampirium · 2',
+    devantblason:'Ange noir devant les lions normands · 1',devantblason1:'Ange noir devant les lions normands · 2',
     echecdeteindretorchedansflaquedevanttavernestamant:'Torche éteinte dans une flaque, devant la taverne',
-    eteingnagedetorche:'Extinction de la torche',fontaine1:'À la fontaine · 1',fontaine2:'À la fontaine · 2',
-    matos:'Le matériel de tournage',muséevide:'Le musée vide',torche:'La torche',torche1:'La torche · 1',
-    torcheeteinteruestromain:'Torche éteinte rue Saint-Romain',
-    torchenuitdevanteglisesstejeannedarc:'Torche de nuit devant l’église Sainte-Jeanne-d’Arc',
+    eteingnagedetorche:'Extinction de la torche',fontaine1:'Tournage devant la maison natale de Fontenelle',fontaine2:'À la fontaine · 2',
+    matos:'Le matériel de tournage',torche1:'La torche · 1',
+    torcheeteinteruestromain:'Tournage rue Saint-Romain · 2',
+    torche:'Tournage rue Saint-Romain · 1',
+    muséevide:'Musée des Antiquités vidé pour faire place à la profanation municipale',
+    torchenuitdevanteglisesstejeannedarc:'Torche de nuit devant la croix de Jeanne d’Arc',
     diva:'La diva',diva2:'La diva · 2',enbasdesescaliersduprofesseursida:'Au bas des escaliers du professeur Sida',
     extrait:'Extrait du tournage',instructionscamera:'Instructions caméra',
     instructionscamera2:'Instructions caméra · 2',rigole:'Dans la rigole',rigole2:'Dans la rigole · 2'
@@ -765,14 +790,30 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
   window.addEventListener('hashchange',closeLB);
 
   /* ---------- galeries de tournage ---------- */
-  function addImage(galleryEl,gallery,name,index){
-    var fig=document.createElement('figure'); fig.className='ph';
-    var a=document.createElement('a'); a.href='#'; a.setAttribute('aria-label','Agrandir la photo '+(index+1));
-    var img=document.createElement('img'); img.loading='lazy'; img.draggable=false;
-    img.alt='Photo du tournage de '+(titres[gallery]||'')+' — '+label(name);
-    var cap=document.createElement('figcaption');cap.textContent=label(name);
-    var i=0;
-    function tryNext(){ if(i>=exts.length){fig.remove();return;} img.src='images/'+name+'.'+exts[i++]; }
+  function sortPhotoGallery(galleryEl){
+      var images=[].slice.call(galleryEl.querySelectorAll('.ph img'));
+      if(images.some(function(img){return !img.complete;}))return;
+      var figures=[].slice.call(galleryEl.querySelectorAll('.ph'));
+      figures.sort(function(a,b){
+        var ia=a.querySelector('img'),ib=b.querySelector('img');
+        var ra=ia.naturalHeight?Math.round(ia.naturalWidth/ia.naturalHeight*100)/100:Number.POSITIVE_INFINITY;
+        var rb=ib.naturalHeight?Math.round(ib.naturalWidth/ib.naturalHeight*100)/100:Number.POSITIVE_INFINITY;
+        return ra-rb||Number(a.dataset.order)-Number(b.dataset.order);
+      });
+      figures.forEach(function(fig,index){
+        fig.querySelector('a').setAttribute('aria-label','Agrandir la photo '+(index+1));
+        galleryEl.appendChild(fig);
+      });
+    }
+    function addImage(galleryEl,gallery,name,index){
+      var fig=document.createElement('figure'); fig.className='ph';fig.dataset.order=index;
+      var a=document.createElement('a'); a.href='#'; a.setAttribute('aria-label','Agrandir la photo '+(index+1));
+      var img=document.createElement('img'); img.loading='lazy'; img.draggable=false;
+      img.alt='Photo du tournage de '+(titres[gallery]||'')+' — '+label(name);
+      var cap=document.createElement('figcaption');cap.textContent=label(name);
+      var i=0,extensions=photoExtensions[name]?[photoExtensions[name]]:exts;
+      img.addEventListener('load',function(){sortPhotoGallery(galleryEl);});
+      function tryNext(){ if(i>=extensions.length){fig.remove();sortPhotoGallery(galleryEl);return;} img.src='images/'+name+'.'+extensions[i++]; }
     img.onerror=tryNext;
     a.addEventListener('click',function(ev){
       ev.preventDefault();
@@ -784,7 +825,14 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
   [].slice.call(document.querySelectorAll('[data-gallery]')).forEach(function(galleryEl){
     var key=galleryEl.getAttribute('data-gallery');
     (galleries[key]||[]).forEach(function(name,index){addImage(galleryEl,key,name,index);});
+    sortPhotoGallery(galleryEl);
   });
+  function loadVisibleGallery(){
+    var current=document.getElementById((location.hash||'#accueil').slice(1));
+    if(current)[].slice.call(current.querySelectorAll('[data-gallery] img')).forEach(function(img){img.loading='eager';});
+  }
+  window.addEventListener('hashchange',loadVisibleGallery);
+  loadVisibleGallery();
 
   /* ---------- nouvelles / objets (dossier SECTIONS) ---------- */
   // Les médias proviennent du dossier SECTIONS fourni avec le site.
