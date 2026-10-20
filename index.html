@@ -678,8 +678,7 @@ if(jubileeCard){
 function go(){var id=(location.hash||"#accueil").slice(1),cur=document.getElementById(id);
 if(!cur||!cur.classList.contains("pg")){id="accueil";cur=document.getElementById(id)}
 P.forEach(function(e){var on=e.id===id;e.classList.toggle("on",on);
-var f=e.querySelector("iframe[data-src]");
-if(f){if(on){if(f.getAttribute("src")!==f.dataset.src)f.setAttribute("src",f.dataset.src)}else if(f.getAttribute("src"))f.setAttribute("src","about:blank")}});
+[].slice.call(e.querySelectorAll("iframe[data-src]")).forEach(function(f){if(on){if(f.getAttribute("src")!==f.dataset.src)f.setAttribute("src",f.dataset.src)}else if(f.getAttribute("src"))f.setAttribute("src","about:blank")})});
 var k=id.indexOf("album-")===0?"discographie":id.indexOf("clip-")===0?"clips":id.indexOf("archive-")===0?"archives":id;
 N.forEach(function(a){a.getAttribute("href")==="#"+k?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
 document.title=cur.getAttribute("data-doctitle")||(cur.getAttribute("data-title")+" — Cul-Pointu | La Créature du Marais");
