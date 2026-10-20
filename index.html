@@ -6,7 +6,7 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>La Créature du Marais — Cul-Pointu | Musique, clips et archives</title>
 <meta content="La Créature du Marais, surnommée Cul-Pointu, de son vrai nom Tancrède Charon : artiste underground normand basé à Rouen. Discographie, biographie, clips." name="description"/>
-<meta content="website" property="og:type"/><meta content="La Créature du Marais — Cul-Pointu | Musique, clips et archives" property="og:title"/><meta content="Artiste underground normand basé à Rouen. Discographie, biographie, clips." property="og:description"/><meta content="https://lacreaturedumarais.fr/" property="og:url"/><meta content="https://lacreaturedumarais.fr/images/apercu.jpg" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="1200" property="og:image:height"/><meta content="La Créature du Marais en robe noire, lance à la main, sur fond rouge" property="og:image:alt"/><meta content="summary" name="twitter:card"/><meta content="https://lacreaturedumarais.fr/images/apercu.jpg" name="twitter:image"/>
+<meta content="website" property="og:type"/><meta content="La Créature du Marais — Cul-Pointu | Musique, clips et archives" property="og:title"/><meta content="Artiste underground normand basé à Rouen. Discographie, biographie, clips." property="og:description"/><meta content="https://lacreaturedumarais.fr/" property="og:url"/><meta content="https://lacreaturedumarais.fr/images/blason.png" property="og:image"/><meta content="image/png" property="og:image:type"/><meta content="500" property="og:image:width"/><meta content="500" property="og:image:height"/><meta content="Blason rouge et noir de La Créature du Marais" property="og:image:alt"/><meta content="summary_large_image" name="twitter:card"/><meta content="https://lacreaturedumarais.fr/images/blason.png" name="twitter:image"/><meta content="Blason rouge et noir de La Créature du Marais" name="twitter:image:alt"/>
 <link href="images/favicon.png" rel="icon" type="image/png"/><link href="images/favicon.png" rel="apple-touch-icon"/>
 <meta content="index,follow,noimageindex" name="robots"/>
 <link href="https://lacreaturedumarais.fr/" rel="canonical"/>
@@ -56,11 +56,12 @@ a.btn[href*="spotify.com"]:hover,a.btn[href*="youtube.com"]:hover,a.btn[href*="d
 .alb:hover b{background:#fff}
 .ah h2{background:#fc0;color:#000;border:0;text-shadow:none;padding:.04em .1em 0;line-height:.8}.alb span{display:block;margin-top:.7rem}
 .alb.has-album-excerpt{margin-bottom:.35rem}
-.album-excerpt{font:400 1.45rem/1.2 "Religath","Cinzel",Georgia,serif;margin:0 0 1.8rem 13.2rem}
+.alb.has-album-excerpt{margin-bottom:0}
+.album-excerpt{font:400 1.45rem/1.2 "Religath","Cinzel",Georgia,serif;margin:.1rem 0 1.8rem 13.2rem}
 .album-excerpt a{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
 .album-excerpt a:hover{color:#fff}
 .ah{display:flex;gap:2.4rem;align-items:flex-start;margin-bottom:1.8rem}.ah img{width:17rem;height:17rem}
-.back{text-decoration:none;color:var(--r)}.back:hover{color:#fff}
+.back{font:400 1.15em/.95 "Bebas Neue","Arial Narrow",Impact,sans-serif;text-decoration:none;color:#fc0;text-shadow:0 1px 2px #000}.back:hover{color:#fff}
 .bio h3{margin-top:2rem}.bio ul{margin:0 0 1.7rem 2.4rem;max-width:80rem}
 .tl details{border-bottom:1px solid rgba(255,255,255,.3);max-width:86rem}
 .tl summary{cursor:pointer;padding:.45rem 0;list-style:none}.tl summary::-webkit-details-marker{display:none}
@@ -128,9 +129,13 @@ nav a:hover .nav-txt{color:#fc0;text-shadow:0 0 .2rem #000}
 .mf-st.ok{color:#8f8}.mf-st.ko{color:#ff7a7a}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .mobile-footer{display:none}
+.mobile-header-socials{display:none}
 @media (max-width:899px){
   header{display:flex;flex-direction:row;align-items:center;height:var(--mobile-header-height);border-bottom:.25rem solid var(--r)}
   header .arc,header .ppp,header .mid{display:none}
+  .mobile-header-socials{display:flex;flex:1;align-items:center;justify-content:flex-end;gap:clamp(.35rem,2vw,.75rem);padding:0 .8rem}
+  .mobile-header-socials a{display:block;flex:none;width:1.785rem;height:1.785rem}
+  .mobile-header-socials img{display:block;width:100%;height:100%;object-fit:contain}
   .cre{display:block;position:relative;flex:0 0 auto;width:auto;height:100%;aspect-ratio:1600/825;background:#000}
   .cre .ci{width:100%;height:100%;aspect-ratio:auto}
   .cre .ci picture,.cre .ci img{width:100%;height:100%;object-fit:cover;object-position:left center}
@@ -153,6 +158,7 @@ nav a:hover .nav-txt{color:#fc0;text-shadow:0 0 .2rem #000}
   .gal{grid-template-columns:1fr;gap:1rem}
   .mobile-footer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:1.2rem .8rem 2rem;background:#000;border-top:.25rem solid var(--r)}
   .mobile-socials{display:flex;gap:.55rem;flex-wrap:nowrap;justify-content:center}
+  .mobile-socials a[aria-label="Instagram"],.mobile-socials a[aria-label="Spotify"],.mobile-socials a[aria-label="YouTube"]{display:none}
   .mobile-socials a{display:block;width:2.55rem;height:2.55rem;border-radius:50%;box-shadow:none}
   .mobile-socials a img{display:block;width:100%;height:100%;border-radius:50%}
   .mobile-ppp{display:flex;align-items:center;justify-content:center;gap:.65rem;text-decoration:none}
@@ -193,18 +199,38 @@ header{overflow:visible;z-index:30}
 .pgrid:empty::before{content:attr(data-empty);grid-column:1/-1;display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;aspect-ratio:16/5;border:.25rem solid var(--r);background:#000;color:var(--r);font-size:2.4rem;letter-spacing:.06em}
 .nw{display:block;aspect-ratio:4/3;border:.25rem solid #000;background:#000;overflow:hidden}
 .nw:has(img){aspect-ratio:auto;height:auto}
-.nw img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:#000}
+.nw-image{display:block;width:100%;aspect-ratio:4/3;background:#000;overflow:hidden}
+.nw-image img{display:block;width:100%;height:100%;object-fit:contain;background:#000}
 .nw-title{display:block;padding:.4rem .5rem;color:#fff;text-align:center;font-size:1.5rem;line-height:1.1}
 a.nw:hover{outline:.25rem solid var(--r)}
-.cgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(40rem,1fr));gap:1.8rem;max-width:90rem}
-.cc{display:block;text-decoration:none}
-.cc .th{position:relative;display:block;aspect-ratio:16/9;border:.25rem solid #000;background:#000;overflow:hidden}
+.cgal{display:grid;grid-template-columns:minmax(0,1fr);gap:1.8rem;max-width:90rem}
+.cc{display:grid;grid-template-columns:minmax(0,36rem) minmax(0,1fr);align-items:center;gap:2rem;min-height:clamp(14rem,24vh,22rem);padding:1rem 0;text-decoration:none;border-bottom:.2rem solid rgba(255,0,0,.55)}
+.cc .th{position:relative;display:block;width:100%;aspect-ratio:16/9;border:.25rem solid #000;background:#000;overflow:hidden}
 .cc .th img{display:block;width:100%;height:100%;object-fit:cover}
 .cc .th::after{content:"";position:absolute;left:50%;top:50%;width:6rem;height:6rem;margin:-3rem 0 0 -3rem;border-radius:50%;border:.25rem solid var(--r);background:rgba(0,0,0,.65)}
 .cc .th::before{content:"";position:absolute;z-index:1;left:50%;top:50%;margin:-1.35rem 0 0 -.9rem;border-style:solid;border-width:1.35rem 0 1.35rem 2.3rem;border-color:transparent transparent transparent var(--r)}
 .cc:hover .th{outline:.25rem solid var(--r)}
-.cc p{margin:.55rem 0 0!important;color:var(--r);font-size:2rem;line-height:1.05}
-.cc:hover p{color:#fff}
+.cc-copy{display:flex;flex-direction:column;align-items:flex-start;gap:.6rem}
+.cc-copy h3{margin:0;color:#fc0;font-size:3rem;line-height:.95;text-shadow:0 1px 2px #000}
+.cc-copy .clip-album{margin:0!important;color:#fff;font-size:1.4rem;line-height:1.2;letter-spacing:.08em}
+.cc-copy h3 a{color:inherit;text-decoration:none}
+.cc-copy .clip-album a{color:var(--r);text-decoration:underline;text-underline-offset:.12em}
+.cc-copy .clip-album a:hover,.cc-copy .clip-album a:focus-visible{color:#fff}
+.cc:hover .cc-copy h3{color:#fff}
+.clip-gallery-link{display:inline-block;color:#fc0;text-decoration:underline;text-underline-offset:.12em;font-size:1.2rem;letter-spacing:.04em}
+.clip-gallery-link:hover,.clip-gallery-link:focus-visible{color:#fff}
+.clip-link{flex:none;margin-left:auto;color:#fc0;text-decoration:none;font:400 1.15rem/1 "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.05em}
+.clip-link:hover,.clip-link:focus-visible{color:#fff;text-decoration:underline}
+.clip-lyric-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(20rem,42%);gap:1rem;align-items:start;clear:both}
+.clip-lyric-layout .lyf{grid-column:1;grid-row:1;width:100%;min-width:0}
+.clip-lyric-player{grid-column:2;grid-row:1;display:block;width:100%;aspect-ratio:16/9;border:.2rem solid #000;background:#000}
+.track-bio{grid-column:1/-1;max-width:70rem;padding:.6rem 0 1rem}
+.track-bio p{margin:.35rem 0}
+.apple-track-player{display:block;width:min(100%,64rem);height:8.5rem;margin:0 0 1rem;border:.15rem solid rgba(255,204,0,.55);background:#000}
+.track-art-thumb{width:4.2rem;height:4.2rem;flex:none;margin-right:.65rem;object-fit:cover;border:.1rem solid rgba(255,255,255,.4);transition:width .2s,height .2s}
+.tl details[open] .track-art-thumb{width:6.4rem;height:6.4rem}
+.tl summary{gap:.65rem}
+.tl summary b{margin-right:.3rem}
 .vid{max-width:90rem;margin-bottom:1rem}
 .vid iframe{display:block;width:100%;aspect-ratio:16/9;border:.25rem solid #000;background:#000}
 .note{color:var(--r)}
@@ -248,10 +274,19 @@ a.nw:hover{outline:.25rem solid var(--r)}
 .ec{font-size:1.4rem}
 .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
 .pgrid:empty::before{font-size:1.2rem;aspect-ratio:16/6;border-width:.15rem}
-.cgal{grid-template-columns:1fr;gap:1.2rem}
-.cc p{font-size:1.2rem}
-.cc .th::after{width:3.6rem;height:3.6rem;margin:-1.8rem 0 0 -1.8rem;border-width:.15rem}
-.cc .th::before{margin:-.8rem 0 0 -.5rem;border-width:.8rem 0 .8rem 1.3rem}
+.cgal{grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.cc{display:flex;flex-direction:column;align-items:stretch;gap:.35rem;min-height:0;padding:.35rem 0;border-bottom:0}
+.cc .th{width:100%;aspect-ratio:16/9}
+.cc-copy{gap:.2rem}
+.cc-copy h3{font-size:1.1rem;line-height:1}
+.cc-copy .clip-album{font-size:.7rem;line-height:1.05}
+.cc .th::after{width:2.6rem;height:2.6rem;margin:-1.3rem 0 0 -1.3rem;border-width:.12rem}
+.cc .th::before{margin:-.58rem 0 0 -.36rem;border-width:.58rem 0 .58rem .95rem}
+.clip-link{font-size:.72rem}
+.clip-gallery-link{font-size:.68rem;line-height:1.05}
+.clip-lyric-layout{grid-template-columns:minmax(0,1fr)}
+.clip-lyric-layout .lyf{grid-column:1;grid-row:2}
+.clip-lyric-player{grid-column:1;grid-row:1}
 .al b{font-size:1.7rem}.alist{gap:.9rem}
 .sf{border-top-width:.25rem;padding:1.4rem 1rem 1.8rem}
 .sf p{font-size:1.1rem}.sf .n{font-size:1.9rem}
@@ -323,7 +358,10 @@ main .cc p{font-size:2rem}
 /* pied de page */
 .sf{padding:2.8rem 1rem 3rem}
 .sf-t{display:block;margin:0 auto;width:min(66rem,90%);height:auto;mix-blend-mode:screen}
-.sf p.sf-c{margin:.2rem 0 0;font-family:"Religath","Cinzel",Georgia,serif;color:#fff;font-size:3rem;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
+.sf p.sf-c{margin:.2rem 0 0;font-family:"Religath","Cinzel",Georgia,serif;color:#fff;font-size:1.8rem;font-weight:400;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
+.album-link{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
+.album-link:hover,.album-link:focus-visible{color:#fff}
+.track-art-thumb{width:4rem;height:4rem;flex:none;object-fit:cover;border:.1rem solid rgba(255,255,255,.4)}
 @media (max-width:899px){
   main::before{height:1.6rem}
   main p{font-size:.98rem;line-height:1.36}
@@ -338,9 +376,13 @@ main .cc p{font-size:2rem}
   #lb .lb-c{font-size:1.1rem}
   .nw-title{font-size:1rem;padding:.3rem .25rem}
   .ph figcaption{font-size:.9rem;padding:.35rem .15rem}
-  .album-excerpt{font-size:.9rem;margin-left:6.5rem}
-  .sf-t{width:11.2rem}
-  .sf p.sf-c{font-size:1.15rem;margin-top:.1rem}
+  .alb.has-album-excerpt{margin-bottom:0}
+  .album-excerpt{font-size:.72rem;margin:.1rem 0 1.8rem 9.2rem}
+  .sf-t{width:min(18rem,90vw)}
+  .sf p.sf-c{font-size:1.1rem;font-weight:400;margin-top:.1rem}
+  .track-art-thumb{width:3.6rem;height:3.6rem}
+  .tl details[open] .track-art-thumb{width:5.2rem;height:5.2rem}
+  .apple-track-player{height:8rem}
 }
 </style>
 </head>
@@ -380,8 +422,7 @@ main .cc p{font-size:2rem}
 <p class="ec">ÉCOUTER</p>
 <p><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIQUE</a></p></div>
 <div class="blk"><h2>NOUVELLES</h2>
-<p class="sub">Il y a des choses qui puent à Rouen</p>
-<p class="desc">En plein tournage du prochain clip, consacré au second single du prochain album de la Créature du Marais. Quelques images prises sur le terrain donnent un aperçu de cette nouvelle séquence.</p>
+<div id="home-news-copy"></div>
 <div class="pgrid" data-fold="link" data-gallery-list="actu" data-empty="NOUVELLES À VENIR"></div><p><a class="btn" href="#nouvelles">VOIR LA SUITE →</a></p></div>
 </section>
 <section class="pg" data-title="Biographie" id="biographie"><h2>BIOGRAPHIE</h2><p>La Créature du Marais, surnommée "Cul-Pointu", de son vrai nom Tancrède Charon est un artiste underground normand associé à la ville de Rouen et au projet-label PUANTEUR PUTRIDE Productions.</p>
@@ -397,7 +438,7 @@ main .cc p{font-size:2rem}
 <p>Musicalement, Tancrède développe une esthétique lo-fi volontairement abrasive, proche de la dark ambient, du spoken word expérimental et de certaines branches du black metal français. Les productions privilégient les atmosphères de ruine, les collages sonores, les samples religieux et les textures étouffantes plutôt qu'une approche musicale classique. La voix y tient une place centrale, oscillant entre récitation poétique, confession et performance théâtrale.</p>
 <p>À travers ses albums et ses textes, Cul-Pointu construit progressivement une autobiographie fictive et éclatée, où la frontière entre sincérité, rôle et provocation devient volontairement impossible à distinguer. Le personnage se transforme alors en symbole d'une génération déracinée, hantée par la perte du sacré, l'isolement numérique, la confusion identitaire et la nostalgie d'un absolu inaccessible.</p>
 <p>PUANTEUR PUTRIDE Productions apparaît finalement comme un laboratoire de décadence contemporaine : une œuvre profondément française dans ses références culturelles, mais résolument ancrée dans l'esthétique fragmentée et chaotique du XXIe siècle. Tancrède y incarne une figure singulière de poète post-internet, mêlant confession mystique, théâtre grotesque, romantisme noir et dérive numérique au sein d'un même univers artistique.</p></section>
-<section class="pg" data-title="Discographie" id="discographie"><h2>DISCOGRAPHIE</h2><p><a class="btn" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank">APPLE MUSIQUE</a></p><a class="alb" href="#album-jubile"><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/><div><b>Jubilé</b><span>06/12/2025 · Single · 1 titre · 3 min 34 s</span></div></a><a class="alb" href="#album-confiteor"><img alt="Pochette Confiteor" loading="lazy" src="images/pochette-confiteor.jpg"/><div><b>Confiteor</b><span>11/09/2024 · 34 titres · 2 h 00 min 43 s</span></div></a><a class="alb" href="#album-chyren"><img alt="Pochette Omerta434 : Chyren" loading="lazy" src="images/pochette-omerta434-chyren.jpg"/><div><b>Omerta434 : Chyren</b><span>01/11/2023 · 26 titres · 1 h 28</span></div></a><a class="alb" href="#album-omerta434"><img alt="Pochette Omerta434" loading="lazy" src="images/pochette-omerta434.jpg"/><div><b>Omerta434</b><span>10/06/2022 · 17 titres · 1 h 02 min 52 s</span></div></a><a class="alb" href="#album-machines"><img alt="Pochette Les Machines Infernales" loading="lazy" src="images/pochette-machines-infernales.jpg"/><div><b>Les Machines Infernales</b><span>25/05/2021 · 20 titres · 49 min</span></div></a></section>
+<section class="pg" data-title="Discographie" id="discographie"><h2>DISCOGRAPHIE</h2><p><a class="btn" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank">APPLE MUSIQUE</a></p><a class="alb" href="#album-jubile"><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/><div><b>Jubilé</b><span>06/12/2025 · Single · 1 titre · 3 min 34 s</span></div></a><a class="alb" href="#album-confiteor"><img alt="Pochette Confiteor" loading="lazy" src="images/pochette-confiteor.jpg"/><div><b>Confiteor</b><span>11/09/2024 · 34 titres · 2 h 00 min 43 s</span></div></a><a class="alb" href="#album-chyren"><img alt="Pochette Omerta434 : Chyren" loading="lazy" src="images/pochette-omerta434-chyren.jpg"/><div><b>Omerta434 : Chyren</b><span>01/11/2023 · 26 titres · 1 h 28</span></div></a><a class="alb" href="#album-omerta434"><img alt="Pochette Omerta434" loading="lazy" src="images/pochette-omerta434.jpg"/><div><b>Omerta434</b><span>10/06/2022 · 17 titres · 1 h 02 min 52 s</span></div></a><a class="alb" href="#album-machines"><img alt="Pochette Les Machines Infernales" loading="lazy" src="images/pochette-machines-infernales.jpg"/><div><b>Les Machines Infernales</b><span>25/05/2021 · 20 titres · 49 min 30 s</span></div></a></section>
 <section class="pg" data-title="Jubilé" id="album-jubile">
 <p><a class="back" href="#discographie">← DISCOGRAPHIE</a></p>
 <div class="ah"><img alt="Pochette Jubilé" src="images/pochette-jubile.jpg"/><div><h2>Jubilé</h2><p>06/12/2025 · Single · 1 titre · 3 min 34 s</p><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIQUE</a></div></div>
@@ -409,7 +450,7 @@ main .cc p{font-size:2rem}
 <section class="pg" data-title="In Odium Fidei" id="album-in-odium-fidei">
 <p><a class="back" href="#discographie">← DISCOGRAPHIE</a></p>
 <div class="ah"><img alt="Pochette In Odium Fidei" src="images/odium-fidei.jpg"/><div><h2>In Odium Fidei</h2><p>Prochain album</p></div></div>
-<h3>TITRES · CLIQUER SUR UN TITRE POUR LIRE LES PAROLES</h3><div class="tl"><details data-t="Jubilé"><summary><b>2.</b>Jubilé</summary><div class="ly"></div></details></div>
+<h3>TITRES · CLIQUER SUR UN TITRE POUR LIRE LES PAROLES</h3><div class="tl"><details data-t="Jubilé"><summary><b>2.</b><img class="track-art-thumb" src="images/pochette-jubile.jpg" alt="Pochette de Jubilé"/>Jubilé</summary><div class="ly"></div></details><details data-t="Misérables"><summary><b>?.</b><img class="track-art-thumb" src="images/pochette-miserables.jpg" alt="Pochette de Misérables"/>Misérables</summary><div class="ly"></div></details></div>
 </section>
 <section class="pg" data-title="Confiteor" id="album-confiteor">
 <p><a class="back" href="#discographie">← DISCOGRAPHIE</a></p>
@@ -477,7 +518,12 @@ main .cc p{font-size:2rem}
 <p>Musicalement et conceptuellement, il correspond donc à une période où Cul-Pointu explore moins encore le personnage public de La Créature du Marais qu'une matière première beaucoup plus brute : une créature prise dans ses propres mécanismes infernaux et cherchant à comprendre comment en sortir.</p>
 <p>En une phrase : Les Machines Infernales est le premier grand laboratoire de Cul-Pointu : un album de 2021 où le corps humain est transformé en machine de souffrance, où le grotesque sert à mettre à nu les conflits intérieurs, et où la trajectoire de la dégradation trouve finalement son point de fuite dans la rédemption.</p></div>
 </section>
-<section class="pg" data-title="Clips" id="clips"><h2>CLIPS</h2><div class="cgal"><a class="cc" href="#clip-chimaera"><span class="th"><img alt="Miniature du clip Chimaera Rothomagensis" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/A_SfjREwRWI/hqdefault.jpg'" src="https://img.youtube.com/vi/A_SfjREwRWI/maxresdefault.jpg"/></span><p>Chimaera Rothomagensis</p></a><a class="cc" href="#clip-cote"><span class="th"><img alt="Miniature du clip La côte Sainte-Catherine" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/bThq8uPYgFA/hqdefault.jpg'" src="https://img.youtube.com/vi/bThq8uPYgFA/maxresdefault.jpg"/></span><p>La côte Sainte-Catherine</p></a><a class="cc" href="#clip-chute"><span class="th"><img alt="Miniature du clip La Chute" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/34-C5ls5eWM/hqdefault.jpg'" src="https://img.youtube.com/vi/34-C5ls5eWM/maxresdefault.jpg"/></span><p>La Chute</p></a><a class="cc" href="#clip-dis"><span class="th"><img alt="Miniature du clip Dis, ferme un instant les yeux" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/65E0wA7msv4/hqdefault.jpg'" src="https://img.youtube.com/vi/65E0wA7msv4/maxresdefault.jpg"/></span><p>Dis, ferme un instant les yeux · version censurée</p></a></div></section>
+<section class="pg" data-title="Clips" id="clips"><h2>CLIPS</h2><div class="cgal">
+<a class="cc" href="#clip-chimaera"><span class="th"><img alt="Miniature du clip Chimaera Rothomagensis" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/A_SfjREwRWI/hqdefault.jpg'" src="https://img.youtube.com/vi/A_SfjREwRWI/maxresdefault.jpg"/></span><span class="cc-copy"><h3>Chimaera Rothomagensis</h3><span class="clip-album">EXTRAIT DE CONFITEOR</span><span class="clip-available">CLIP DISPONIBLE →</span></span></a>
+<a class="cc" href="#clip-cote"><span class="th"><img alt="Miniature du clip La côte Sainte-Catherine" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/bThq8uPYgFA/hqdefault.jpg'" src="https://img.youtube.com/vi/bThq8uPYgFA/maxresdefault.jpg"/></span><span class="cc-copy"><h3>La côte Sainte-Catherine</h3><span class="clip-album">EXTRAIT DE CONFITEOR</span><span class="clip-available">CLIP DISPONIBLE →</span></span></a>
+<a class="cc" href="#clip-chute"><span class="th"><img alt="Miniature du clip La Chute" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/34-C5ls5eWM/hqdefault.jpg'" src="https://img.youtube.com/vi/34-C5ls5eWM/maxresdefault.jpg"/></span><span class="cc-copy"><h3>La Chute</h3><span class="clip-album">EXTRAIT DE CONFITEOR</span><span class="clip-available">CLIP DISPONIBLE →</span></span></a>
+<a class="cc" href="#clip-dis"><span class="th"><img alt="Miniature du clip Dis, ferme un instant les yeux" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/65E0wA7msv4/hqdefault.jpg'" src="https://img.youtube.com/vi/65E0wA7msv4/maxresdefault.jpg"/></span><span class="cc-copy"><h3>Dis, ferme un instant les yeux</h3><span class="clip-album">EXTRAIT DE CONFITEOR · VERSION CENSURÉE</span><span class="clip-available">CLIP DISPONIBLE →</span></span></a>
+</div></section>
 <section class="pg cp" data-title="Chimaera Rothomagensis" id="clip-chimaera">
 <p><a class="back" href="#clips">← CLIPS</a></p>
 <h2>Chimaera Rothomagensis</h2>
@@ -501,7 +547,7 @@ main .cc p{font-size:2rem}
 <div class="vid"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" data-src="https://www.youtube.com/embed/34-C5ls5eWM" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" title="Cul-Pointu - La Chute (Clip officiel)"></iframe></div>
 <h3>PHOTOS DU TOURNAGE</h3>
 <!-- Pour ajouter une photo : <a class="nw" href="images/….jpg"><img alt="…" src="images/….jpg"/></a> dans la div ci-dessous -->
-<div class="pgrid"><figure class="ph"><img alt="Vue de drone : une silhouette en robe blanche sur un sentier, entre des feuillages violets" loading="lazy" src="images/tournage-chute-cote-1.jpg"/><figcaption>Préparation à la chute de la côte</figcaption></figure></div>
+<div class="tour-gallery" data-gallery="chute"></div>
 </section>
 <section class="pg cp" data-title="Dis, ferme un instant les yeux" id="clip-dis">
 <p><a class="back" href="#clips">← CLIPS</a></p>
@@ -516,9 +562,10 @@ main .cc p{font-size:2rem}
 <!-- Pour publier une nouvelle : copiez un bloc <article class="na" data-date="AAAA-MM-JJ">…</article> dans #news-list.
      Les articles sont classés automatiquement par date : le plus récent passe devant. -->
 <div id="news-list">
-<article class="na" data-date="2026-10-19">
+<article class="na" data-date="2026-10-20">
 <p class="sub">Il y a des choses qui puent à Rouen</p>
-<p class="desc">En plein tournage du prochain clip, consacré au second single du prochain album de la Créature du Marais. Quelques images prises sur le terrain donnent un aperçu de cette nouvelle séquence.</p>
+<p class="meta">20/10/2026</p>
+<p class="desc" data-news-copy>Photos du tournage de « Misérables », second single du prochain album <a class="album-link" href="#album-in-odium-fidei">In Odium Fidei</a> de la Créature du Marais. Entre les fêtes Jeanne d’Arc et la misère naturelle, les néo-clodos festoient.</p>
 <div class="pgrid" data-empty="ACTUALITÉS À VENIR" data-fold="toggle" data-gallery-list="actu"></div>
 </article>
 <article class="na jb" data-date="2025-12-06">
@@ -567,6 +614,41 @@ var G={"Jubilé":{"id":12796434,"url":"https://genius.com/Cul-pointu-jubile-lyri
 var P=[].slice.call(document.querySelectorAll(".pg")),N=[].slice.call(document.querySelectorAll("nav a"));
 document.body.classList.remove("nojs");
 var OPEN=null;
+var mobileHeaderSocials=document.createElement("div");
+mobileHeaderSocials.className="mobile-header-socials";
+[
+  {name:"Instagram",url:"https://www.instagram.com/lacreaturedumarais/",icon:"icone-instagram.png"},
+  {name:"Spotify",url:"https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J",icon:"icone-spotify.png"},
+  {name:"YouTube",url:"https://www.youtube.com/@LaCreatureduMarais",icon:"icone-youtube.png"}
+].forEach(function(social){
+  var link=document.createElement("a");link.href=social.url;link.target="_blank";link.rel="noopener";link.setAttribute("aria-label",social.name);
+  var icon=document.createElement("img");icon.src="images/"+social.icon;icon.alt="";
+  link.appendChild(icon);mobileHeaderSocials.appendChild(link);
+});
+document.querySelector("header").appendChild(mobileHeaderSocials);
+[].slice.call(document.querySelectorAll('.mobile-footer .mobile-socials a[aria-label="Instagram"],.mobile-footer .mobile-socials a[aria-label="Spotify"],.mobile-footer .mobile-socials a[aria-label="YouTube"]')).forEach(function(link){link.remove()});
+function createClipCard(title,id,video,album,albumId){
+  var card=document.createElement("div");card.className="cc";
+  var thumbnail=document.createElement("a");thumbnail.className="th";thumbnail.href="#"+id;thumbnail.setAttribute("aria-label","Voir le clip "+title);
+  var image=document.createElement("img");image.alt="Miniature du clip "+title;image.loading="lazy";image.src="https://img.youtube.com/vi/"+video+"/maxresdefault.jpg";
+  image.onerror=function(){this.onerror=null;this.src="https://img.youtube.com/vi/"+video+"/hqdefault.jpg"};
+  thumbnail.appendChild(image);
+  var copy=document.createElement("div");copy.className="cc-copy";
+  var heading=document.createElement("h3"),titleLink=document.createElement("a");titleLink.href="#"+id;titleLink.textContent=title;heading.appendChild(titleLink);
+  var albumLine=document.createElement("span");albumLine.className="clip-album";albumLine.appendChild(document.createTextNode("de "));
+  var albumLink=document.createElement("a");albumLink.href="#"+albumId;albumLink.textContent=album;albumLine.appendChild(albumLink);
+  var galleryLink=document.createElement("a");galleryLink.className="clip-gallery-link";galleryLink.href="#"+id;galleryLink.textContent="PHOTOS DU TOURNAGE →";
+  copy.appendChild(heading);copy.appendChild(albumLine);copy.appendChild(galleryLink);card.appendChild(thumbnail);card.appendChild(copy);
+  return card;
+}
+var clipGrid=document.querySelector("#clips .cgal");
+if(clipGrid){
+  [].slice.call(clipGrid.querySelectorAll(".cc")).forEach(function(oldCard){
+    var image=oldCard.querySelector(".th img"),title=oldCard.querySelector("h3").textContent.trim(),id=oldCard.getAttribute("href").slice(1);
+    var video=image.src.match(/\/vi\/([^/]+)\//)[1];
+    oldCard.replaceWith(createClipCard(title,id,video,"Confiteor","album-confiteor"));
+  });
+}
 var jubileeCard=document.querySelector('#discographie .alb[href="#album-jubile"]');
 if(jubileeCard){
   var excerpt=document.createElement('p');excerpt.className='album-excerpt';
@@ -586,17 +668,63 @@ document.title=cur.getAttribute("data-doctitle")||(cur.getAttribute("data-title"
 window.scrollTo(0,0);
 if(OPEN){var t=OPEN;OPEN=null;[].slice.call(cur.querySelectorAll(".tl details")).some(function(d){if(d.getAttribute("data-t")===t){d.open=true;d.scrollIntoView({block:"center"});return true}})}}
 window.addEventListener("hashchange",go);go();
+var clipForTrack={
+  "Chimaera Rothomagensis":{id:"clip-chimaera",video:"A_SfjREwRWI"},
+  "La côte Sainte-Catherine":{id:"clip-cote",video:"bThq8uPYgFA"},
+  "La Chute":{id:"clip-chute",video:"34-C5ls5eWM"},
+  "Dis, ferme un instant les yeux":{id:"clip-dis",video:"65E0wA7msv4"}
+};
+var appleTrackIds={
+  "album-jubile":["1855845169"],
+  "album-in-odium-fidei":["1855845169",null],
+  "album-confiteor":["1842647219","1842647220","1842647221","1842647222","1842647223","1842647224","1842647225","1842647226","1842647227","1842647228","1842647229","1842647230","1842647231","1842647232","1842647233","1842647234","1842647235","1842647236","1842647237","1842647238","1842647330","1842647331","1842647332","1842647333","1842647334","1842647335","1842647336","1842647337","1842647338","1842647339","1842647340","1842647341","1842647342","1842647343"],
+  "album-chyren":["1835753266","1835753268","1835753269","1835753270","1835753271","1835753272","1835753273","1835753274","1835753275","1835753276","1835753277","1835753278","1835753279","1835753280","1835753281","1835753282","1835753283","1835753284","1835753285","1835753286","1835753467","1835753468","1835753469","1835753470","1835753471","1835753472"],
+  "album-omerta434":["1739538879","1739538881","1739538882","1739538883","1739538884","1739538885","1739538886","1739539067","1739539068","1739539069","1739539070","1739539071","1739539072","1739539073","1739539074","1739539075","1739539076"],
+  "album-machines":["1842736844","1842736845","1842736846","1842736847","1842736848","1842736849","1842736850","1842736851","1842736852","1842736853","1842737004","1842737005","1842737006","1842737007","1842737008","1842737009","1842737010","1842737011","1842737012","1842737013"]
+};
 [].slice.call(document.querySelectorAll(".tl details")).forEach(function(d){
-d.addEventListener("toggle",function(){if(!d.open||d.dataset.l)return;d.dataset.l=1;
+var clip=clipForTrack[d.dataset.t],summary=d.querySelector("summary"),section=d.closest(".pg"),trackList=d.closest(".tl");
+var appleIds=section&&appleTrackIds[section.id],trackIndex=trackList?[].indexOf.call(trackList.querySelectorAll("details"),d):-1;
+var appleId=appleIds&&appleIds[trackIndex];
+if(clip&&summary){
+var link=document.createElement("a");link.className="clip-link";link.href="#"+clip.id;link.textContent="CLIP DISPONIBLE";
+link.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();location.hash=clip.id});
+summary.appendChild(link);
+}else if(d.dataset.t==="Jubilé"&&summary){
+var youtubeLink=document.createElement("a");youtubeLink.className="clip-link";youtubeLink.href="https://youtu.be/btnbqG0_kc0";youtubeLink.target="_blank";youtubeLink.rel="noopener";youtubeLink.textContent="ÉCOUTER SUR YOUTUBE";
+youtubeLink.addEventListener("click",function(e){e.stopPropagation()});
+summary.appendChild(youtubeLink);
+}
+d.addEventListener("toggle",function(){
 var t=d.dataset.t,g=G[t],b=d.querySelector(".ly");
+if(!d.open){
+var oldPlayer=b.querySelector(".apple-track-player");if(oldPlayer)oldPlayer.src="about:blank";
+while(b.firstChild)b.removeChild(b.firstChild);
+d.dataset.l="";return;
+}
+[].slice.call(trackList.querySelectorAll("details[open]")).forEach(function(other){if(other!==d)other.open=false});
+if(d.dataset.l)return;d.dataset.l=1;
+if(g||clip||appleId||t==="Misérables"){
+var trackBio=document.createElement("div");trackBio.className="track-bio";
+if(t==="Jubilé"){
+var existingBio=document.querySelector("#album-jubile .bio");
+if(existingBio)trackBio.appendChild(existingBio.cloneNode(true));
+}else if(t==="Misérables"){var comingBio=document.createElement("p");comingBio.textContent="À venir";trackBio.appendChild(comingBio)}
+if(trackBio.hasChildNodes())b.appendChild(trackBio);
+var layout=document.createElement("div");layout.className=clip?"clip-lyric-layout":"";
+if(appleId){var preview=document.createElement("iframe");preview.className="apple-track-player";preview.loading="lazy";preview.allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write";preview.referrerPolicy="strict-origin-when-cross-origin";preview.title="Aperçu Apple Music de "+t;preview.src="https://embed.music.apple.com/fr/song/"+appleId+"?theme=dark";layout.appendChild(preview)}
+if(clip){var player=document.createElement("iframe");player.className="clip-lyric-player";player.loading="lazy";player.allowFullscreen=true;player.referrerPolicy="strict-origin-when-cross-origin";player.title="Clip de "+t;player.src="https://www.youtube.com/embed/"+clip.video;layout.appendChild(player)}
 if(g){var id=g.id,f=document.createElement("iframe");
 f.title="Paroles de "+t;f.className="lyf";f.setAttribute("loading","lazy");
 f.srcdoc="<!doctype html><html><head><meta charset='utf-8'><base target='_blank'><style>html,body{margin:0;padding:0;background:#fff;color:#000;color-scheme:light}body{padding:.5rem;font:16px/1.4 Arial,sans-serif}</style></head><body><div id='rg_embed_link_"+id+"' class='rg_embed_link' data-song-id='"+id+"'><a href='"+g.url+"'>Paroles de “"+t.replace(/&/g,"&amp;")+"” — Cul-Pointu</a></div><script crossorigin src='https://genius.com/songs/"+id+"/embed.js'><\/script></body></html>";
 function fit(){try{var h=f.contentDocument.documentElement.scrollHeight;if(h>40)f.style.height=h+"px"}catch(e){}}
 f.addEventListener("load",function(){fit();var n=0,iv=setInterval(function(){fit();if(++n>40)clearInterval(iv)},500);
 try{if(window.ResizeObserver)new ResizeObserver(fit).observe(f.contentDocument.body)}catch(e){}});
-b.appendChild(f)}
-else{b.innerHTML="<a class='btn' target='_blank' rel='noopener' href='https://genius.com/search?q="+encodeURIComponent("Cul-Pointu "+t)+"'>PAROLES · OUVRIR SUR GENIUS →</a>"}})})
+layout.appendChild(f)}
+else if(clip){var lyricsLink=document.createElement("a");lyricsLink.className="btn";lyricsLink.target="_blank";lyricsLink.rel="noopener";lyricsLink.href="https://genius.com/search?q="+encodeURIComponent("Cul-Pointu "+t);lyricsLink.textContent="PAROLES · OUVRIR SUR GENIUS →";layout.appendChild(lyricsLink)}
+else if(!appleId&&t!=="Misérables"){var pendingLyrics=document.createElement("p");pendingLyrics.className="track-lyrics-pending";pendingLyrics.textContent="Paroles à venir";layout.appendChild(pendingLyrics)}
+b.appendChild(layout)}
+else{b.textContent="PAROLES À VENIR"}})})
 function norm(s){return s.toLowerCase().replace(/œ/g,"oe").replace(/æ/g,"ae").replace(/[’‘]/g,"'").normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 var IX=[];
 P.forEach(function(s){var t=s.getAttribute("data-title");if(!t)return;
@@ -689,7 +817,7 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
       'cavecamisole','cotestecatherineavecactrice','cotestecatherineavecactrice1','cotestecatherineavecactrice2',
       'cotestecatherineavecactrice3','dansruinesstpierreduchatel','dansruinesstpierreduchatel1','dansruinesstpierreduchatel2',
       'faire joujou avec la torche au pied de la cote','nuittorchecote','remisevetementspanorama',
-      'souslepontilelacroix','verificationfocus'
+      'souslepontilelacroix','verificationfocus','instructionscamera'
     ],
     chimaera:[
       'allumagetorche','angenoir1','angenoirblasonrouen','angenoir2','angenoiraitrestmaclou',
@@ -699,9 +827,11 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
       'torchenuitdevanteglisesstejeannedarc'
     ],
     dis:[
-      'diva','diva2','enbasdesescaliersduprofesseursida','extrait','instructionscamera','instructionscamera2','rigole','rigole2'
-    ]
+      'diva','diva2','enbasdesescaliersduprofesseursida','extrait','instructionscamera2','rigole','rigole2'
+    ],
+    chute:['dom','tournage-chute-cote-1']
   };
+  galleries.cote=galleries.cote.filter(function(name){return name!=='angenoirblasonrouen'});
   var exts=['jpg','jpeg','webp','png','JPG','JPEG','WEBP','PNG'];
   var photoExtensions={bateauseinenocturne:'png',muséevide:'png',torchenuitdevanteglisesstejeannedarc:'png'};
   var titres={cote:'La côte Sainte-Catherine',chimaera:'Chimaera Rothomagensis',dis:'Dis, ferme un instant les yeux'};
@@ -725,19 +855,20 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
     angenoirdevantchapelle2:'Ange noir devant la chapelle Saint-Louis · 2',angenoirdevantchapelle3:'Ange noir devant la chapelle Saint-Louis · 3',
     angenoirdevantchapellestlouis:'Ange noir devant la chapelle Saint-Louis · 1',
     angenoirsetapeleculplacedelarougemare:'L’ange noir se claque le cul place de la Rougemare',
-    'devant la demeure des vampires':'Ange noir devant le Vampirium · 1',
-    'devant la demeure des vampires 2':'Ange noir devant le Vampirium · 2',
-    devantblason:'Ange noir devant les lions normands · 1',devantblason1:'Ange noir devant les lions normands · 2',
+    'devant la demeure des vampires':'Devant le Vampirium',
+    'devant la demeure des vampires 2':'Devant le Vampirium',
+    devantblason:'Ange noir devant les lions normands de l’île Lacroix · 1',devantblason1:'Ange noir devant les lions normands de l’île Lacroix · 2',
     echecdeteindretorchedansflaquedevanttavernestamant:'Torche éteinte dans une flaque, devant la taverne',
-    eteingnagedetorche:'Extinction de la torche',fontaine1:'Tournage devant la maison natale de Fontenelle',fontaine2:'À la fontaine · 2',
+    eteingnagedetorche:'Extinction de la torche',fontaine1:'Tournage rue Saint-Romain · 1',fontaine2:'À la fontaine · 2',
     matos:'Le matériel de tournage',torche1:'La torche · 1',
     torcheeteinteruestromain:'Tournage rue Saint-Romain · 2',
-    torche:'Tournage rue Saint-Romain · 1',
+    torche:'Derrière la fontaine Sainte-Marie',
     muséevide:'Musée des Antiquités vidé pour faire place à la profanation municipale',
     torchenuitdevanteglisesstejeannedarc:'Torche de nuit devant la croix de Jeanne d’Arc',
-    diva:'La diva',diva2:'La diva · 2',enbasdesescaliersduprofesseursida:'Au bas des escaliers du professeur Sida',
-    extrait:'Extrait du tournage',instructionscamera:'Instructions caméra',
-    instructionscamera2:'Instructions caméra · 2',rigole:'Dans la rigole',rigole2:'Dans la rigole · 2'
+    diva:'Diva',diva2:'Diva · 2',enbasdesescaliersduprofesseursida:'En bas des escaliers du professeur Sida',
+    extrait:'Extrait de tournage',dom:'Chapelle Vauquelin','tournage chute cote 1':'Préparation à la chute de la côte',
+    instructionscamera:'Instructions caméra',instructionscamera2:'Instructions caméra',
+    rigole:'Amusé · 1',rigole2:'Amusé · 2'
   };
   function label(n){
     var clean=n.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim();
@@ -839,36 +970,55 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
   // Ajouter un objet dans "objets" le publie automatiquement dans les deux rubriques (Objets liturgiques et Ustensiles).
   var mediaLists = {
       actu: [
-        'AQP_2pyxcxJsDU8uNR5r8L6USJu0ugDaBSDSuAixuPIJVRZTXHMfzoLzASnPt_qBGgOEHrYV1ycn0aGOq2XOOJSk465e2bHUGzOOjRmr_w.mp4',
-        'bosch.jpg','cote2.jpg','cote5.jpg','dive1.jpg','egout.jpg','ephebellelui.jpg','farce.jpg',
-        'marcheu1.jpg','marcheu2.jpg','miseretag.jpg','miséreux.jpg','pg1.jpg',
-        'phrygien.jpg','poisson1.jpg','pq2.jpg'
+        'bosch.jpg','cote2.jpg','cote5.jpg','dive1.jpg','egout.jpg','farce.jpg',
+        'marcheu1.jpg','marcheu2.jpg','ephebellelui.jpg','miseretag.jpg','miséreux.jpg',
+        'pg1.jpg','pq2.jpg','phrygien.jpg','poisson1.jpg'
       ],
       objets: ['clysteres.jpg','clysteres2.jpg','masque.jpg','mouche.jpg','poisson5.jpg','poisson6.jpg','poisson7.jpg','rat.jpg','recolte.jpg','salon1.jpg','salon2.jpg']
     };
+  var mediaTitles={
+    'bosch.jpg':'La nuit tombe sur Fécalitus',
+    'cote2.jpg':'Côte Sainte-Catherine · 1',
+    'cote5.jpg':'Côte Sainte-Catherine · 2',
+    'dive1.jpg':'Diva des poubelles',
+    'egout.jpg':'Le goût des ordures',
+    'farce.jpg':'Farceur',
+    'marcheu1.jpg':'Rationnement · 1',
+    'marcheu2.jpg':'Rationnement · 2',
+    'ephebellelui.jpg':'Éphébelle',
+    'miseretag.jpg':'Misère des misères',
+    'miséreux.jpg':'Goy',
+    'pg1.jpg':'PQ · 1',
+    'pq2.jpg':'PQ · 2',
+    'phrygien.jpg':'Madame Edwarda',
+    'poisson1.jpg':'Tritus',
+    'clysteres.jpg':'Clystères · 1',
+    'clysteres2.jpg':'Clystères · 2',
+    'masque.jpg':'Découverte du masque d’Éphébus',
+    'mouche.jpg':'Magie marron',
+    'poisson5.jpg':'Tritus · 1',
+    'poisson6.jpg':'Tritus · 2',
+    'poisson7.jpg':'Tritus · 3',
+    'rat.jpg':'Ratus',
+    'recolte.jpg':'En pleine récolte',
+    'salon1.jpg':'Sanctuaire · 1',
+    'salon2.jpg':'Sanctuaire · 2'
+  };
   document.querySelectorAll('[data-gallery-list]').forEach(function(grid){
     var key=grid.getAttribute('data-gallery-list');
     (mediaLists[key]||[]).forEach(function(file){
-      var isVideo=/\.mp4$/i.test(file);
+      var titleText=mediaTitles[file]||label(file);
       var path='SECTIONS/'+(key==='actu'?'actu':'ustensiles')+'/'+file;
       var card=document.createElement('a'); card.className='nw'; card.href='#';
-      card.setAttribute('aria-label',isVideo?'Vidéo du tournage':'Agrandir la photo : '+file.replace(/\.[^.]+$/,''));
-      if(isVideo){
-        var video=document.createElement('video'); video.src=path; video.controls=true; video.preload='metadata';
-        video.setAttribute('controlsList','nodownload noremoteplayback'); video.disablePictureInPicture=true;
-        video.addEventListener('contextmenu',function(e){e.preventDefault();});
-        video.style.cssText='width:100%;height:100%;object-fit:cover'; video.setAttribute('aria-label','Vidéo du tournage du prochain clip');
-        card.style.aspectRatio='4/3'; card.appendChild(video);
-        card.addEventListener('click',function(e){e.preventDefault();});
-      } else {
-        var img=document.createElement('img'); img.src=path; img.draggable=false; img.alt=label(file); img.loading='lazy'; card.appendChild(img);
-        var title=document.createElement('span');title.className='nw-title';title.textContent=label(file);card.appendChild(title);
-        card.addEventListener('click',function(e){
-          e.preventDefault();
-          var imgs=[].slice.call(grid.querySelectorAll('.nw img')); var k=imgs.indexOf(img);
-          openLB(imgs.map(function(im){return {src:im.currentSrc||im.src,alt:im.alt};}),k);
-        });
-      }
+      card.setAttribute('aria-label','Agrandir la photo : '+titleText);
+      var frame=document.createElement('span');frame.className='nw-image';
+      var img=document.createElement('img'); img.src=path; img.draggable=false; img.alt=titleText; img.loading='lazy'; frame.appendChild(img);card.appendChild(frame);
+      var title=document.createElement('span');title.className='nw-title';title.textContent=titleText;card.appendChild(title);
+      card.addEventListener('click',function(e){
+        e.preventDefault();
+        var imgs=[].slice.call(grid.querySelectorAll('.nw img')); var k=imgs.indexOf(img);
+        openLB(imgs.map(function(im){return {src:im.currentSrc||im.src,alt:im.alt};}),k);
+      });
       grid.appendChild(card);
     });
   });
@@ -876,6 +1026,13 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
   /* ---------- classement des nouvelles : la plus récente d'abord ---------- */
   var nl=document.getElementById('news-list');
   if(nl){ [].slice.call(nl.children).sort(function(a,b){return (b.getAttribute('data-date')||'').localeCompare(a.getAttribute('data-date')||'');}).forEach(function(n){nl.appendChild(n);}); }
+  var homeNews=document.getElementById('home-news-copy'),latestNews=nl&&nl.querySelector('.na:not(.jb)');
+  if(homeNews&&latestNews){
+    ['.sub','.meta','[data-news-copy]'].forEach(function(selector){
+      var part=latestNews.querySelector(selector);
+      if(part)homeNews.appendChild(part.cloneNode(true));
+    });
+  }
 
   /* ---------- deux rangées seulement + bouton pour voir la suite ---------- */
   var folds=[].slice.call(document.querySelectorAll('[data-fold]'));
