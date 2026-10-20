@@ -174,6 +174,9 @@ header{overflow:visible;z-index:30}
 .dm{display:block;text-decoration:none;width:max-content;max-width:100%}
 .dm b{font-weight:400;display:inline-block;background:#fc0;color:#000;font-size:5rem;line-height:.8;padding:.04em .1em 0}
 .dm:hover b{background:#fff}
+.dm-wrap{display:flex;align-items:flex-start;gap:2.2rem;max-width:90rem}.dm-copy{flex:1;min-width:0}.dm-copy h3{margin:.2rem 0 1rem}.dm-copy p{max-width:55rem}
+@media (max-width:899px){.dm-wrap{gap:1rem}.dm-copy h3{font-size:1.2rem;margin:.1rem 0 .6rem}.dm-copy p{font-size:1rem}.dm img{width:10rem;height:10rem}}
+
 .dm .dt{display:block;font-size:2.6rem;margin:.6rem 0 1rem}
 .dm img{display:block;width:24rem;height:24rem;max-width:100%;object-fit:cover;border:.2rem solid #000}
 .ec{color:var(--r);font-size:2.6rem;letter-spacing:.06em;margin:1.4rem 0 .3rem!important;text-shadow:0 0 .7rem rgba(255,0,0,.55)}
@@ -266,41 +269,68 @@ nav a{flex:1 1 0}
 .tour-gallery .ph a:hover img{transform:scale(1.025)}
 .tour-gallery .ph a:hover{outline:.25rem solid var(--r)}
 @media (max-width:899px){.tour-gallery{grid-template-columns:1fr 1fr;gap:.8rem}.tour-gallery .ph a{border-width:.18rem}}
-<style>
-/* v11 — nouvelles, Jubilé, archives et pied de page */
-.dm-card{display:grid;grid-template-columns:minmax(18rem,26rem) 1fr;gap:2.4rem;align-items:start;max-width:92rem}
-.dm-cover{display:block}.dm-cover img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border:.2rem solid #000}.dm-info>b{font-weight:400;display:inline-block;background:#fc0;color:#000;font-size:5rem;line-height:.8;padding:.04em .1em 0}.dm-sub{color:var(--y);font-size:2.5rem;line-height:1.02;margin:.8rem 0}.dm-date{font-size:2.4rem;margin:.5rem 0}.dm-meta{opacity:.9;margin-bottom:1rem}.dm-bio{max-width:72rem}.dm-bio p{margin-bottom:1rem}.dm-bio h3{font-size:2rem;margin:1rem 0 .6rem}.news-more{cursor:pointer;margin-top:1.2rem}.news-more[hidden]{display:none}.news-page-link{margin-top:1.1rem}.news-lead{border-bottom:.25rem solid var(--r);padding-bottom:2rem;margin-bottom:2rem}.news-lead h3{margin-top:0}.news-jubile{margin-top:2.5rem}.news-jubile-row{display:grid;grid-template-columns:17rem 1fr;gap:2rem;align-items:start}.news-jubile-row>img{width:17rem;height:17rem;object-fit:cover;border:.2rem solid #000}.news-jubile-copy h4{color:var(--y);font-size:2.5rem;line-height:1;margin-bottom:1rem}.news-meta{color:var(--y);font-size:2rem}.news-grid .nw{cursor:zoom-in}.news-grid .nw:nth-child(n+9){display:none}.archive-shared-grid .nw{cursor:zoom-in}.foot-creature,.foot-cul{font-family:'Park Lane NF','Bebas Neue',Impact,sans-serif!important;letter-spacing:.03em}.foot-creature{font-size:4.6rem!important;line-height:.9!important}.foot-cul{font-size:3rem!important}.foot-roman{font-family:'Religath Demo','Times New Roman',serif!important;font-size:2.5rem!important;letter-spacing:.12em}.foot-copy{font-size:1.5rem!important;opacity:.7}.copyright-art{display:block;max-width:18rem;max-height:5rem;width:auto;height:auto;margin:.7rem auto 0}.home-view .foot-creature{font-family:'Religath Demo','Park Lane NF',serif!important;color:#fc0;text-shadow:0 0 .7rem rgba(255,204,0,.45)}
-@media(max-width:899px){.dm-card{grid-template-columns:9.5rem 1fr;gap:1rem}.dm-cover img{width:9.5rem;height:9.5rem}.dm-info>b{font-size:2rem}.dm-sub{font-size:1.05rem}.dm-date{font-size:1.15rem}.dm-meta{font-size:.95rem}.dm-bio{font-size:.95rem}.dm-bio h3{font-size:1.25rem}.news-jubile-row{display:block}.news-jubile-row>img{width:9rem;height:9rem;float:left;margin:0 1rem .8rem 0}.news-jubile-copy{display:block}.news-jubile-copy:after{content:'';display:block;clear:both}.news-jubile-copy h4{font-size:1.2rem}.news-meta{font-size:1.1rem}.foot-creature{font-size:1.9rem!important}.foot-cul{font-size:1.35rem!important}.foot-roman{font-size:1.1rem!important}.foot-copy{font-size:.85rem!important}.copyright-art{max-width:9rem;max-height:3rem}.news-page-grid{grid-template-columns:1fr 1fr}.news-grid .nw{aspect-ratio:1}.news-grid .nw:nth-child(n+5){display:none}.dm-bio p{margin-bottom:.8rem}}
 
-/* v12 — accueil, vitrail, patrimoine rouennais et mobile */
-main{background:#4a075c;}
-.pg{position:relative;isolation:isolate;}
-.pg::before{content:"";position:absolute;inset:0;background:url(images/fond-vitrail.jpg) center/cover no-repeat;opacity:.5;z-index:0;pointer-events:none;}
-.pg>*{position:relative;z-index:1;}
-.hero-title{display:block;width:min(25rem,78vw);height:auto;margin:0 0 .7rem;filter:none;}
-.hero b{display:none}
-.blk{box-shadow:inset 0 .7rem .9rem -.65rem rgba(0,0,0,.95),inset 0 -.7rem .9rem -.65rem rgba(0,0,0,.95);}
-.dm-card{grid-template-columns:minmax(10rem,14rem) 1fr;}
-.dm-cover img{width:100%;}
-.copyright-art{max-width:26rem;max-height:8rem;margin:.7rem auto 0;}
-.foot-copy{display:none!important;}
-@media(max-width:899px){
-  nav{height:3.6rem;overflow-x:auto;overflow-y:hidden;justify-content:flex-start;scrollbar-width:none;}
-  nav::-webkit-scrollbar{display:none}
-  nav a,.sbtn{flex:0 0 16.6667vw;width:16.6667vw;height:3.6rem;min-width:16.6667vw;}
-  nav a{display:flex;align-items:center;justify-content:center;}
-  .nav-icon svg{width:1.7rem;height:1.7rem;stroke-width:2;}
-  .sbtn svg{width:1.65rem;height:1.65rem;}
-  main{padding-top:.8rem;}
-  .hero-title{width:min(15rem,68vw);margin-bottom:.5rem;}
-  .dm-card{grid-template-columns:7rem 1fr;gap:.8rem;}
-  .dm-cover img{width:7rem;height:7rem;}
-  .copyright-art{max-width:5rem;max-height:2.5rem;margin:.55rem auto 0;}
-  .mobile-ppp .lg{height:6rem;}
+/* ===== v11 : Religath, vitrail, ombres, lightbox, nouvelles, pied de page ===== */
+@font-face{font-family:"Religath";src:url(fonts/religath-demo.otf) format("opentype");font-display:swap}
+main{isolation:isolate}
+.bgv{position:absolute;inset:0;z-index:0;background:url(images/fond-vitrail-texte.jpg) center top/cover no-repeat;opacity:.5;pointer-events:none}
+main>section{position:relative;z-index:1}
+/* ombres vers l'intérieur, plus fortes, le long de chaque ligne rouge du texte */
+main::before{height:5.6rem;background:linear-gradient(to bottom,rgba(0,0,0,.97),rgba(0,0,0,.8) 26%,rgba(0,0,0,.4) 60%,rgba(0,0,0,0))}
+main::after{width:5.6rem;background:linear-gradient(to right,rgba(0,0,0,.97),rgba(0,0,0,.8) 26%,rgba(0,0,0,.4) 60%,rgba(0,0,0,0))}
+.blk,.na+.na{position:relative;clear:both}
+.blk::before,.na+.na::before{content:"";position:absolute;left:0;right:0;top:0;height:5.6rem;background:linear-gradient(to bottom,rgba(0,0,0,.97),rgba(0,0,0,.8) 26%,rgba(0,0,0,.4) 60%,rgba(0,0,0,0));pointer-events:none;z-index:2}
+.na+.na{border-top:.5rem solid var(--r);margin:3rem calc(-1*var(--mp)) 0;padding:2.4rem var(--mp) 0}
+/* Religath : texte courant (hors titres et sous-titres) */
+main p,main li,.mf input,.mf textarea{font-family:"Religath","Cinzel",Georgia,serif;letter-spacing:.02em}
+main p{font-size:clamp(1.05rem,1.28vw,1.55rem);line-height:1.32}
+main .sub,main .ec,main .note,main .k2,main .ah p,main .cc p,main .fold-bar,main .mf-bar,main .dt{font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.01em;font-size:revert-layer}
+main .sub{font-size:2.6rem;line-height:1.05}
+main .ec{font-size:2.6rem}main .note{font-size:2.4rem}
+main .ah p{font-size:2.3rem;line-height:1.1}
+main .cc p{font-size:2rem}
+.hero b{font-family:"Religath","Cinzel",Georgia,serif;text-transform:uppercase;font-size:6.3rem;line-height:1;color:#fc0;text-shadow:0 0 .3rem rgba(150,0,0,.95),0 0 1rem rgba(175,0,0,.9),0 0 2.2rem rgba(120,0,0,.85);margin-bottom:.9rem;letter-spacing:.005em}
+/* nouvelles */
+.na{max-width:90rem}
+.na .sub{margin:.2rem 0 .8rem}
+.fold-hide{display:none!important}
+.fold-bar{margin:1.2rem 0 0!important}
+.na .pgrid{max-width:90rem}
+.jb::after{content:"";display:block;clear:both}
+.jb .dm{float:left;margin:0 2.2rem 1rem 0}
+.jb h3{margin:0 0 .8rem}
+.meta{list-style:none;margin:0 0 1.4rem;padding:0;max-width:60rem}
+.meta li{display:flex;gap:1.2rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.28);font-size:clamp(1.05rem,1.28vw,1.55rem)}
+.meta b{flex:none;min-width:15rem;font:400 2rem/1.1 "Bebas Neue","Arial Narrow",Impact,sans-serif;color:var(--r);letter-spacing:.04em}
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.96);display:flex;align-items:center;justify-content:center;cursor:zoom-out}
+#lb img{max-width:94vw;max-height:86vh;object-fit:contain;border:.2rem solid #000;pointer-events:none}
+#lb button{position:absolute;background:#000;color:var(--r);border:.2rem solid var(--r);font:400 3.4rem/1 "Bebas Neue",Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+#lb button:hover,#lb button:focus-visible{background:var(--r);color:#000;outline:0}
+#lb .lb-x{top:1rem;right:1rem;width:5rem;height:5rem;font-size:2.8rem}
+#lb .lb-p,#lb .lb-n{top:50%;margin-top:-3rem;width:4.6rem;height:6rem}
+#lb .lb-p{left:1rem}#lb .lb-n{right:1rem}
+#lb .lb-c{position:absolute;left:0;right:0;bottom:.8rem;text-align:center;color:#ccc;font-size:1.8rem;pointer-events:none}
+/* pied de page */
+.sf{padding:2.8rem 1rem 3rem}
+.sf-t{display:block;margin:0 auto;width:min(66rem,90%);height:auto;mix-blend-mode:screen}
+.sf p.sf-c{margin:.2rem 0 0;font-family:"Religath","Cinzel",Georgia,serif;color:#fff;font-size:3rem;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
+@media (max-width:899px){
+  main::before{height:3.4rem}
+  .blk::before,.na+.na::before{height:3.2rem}
+  main p{font-size:.98rem;line-height:1.36}
+  main .sub{font-size:1.5rem}main .ec{font-size:1.5rem}main .note{font-size:1.3rem}main .ah p{font-size:1.15rem}main .cc p{font-size:1.2rem}
+  .hero b{font-size:calc((100vw - 1.8rem)/12.7);margin-bottom:.45rem}
+  .jb .dm{margin-right:1rem}
+  .jb .meta{clear:both}
+  .jb h3{font-size:1.15rem}
+  .meta li{font-size:.95rem;gap:.7rem}.meta b{min-width:8.6rem;font-size:1.25rem}
+  #lb .lb-x{width:3.8rem;height:3.8rem;font-size:2.2rem}
+  #lb .lb-p,#lb .lb-n{width:3.2rem;height:4.4rem;margin-top:-2.2rem;font-size:2.4rem}
+  #lb .lb-c{font-size:1.1rem}
+  .sf-t{width:11.2rem}
+  .sf p.sf-c{font-size:1.15rem;margin-top:.1rem}
 }
-</style>
-@font-face{font-family:'Park Lane NF';src:url('fonts/ParkLaneNF.woff2') format('woff2'),url('fonts/ParkLaneNF.ttf') format('truetype');font-display:swap}
-@font-face{font-family:'Religath Demo';src:url('fonts/ReligathDemo.woff2') format('woff2'),url('fonts/ReligathDemo.ttf') format('truetype');font-display:swap}
 </style>
 </head>
 <body class="nojs">
@@ -322,8 +352,9 @@ main{background:#4a075c;}
 <a href="#contact"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 64 64"><rect height="32" rx="3" width="46" x="9" y="16"></rect><path d="M11 19l21 17 21-17"></path></svg></span><span class="nav-txt">CONTACT</span></a>
 </nav>
 <main>
+<div aria-hidden="true" class="bgv"></div>
 <section class="pg on" data-doctitle="La Créature du Marais — Cul-Pointu | Musique, clips et archives" data-title="Accueil" id="accueil">
-<div class="hero"><img class="hero-title" src="images/titre-creature-jaune.png" alt="La Créature du Marais"/><span>Musique, clips et archives</span><span>Rouen, Normandie</span></div>
+<div class="hero"><b>La Créature du Marais</b><span>Musique, clips et archives</span><span>Rouen, Normandie</span></div>
 <div class="mq"><a class="btn" href="#discographie">DISCOGRAPHIE</a><a class="btn" href="#clips">CLIPS</a><a class="btn" href="#biographie">BIOGRAPHIE</a><a class="btn" href="#ustensiles">USTENSILES</a></div>
 <p>La Créature du Marais, surnommée "Cul-Pointu", de son vrai nom Tancrède Charon est un artiste underground normand basé en sa capitale : Rouen.</p>
 <figure class="ib" style="margin-top:.5rem"><img alt="La Créature du Marais lisant un magazine" loading="lazy" src="images/accueil-demonia.jpg"/></figure>
@@ -331,14 +362,17 @@ main{background:#4a075c;}
 <figure class="ib"><img alt="Jb" loading="lazy" src="images/accueil-jb.jpg"/></figure>
 <p>Influencé par Baudelaire, Rabelais, Villon, Huysmans, Verlaine ou Céline, Tancrède mêle romantisme noir, catholicisme mystique, poésie médiévale et culture internet dans une écriture où le sublime côtoie constamment l'ordurier. Son œuvre explore la culpabilité, la solitude, l'amour obsessionnel, le péché, la honte et le besoin impossible de rédemption. Les figures féminines y apparaissent comme des muses idéalisées puis détruites par le désir, tandis que la religion devient à la fois refuge, obsession et combat intérieur. Derrière la provocation, l'humour noir et l'outrance volontaire se dessine surtout le portrait d'une bête hantée par la peur de la damnation, la nostalgie d'un absolu inaccessible et le sentiment de se repentir trop tard dans un monde vidé d'espoir.</p>
 <div class="clr"></div>
-<div class="blk"><h2>DERNIER MÉFAIT</h2><div class="dm-card"><a class="dm-cover" href="#album-jubile"><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/></a><div class="dm-info"><b>JUBILÉ</b><div class="dm-sub">PREMIER SINGLE DU PROCHAIN ALBUM DE LA CRÉATURE</div><div class="dm-date">06/12/2025</div><div class="dm-meta">Single · 1 titre · 3 min 34 s</div><div class="dm-bio"><div class="bio"><p>Avec Jubilé, la Créature ouvre une nouvelle phase de son œuvre. Là où Confiteor apparaissait comme une fresque monumentale de 34 morceaux, saturée de visions catholiques, de provocations, de romantisme noir et de déchéance personnelle, ce nouveau single agit comme un condensé plus frontal et plus maîtrisé de cette mythologie.</p>
+<div class="blk"><h2>DERNIER MÉFAIT</h2>
+<div class="dm-wrap"><a class="dm" href="#album-jubile"><b>JUBILÉ</b><span class="dt">06/12/2025</span><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/></a><div class="dm-copy"><h3>PREMIER SINGLE DU PROCHAIN ALBUM DE LA CRÉATURE</h3><div class="bio"><p>Avec Jubilé, la Créature ouvre une nouvelle phase de son œuvre. Là où Confiteor apparaissait comme une fresque monumentale de 34 morceaux, saturée de visions catholiques, de provocations, de romantisme noir et de déchéance personnelle, ce nouveau single agit comme un condensé plus frontal et plus maîtrisé de cette mythologie.</p>
 <p>Confiteor relevait encore de l'errance : accumulation de fragments, confessions éclatées, personnages grotesques, obsessions sexuelles, ruines spirituelles et dérives urbaines se mêlaient dans un vaste journal halluciné. Jubilé marque au contraire une forme de recentrage. La provocation y laisse davantage place à la liturgie, la dispersion à la célébration, comme si la Créature du Marais transformait désormais ses décombres intérieurs en cour des miracles.</p>
 <p>C'est une mutation esthétique. L'univers reste hanté par le péché, le salut impossible et la fascination du sacré, mais l'écriture devient plus brute, presque impie. Là où les précédents projets exposaient la chute, Jubilé semble en célébrer les vestiges.</p>
-<p>À travers ce morceau, Tancrède poursuit ainsi la construction de son personnage de poète maudit contemporain : moins chroniqueur de sa propre décomposition que maître de cérémonie d'un monde déjà effondré. Jubilé apparaît alors comme le premier manifeste d'une nouvelle époque pour PUANTEUR PUTRIDE Productions, où la confession devient rite et où la ruine devient célébration.</p></div></div><p class="dm-links"><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIC</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a></p></div></div></div>
+<p>À travers ce morceau, Tancrède poursuit ainsi la construction de son personnage de poète maudit contemporain : moins chroniqueur de sa propre décomposition que maître de cérémonie d'un monde déjà effondré. Jubilé apparaît alors comme le premier manifeste d'une nouvelle époque pour PUANTEUR PUTRIDE Productions, où la confession devient rite et où la ruine devient célébration.</p></div></div></div>
+<p class="ec">ÉCOUTER</p>
+<p><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIC</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a></p></div>
 <div class="blk"><h2>NOUVELLES</h2>
-<p class="sub">Tournage du prochain clip pour le second single du prochain album de La Créature du Marais.</p>
-<!-- Pour ajouter une image : <a class="nw" href="#"><img alt="…" src="images/….jpg"/></a> à l'intérieur de la div ci-dessous (le message « à venir » disparaît tout seul) -->
-<div class="pgrid news-grid" data-empty="ACTUALITÉS À VENIR" data-gallery="news" data-limit="8"></div><button class="btn news-more" hidden="hidden" type="button">VOIR LA SUITE</button><p class="news-page-link"><a class="btn" href="#nouvelles">TOUTES LES NOUVELLES</a></p></div>
+<p class="sub">Il y a des choses qui puent à Rouen</p>
+<p class="desc">En plein tournage du prochain clip, consacré au second single du prochain album de la Créature du Marais. Quelques images prises sur le terrain donnent un aperçu de cette nouvelle séquence.</p>
+<div class="pgrid" data-fold="link" data-gallery-list="actu" data-empty="NOUVELLES À VENIR"></div><p><a class="btn" href="#nouvelles">VOIR LA SUITE →</a></p></div>
 </section>
 <section class="pg" data-title="Biographie" id="biographie"><h2>BIOGRAPHIE</h2><p>La Créature du Marais, surnommée "Cul-Pointu", de son vrai nom Tancrède Charon est un artiste underground normand associé à la ville de Rouen et au projet-label PUANTEUR PUTRIDE Productions.</p>
 <p>Son univers mêle musique expérimentale, poésie décadente, chant parlé, dark ambient, esthétique black metal et autofiction performative. Bien plus qu'un simple projet musical, il constitue une œuvre totale où se confondent personnage, esthétique, confession intime et mise en scène artistique.</p>
@@ -452,7 +486,7 @@ main{background:#4a075c;}
 <div class="vid"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" data-src="https://www.youtube.com/embed/34-C5ls5eWM" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" title="Cul-Pointu - La Chute (Clip officiel)"></iframe></div>
 <h3>PHOTOS DU TOURNAGE</h3>
 <!-- Pour ajouter une photo : <a class="nw" href="images/….jpg"><img alt="…" src="images/….jpg"/></a> dans la div ci-dessous -->
-<div class="tour-gallery" data-gallery="chute"></div>
+<div class="pgrid"><figure class="ph"><img alt="Vue de drone : une silhouette en robe blanche sur un sentier, entre des feuillages violets" loading="lazy" src="images/tournage-chute-cote-1.jpg"/><figcaption>Préparation à la chute de la côte</figcaption></figure></div>
 </section>
 <section class="pg cp" data-title="Dis, ferme un instant les yeux" id="clip-dis">
 <p><a class="back" href="#clips">← CLIPS</a></p>
@@ -462,10 +496,33 @@ main{background:#4a075c;}
 <!-- Pour ajouter une photo : <a class="nw" href="images/….jpg"><img alt="…" src="images/….jpg"/></a> dans la div ci-dessous -->
 <div class="tour-gallery" data-empty="PHOTOS DU TOURNAGE À VENIR" data-gallery="dis"></div>
 </section>
-<section class="pg" data-title="Nouvelles" id="nouvelles"><h2>NOUVELLES</h2><div class="news-lead"><h3>TOURNAGE DU PROCHAIN CLIP — SECOND SINGLE DU PROCHAIN ALBUM</h3><p>Tournage du prochain clip pour le second single du prochain album de La Créature du Marais.</p><div class="pgrid news-grid news-page-grid" data-gallery="news" data-limit="0"></div></div><button class="btn news-more" hidden="hidden" type="button">VOIR LA SUITE</button><div class="news-jubile"><h3>JUBILÉ</h3><p class="news-meta">06/12/2025 · Single · 1 titre · 3 min 34 s</p><div class="news-jubile-row"><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/><div class="news-jubile-copy"><h4>PREMIER SINGLE DU PROCHAIN ALBUM DE LA CRÉATURE</h4><div class="bio"><p>Avec Jubilé, la Créature ouvre une nouvelle phase de son œuvre. Là où Confiteor apparaissait comme une fresque monumentale de 34 morceaux, saturée de visions catholiques, de provocations, de romantisme noir et de déchéance personnelle, ce nouveau single agit comme un condensé plus frontal et plus maîtrisé de cette mythologie.</p>
-<p>Confiteor relevait encore de l'errance : accumulation de fragments, confessions éclatées, personnages grotesques, obsessions sexuelles, ruines spirituelles et dérives urbaines se mêlaient dans un vaste journal halluciné. Jubilé marque au contraire une forme de recentrage. La provocation y laisse davantage place à la liturgie, la dispersion à la célébration, comme si la Créature du Marais transformait désormais ses décombres intérieurs en cour des miracles.</p>
-<p>C'est une mutation esthétique. L'univers reste hanté par le péché, le salut impossible et la fascination du sacré, mais l'écriture devient plus brute, presque impie. Là où les précédents projets exposaient la chute, Jubilé semble en célébrer les vestiges.</p>
-<p>À travers ce morceau, Tancrède poursuit ainsi la construction de son personnage de poète maudit contemporain : moins chroniqueur de sa propre décomposition que maître de cérémonie d'un monde déjà effondré. Jubilé apparaît alors comme le premier manifeste d'une nouvelle époque pour PUANTEUR PUTRIDE Productions, où la confession devient rite et où la ruine devient célébration.</p></div><p><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIC</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a></p></div></div></div></section>
+<section class="pg" data-title="Actualités" id="nouvelles">
+<h2>ACTUALITÉS</h2>
+<!-- Pour publier une nouvelle : copiez un bloc <article class="na" data-date="AAAA-MM-JJ">…</article> dans #news-list.
+     Les articles sont classés automatiquement par date : le plus récent passe devant. -->
+<div id="news-list">
+<article class="na" data-date="2026-10-19">
+<p class="sub">Il y a des choses qui puent à Rouen</p>
+<p class="desc">En plein tournage du prochain clip, consacré au second single du prochain album de la Créature du Marais. Quelques images prises sur le terrain donnent un aperçu de cette nouvelle séquence.</p>
+<div class="pgrid" data-empty="ACTUALITÉS À VENIR" data-fold="toggle" data-gallery-list="actu"></div>
+</article>
+<article class="na jb" data-date="2025-12-06">
+<a class="dm" href="#album-jubile"><b>JUBILÉ</b><span class="dt">06/12/2025</span><img alt="Pochette Jubilé" src="images/pochette-jubile.jpg"/></a>
+<h3>PREMIER SINGLE DU PROCHAIN ALBUM DE LA CRÉATURE</h3>
+<ul class="meta">
+<li><b>DATE DE SORTIE</b><span>06/12/2025</span></li>
+<li><b>FORMAT</b><span>Single</span></li>
+<li><b>TITRES</b><span>1</span></li>
+<li><b>DURÉE</b><span>3 min 34 s</span></li>
+<li><b>ARTISTE</b><span>Cul-Pointu — La Créature du Marais</span></li>
+<li><b>LABEL</b><span>PUANTEUR PUTRIDE Productions</span></li>
+</ul>
+<p>Avec Jubilé, la Créature ouvre une nouvelle phase de son œuvre. Là où Confiteor apparaissait comme une fresque monumentale de 34 morceaux, saturée de visions catholiques, de provocations, de romantisme noir et de déchéance personnelle, ce nouveau single agit comme un condensé plus frontal et plus maîtrisé de cette mythologie.</p><p>Confiteor relevait encore de l'errance : accumulation de fragments, confessions éclatées, personnages grotesques, obsessions sexuelles, ruines spirituelles et dérives urbaines se mêlaient dans un vaste journal halluciné. Jubilé marque au contraire une forme de recentrage. La provocation y laisse davantage place à la liturgie, la dispersion à la célébration, comme si la Créature du Marais transformait désormais ses décombres intérieurs en cour des miracles.</p><p>C'est une mutation esthétique. L'univers reste hanté par le péché, le salut impossible et la fascination du sacré, mais l'écriture devient plus brute, presque impie. Là où les précédents projets exposaient la chute, Jubilé semble en célébrer les vestiges.</p><p>À travers ce morceau, Tancrède poursuit ainsi la construction de son personnage de poète maudit contemporain : moins chroniqueur de sa propre décomposition que maître de cérémonie d'un monde déjà effondré. Jubilé apparaît alors comme le premier manifeste d'une nouvelle époque pour PUANTEUR PUTRIDE Productions, où la confession devient rite et où la ruine devient célébration.</p>
+<p class="ec">ÉCOUTER</p>
+<p><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIC</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a></p>
+</article>
+</div>
+</section>
 <section class="pg" data-title="Contact" id="contact"><h2>CONTACT</h2>
 <p><a aria-controls="mailbox" aria-expanded="false" class="btn" href="mailto:puanteur.putride.productions@gmail.com" id="mailbtn">PUANTEUR.PUTRIDE.PRODUCTIONS@GMAIL.COM</a><a class="btn" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank">INSTAGRAM</a></p>
 <form class="mf" hidden="" id="mailbox" method="post">
@@ -482,7 +539,7 @@ main{background:#4a075c;}
 <section class="pg" data-title="Objets liturgiques" id="archive-objets">
 <p><a class="back" href="#archives">← ARCHIVES</a></p>
 <h2>OBJETS LITURGIQUES</h2>
-<div class="pgrid archive-shared-grid" data-empty="EN COURS DE CLASSEMENT" data-gallery="archive-shared" data-limit="0"></div>
+<div class="pgrid" data-gallery-list="objets" data-empty="EN COURS DE CLASSEMENT"></div>
 </section>
 <section class="pg" data-title="Dossiers compromettants" id="archive-dossiers">
 <p><a class="back" href="#archives">← ARCHIVES</a></p>
@@ -496,7 +553,8 @@ main{background:#4a075c;}
 </section>
 <section class="pg" data-title="Ustensiles" id="ustensiles">
 <h2>USTENSILES</h2>
-<div class="pgrid archive-shared-grid" data-empty="EN COURS DE CLASSEMENT" data-gallery="archive-shared" data-limit="0"></div>
+<p>Les objets présentés ici sont également classés dans la rubrique « Objets liturgiques » des archives.</p>
+<div class="pgrid" data-gallery-list="objets" data-empty="EN COURS DE CLASSEMENT"></div>
 </section>
 </main>
 </div>
@@ -572,7 +630,10 @@ mp.addEventListener("keydown",function(e){if(e.key==="Escape"){closeM();sb.focus
 })();
 </script>
 <footer aria-label="Réseaux sociaux et PUANTEUR PUTRIDE Productions" class="mobile-footer"><div class="pf mobile-socials"><a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank"><img alt="" src="images/icone-deezer.png"/></a><a aria-label="Apple Music" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank"><img alt="" src="images/icone-apple-music.png"/></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img alt="" src="images/icone-spotify.png"/></a><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img alt="" src="images/icone-instagram.png"/></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img alt="" src="images/icone-youtube.png"/></a><a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" target="_blank"><img alt="" src="images/icone-x.png"/></a><a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank"><img alt="" src="images/icone-tiktok.png"/></a></div><a aria-label="Archives PUANTEUR PUTRIDE Productions" class="mobile-ppp" href="#archives"><img alt="PUANTEUR PUTRIDE Productions" class="lg" src="images/logo-ppp-entete.jpg"/></a></footer>
-<footer class="sf"><p class="foot-creature">LA CRÉATURE DU MARAIS</p><p class="foot-cul">CUL-POINTU</p><p class="foot-roman">MMXXVI</p><img alt="" aria-hidden="true" class="copyright-art" onerror='this.style.display="none"' src="images/copyright.png"/></footer>
+<footer class="sf">
+<img alt="La Créature du Marais — Cul-Pointu" class="sf-t" src="images/pied-titre.png"/>
+<p class="sf-c">© MMXXVI</p>
+</footer>
 <script>
 (function(){
 function im(e){return e.target&&e.target.tagName==="IMG"}
@@ -607,40 +668,161 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
 
 })();
 </script>
-<script>(function(){
-  var galleries={
-    cote:['allumagetorche','angenoirblasonrouen','aupiedelacote','avectorchecote','bateauseinenocturne','branle la torche','cavecamisole','cotestecatherineavecactrice','cotestecatherineavecactrice1','cotestecatherineavecactrice2','cotestecatherineavecactrice3','dansruinesstpierreduchatel','dansruinesstpierreduchatel1','dansruinesstpierreduchatel2','faire joujou avec la torche au pied de la cote','instructionscamera','nuittorchecote','remisevetementspanorama','souslepontilelacroix','verificationfocus'],
-    chimaera:['allumertorche','angenoir1','angenoir2','angenoiraitrestmaclou','angenoirdevantchapelle2','angenoirdevantchapelle3','angenoirdevantchapellestlouis','angenoirsetapeleculplacedelarougemare','devant la demeure des vampires 2','devant la demeure des vampires','devantblason','devantblason1','echecdeteindretorchedansflaquedevanttavernestamant','eteingnagedetorche','fontaine1','fontaine2','matos','muséevide','torche','torche1','torcheeteinteruestromain','torchenuitdevanteglisesstejeannedarc'],
-    dis:['diva','diva2','enbasdesescaliersduprofesseursida','extrait','rigole','rigole2'],
-    news:['angenoiraitrestmaclou','angenoirdevantchapellestlouis','muséevide','angenoirsetapeleculplacedelarougemare','fontaine1','fontaine2','extrait'],
-    'chute':['dom'],
-    'archive-shared':['allumagetorche','allumertorche','branle la torche','cavecamisole','echecdeteindretorchedansflaquedevanttavernestamant','eteingnagedetorche','faire joujou avec la torche au pied de la cote','matos','remisevetementspanorama','torche','torche1','verificationfocus']
-  };
-  var exts=['jpg','jpeg','webp','png','JPG','JPEG','WEBP','PNG'];
-  var archiveShared=[];
-  function label(n){var map={'allumagetorche':'Allumage de la torche','allumertorche':'Allumer la torche','angenoir1':'Ange noir — prise 1','angenoir2':'Ange noir — prise 2','angenoiraitrestmaclou':'Ange noir dans l’Aître Saint-Maclou','angenoirblasonrouen':'Ange noir devant le blason de Rouen','angenoirdevantchapelle2':'Ange noir devant la chapelle Saint-Louis — prise 2','angenoirdevantchapelle3':'Ange noir devant la chapelle Saint-Louis — prise 3','angenoirdevantchapellestlouis':'Ange noir devant la chapelle Saint-Louis','angenoirsetapeleculplacedelarougemare':'Ange noir se claque le cul place de la Rougemare','aupieddelacote':'Au pied de la côte Sainte-Catherine','avectorchecote':'Avec la torche au pied de la côte','bateauseinenocturne':'Bateau sur la Seine — nuit','branle la torche':'Branle la torche','cavecamisole':'Cave, camisole','cotestecatherineavecactrice':'Côte Sainte-Catherine avec actrice','cotestecatherineavecactrice1':'Côte Sainte-Catherine avec actrice — prise 1','cotestecatherineavecactrice2':'Côte Sainte-Catherine avec actrice — prise 2','cotestecatherineavecactrice3':'Côte Sainte-Catherine avec actrice — prise 3','dansruinesstpierreduchatel':'Dans les ruines de Saint-Pierre-du-Châtel','dansruinesstpierreduchatel1':'Dans les ruines de Saint-Pierre-du-Châtel — prise 1','dansruinesstpierreduchatel2':'Dans les ruines de Saint-Pierre-du-Châtel — prise 2','devant la demeure des vampires':'Devant la demeure des vampires','devant la demeure des vampires 2':'Devant la demeure des vampires — prise 2','devantblason':'Ange noir devant le blason de Rouen','devantblason1':'Ange noir devant le blason de Rouen — prise 1','dom':'Tournage de La Chute — vue du site D.O.M.','echecdeteindretorchedansflaquedevanttavernestamant':'Échec : torche éteinte dans la flaque','eteingnagedetorche':'Extinction de la torche','extrait':'Extrait du tournage devant la maison natale de Fontenelle','faire joujou avec la torche au pied de la cote':'Faire joujou avec la torche au pied de la côte','fontaine1':'Derrière la fontaine Sainte-Marie','fontaine2':'Vue de Rouen au drone depuis la fontaine Sainte-Marie','instructionscamera':'Instructions caméra','instructionscamera2':'Instructions caméra — prise 2','matos':'Matériel de tournage','muséevide':'Musée des Antiquités vidé pour faire place à la Profanation municipale','nuittorchecote':'Nuit, torche et côte Sainte-Catherine','remisevetementspanorama':'Remise des vêtements — panorama','rigole':'Rigole — tournage','rigole2':'Rigole — tournage — prise 2','souslepontilelacroix':'Sous le pont de l’île Lacroix','torche':'Torche','torche1':'Torche — prise 1','torcheeteinteruestromain':'Torche éteinte rue Saint-Romain','torchenuitdevanteglisesaintejeannedarc':'Torche de nuit devant l’église Sainte-Jeanne-d’Arc','verificationfocus':'Vérification du focus','chute':'Tournage du prochain clip — préparation','diva':'Diva — tournage','diva2':'Diva — tournage','enbasdesescaliersduprofesseursida':'En bas des escaliers du professeur Sida'};return map[n]||n.replace(/[-_]+/g,' ').replace(/\d+$/,'').trim();}
-  function caption(g,n){var base=g==='cote'?'La côte Sainte-Catherine':g==='chimaera'?'Chimaera Rothomagensis':g==='dis'?'Dis, ferme un instant les yeux':g==='chute'?'La Chute':g==='news'?'Nouvelles':'Objets liturgiques / Ustensiles';return base+' — '+label(n);}
-  function addImage(galleryEl,gallery,name,index){
-    var fig=document.createElement('figure');fig.className='ph';
-    var a=document.createElement('a');a.href='#';a.className='nw';a.setAttribute('aria-label','Agrandir la photo '+(index+1));
-    var img=document.createElement('img');img.loading='lazy';img.draggable=false;img.alt=caption(gallery,name);
-    var i=0;function tryNext(){if(i>=exts.length){fig.remove();return}img.src='images/'+name+'.'+exts[i++];}
-    img.onerror=tryNext;a.appendChild(img);var fc=document.createElement('figcaption');fc.textContent=label(name);fig.appendChild(a);fig.appendChild(fc);galleryEl.appendChild(fig);tryNext();
-    a.addEventListener('click',function(e){e.preventDefault();openPhoto(img.src,img.alt);});
-  }
-  function openPhoto(src,alt){var old=document.getElementById('photo-lightbox');if(old)old.remove();var box=document.createElement('div');box.id='photo-lightbox';box.setAttribute('role','dialog');box.setAttribute('aria-label','Photo agrandie');box.style.cssText='position:fixed;z-index:9999;inset:0;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;padding:1rem;cursor:zoom-out';var im=document.createElement('img');im.src=src;im.alt=alt;im.style.cssText='max-width:96vw;max-height:94vh;width:auto;height:auto;object-fit:contain;border:.2rem solid #000';box.appendChild(im);box.addEventListener('click',function(){box.remove();});document.body.appendChild(box);}
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var b=document.getElementById('photo-lightbox');if(b)b.remove();}});
-  var galleryEls=[].slice.call(document.querySelectorAll('[data-gallery]'));
-  galleryEls.forEach(function(el){var key=el.getAttribute('data-gallery'),list=galleries[key]||[];var limit=parseInt(el.getAttribute('data-limit')||'0',10);var shown=0;var names=list.slice();function render(){var start=shown,end=limit?Math.min(names.length,limit):names.length;for(var i=start;i<end;i++)addImage(el,key,names[i],i);shown=end;var btn=el.parentNode.querySelector('.news-more');if(btn){if(shown<names.length)btn.hidden=false;else btn.hidden=true;btn.onclick=function(){limit=0;render();}}}render();});
-  // Shared source: any name added to this array is rendered in both OBJETS LITURGIQUES and USTENSILES.
-  function renderShared(){var els=[].slice.call(document.querySelectorAll('[data-gallery="archive-shared"]'));els.forEach(function(el){archiveShared.forEach(function(n,i){addImage(el,'archive-shared',n,i);});});}
-  renderShared();
-})();</script>
 
 <script>
 (function(){
-  function eligible(img){if(!img||!img.src)return false;var p=img.closest('a');if(p&&p.classList.contains('btn'))return false;if(img.closest('.pf,.mid,.ppp,.mobile-footer,.nav-icon'))return false;if(img.classList.contains('logo'))return false;return true;}
-  document.addEventListener('click',function(e){var img=e.target.closest&&e.target.closest('img');if(!eligible(img))return;var a=img.closest('a');if(a&&a.href&&a.getAttribute('href')!=='#'&&!a.classList.contains('nw'))return;e.preventDefault();var old=document.getElementById('photo-lightbox');if(old)old.remove();var box=document.createElement('div');box.id='photo-lightbox';box.style.cssText='position:fixed;z-index:9999;inset:0;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;padding:1rem;cursor:zoom-out';var im=document.createElement('img');im.src=img.currentSrc||img.src;im.alt=img.alt;im.style.cssText='max-width:96vw;max-height:94vh;width:auto;height:auto;object-fit:contain';box.appendChild(im);box.addEventListener('click',function(){box.remove()});document.body.appendChild(box);});
+  /* Noms des fichiers de chaque galerie de tournage (dossier images/, extension libre : jpg, png, webp). */
+  var galleries={
+    cote:[
+      'allumagetorche','angenoirblasonrouen','aupiedelacote','avectorchecote','bateauseine','branlelatorche',
+      'cavecamisole','cotestecatherineavecactrice','cotestecatherineavecactrice1','cotestecatherineavecactrice2',
+      'cotestecatherineavecactrice3','dansruinesstpierreduchatel','dansruinesstpierreduchatel1','dansruinesstpierreduchatel2',
+      'fairejoujouaveclatorcheaupieddelacote','nuittorchecote','remisevetementspanorama',
+      'souslepontilelacroix','verificationfocus'
+    ],
+    chimaera:[
+      'allumertorche','angenoir1','angenoir2','angenoiraitrestmaclou','angenoirdevantchapelle2','angenoirdevantchapelle3',
+      'angenoirdevantchapellestlouis','angenoirsetapeleculplacedelarougemare','devant_la_demeure_des_vampires',
+      'devant_la_demeure_des_vampires_2','devantblason','devantblason1',
+      'echecdeteindretorchedansflaquedevantta','eteignagedetorche','fontaine1','fontaine2','matos','museevide',
+      'torche','torche1','torcheeteinteruestromain','torchenuitdevanteglisesaintejeannedarc'
+    ],
+    dis:[
+      'diva','diva2','enbasdesescaliersduprofesseursida','extrait','instructionscamera','instructionscamera2','rigole','rigole2'
+    ]
+  };
+  var exts=['jpg','jpeg','webp','png','JPG','JPEG','WEBP','PNG'];
+  var titres={cote:'La côte Sainte-Catherine',chimaera:'Chimaera Rothomagensis',dis:'Dis, ferme un instant les yeux'};
+  function label(n){return n.replace(/[-_]+/g,' ').replace(/\b\d+$/,'').trim();}
+
+  /* ---------- agrandissement des photos sur la page (jamais d'ouverture du fichier) ---------- */
+  var LB=null;
+  function closeLB(){
+    if(!LB)return;
+    document.removeEventListener('keydown',LB.key,true);
+    LB.box.remove(); document.documentElement.style.overflow=''; LB=null;
+  }
+  function openLB(list,i){
+    closeLB();
+    var box=document.createElement('div'); box.id='lb'; box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-label','Photo agrandie');
+    var img=document.createElement('img'); img.draggable=false;
+    var cap=document.createElement('div'); cap.className='lb-c';
+    function btn(cls,txt,lab,fn){var b=document.createElement('button'); b.type='button'; b.className=cls; b.textContent=txt; b.setAttribute('aria-label',lab); b.addEventListener('click',function(e){e.stopPropagation(); fn();}); return b;}
+    function show(k){ i=(k+list.length)%list.length; img.src=list[i].src; img.alt=list[i].alt||''; cap.textContent=list.length>1?(i+1)+' / '+list.length:''; }
+    box.appendChild(img); box.appendChild(cap);
+    box.appendChild(btn('lb-x','✕','Fermer la photo',closeLB));
+    if(list.length>1){ box.appendChild(btn('lb-p','‹','Photo précédente',function(){show(i-1);})); box.appendChild(btn('lb-n','›','Photo suivante',function(){show(i+1);})); }
+    box.addEventListener('click',closeLB);
+    box.addEventListener('contextmenu',function(e){e.preventDefault();});
+    var key=function(e){
+      if(e.key==='Escape'){e.preventDefault();closeLB();}
+      else if(e.key==='ArrowRight'&&list.length>1){e.preventDefault();show(i+1);}
+      else if(e.key==='ArrowLeft'&&list.length>1){e.preventDefault();show(i-1);}
+    };
+    document.addEventListener('keydown',key,true);
+    LB={box:box,key:key}; document.body.appendChild(box); document.documentElement.style.overflow='hidden'; show(i);
+    box.querySelector('.lb-x').focus();
+  }
+  function listOf(container,sel){
+    return [].slice.call(container.querySelectorAll(sel)).map(function(im){return {src:im.currentSrc||im.src,alt:im.alt};});
+  }
+  window.addEventListener('hashchange',closeLB);
+
+  /* ---------- galeries de tournage ---------- */
+  function addImage(galleryEl,gallery,name,index){
+    var fig=document.createElement('figure'); fig.className='ph';
+    var a=document.createElement('a'); a.href='#'; a.setAttribute('aria-label','Agrandir la photo '+(index+1));
+    var img=document.createElement('img'); img.loading='lazy'; img.draggable=false;
+    img.alt='Photo du tournage de '+(titres[gallery]||'')+' — '+label(name);
+    var i=0;
+    function tryNext(){ if(i>=exts.length){fig.remove();return;} img.src='images/'+name+'.'+exts[i++]; }
+    img.onerror=tryNext;
+    a.addEventListener('click',function(ev){
+      ev.preventDefault();
+      var list=listOf(galleryEl,'img'); var k=0; [].slice.call(galleryEl.querySelectorAll('img')).forEach(function(im,n){if(im===img)k=n;});
+      openLB(list,k);
+    });
+    a.appendChild(img); fig.appendChild(a); galleryEl.appendChild(fig); tryNext();
+  }
+  [].slice.call(document.querySelectorAll('[data-gallery]')).forEach(function(galleryEl){
+    var key=galleryEl.getAttribute('data-gallery');
+    (galleries[key]||[]).forEach(function(name,index){addImage(galleryEl,key,name,index);});
+  });
+
+  /* ---------- nouvelles / objets (dossier SECTIONS) ---------- */
+  // Les médias proviennent du dossier SECTIONS fourni avec le site.
+  // Ajouter un objet dans "objets" le publie automatiquement dans les deux rubriques (Objets liturgiques et Ustensiles).
+  var mediaLists = {
+      actu: [
+        'AQP_2pyxcxJsDU8uNR5r8L6USJu0ugDaBSDSuAixuPIJVRZTXHMfzoLzASnPt_qBGgOEHrYV1ycn0aGOq2XOOJSk465e2bHUGzOOjRmr_w.mp4',
+        'bosch.jpg','cote2.jpg','cote5.jpg','dive1.jpg','egout.jpg','ephebellelui.jpg','farce.jpg',
+        'marcheu1.jpg','marcheu2.jpg','miseretag.jpg','miséreux.jpg','pg1.jpg',
+        'phrygien.jpg','poisson1.jpg','pq2.jpg'
+      ],
+      objets: ['clysteres.jpg','clysteres2.jpg','masque.jpg','mouche.jpg','poisson5.jpg','poisson6.jpg','poisson7.jpg','rat.jpg','recolte.jpg','salon1.jpg','salon2.jpg']
+    };
+  document.querySelectorAll('[data-gallery-list]').forEach(function(grid){
+    var key=grid.getAttribute('data-gallery-list');
+    (mediaLists[key]||[]).forEach(function(file){
+      var isVideo=/\.mp4$/i.test(file);
+      var path='SECTIONS/'+(key==='actu'?'actu':'ustensiles')+'/'+file;
+      var card=document.createElement('a'); card.className='nw'; card.href='#';
+      card.setAttribute('aria-label',isVideo?'Vidéo du tournage':'Agrandir la photo : '+file.replace(/\.[^.]+$/,''));
+      if(isVideo){
+        var video=document.createElement('video'); video.src=path; video.controls=true; video.preload='metadata';
+        video.setAttribute('controlsList','nodownload noremoteplayback'); video.disablePictureInPicture=true;
+        video.addEventListener('contextmenu',function(e){e.preventDefault();});
+        video.style.cssText='width:100%;height:100%;object-fit:cover'; video.setAttribute('aria-label','Vidéo du tournage du prochain clip');
+        card.style.aspectRatio='4/3'; card.appendChild(video);
+        card.addEventListener('click',function(e){e.preventDefault();});
+      } else {
+        var img=document.createElement('img'); img.src=path; img.draggable=false; img.alt=file.replace(/\.[^.]+$/,'').replace(/[-_]/g,' '); img.loading='lazy'; card.appendChild(img);
+        card.addEventListener('click',function(e){
+          e.preventDefault();
+          var imgs=[].slice.call(grid.querySelectorAll('.nw img')); var k=imgs.indexOf(img);
+          openLB(imgs.map(function(im){return {src:im.currentSrc||im.src,alt:im.alt};}),k);
+        });
+      }
+      grid.appendChild(card);
+    });
+  });
+
+  /* ---------- classement des nouvelles : la plus récente d'abord ---------- */
+  var nl=document.getElementById('news-list');
+  if(nl){ [].slice.call(nl.children).sort(function(a,b){return (b.getAttribute('data-date')||'').localeCompare(a.getAttribute('data-date')||'');}).forEach(function(n){nl.appendChild(n);}); }
+
+  /* ---------- deux rangées seulement + bouton pour voir la suite ---------- */
+  var folds=[].slice.call(document.querySelectorAll('[data-fold]'));
+  folds.forEach(function(grid){
+    if(grid.getAttribute('data-fold')!=='toggle')return;
+    var bar=document.createElement('p'); bar.className='fold-bar'; bar.hidden=true;
+    var b=document.createElement('button'); b.type='button'; b.className='btn'; b.textContent='VOIR LA SUITE'; b.setAttribute('aria-expanded','false');
+    b.addEventListener('click',function(){
+      var open=grid.getAttribute('data-open')==='1';
+      grid.setAttribute('data-open',open?'0':'1'); b.textContent=open?'VOIR LA SUITE':'RÉDUIRE'; b.setAttribute('aria-expanded',open?'false':'true');
+      layoutFold(grid); if(open)grid.scrollIntoView({block:'start'});
+    });
+    bar.appendChild(b); grid.parentNode.insertBefore(bar,grid.nextSibling); grid._bar=bar;
+  });
+  function layoutFold(grid){
+    var kids=[].slice.call(grid.children);
+    kids.forEach(function(k){k.classList.remove('fold-hide');});
+    if(grid.offsetParent===null)return;
+    var open=grid.getAttribute('data-open')==='1', hidden=0;
+    if(!open){
+      var tops=[]; kids.forEach(function(k){var t=k.offsetTop; if(tops.indexOf(t)<0)tops.push(t);});
+      tops.sort(function(a,b){return a-b;});
+      var limit=tops.length>1?tops[1]:tops[0];
+      kids.forEach(function(k){ if(k.offsetTop>limit){k.classList.add('fold-hide');hidden++;} });
+    }
+    if(grid._bar)grid._bar.hidden=!(hidden>0||open);
+  }
+  function foldAll(){ folds.forEach(layoutFold); }
+  var rz; window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(foldAll,120);});
+  window.addEventListener('hashchange',function(){setTimeout(foldAll,40);});
+  window.addEventListener('load',foldAll);
+  foldAll(); setTimeout(foldAll,300);
 })();
-</script></body>
+</script>
+</body>
 </html>
