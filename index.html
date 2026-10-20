@@ -637,8 +637,7 @@ function createClipCard(title,id,video,album,albumId){
   var heading=document.createElement("h3"),titleLink=document.createElement("a");titleLink.href="#"+id;titleLink.textContent=title;heading.appendChild(titleLink);
   var albumLine=document.createElement("span");albumLine.className="clip-album";albumLine.appendChild(document.createTextNode("de "));
   var albumLink=document.createElement("a");albumLink.href="#"+albumId;albumLink.textContent=album;albumLine.appendChild(albumLink);
-  var galleryLink=document.createElement("a");galleryLink.className="clip-gallery-link";galleryLink.href="#"+id;galleryLink.textContent="PHOTOS DU TOURNAGE →";
-  copy.appendChild(heading);copy.appendChild(albumLine);copy.appendChild(galleryLink);card.appendChild(thumbnail);card.appendChild(copy);
+  copy.appendChild(heading);copy.appendChild(albumLine);card.appendChild(thumbnail);card.appendChild(copy);
   return card;
 }
 var clipGrid=document.querySelector("#clips .cgal");
@@ -686,11 +685,7 @@ var appleTrackIds={
 var clip=clipForTrack[d.dataset.t],summary=d.querySelector("summary"),section=d.closest(".pg"),trackList=d.closest(".tl");
 var appleIds=section&&appleTrackIds[section.id],trackIndex=trackList?[].indexOf.call(trackList.querySelectorAll("details"),d):-1;
 var appleId=appleIds&&appleIds[trackIndex];
-if(clip&&summary){
-var link=document.createElement("a");link.className="clip-link";link.href="#"+clip.id;link.textContent="CLIP DISPONIBLE";
-link.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();location.hash=clip.id});
-summary.appendChild(link);
-}else if(d.dataset.t==="Jubilé"&&summary){
+if(d.dataset.t==="Jubilé"&&summary){
 var youtubeLink=document.createElement("a");youtubeLink.className="clip-link";youtubeLink.href="https://youtu.be/btnbqG0_kc0";youtubeLink.target="_blank";youtubeLink.rel="noopener";youtubeLink.textContent="ÉCOUTER SUR YOUTUBE";
 youtubeLink.addEventListener("click",function(e){e.stopPropagation()});
 summary.appendChild(youtubeLink);
@@ -711,6 +706,7 @@ var existingBio=document.querySelector("#album-jubile .bio");
 if(existingBio)trackBio.appendChild(existingBio.cloneNode(true));
 }else if(t==="Misérables"){var comingBio=document.createElement("p");comingBio.textContent="À venir";trackBio.appendChild(comingBio)}
 if(trackBio.hasChildNodes())b.appendChild(trackBio);
+if(clip){var galleryLink=document.createElement("a");galleryLink.className="clip-gallery-link";galleryLink.href="#"+clip.id;galleryLink.textContent="PHOTOS DU TOURNAGE →";b.appendChild(galleryLink)}
 var layout=document.createElement("div");layout.className=clip?"clip-lyric-layout":"";
 if(appleId){var preview=document.createElement("iframe");preview.className="apple-track-player";preview.loading="lazy";preview.allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write";preview.referrerPolicy="strict-origin-when-cross-origin";preview.title="Aperçu Apple Music de "+t;preview.src="https://embed.music.apple.com/fr/song/"+appleId+"?theme=dark";layout.appendChild(preview)}
 if(clip){var player=document.createElement("iframe");player.className="clip-lyric-player";player.loading="lazy";player.allowFullscreen=true;player.referrerPolicy="strict-origin-when-cross-origin";player.title="Clip de "+t;player.src="https://www.youtube.com/embed/"+clip.video;layout.appendChild(player)}
