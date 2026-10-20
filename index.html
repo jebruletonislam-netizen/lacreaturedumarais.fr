@@ -57,7 +57,7 @@ a.btn[href*="spotify.com"]:hover,a.btn[href*="youtube.com"]:hover,a.btn[href*="d
 .ah h2{background:#fc0;color:#000;border:0;text-shadow:none;padding:.04em .1em 0;line-height:.8}.alb span{display:block;margin-top:.7rem}
 .alb.has-album-excerpt{margin-bottom:.35rem}
 .alb.has-album-excerpt{margin-bottom:0}
-.album-excerpt{font:400 1.45rem/1.2 "Religath","Cinzel",Georgia,serif;margin:.1rem 0 1.8rem 13.2rem}
+.album-excerpt{font:400 1.45rem/1.2 "Religath","Religath Ligatures","Cinzel",Georgia,serif;margin:.1rem 0 1.8rem 13.2rem}
 .album-excerpt a{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
 .album-excerpt a:hover{color:#fff}
 .ah{display:flex;gap:2.4rem;align-items:flex-start;margin-bottom:1.8rem}.ah img{width:17rem;height:17rem}
@@ -227,8 +227,10 @@ a.nw:hover{outline:.25rem solid var(--r)}
 .track-bio{grid-column:1/-1;max-width:70rem;padding:.6rem 0 1rem}
 .track-bio p{margin:.35rem 0}
 .apple-track-player{display:block;width:min(100%,64rem);height:8.5rem;margin:0 0 1rem;border:.15rem solid rgba(255,204,0,.55);background:#000}
-.track-art-thumb{width:4.2rem;height:4.2rem;flex:none;margin-right:.65rem;object-fit:cover;border:.1rem solid rgba(255,255,255,.4);transition:width .2s,height .2s}
-.tl details[open] .track-art-thumb{width:6.4rem;height:6.4rem}
+.track-art-thumb{width:4.2rem;height:4.2rem;flex:none;margin-right:.65rem;object-fit:cover;border:.1rem solid rgba(255,255,255,.4)}
+.track-art-expanded{display:block;float:left;width:14rem;height:14rem;object-fit:cover;margin:0 1rem .5rem 0;border:.15rem solid rgba(255,204,0,.65)}
+#album-in-odium-fidei .tl details.track-art-open .track-art-thumb{display:none}
+#album-in-odium-fidei .track-bio::after,#album-in-odium-fidei .track-bio .bio::after{content:"";display:block;clear:both}
 .tl summary{gap:.65rem}
 .tl summary b{margin-right:.3rem}
 .vid{max-width:90rem;margin-bottom:1rem}
@@ -325,7 +327,8 @@ nav a{flex:1 1 0}
 @media (max-width:899px){.tour-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}.tour-gallery .ph a{border-width:.18rem}}
 
 /* ===== v11 : Religath, vitrail, ombres, lightbox, nouvelles, pied de page ===== */
-@font-face{font-family:"Religath";src:url("fonts/RELIGATH-OE.otf") format("opentype");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
+@font-face{font-family:"Religath Ligatures";src:url("fonts/RELIGATH-LIGATURES.otf") format("opentype");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0152-0153}
 main{isolation:isolate}
 main>section{position:relative;z-index:1}
 main::before{height:3.4rem;background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.18) 45%,rgba(0,0,0,0))}
@@ -334,7 +337,7 @@ main::after{width:3.4rem;background:linear-gradient(to right,rgba(0,0,0,.45),rgb
 .blk,.na+.na{box-shadow:0 -.3rem .9rem -.55rem rgba(0,0,0,.5),0 .3rem .9rem -.55rem rgba(0,0,0,.5)}
 .na+.na{border-top:.5rem solid var(--r);margin:3rem calc(-1*var(--mp)) 0;padding:2.4rem var(--mp) 0}
 /* Religath : texte courant (hors titres et sous-titres) */
-main p,main li,.mf input,.mf textarea{font-family:"Religath","Cinzel",Georgia,serif;letter-spacing:.02em}
+main p,main li,.mf input,.mf textarea{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.02em}
 main p{font-size:clamp(1.05rem,1.28vw,1.55rem);line-height:1.32;text-shadow:0 1px 2px rgba(0,0,0,.75)}
 main li{text-shadow:0 1px 2px rgba(0,0,0,.75)}
 main .sub,main .ec,main .note,main .k2,main .ah p,main .cc p,main .fold-bar,main .mf-bar,main .dt{font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.01em;font-size:revert-layer}
@@ -342,7 +345,7 @@ main .sub{font-size:2.6rem;line-height:1.05}
 main .ec{font-size:2.6rem}main .note{font-size:2.4rem}
 main .ah p{font-size:2.3rem;line-height:1.1}
 main .cc p{font-size:2rem}
-.hero b{font-family:"Religath","Cinzel",Georgia,serif;text-transform:uppercase;font-size:6.3rem;line-height:1;color:#fc0;text-shadow:0 0 .3rem rgba(150,0,0,.55),0 0 .8rem rgba(175,0,0,.45);text-decoration:underline;text-decoration-color:#fc0;text-decoration-thickness:.06em;text-underline-offset:.12em;margin-bottom:.9rem;letter-spacing:.005em}
+.hero b{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;text-transform:uppercase;font-size:6.3rem;line-height:1;color:#fc0;text-shadow:0 0 .3rem rgba(150,0,0,.55),0 0 .8rem rgba(175,0,0,.45);text-decoration:underline;text-decoration-color:#fc0;text-decoration-thickness:.06em;text-underline-offset:.12em;margin-bottom:.9rem;letter-spacing:.005em}
 /* nouvelles */
 .na{max-width:90rem}
 .na .sub{margin:.2rem 0 .8rem}
@@ -365,7 +368,7 @@ main .cc p{font-size:2rem}
 /* pied de page */
 .sf{padding:2.8rem 1rem 3rem}
 .sf-t{display:block;margin:0 auto;width:min(66rem,90%);height:auto;mix-blend-mode:screen}
-.sf p.sf-c{margin:.2rem 0 0;font-family:"Religath","Cinzel",Georgia,serif;color:#fff;font-size:1.8rem;font-weight:400;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
+.sf p.sf-c{margin:.2rem 0 0;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;color:#fff;font-size:1.8rem;font-weight:400;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
 .album-link{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
 .album-link:hover,.album-link:focus-visible{color:#fff}
 .track-art-thumb{width:4rem;height:4rem;flex:none;object-fit:cover;border:.1rem solid rgba(255,255,255,.4)}
@@ -389,6 +392,7 @@ main .cc p{font-size:2rem}
   .sf p.sf-c{font-size:1.1rem;font-weight:400;margin-top:.1rem}
   .track-art-thumb{width:3.6rem;height:3.6rem}
   .tl details[open] .track-art-thumb{width:5.2rem;height:5.2rem}
+  .track-art-expanded{width:7rem;height:7rem;margin-right:.7rem}
   .apple-track-player{height:8rem}
 }
 </style>
@@ -716,6 +720,7 @@ var t=d.dataset.t,g=G[t],b=d.querySelector(".ly");
 if(!d.open){
 var oldPlayer=b.querySelector(".apple-track-player");if(oldPlayer)oldPlayer.src="about:blank";
 while(b.firstChild)b.removeChild(b.firstChild);
+d.classList.remove("track-art-open");
 d.dataset.l="";return;
 }
 [].slice.call(trackList.querySelectorAll("details[open]")).forEach(function(other){if(other!==d)other.open=false});
@@ -727,6 +732,10 @@ var existingBio=document.querySelector("#album-jubile .bio");
 if(existingBio)trackBio.appendChild(existingBio.cloneNode(true));
 }else if(t==="Misérables"){var comingBio=document.createElement("p");comingBio.textContent="À venir";trackBio.appendChild(comingBio)}
 if(trackBio.hasChildNodes())b.appendChild(trackBio);
+if(section&&section.id==="album-in-odium-fidei"&&summary){
+var sourceArt=summary.querySelector(".track-art-thumb"),artContent=t==="Jubilé"?trackBio.querySelector(".bio"):trackBio;
+if(sourceArt&&artContent){var expandedArt=sourceArt.cloneNode();expandedArt.className="track-art-expanded";artContent.insertBefore(expandedArt,artContent.firstChild);d.classList.add("track-art-open")}
+}
 if(clip){var galleryLink=document.createElement("a");galleryLink.className="clip-gallery-link";galleryLink.href="#"+clip.id;galleryLink.textContent="PHOTOS DU TOURNAGE →";b.appendChild(galleryLink)}
 var layout=document.createElement("div");layout.className=clip?"clip-lyric-layout":"";
 if(appleId){var preview=document.createElement("iframe");preview.className="apple-track-player";preview.loading="lazy";preview.allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write";preview.referrerPolicy="strict-origin-when-cross-origin";preview.title="Aperçu Apple Music de "+t;preview.src="https://embed.music.apple.com/fr/song/"+appleId+"?theme=dark";layout.appendChild(preview)}
