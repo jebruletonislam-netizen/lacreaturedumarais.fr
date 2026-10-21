@@ -1,0 +1,48 @@
+@font-face{font-family:"Religath";src:url("/fonts/RELIGATH-Demo.otf") format("opentype");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
+@font-face{font-family:"Religath Ligatures";src:url("/fonts/RELIGATH-LIGATURES.otf") format("opentype");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0152-0153}
+.route-header{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;height:auto;min-height:7rem;padding:.8rem 1.4rem;border-bottom:.45rem solid #f00;overflow:visible;background:#000}
+.route-brand{display:flex;align-items:center;gap:.7rem;min-width:max-content;color:#fc0;text-decoration:none;font:400 2.4rem/.9 "Bebas Neue","Arial Narrow",Impact,sans-serif}
+.route-brand img{display:block;width:4.8rem;height:4.8rem;object-fit:contain}
+.route-brand small{display:block;margin-top:.35rem;color:#fff;font-size:1.15rem;letter-spacing:.08em}
+.route-nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.35rem .8rem}
+.route-nav a{display:block;padding:.4rem .25rem;border:0;color:#f00;background:transparent;text-decoration:none;font:400 1.6rem/1 "Bebas Neue","Arial Narrow",Impact,sans-serif}
+.route-nav a:hover,.route-nav a:focus-visible{color:#fc0}
+.route-main{min-height:calc(100vh - 13rem);padding:2rem clamp(1.2rem,5vw,5rem) 3.5rem;background:#000080}
+.route-content{max-width:78rem;margin:0 auto}
+.route-content h1{display:inline-block;margin:.2rem 0 1.8rem;padding:.05em .12em 0;background:#fc0;color:#000;font:400 clamp(2.5rem,5vw,4.4rem)/.9 "Bebas Neue","Arial Narrow",Impact,sans-serif}
+.route-content h2{margin:2.2rem 0 1rem;color:#fc0;font:400 clamp(1.8rem,3.4vw,2.8rem)/1 "Bebas Neue","Arial Narrow",Impact,sans-serif}
+.route-content h3{margin:1.5rem 0 .6rem;color:#fc0;font:400 1.8rem/1.05 "Bebas Neue","Arial Narrow",Impact,sans-serif}
+.route-content p,.route-content li{margin:0 0 1rem;font:400 clamp(1rem,1.35vw,1.3rem)/1.48 "Religath","Religath Ligatures",Georgia,serif;text-shadow:0 1px 2px rgba(0,0,0,.75)}
+.route-content a:not(.btn){color:#fc0;text-decoration:underline;text-underline-offset:.14em}
+.route-content a:not(.btn):hover{color:#fff}
+.route-content ul{margin:0 0 1.4rem;padding-left:1.5rem}
+.route-content .btn{margin:.35rem .5rem .35rem 0;font-size:1.5rem}
+.route-kicker{margin-bottom:.5rem!important;color:#f00!important;font:400 1.25rem/1 "Bebas Neue","Arial Narrow",Impact,sans-serif!important;letter-spacing:.08em}
+.route-lead{max-width:62rem;font-size:clamp(1.15rem,1.6vw,1.5rem)!important}
+.route-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1rem;margin:1.4rem 0}
+.route-card{min-width:0;padding:1rem;background:#000;border:.2rem solid #f00}
+.route-card img{display:block;width:100%;height:auto;margin-bottom:.8rem;object-fit:contain}
+.route-card h2,.route-card h3{margin:.2rem 0 .6rem}
+.route-card p{margin-bottom:.55rem}
+.route-platforms{display:flex;flex-wrap:wrap;gap:.35rem}
+.route-video{max-width:54rem;margin:0 0 2rem}
+.route-video iframe{display:block;width:100%;aspect-ratio:16/9;border:.2rem solid #000;background:#000}
+.route-portrait{display:block;width:min(100%,30rem);height:auto;margin:0 0 1.4rem;border:.2rem solid #000}
+.route-footer{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.3rem 1.5rem;background:#000;border-top:.35rem solid #f00;color:#fff;font:400 1.25rem/1.1 "Bebas Neue","Arial Narrow",Impact,sans-serif}
+.route-footer a{color:#fc0;text-decoration:none}
+.route-footer a:hover{color:#fff}
+@media(max-width:899px){
+  .route-header{display:block;padding:.6rem .8rem}
+  .route-brand{font-size:1.8rem}
+  .route-brand img{width:3.4rem;height:3.4rem}
+  .route-brand small{font-size:.9rem}
+  .route-nav{justify-content:flex-start;gap:.1rem .5rem;margin-top:.55rem}
+  .route-nav a{font-size:1.15rem;padding:.35rem .2rem}
+  .route-main{padding:1.3rem 1rem 2.4rem}
+  .route-content h1{font-size:2.35rem}
+  .route-content h2{font-size:1.7rem}
+  .route-content p,.route-content li{font-size:1rem}
+  .route-content .btn{font-size:1.15rem}
+  .route-footer{display:block;font-size:1rem}
+  .route-footer a{display:block;margin-top:.6rem}
+}

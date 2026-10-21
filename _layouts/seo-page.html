@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ page.title | escape }}</title>
+  <meta name="description" content="{{ page.description | escape }}">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#000000">
+  <link rel="canonical" href="https://lacreaturedumarais.fr{{ page.url }}">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/seo-pages.css">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page.title | escape }}">
+  <meta property="og:description" content="{{ page.description | escape }}">
+  <meta property="og:url" content="https://lacreaturedumarais.fr{{ page.url }}">
+  <meta property="og:site_name" content="La Créature du Marais">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:image" content="https://lacreaturedumarais.fr/images/creature.jpg">
+  <meta property="og:image:alt" content="Tancrède Charon, La Créature du Marais">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page.title | escape }}">
+  <meta name="twitter:description" content="{{ page.description | escape }}">
+  <meta name="twitter:image" content="https://lacreaturedumarais.fr/images/creature.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://lacreaturedumarais.fr{{ page.url }}#webpage",
+    "url": "https://lacreaturedumarais.fr{{ page.url }}",
+    "name": {{ page.title | jsonify }},
+    "description": {{ page.description | jsonify }},
+    "inLanguage": "fr-FR",
+    "isPartOf": {"@id": "https://lacreaturedumarais.fr/#website"},
+    "about": {"@id": "https://lacreaturedumarais.fr/#artist"}
+  }
+  </script>
+  {% if page.artist_profile %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://lacreaturedumarais.fr/#artist",
+    "name": "Tancrède Charon",
+    "alternateName": ["La Créature du Marais", "Cul-Pointu"],
+    "url": "https://lacreaturedumarais.fr/la-creature-du-marais/",
+    "image": "https://lacreaturedumarais.fr/images/creature.jpg",
+    "jobTitle": "Artiste musical",
+    "homeLocation": {
+      "@type": "Place",
+      "name": "Rouen, Normandie, France"
+    },
+    "sameAs": [
+      "https://www.youtube.com/@LaCreatureduMarais",
+      "https://www.instagram.com/lacreaturedumarais/",
+      "https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J",
+      "https://www.deezer.com/fr/artist/110734722",
+      "https://music.apple.com/fr/artist/cul-pointu/1535689871",
+      "https://x.com/TancredeCharon",
+      "https://www.tiktok.com/@lacreaturedumarais"
+    ]
+  }
+  </script>
+  {% endif %}
+  {% if page.discography %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://lacreaturedumarais.fr/discographie/#page",
+    "url": "https://lacreaturedumarais.fr/discographie/",
+    "name": "Discographie de La Créature du Marais",
+    "inLanguage": "fr-FR",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListOrder": "https://schema.org/ItemListOrderDescending",
+      "numberOfItems": 5,
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Jubilé", "url": "https://lacreaturedumarais.fr/jubile.html"}},
+        {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Confiteor", "url": "https://lacreaturedumarais.fr/albums/confiteor.html"}},
+        {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Omerta434 : Chyren", "url": "https://lacreaturedumarais.fr/albums/omerta434-chyren.html"}},
+        {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "Omerta434", "url": "https://lacreaturedumarais.fr/albums/omerta434.html"}},
+        {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Les Machines Infernales", "url": "https://lacreaturedumarais.fr/albums/les-machines-infernales.html"}}
+      ]
+    }
+  }
+  </script>
+  {% endif %}
+</head>
+<body>
+  <header class="route-header">
+    <a class="route-brand" href="/" aria-label="La Créature du Marais — accueil">
+      <img src="/images/blason.png" alt="">
+      <span>LA CRÉATURE DU MARAIS<small>CUL-POINTU · ROUEN</small></span>
+    </a>
+    <nav class="route-nav" aria-label="Navigation principale">
+      <a href="/la-creature-du-marais/">LA CRÉATURE</a>
+      <a href="/biographie/">BIOGRAPHIE</a>
+      <a href="/musique/">MUSIQUE</a>
+      <a href="/discographie/">DISCOGRAPHIE</a>
+      <a href="/videos/">VIDÉOS</a>
+      <a href="/presse/">PRESSE</a>
+      <a href="/contact/">CONTACT</a>
+    </nav>
+  </header>
+  <main class="route-main">
+    <div class="route-content">
+      {{ content }}
+    </div>
+  </main>
+  <footer class="route-footer">
+    <span>LA CRÉATURE DU MARAIS · TANCRÈDE CHARON · ROUEN · CUL-POINTU</span>
+    <a href="/">RETOUR À L’ACCUEIL</a>
+  </footer>
+</body>
+</html>
