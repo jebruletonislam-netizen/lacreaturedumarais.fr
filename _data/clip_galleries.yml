@@ -1,24 +1,22 @@
 cote:
-  - file: allumagetorche.jpg
-    caption: Allumage de la torche
   - file: aupiedelacote.jpg
     caption: Au pied de la côte
   - file: avectorchecote.jpg
-    caption: Avec la torche sur la côte
+    caption: Montée de la côte
   - file: bateauseinenocturne.png
     caption: Bateau nocturne sur la Seine
   - file: branle la torche.jpg
-    caption: La torche brandie
+    caption: Branlette de torche
   - file: cavecamisole.jpg
     caption: Dans la cave, en camisole
   - file: cotestecatherineavecactrice.jpg
-    caption: L’actrice sur la côte Sainte-Catherine
+    caption: Avec l’actrice sur la côte
   - file: cotestecatherineavecactrice1.jpg
-    caption: L’actrice sur la côte Sainte-Catherine · 1
+    caption: Avec l’actrice sur la côte
   - file: cotestecatherineavecactrice2.jpg
-    caption: L’actrice sur la côte Sainte-Catherine · 2
+    caption: Avec l’actrice sur la côte
   - file: cotestecatherineavecactrice3.jpg
-    caption: L’actrice sur la côte Sainte-Catherine · 3
+    caption: Avec l’actrice sur la côte
   - file: dansruinesstpierreduchatel.jpg
     caption: Dans les ruines de Saint-Pierre-du-Châtel
   - file: dansruinesstpierreduchatel1.jpg
@@ -26,21 +24,19 @@ cote:
   - file: dansruinesstpierreduchatel2.jpg
     caption: Dans les ruines de Saint-Pierre-du-Châtel · 2
   - file: faire joujou avec la torche au pied de la cote.jpg
-    caption: Jouer avec la torche au pied de la côte
+    caption: Faire joujou
   - file: nuittorchecote.jpg
     caption: Nuit à la torche sur la côte
   - file: remisevetementspanorama.jpg
     caption: Remise des vêtements · panorama
   - file: souslepontilelacroix.jpg
-    caption: Sous le pont de l’île Lacroix
+    caption: Au-dessus de la Seine à l’île Lacroix
   - file: verificationfocus.jpg
     caption: Vérification du focus
   - file: instructionscamera.jpg
     caption: Instructions caméra
 
 chimaera:
-  - file: allumagetorche.jpg
-    caption: Allumage de la torche
   - file: angenoir1.jpg
     caption: Ange noir devant une gravure du blason normand
   - file: angenoirblasonrouen.jpg
@@ -62,17 +58,17 @@ chimaera:
   - file: devant la demeure des vampires 2.jpg
     caption: Devant le Vampirium
   - file: devantblason.jpg
-    caption: Ange noir devant les lions normands de l’île Lacroix · 1
+    caption: Devant les lions normands de l’île Lacroix
   - file: devantblason1.jpg
-    caption: Ange noir devant les lions normands de l’île Lacroix · 2
+    caption: Devant les lions normands de l’île Lacroix
   - file: torche.jpg
-    caption: Derrière la fontaine Sainte-Marie
+    caption: Tournage devant la maison natale de Fontenelle
   - file: torcheeteinteruestromain.jpg
     caption: Tournage rue Saint-Romain · 2
   - file: muséevide.png
     caption: Musée des Antiquités vidé pour faire place à la profanation municipale
   - file: fontaine1.jpg
-    caption: Tournage rue Saint-Romain · 1
+    caption: Derrière la fontaine Sainte-Marie
   - file: torchenuitdevanteglisesstejeannedarc.png
     caption: Torche de nuit devant la croix de Jeanne d’Arc
 
