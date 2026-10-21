@@ -651,7 +651,7 @@ main .cc p{font-size:2rem}
 <p>PUANTEUR PUTRIDE Productions en conserve une partie des traces et constitue le cadre de production de cette première mythologie.</p>
 <p>Paru en 2021, Les Machines Infernales marque l’aboutissement de cette période : c’est le dernier album des Retard-Tinables. La Créature y rassemble une dernière fois son harem avant de poursuivre sa mission loin d’eux.</p>
 <p>À partir d’Omerta434 (2022), album éponyme du groupe formé avec Anna.o, puis avec Chyren, la Créature poursuit son évolution. Le projet devient progressivement son œuvre personnelle, tandis que l’expérience des Retard-Tinables demeure comme la préhistoire artistique de la Créature et le creuset collectif dont elle est issue.</p>
-<p>Avant le marais, il y eut la boue. Brouillons, machines, cris enregistrés, premières bêtes : tout ce qui s'est entassé là avant que la Créature n'ait un nom. Ce ne sont pas des œuvres, ce sont des gravats, ce qui reste d'une cathédrale quand on n'a pas encore posé la première pierre.</p></div><aside><p>Les premières traces, les brouillons, les gravats.</p><a class="btn" href="https://soundcloud.com/puanteurputride" rel="noopener" target="_blank">OUVRIR LES ARCHIVES →</a></aside></div><div class="blk alist"><a class="al" href="#archive-objets"><b>OBJETS LITURGIQUES</b></a><a class="al" href="#archive-dossiers"><b>DOSSIERS COMPROMETTANTS</b></a><a class="al" href="#archive-ordures"><b>ORDURES AUDIOVISUELLES</b></a></div></section>
+<p>Avant le marais, il y eut la boue. Brouillons, machines, cris enregistrés, premières bêtes : tout ce qui s'est entassé là avant que la Créature n'ait un nom. Ce ne sont pas des œuvres, ce sont des gravats, ce qui reste d'une cathédrale quand on n'a pas encore posé la première pierre.</p></div><aside><p>Les premières crottes, les premières odeurs, les premiers malheurs</p><a class="btn" href="https://soundcloud.com/puanteurputride" rel="noopener" target="_blank">OUVRIR LES ARCHIVES →</a></aside></div><div class="blk alist"><a class="al" href="#archive-objets"><b>OBJETS LITURGIQUES</b></a><a class="al" href="#archive-dossiers"><b>DOSSIERS COMPROMETTANTS</b></a><a class="al" href="#archive-ordures"><b>ORDURES AUDIOVISUELLES</b></a></div></section>
 <section class="pg" data-title="Objets liturgiques" id="archive-objets">
 <p><a class="back" href="#archives">← ARCHIVES</a></p>
 <h2>OBJETS LITURGIQUES</h2>
@@ -699,27 +699,6 @@ mobileHeaderSocials.className="mobile-header-socials";
 });
 document.querySelector("header").appendChild(mobileHeaderSocials);
 [].slice.call(document.querySelectorAll('.mobile-footer .mobile-socials a[aria-label="Instagram"],.mobile-footer .mobile-socials a[aria-label="Spotify"],.mobile-footer .mobile-socials a[aria-label="YouTube"]')).forEach(function(link){link.remove()});
-function createClipCard(title,id,video,album,albumId){
-  var card=document.createElement("div");card.className="cc";
-  var thumbnail=document.createElement("a");thumbnail.className="th";thumbnail.href="#"+id;thumbnail.setAttribute("aria-label","Voir le clip "+title);
-  var image=document.createElement("img");image.alt="Miniature du clip "+title;image.loading="lazy";image.src="https://img.youtube.com/vi/"+video+"/maxresdefault.jpg";
-  image.onerror=function(){this.onerror=null;this.src="https://img.youtube.com/vi/"+video+"/hqdefault.jpg"};
-  thumbnail.appendChild(image);
-  var copy=document.createElement("div");copy.className="cc-copy";
-  var heading=document.createElement("h3"),titleLink=document.createElement("a");titleLink.href="#"+id;titleLink.textContent=title;heading.appendChild(titleLink);
-  var albumLine=document.createElement("span");albumLine.className="clip-album";albumLine.appendChild(document.createTextNode("de "));
-  var albumLink=document.createElement("a");albumLink.href="#"+albumId;albumLink.textContent=album;albumLine.appendChild(albumLink);
-  copy.appendChild(heading);copy.appendChild(albumLine);card.appendChild(thumbnail);card.appendChild(copy);
-  return card;
-}
-var clipGrid=document.querySelector("#clips .cgal");
-if(clipGrid){
-  [].slice.call(clipGrid.querySelectorAll(".cc")).forEach(function(oldCard){
-    var image=oldCard.querySelector(".th img"),title=oldCard.querySelector("h3").textContent.trim(),id=oldCard.getAttribute("href").slice(1);
-    var video=image.src.match(/\/vi\/([^/]+)\//)[1];
-    oldCard.replaceWith(createClipCard(title,id,video,"Confiteor","album-confiteor"));
-  });
-}
 var jubileeCard=document.querySelector('#discographie .alb[href="#album-jubile"]');
 if(jubileeCard){
   var excerpt=document.createElement('p');excerpt.className='album-excerpt';

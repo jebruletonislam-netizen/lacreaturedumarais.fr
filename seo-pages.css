@@ -51,6 +51,14 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-content .alb b{display:inline-block;padding:.04em .1em 0;background:#fc0;color:#000;font-size:3rem;font-weight:400;line-height:.8}
 .route-content .alb:hover b{background:#fff}
 .route-content .alb span{display:block;margin-top:.7rem;color:#fff;text-decoration:none}
+.route-content .album-excerpt{margin:.1rem 0 1.8rem 13.2rem;color:#fff;font-size:1.45rem;line-height:1.2}
+.route-content .album-excerpt a{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
+.route-content .vid{width:100%;max-width:52rem;margin:0 auto 1.2rem}
+.route-content .vid iframe{display:block;width:100%;aspect-ratio:16/9;border:.25rem solid #000;background:#000}
+.route-content .route-clip-detail{scroll-margin-top:16rem;margin:2.5rem 0 0;padding-top:1.4rem;border-top:.2rem solid rgba(255,0,0,.55)}
+.route-content .route-clip-detail h2{margin-top:0}
+.route-content .clip-description{max-width:86rem}
+.route-content .clip-description p{max-width:none}
 .route-content .ah{display:flex;align-items:flex-start;gap:2.4rem;margin-bottom:1.8rem}
 .route-content .ah>img{display:block;width:17rem;height:17rem;margin:0;border:.2rem solid #000;object-fit:cover}
 .route-content .ah h2{display:inline-block;margin:.2rem 0 1rem;padding:.04em .1em 0;border:0;background:#fc0;color:#000;line-height:.8;text-shadow:none}
@@ -103,6 +111,8 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
   .route-content .alb img{width:5.5rem;height:5.5rem}
   .route-content .alb b{max-width:100%;font-size:clamp(1rem,4.2vw,1.45rem);line-height:.95;overflow-wrap:anywhere}
   .route-content .alb span{margin-top:.35rem;font-size:.9rem}
+  .route-content .album-excerpt{margin:.1rem 0 1rem 6.5rem;font-size:.9rem}
+  .route-content .route-clip-detail{scroll-margin-top:9rem;margin-top:1.5rem;padding-top:.8rem}
   .route-content .ah{flex-direction:column;gap:1rem;margin-bottom:1rem}
   .route-content .ah>img{width:8.5rem;height:8.5rem}
   .route-content .ah p{font-size:1.15rem}
