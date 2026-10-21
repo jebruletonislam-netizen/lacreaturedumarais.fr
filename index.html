@@ -768,10 +768,13 @@ var trackBio=document.createElement("div");trackBio.className="track-bio";
 if(t==="Jubilé"){
 var existingBio=document.querySelector("#album-jubile .bio");
 if(existingBio)trackBio.appendChild(existingBio.cloneNode(true));
-}else if(t==="Misérables"){var comingBio=document.createElement("p");comingBio.textContent="À venir";trackBio.appendChild(comingBio)}
+}else if(t==="Misérables"){
+var misBio=document.querySelector("#album-miserables .bio");
+if(misBio)trackBio.appendChild(misBio.cloneNode(true));
+}
 if(trackBio.hasChildNodes())b.appendChild(trackBio);
 if(section&&section.id==="album-in-odium-fidei"&&summary){
-var sourceArt=summary.querySelector(".track-art-thumb"),artContent=t==="Jubilé"?trackBio.querySelector(".bio"):trackBio;
+var sourceArt=summary.querySelector(".track-art-thumb"),artContent=trackBio.querySelector(".bio")||trackBio;
 if(sourceArt&&artContent){var expandedArt=sourceArt.cloneNode();expandedArt.className="track-art-expanded";artContent.insertBefore(expandedArt,artContent.firstChild);d.classList.add("track-art-open")}
 }
 if(clip){var galleryLink=document.createElement("a");galleryLink.className="clip-gallery-link";galleryLink.href=clip.url;galleryLink.textContent="PHOTOS DU TOURNAGE →";b.appendChild(galleryLink)}
