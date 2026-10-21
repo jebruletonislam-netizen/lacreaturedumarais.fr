@@ -7,7 +7,7 @@
   <meta name="description" content="{{ page.description | escape }}">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#000000">
-  <link rel="canonical" href="https://lacreaturedumarais.fr{{ page.url }}">
+  <link rel="canonical" href="{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}">
   <link rel="icon" href="/images/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="{{ page.title | escape }}">
   <meta property="og:description" content="{{ page.description | escape }}">
-  <meta property="og:url" content="https://lacreaturedumarais.fr{{ page.url }}">
+  <meta property="og:url" content="{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}">
   <meta property="og:site_name" content="La Créature du Marais">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:image" content="https://lacreaturedumarais.fr/images/creature.jpg">
@@ -30,8 +30,8 @@
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": "https://lacreaturedumarais.fr{{ page.url }}#webpage",
-    "url": "https://lacreaturedumarais.fr{{ page.url }}",
+    "@id": "{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}#webpage",
+    "url": "{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}",
     "name": {{ page.title | jsonify }},
     "description": {{ page.description | jsonify }},
     "inLanguage": "fr-FR",

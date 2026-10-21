@@ -224,7 +224,7 @@ header{overflow:visible;z-index:30}
 .hero h1{display:table;font-weight:400;font-size:7rem;line-height:.85;color:var(--r);text-shadow:0 0 .9rem rgba(255,0,0,.6);margin:0 auto .6rem}
 .hero span{display:block;font-size:2.8rem;line-height:1.05}
 .hero span+span{opacity:.85}
-.mq{display:none}
+.mq{display:none}.mq-mobile-only{display:none}
 .blk{clear:both;border-top:.5rem solid var(--r);margin:2.6rem calc(-1*var(--mp)) 0;padding:2rem var(--mp) 0}
 .blk .sub{margin-bottom:1.4rem}
 .dm{display:block;text-decoration:none;width:max-content;max-width:100%}
@@ -315,6 +315,8 @@ a.nw:hover{outline:.25rem solid var(--r)}
 .hero h1{font-size:clamp(1.9rem,9.4vw,3rem);margin-bottom:.35rem}
 .hero span{font-size:1.2rem}
 .mq{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:0 0 1.4rem}
+.mq-mobile-only{display:inline-block}
+.mq-desktop-only{display:none}
 .mq .btn{margin:0;text-align:center;font-size:1.2rem;padding:.55rem .3rem .35rem}
 .blk{border-top-width:.25rem;margin-top:1.6rem;padding-top:1.2rem}
 .dm b{font-size:2.6rem}
@@ -459,7 +461,7 @@ main .cc p{font-size:2rem}
 <main>
 <section class="pg on" data-doctitle="La Créature du Marais - Musique, clips et archives (Cul-Pointu) Artiste Rouennais" data-title="Accueil" id="accueil">
 <div class="hero"><h1>La Créature du Marais</h1><span>Musique, clips et archives</span><span>Rouen, Normandie</span></div>
-<div class="mq"><a class="btn" href="/discographie/">DISCOGRAPHIE</a><a class="btn" href="/videos/">CLIPS</a><a class="btn" href="/biographie/">BIOGRAPHIE</a><a class="btn" href="/musique/">MUSIQUE</a></div>
+<div class="mq"><a class="btn" href="/discographie/">DISCOGRAPHIE</a><a class="btn" href="/videos/">VIDÉOS</a><a class="btn" href="/biographie/">BIOGRAPHIE</a><a class="btn mq-desktop-only" href="/discographie/">MUSIQUE</a><a class="btn mq-mobile-only" href="#archive-objets">USTENSILES</a></div>
 <p>La Créature du Marais, surnommée "Cul-Pointu", de son vrai nom Tancrède Charon est un artiste underground normand basé en sa capitale : Rouen.</p>
 <figure class="ib" style="margin-top:.5rem"><img alt="La Créature du Marais lisant un magazine" loading="lazy" src="images/accueil-demonia.jpg"/></figure>
 <p>Son univers met en scène une « post-France » en ruines, hantée par la perte du sacré, l'isolement et la sensation d'effondrement culturel. Rouen y devient une ville mentale et symbolique : cité gothique, marécage spirituel, refuge brumeux d'un poète errant entre désir de pureté et fascination pour la chute.</p>
@@ -558,14 +560,14 @@ main .cc p{font-size:2rem}
 <p>Musicalement et conceptuellement, il correspond donc à une période où Cul-Pointu explore moins encore le personnage public de La Créature du Marais qu'une matière première beaucoup plus brute : une créature prise dans ses propres mécanismes infernaux et cherchant à comprendre comment en sortir.</p>
 <p>En une phrase : Les Machines Infernales est le premier grand laboratoire de Cul-Pointu : un album de 2021 où le corps humain est transformé en machine de souffrance, où le grotesque sert à mettre à nu les conflits intérieurs, et où la trajectoire de la dégradation trouve finalement son point de fuite dans la rédemption.</p></div>
 </section>
-<section class="pg" data-title="Clips" id="clips"><h2>CLIPS</h2><div class="cgal">
-<a class="cc" href="#clip-chimaera"><span class="th"><img alt="Miniature du clip Chimaera Rothomagensis" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/A_SfjREwRWI/hqdefault.jpg'" src="https://img.youtube.com/vi/A_SfjREwRWI/maxresdefault.jpg"/></span><span class="cc-copy"><h3>Chimaera Rothomagensis</h3><span class="clip-album">EXTRAIT DE CONFITEOR</span><span class="clip-available">CLIP DISPONIBLE →</span></span></a>
-<a class="cc" href="#clip-cote"><span class="th"><img alt="Miniature du clip La côte Sainte-Catherine" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/bThq8uPYgFA/hqdefault.jpg'" src="https://img.youtube.com/vi/bThq8uPYgFA/maxresdefault.jpg"/></span><span class="cc-copy"><h3>La côte Sainte-Catherine</h3><span class="clip-album">EXTRAIT DE CONFITEOR</span><span class="clip-available">CLIP DISPONIBLE →</span></span></a>
-<a class="cc" href="#clip-chute"><span class="th"><img alt="Miniature du clip La Chute" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/34-C5ls5eWM/hqdefault.jpg'" src="https://img.youtube.com/vi/34-C5ls5eWM/maxresdefault.jpg"/></span><span class="cc-copy"><h3>La Chute</h3><span class="clip-album">EXTRAIT DE CONFITEOR</span><span class="clip-available">CLIP DISPONIBLE →</span></span></a>
-<a class="cc" href="#clip-dis"><span class="th"><img alt="Miniature du clip Dis, ferme un instant les yeux" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/65E0wA7msv4/hqdefault.jpg'" src="https://img.youtube.com/vi/65E0wA7msv4/maxresdefault.jpg"/></span><span class="cc-copy"><h3>Dis, ferme un instant les yeux</h3><span class="clip-album">EXTRAIT DE CONFITEOR · VERSION CENSURÉE</span><span class="clip-available">CLIP DISPONIBLE →</span></span></a>
+<section class="pg" data-title="Vidéos" id="clips"><h2>VIDÉOS</h2><div class="cgal">
+<div class="cc"><a class="th" href="#clip-chimaera" aria-label="Voir le clip Chimaera Rothomagensis"><img alt="Miniature du clip Chimaera Rothomagensis" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/A_SfjREwRWI/hqdefault.jpg'" src="https://img.youtube.com/vi/A_SfjREwRWI/maxresdefault.jpg"/></a><span class="cc-copy"><h3><a href="#clip-chimaera">Chimaera Rothomagensis</a></h3><span class="clip-album">EXTRAIT DE <a href="#album-confiteor">CONFITEOR</a></span></span></div>
+<div class="cc"><a class="th" href="#clip-cote" aria-label="Voir le clip La côte Sainte-Catherine"><img alt="Miniature du clip La côte Sainte-Catherine" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/bThq8uPYgFA/hqdefault.jpg'" src="https://img.youtube.com/vi/bThq8uPYgFA/maxresdefault.jpg"/></a><span class="cc-copy"><h3><a href="#clip-cote">La côte Sainte-Catherine</a></h3><span class="clip-album">EXTRAIT DE <a href="#album-confiteor">CONFITEOR</a></span></span></div>
+<div class="cc"><a class="th" href="#clip-chute" aria-label="Voir le clip La Chute"><img alt="Miniature du clip La Chute" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/34-C5ls5eWM/hqdefault.jpg'" src="https://img.youtube.com/vi/34-C5ls5eWM/maxresdefault.jpg"/></a><span class="cc-copy"><h3><a href="#clip-chute">La Chute</a></h3><span class="clip-album">EXTRAIT DE <a href="#album-confiteor">CONFITEOR</a></span></span></div>
+<div class="cc"><a class="th" href="#clip-dis" aria-label="Voir le clip Dis, ferme un instant les yeux"><img alt="Miniature du clip Dis, ferme un instant les yeux" loading="lazy" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/65E0wA7msv4/hqdefault.jpg'" src="https://img.youtube.com/vi/65E0wA7msv4/maxresdefault.jpg"/></a><span class="cc-copy"><h3><a href="#clip-dis">Dis, ferme un instant les yeux</a></h3><span class="clip-album">EXTRAIT DE <a href="#album-confiteor">CONFITEOR</a> · VERSION CENSURÉE</span></span></div>
 </div></section>
 <section class="pg cp" data-title="Chimaera Rothomagensis" id="clip-chimaera">
-<p><a class="back" href="/videos/">← CLIPS</a></p>
+<p><a class="back" href="/videos/">← VIDÉOS</a></p>
 <h2>Chimaera Rothomagensis</h2>
 <div class="vid"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" data-src="https://www.youtube.com/embed/A_SfjREwRWI" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" title="Cul-Pointu - Chimaera Rothomagensis (Clip officiel)"></iframe></div>
 <h3>PHOTOS DU TOURNAGE</h3>
@@ -574,7 +576,7 @@ main .cc p{font-size:2rem}
 <div class="tour-gallery" data-gallery="chimaera"></div>
 </section>
 <section class="pg cp" data-title="La côte Sainte-Catherine" id="clip-cote">
-<p><a class="back" href="/videos/">← CLIPS</a></p>
+<p><a class="back" href="/videos/">← VIDÉOS</a></p>
 <h2>La côte Sainte-Catherine</h2>
 <div class="vid"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" data-src="https://www.youtube.com/embed/bThq8uPYgFA" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" title="Cul-Pointu - La côte Sainte-Catherine (Clip officiel)"></iframe></div>
 <h3>PHOTOS DU TOURNAGE</h3>
@@ -582,7 +584,7 @@ main .cc p{font-size:2rem}
 <div class="tour-gallery" data-gallery="cote"></div>
 </section>
 <section class="pg cp" data-title="La Chute" id="clip-chute">
-<p><a class="back" href="/videos/">← CLIPS</a></p>
+<p><a class="back" href="/videos/">← VIDÉOS</a></p>
 <h2>La Chute</h2>
 <div class="vid"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" data-src="https://www.youtube.com/embed/34-C5ls5eWM" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" title="Cul-Pointu - La Chute (Clip officiel)"></iframe></div>
 <h3>PHOTOS DU TOURNAGE</h3>
@@ -590,7 +592,7 @@ main .cc p{font-size:2rem}
 <div class="tour-gallery" data-gallery="chute"></div>
 </section>
 <section class="pg cp" data-title="Dis, ferme un instant les yeux" id="clip-dis">
-<p><a class="back" href="/videos/">← CLIPS</a></p>
+<p><a class="back" href="/videos/">← VIDÉOS</a></p>
 <h2>Dis, ferme un instant les yeux</h2><p class="note">Version censurée</p>
 <div class="vid"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" data-src="https://www.youtube.com/embed/65E0wA7msv4" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" title="Cul-Pointu - Dis, ferme un instant les yeux (Clip officiel, version censurée)"></iframe></div>
 <h3>PHOTOS DU TOURNAGE</h3>
@@ -785,7 +787,7 @@ else{b.textContent="PAROLES À VENIR"}})})
 function norm(s){return s.toLowerCase().replace(/œ/g,"oe").replace(/æ/g,"ae").replace(/[’‘]/g,"'").normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 var IX=[],routeBySection={biographie:"/biographie/",discographie:"/discographie/",clips:"/videos/",contact:"/contact/"};
 P.forEach(function(s){var t=s.getAttribute("data-title");if(!t)return;
-var kd=s.id.indexOf("album-")===0?"Discographie":s.id.indexOf("clip-")===0?"Clips":s.id.indexOf("archive-")===0?"Archives":"";
+var kd=s.id.indexOf("album-")===0?"Discographie":s.id.indexOf("clip-")===0?"Vidéos":s.id.indexOf("archive-")===0?"Archives":"";
 var h=routeBySection[s.id]||"#"+s.id;
 IX.push({t:t,k:kd,h:h,n:norm(t),s:0});
 [].slice.call(s.querySelectorAll(".tl details")).forEach(function(d){var tt=d.getAttribute("data-t");if(norm(tt)===norm(t))return;IX.push({t:tt,k:"Titre · "+t,h:"#"+s.id,n:norm(tt),s:1,tr:tt})});

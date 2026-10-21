@@ -93,21 +93,11 @@ details{display:inline-block}
 .geniusbox p{margin-bottom:.8rem}
 .backline{margin-bottom:2rem}
 .backline a{color:var(--yel)}
-.discography-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:2rem;max-width:90rem}
-.disc-card{background:#000;border:.25rem solid #000}
-.disc-card>a{display:block}
-.disc-card img,.disc-card .fallback{width:100%;aspect-ratio:1;object-fit:cover;display:block}
-.disc-card .fallback{display:grid;place-items:center;text-align:center;padding:1rem;background:#111;color:var(--yel);font-size:2rem;line-height:.9}
-.disc-card .fallback strong{display:block;font-size:2.5rem}
-.disc-card figcaption{padding:.7rem;font-size:1.8rem;line-height:1.05}
-.disc-card figcaption span{display:block;color:var(--yel);font-size:1.35rem;margin-bottom:.3rem}
-.disc-actions{padding:.2rem .7rem .8rem}
 .social-deezer{color:var(--yel)!important}
 @media (max-width:899px){
  .album-top{grid-template-columns:1fr;gap:1.5rem}
  .album-cover{max-width:24rem}
  .album-title{font-size:3rem}
- .discography-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
  .track{grid-template-columns:2.5rem 1fr}
  .trackmain h3{font-size:1.9rem}
 }

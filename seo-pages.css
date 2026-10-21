@@ -44,14 +44,31 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-content .btn[href*="spotify.com"]:hover,.route-content .btn[href*="youtube.com"]:hover,.route-content .btn[href*="deezer.com"]:hover,.route-content .btn[href*="music.apple.com"]:hover,.route-content .btn[href*="spotify.com"]:focus-visible,.route-content .btn[href*="youtube.com"]:focus-visible,.route-content .btn[href*="deezer.com"]:focus-visible,.route-content .btn[href*="music.apple.com"]:focus-visible{border-color:#fc0;background:#fc0;color:#000}
 .route-kicker{margin:0 0 .5rem!important;color:var(--route-red)!important;font:400 1.25rem/1 "Bebas Neue","Arial Narrow",Impact,sans-serif!important;letter-spacing:.08em}
 .route-lead{max-width:86rem!important;font-size:clamp(1.15rem,1.6vw,1.65rem)!important}
-.route-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));align-items:start;gap:1.2rem;max-width:90rem;margin:1.4rem 0}
-.route-card{min-width:0;margin:1.2rem 0;padding:1.2rem;background:rgba(0,0,0,.85);border:.25rem solid var(--route-red)}
-.route-card img{display:block;width:100%;height:auto;margin-bottom:.8rem;object-fit:contain}
-.route-card h2,.route-card h3{margin:.2rem 0 .6rem}
-.route-card p{margin-bottom:.55rem}
-.route-platforms{display:flex;flex-wrap:wrap;gap:.35rem}
-.route-video{max-width:90rem;margin:0 0 2rem}
-.route-video iframe{display:block;width:100%;aspect-ratio:16/9;border:.25rem solid #000;background:#000}
+.route-content .alb{display:flex;align-items:center;gap:2.2rem;margin-bottom:1.8rem;color:inherit;text-decoration:none}
+.route-content a.alb{color:inherit;text-decoration:none}
+.route-content .alb>div{min-width:0}
+.route-content .alb img{display:block;width:11rem;height:11rem;margin:0;border:.2rem solid #000;object-fit:cover}
+.route-content .alb b{display:inline-block;padding:.04em .1em 0;background:#fc0;color:#000;font-size:3rem;font-weight:400;line-height:.8}
+.route-content .alb:hover b{background:#fff}
+.route-content .alb span{display:block;margin-top:.7rem;color:#fff;text-decoration:none}
+.route-content .ah{display:flex;align-items:flex-start;gap:2.4rem;margin-bottom:1.8rem}
+.route-content .ah>img{display:block;width:17rem;height:17rem;margin:0;border:.2rem solid #000;object-fit:cover}
+.route-content .ah h2{display:inline-block;margin:.2rem 0 1rem;padding:.04em .1em 0;border:0;background:#fc0;color:#000;line-height:.8;text-shadow:none}
+.route-content .ah p{font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;font-size:2.3rem;letter-spacing:.01em;line-height:1.1}
+.route-content .cgal{display:grid;grid-template-columns:minmax(0,1fr);gap:1.8rem;max-width:90rem}
+.route-content .cc{display:grid;grid-template-columns:minmax(0,36rem) minmax(0,1fr);align-items:center;gap:2rem;min-height:clamp(14rem,24vh,22rem);padding:1rem 0;border-bottom:.2rem solid rgba(255,0,0,.55)}
+.route-content .cc .th{position:relative;display:block;width:100%;aspect-ratio:16/9;overflow:hidden;border:.25rem solid #000;background:#000}
+.route-content .cc .th img{display:block;width:100%;height:100%;margin:0;object-fit:cover}
+.route-content .cc .th:after{position:absolute;top:50%;left:50%;width:6rem;height:6rem;margin:-3rem 0 0 -3rem;border:.25rem solid var(--route-red);border-radius:50%;background:rgba(0,0,0,.65);content:""}
+.route-content .cc .th:before{position:absolute;z-index:1;top:50%;left:50%;margin:-1.35rem 0 0 -.9rem;border-width:1.35rem 0 1.35rem 2.3rem;border-style:solid;border-color:transparent transparent transparent var(--route-red);content:""}
+.route-content .cc:hover .th,.route-content .cc:focus-within .th{outline:.25rem solid var(--route-red)}
+.route-content .cc-copy{display:flex;flex-direction:column;align-items:flex-start;gap:.6rem}
+.route-content .cc-copy h3{margin:0;color:#fc0;font-size:3rem;line-height:.95;text-shadow:0 1px 2px #000}
+.route-content .cc-copy h3 a{color:inherit;text-decoration:none}
+.route-content .cc-copy .clip-album{margin:0;color:#fff;font-size:1.4rem;line-height:1.2;letter-spacing:.08em;text-decoration:none}
+.route-content .cc-copy .clip-album a{color:var(--route-red);text-decoration:underline;text-underline-offset:.12em}
+.route-content .cc-copy .clip-album a:hover,.route-content .cc-copy .clip-album a:focus-visible{color:#fff}
+.route-content .cc:hover .cc-copy h3{color:#fff}
 .route-portrait{float:right;clear:right;display:block;width:min(36%,46rem);height:auto;margin:.5rem calc(-1*var(--route-mp)) 1.6rem 2.4rem;border:.3rem solid var(--route-red);border-right:0;background:#000}
 .route-footer{display:block;padding:2.8rem 1rem 3rem;border:0;background:#000;text-align:center}
 .route-footer-title{display:block;width:min(66rem,90%);height:auto;margin:0 auto;mix-blend-mode:screen}
@@ -82,8 +99,20 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
   .route-content p,.route-content li{font-size:.98rem;line-height:1.36}
   .route-content .btn{font-size:1.05rem;margin:.25rem .35rem .25rem 0}
   .route-lead{font-size:1.05rem!important}
-  .route-card{padding:.8rem;border-width:.15rem}
-  .route-video{margin-bottom:1.4rem}
+  .route-content .alb{gap:1rem;margin-bottom:1rem}
+  .route-content .alb img{width:5.5rem;height:5.5rem}
+  .route-content .alb b{max-width:100%;font-size:clamp(1rem,4.2vw,1.45rem);line-height:.95;overflow-wrap:anywhere}
+  .route-content .alb span{margin-top:.35rem;font-size:.9rem}
+  .route-content .ah{flex-direction:column;gap:1rem;margin-bottom:1rem}
+  .route-content .ah>img{width:8.5rem;height:8.5rem}
+  .route-content .ah p{font-size:1.15rem}
+  .route-content .cgal{grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+  .route-content .cc{display:flex;flex-direction:column;align-items:stretch;gap:.35rem;min-height:0;padding:.35rem 0;border-bottom:0}
+  .route-content .cc-copy{gap:.2rem}
+  .route-content .cc-copy h3{font-size:1.1rem;line-height:1}
+  .route-content .cc-copy .clip-album{font-size:.7rem;line-height:1.05}
+  .route-content .cc .th:after{width:2.6rem;height:2.6rem;margin:-1.3rem 0 0 -1.3rem;border-width:.12rem}
+  .route-content .cc .th:before{margin:-.58rem 0 0 -.36rem;border-width:.58rem 0 .58rem .95rem}
   .route-portrait{float:none;clear:both;width:min(100%,24rem);margin:0 auto 1.2rem;border:.2rem solid var(--route-red)}
   .route-mobile-footer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:1.2rem .8rem 2rem;border-top:.25rem solid var(--route-red);background:#000}
   .route-mobile-socials{display:flex;justify-content:center;gap:.55rem;flex-wrap:nowrap}
