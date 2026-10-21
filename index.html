@@ -274,7 +274,9 @@ a.nw:hover{outline:.25rem solid var(--r)}
 .track-bio p{margin:.35rem 0}
 .apple-track-player{display:block;width:min(100%,64rem);height:8.5rem;margin:0 0 1rem;border:.15rem solid rgba(255,204,0,.55);background:#000}
 .track-art-thumb{width:4.2rem;height:4.2rem;flex:none;margin-right:.65rem;object-fit:cover;border:.1rem solid rgba(255,255,255,.4)}
-.apple-track-player.beside-art{float:left;width:calc(100% - 15.3rem);max-width:48rem;height:14rem;margin:0 0 .6rem}
+.apple-track-player.beside-art{float:left;width:calc(100% - 192px);max-width:48rem;height:175px;margin:0 0 .6rem}
+@media(min-width:900px){.track-art-open .track-art-expanded:has(+ .beside-art){width:175px;height:175px}
+.track-art-open .beside-art ~ p{clear:both}}
 .track-art-expanded{display:block;float:left;width:14rem;height:14rem;object-fit:cover;margin:0 1rem .5rem 0;border:.15rem solid rgba(255,204,0,.65)}
 #album-in-odium-fidei .tl details.track-art-open .track-art-thumb{display:none}
 #album-in-odium-fidei .track-bio::after,#album-in-odium-fidei .track-bio .bio::after{content:"";display:block;clear:both}
