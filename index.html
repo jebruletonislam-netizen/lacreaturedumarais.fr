@@ -267,6 +267,8 @@ a.nw:hover{outline:.25rem solid var(--r)}
 .clip-gallery-link:hover,.clip-gallery-link:focus-visible{color:#fff}
 .clip-link{flex:none;margin-left:auto;color:#fc0;text-decoration:none;font:400 1.15rem/1 "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.05em}
 .clip-link:hover,.clip-link:focus-visible{color:#fff;text-decoration:underline}
+.clip-link{font-weight:700}
+@media(min-width:900px){#album-in-odium-fidei .tl summary,#album-confiteor .tl summary{max-width:calc(175px + 11px + min(100% - 192px,48rem))}}
 .clip-lyric-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(20rem,42%);gap:1rem;align-items:start;clear:both}
 .clip-lyric-layout .lyf{grid-column:1;grid-row:1;width:100%;min-width:0}
 .clip-lyric-player{grid-column:2;grid-row:1;display:block;width:100%;aspect-ratio:16/9;border:.2rem solid #000;background:#000}
@@ -753,7 +755,7 @@ youtubeLink.addEventListener("click",function(e){e.stopPropagation()});
 summary.appendChild(youtubeLink);
 }
 if(clip&&section&&section.id==="album-confiteor"&&summary){
-var clipLink=document.createElement("a");clipLink.className="clip-link";clipLink.href="https://www.youtube.com/watch?v="+clip.video;clipLink.style.color="#800000";clipLink.style.textDecoration="underline";clipLink.style.textUnderlineOffset=".12em";clipLink.textContent="CLIP DISPONIBLE SUR YOUTUBE ↗";
+var clipLink=document.createElement("a");clipLink.className="clip-link";clipLink.href="https://www.youtube.com/watch?v="+clip.video;clipLink.style.color="#f00";clipLink.style.textDecoration="underline";clipLink.style.textUnderlineOffset=".12em";clipLink.textContent="CLIP DISPONIBLE SUR YOUTUBE ↗";
 clipLink.addEventListener("click",function(e){e.stopPropagation()});
 summary.appendChild(clipLink);
 }
