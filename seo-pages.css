@@ -32,7 +32,7 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-main:before{inset:0 0 auto;height:3.4rem;background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.18) 45%,transparent)}
 .route-main:after{inset:0 auto 0 0;width:3.4rem;background:linear-gradient(to right,rgba(0,0,0,.45),rgba(0,0,0,.18) 45%,transparent)}
 .route-content{position:relative;z-index:1;isolation:isolate;max-width:100%;min-height:100%;padding:0;background-color:#000080;background-image:linear-gradient(to right,#000080,transparent clamp(1.5rem,7vw,8rem),transparent calc(100% - clamp(1.5rem,7vw,8rem)),#000080),linear-gradient(to bottom,#000080,transparent 7rem,transparent calc(100% - 4rem),#000080),linear-gradient(rgba(0,0,128,.5),rgba(0,0,128,.5)),url("/images/fond-vitrail-texte.jpg");background-position:center,center,center top,center top;background-size:100% 100%,100% 100%,auto,100% auto;background-repeat:no-repeat,no-repeat,repeat,repeat-y}
-.route-content h1{display:inline-block;margin:.2rem 0 1.6rem;padding:.04em 0 .12em;border:0;border-bottom:.25rem solid var(--route-red);background:transparent;color:var(--route-red);font:400 clamp(2.5rem,5vw,3.625rem)/.9 "Bebas Neue","Arial Narrow",Impact,sans-serif;text-shadow:0 0 .7rem rgba(255,0,0,.3)}
+.route-content h1{display:table;margin:0 auto 1.6rem;padding:0;border:0;background:transparent;color:#fc0;font:400 clamp(2rem,5.25vw,7rem)/.9 "Religath","Religath Ligatures","Cinzel",Georgia,serif;text-align:center;text-decoration:underline;text-decoration-thickness:.06em;text-underline-offset:.08em;text-shadow:0 0 .25rem rgba(150,0,0,.55),0 0 .65rem rgba(175,0,0,.45)}
 .route-content h2{display:block;margin:2.2rem 0 1rem;padding:.04em 0 .12em;border:0;border-bottom:.25rem solid var(--route-red);background:transparent;color:var(--route-red);font:400 clamp(1.8rem,3.4vw,2.6rem)/1 "Bebas Neue","Arial Narrow",Impact,sans-serif;text-shadow:0 0 .7rem rgba(255,0,0,.3)}
 .route-content h3{margin:1.5rem 0 .6rem;color:var(--route-red);font:400 1.8rem/1.05 "Bebas Neue","Arial Narrow",Impact,sans-serif;text-shadow:0 0 .7rem rgba(255,0,0,.3)}
 .route-content p,.route-content li{max-width:86rem;margin:0 0 1.7rem;font:400 clamp(1.05rem,1.28vw,1.55rem)/1.32 "Religath","Religath Ligatures","Cinzel",Georgia,serif;text-shadow:0 1px 2px rgba(0,0,0,.75)}
@@ -55,13 +55,28 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-content .album-excerpt a{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
 .route-content .vid{width:100%;max-width:52rem;margin:0 auto 1.2rem}
 .route-content .vid iframe{display:block;width:100%;aspect-ratio:16/9;border:.25rem solid #000;background:#000}
-.route-content .route-clip-detail{scroll-margin-top:16rem;margin:2.5rem 0 0;padding-top:1.4rem;border-top:.2rem solid rgba(255,0,0,.55)}
-.route-content .route-clip-detail h2{margin-top:0}
-.route-content .clip-description{max-width:86rem}
-.route-content .clip-description p{max-width:none}
+.route-content a.clip-back{display:inline-block;margin:0 0 .8rem;color:#fc0;font:400 1.15em/.95 "Bebas Neue","Arial Narrow",Impact,sans-serif;text-decoration:none;text-shadow:0 1px 2px #000}
+.route-content a.clip-back:hover,.route-content a.clip-back:focus-visible{color:#fff}
+.route-content .tour-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:1.2rem;max-width:90rem}
+.route-content .tour-gallery .ph{min-width:0;margin:0;border:0;background:transparent}
+.route-content .tour-gallery .ph a{display:block;border:0;background:transparent}
+.route-content .tour-gallery .ph img{display:block;width:100%;height:auto;margin:0;aspect-ratio:auto;object-fit:initial;border:0}
+.route-content .tour-gallery .ph a:hover,.route-content .tour-gallery .ph a:focus-visible{outline:.25rem solid var(--route-red)}
+.route-content .tour-gallery .ph figcaption{margin-top:.45rem;padding:.4rem .2rem;color:#fff;text-align:center;font-size:1.35rem;line-height:1.1}
+.route-content .machine-tracklist{max-width:86rem}
+.route-content .machine-tracklist details{display:block;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.3)}
+.route-content .machine-tracklist summary{display:grid;grid-template-columns:4rem minmax(0,1fr);align-items:center;cursor:pointer;list-style:none;color:#fff;font:400 2.35rem/1.1 "Bebas Neue",sans-serif;text-align:left}
+.route-content .machine-tracklist summary::-webkit-details-marker{display:none}
+.route-content .machine-tracklist summary b{color:var(--route-red);font-weight:400;text-align:left}
+.route-content .machine-tracklist details[open] summary{color:var(--route-red)}
+.route-content .machine-tracklist details p{margin:.8rem 0 0 3.2rem}
+.route-content .machine-platforms{display:flex;flex-wrap:wrap;gap:.25rem}
+.route-content .machine-platforms .btn{margin:0}
 .route-content .ah{display:flex;align-items:flex-start;gap:2.4rem;margin-bottom:1.8rem}
 .route-content .ah>img{display:block;width:17rem;height:17rem;margin:0;border:.2rem solid #000;object-fit:cover}
 .route-content .ah h2{display:inline-block;margin:.2rem 0 1rem;padding:.04em .1em 0;border:0;background:#fc0;color:#000;line-height:.8;text-shadow:none}
+.route-content .machine-album-title{display:inline;margin:.2rem 0 1rem;padding:.04em .1em 0;border:0;background:#fc0;color:#000;font:400 4.6rem/.82 "Bebas Neue",sans-serif;box-decoration-break:clone;-webkit-box-decoration-break:clone;text-shadow:none}
+.route-content .clip-title{text-transform:uppercase}
 .route-content .ah p{font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;font-size:2.3rem;letter-spacing:.01em;line-height:1.1}
 .route-content .cgal{display:grid;grid-template-columns:minmax(0,1fr);gap:1.8rem;max-width:90rem}
 .route-content .cc{display:grid;grid-template-columns:minmax(0,36rem) minmax(0,1fr);align-items:center;gap:2rem;min-height:clamp(14rem,24vh,22rem);padding:1rem 0;border-bottom:.2rem solid rgba(255,0,0,.55)}
@@ -101,7 +116,7 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
   .route-main:before{height:1.6rem}
   .route-main:after{display:none}
   .route-content{min-height:0}
-  .route-content h1{font-size:1.75rem;margin:.1rem 0 1rem}
+  .route-content h1{font-size:clamp(2rem,8vw,3rem);margin:0 auto 1rem}
   .route-content h2{font-size:1.4rem;margin:1.5rem 0 .7rem}
   .route-content h3{font-size:1.3rem;margin:1.5rem 0 .7rem}
   .route-content p,.route-content li{font-size:.98rem;line-height:1.36}
@@ -112,10 +127,17 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
   .route-content .alb b{max-width:100%;font-size:clamp(1rem,4.2vw,1.45rem);line-height:.95;overflow-wrap:anywhere}
   .route-content .alb span{margin-top:.35rem;font-size:.9rem}
   .route-content .album-excerpt{margin:.1rem 0 1rem 6.5rem;font-size:.9rem}
-  .route-content .route-clip-detail{scroll-margin-top:9rem;margin-top:1.5rem;padding-top:.8rem}
   .route-content .ah{flex-direction:column;gap:1rem;margin-bottom:1rem}
   .route-content .ah>img{width:8.5rem;height:8.5rem}
   .route-content .ah p{font-size:1.15rem}
+  .route-content .machine-album-title{font-size:3rem}
+  .route-content .clip-title{font-size:1.4rem}
+  .route-content .tour-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+  .route-content .tour-gallery .ph figcaption{font-size:1.05rem}
+  .route-content .machine-tracklist details{padding:.8rem 0}
+  .route-content .machine-tracklist summary{grid-template-columns:2.5rem minmax(0,1fr);font-size:1.9rem}
+  .route-content .machine-tracklist details p{margin:.6rem 0 0 2rem}
+  .route-content .machine-platforms .btn{font-size:.9rem;padding:.2rem .32rem .12rem}
   .route-content .cgal{grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
   .route-content .cc{display:flex;flex-direction:column;align-items:stretch;gap:.35rem;min-height:0;padding:.35rem 0;border-bottom:0}
   .route-content .cc-copy{gap:.2rem}
@@ -134,4 +156,7 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
   .route-footer{padding:1.4rem 1rem 1.8rem}
   .route-footer-title{width:min(18rem,90vw)}
   .route-footer-copyright{font-size:1.1rem;margin-top:.1rem}
+}
+@media(min-width:360px) and (max-width:899px){
+  .route-content .machine-platforms{flex-wrap:nowrap}
 }
