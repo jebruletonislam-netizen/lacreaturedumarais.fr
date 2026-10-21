@@ -94,11 +94,16 @@ a.btn[href*="spotify.com"]:hover,a.btn[href*="youtube.com"]:hover,a.btn[href*="d
 .alb{display:flex;align-items:center;gap:2.2rem;text-decoration:none;margin-bottom:1.8rem}
 .alb img,.ah img{display:block;width:11rem;height:11rem;object-fit:cover;border:.2rem solid #000}
 .alb b{font-weight:400;background:#fc0;color:#000;font-size:3rem;line-height:.8;padding:.04em .1em 0;display:inline-block}
+.album-featured{display:flex;align-items:center;gap:2.2rem;margin-bottom:1.8rem}
+.album-featured> a{display:block;flex:none}
+.album-featured img{display:block;width:11rem;height:11rem;object-fit:cover;border:.2rem solid #000}
+.album-featured-copy>a{color:inherit;text-decoration:none}
+.album-featured-copy b{font-weight:400;background:#fc0;color:#000;font-size:3rem;line-height:.8;padding:.04em .1em 0;display:inline-block}
+.album-featured-copy>a:hover b{background:#fff}
+.album-featured-copy>span{display:block;margin-top:.7rem}
 .alb:hover b{background:#fff}
 .ah h2{background:#fc0;color:#000;border:0;text-shadow:none;padding:.04em .1em 0;line-height:.8}.alb span{display:block;margin-top:.7rem}
-.alb.has-album-excerpt{margin-bottom:.35rem}
-.alb.has-album-excerpt{margin-bottom:0}
-.album-excerpt{font:400 1.45rem/1.2 "Religath","Religath Ligatures","Cinzel",Georgia,serif;margin:.1rem 0 1.8rem 13.2rem}
+.album-excerpt{display:block;font:400 .97rem/1.2 "Religath","Religath Ligatures","Cinzel",Georgia,serif;margin:.18rem 0 0}
 .album-excerpt a{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
 .album-excerpt a:hover{color:#fff}
 .ah{display:flex;gap:2.4rem;align-items:flex-start;margin-bottom:1.8rem}.ah img{width:17rem;height:17rem}
@@ -195,6 +200,7 @@ nav a:hover .nav-txt{color:#fc0;text-shadow:0 0 .2rem #000}
   .ah{gap:1rem;margin-bottom:1rem}
   .ah img{width:8.5rem;height:8.5rem}
   .alb{gap:1rem;margin-bottom:1rem}.alb img{width:5.5rem;height:5.5rem}.alb b{font-size:1.45rem}.alb span{font-size:.9rem;margin-top:.35rem}
+  .album-featured{gap:1rem;margin-bottom:1rem}.album-featured img{width:5.5rem;height:5.5rem}.album-featured-copy b{font-size:1.45rem}.album-featured-copy>span{font-size:.9rem;margin-top:.35rem}
   .bio{margin-top:1.4rem}
   .gal{grid-template-columns:1fr;gap:1rem}
   .mobile-footer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:1.2rem .8rem 2rem;background:#000;border-top:.25rem solid var(--r)}
@@ -431,8 +437,7 @@ main .cc p{font-size:2rem}
   #lb .lb-c{font-size:1.1rem}
   .nw-title{font-size:1rem;padding:.3rem .25rem}
   .ph figcaption{font-size:.9rem;padding:.35rem .15rem}
-  .alb.has-album-excerpt{margin-bottom:0}
-  .album-excerpt{font-size:.72rem;margin:.1rem 0 1.8rem 9.2rem}
+  .album-excerpt{font-size:.48rem}
   .sf-t{width:min(18rem,90vw)}
   .sf p.sf-c{font-size:1.1rem;font-weight:400;margin-top:.1rem}
   .track-art-thumb{width:3.6rem;height:3.6rem}
@@ -481,7 +486,7 @@ main .cc p{font-size:2rem}
 <div class="pgrid" data-fold="link" data-gallery-list="actu" data-empty="NOUVELLES À VENIR"></div><p><a class="btn" href="#nouvelles">VOIR LA SUITE →</a></p></div>
 </section>
 <section class="pg" data-title="Biographie" id="biographie"><h2>BIOGRAPHIE</h2><p>La Créature du Marais, surnommée « Cul-Pointu », est le projet artistique de Tancrède Charon, artiste underground normand associé à Rouen et à PUANTEUR PUTRIDE Productions.</p><p>Son univers mêle musique expérimentale, poésie décadente, chant parlé, dark ambient, esthétique black metal et autofiction. Rouen y devient un territoire mental, entre cité gothique, marécage spirituel et décor de dérive urbaine.</p><p>La biographie complète et les repères du projet sont désormais réunis sur une page dédiée.</p><p><a class="btn" href="/biographie/">LIRE LA BIOGRAPHIE COMPLÈTE →</a> <a class="btn" href="/la-creature-du-marais/">IDENTITÉ DU PROJET →</a></p></section>
-<section class="pg" data-title="Discographie" id="discographie"><h2>DISCOGRAPHIE</h2><p><a class="btn" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank">APPLE MUSIQUE</a></p><a class="alb" href="#album-jubile"><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/><div><b>Jubilé</b><span>06/12/2025 · Single · 1 titre · 3 min 34 s</span></div></a><a class="alb" href="#album-confiteor"><img alt="Pochette Confiteor" loading="lazy" src="images/pochette-confiteor.jpg"/><div><b>Confiteor</b><span>11/09/2024 · 34 titres · 2 h 00 min 43 s</span></div></a><a class="alb" href="#album-chyren"><img alt="Pochette Omerta434 : Chyren" loading="lazy" src="images/pochette-omerta434-chyren.jpg"/><div><b>Omerta434 : Chyren</b><span>01/11/2023 · 26 titres · 1 h 28</span></div></a><a class="alb" href="#album-omerta434"><img alt="Pochette Omerta434" loading="lazy" src="images/pochette-omerta434.jpg"/><div><b>Omerta434</b><span>10/06/2022 · 17 titres · 1 h 02 min 52 s</span></div></a><a class="alb" href="#album-machines"><img alt="Pochette Les Machines Infernales" loading="lazy" src="images/pochette-machines-infernales.jpg"/><div><b>Les Machines Infernales</b><span>25/05/2021 · 20 titres · 49 min 30 s</span></div></a></section>
+<section class="pg" data-title="Discographie" id="discographie"><h2>DISCOGRAPHIE</h2><p><a class="btn" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank">APPLE MUSIQUE</a></p><div class="album-featured"><a href="#album-jubile" aria-label="Voir Jubilé"><img alt="Pochette Jubilé" loading="lazy" src="images/pochette-jubile.jpg"/></a><div class="album-featured-copy"><a href="#album-jubile"><b>Jubilé</b></a><span>06/12/2025 · Single · 1 titre · 3 min 34 s</span><small class="album-excerpt">Extrait de <a href="#album-in-odium-fidei">In Odium Fidei</a></small></div></div><a class="alb" href="#album-confiteor"><img alt="Pochette Confiteor" loading="lazy" src="images/pochette-confiteor.jpg"/><div><b>Confiteor</b><span>11/09/2024 · 34 titres · 2 h 00 min 43 s</span></div></a><a class="alb" href="#album-chyren"><img alt="Pochette Omerta434 : Chyren" loading="lazy" src="images/pochette-omerta434-chyren.jpg"/><div><b>Omerta434 : Chyren</b><span>01/11/2023 · 26 titres · 1 h 28</span></div></a><a class="alb" href="#album-omerta434"><img alt="Pochette Omerta434" loading="lazy" src="images/pochette-omerta434.jpg"/><div><b>Omerta434</b><span>10/06/2022 · 17 titres · 1 h 02 min 52 s</span></div></a><a class="alb" href="#album-machines"><img alt="Pochette Les Machines Infernales" loading="lazy" src="images/pochette-machines-infernales.jpg"/><div><b>Les Machines Infernales</b><span>25/05/2021 · 20 titres · 49 min 30 s</span></div></a></section>
 <section class="pg" data-title="Jubilé" id="album-jubile">
 <p><a class="back" href="/discographie/">← DISCOGRAPHIE</a></p>
 <div class="ah"><img alt="Pochette Jubilé" src="images/pochette-jubile.jpg"/><div><h2>Jubilé</h2><p>06/12/2025 · Single · 1 titre · 3 min 34 s</p><a class="btn" href="https://open.spotify.com/search/Jubil%C3%A9%20Cul-Pointu/albums" rel="noopener" target="_blank">SPOTIFY</a><a class="btn" href="https://www.youtube.com/@LaCreatureduMarais/releases" rel="noopener" target="_blank">YOUTUBE</a><a class="btn" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank">DEEZER</a><a class="btn" href="https://music.apple.com/fr/album/jubil%C3%A9-single/1855845168" rel="noopener" target="_blank">APPLE MUSIQUE</a></div></div>
@@ -699,14 +704,6 @@ mobileHeaderSocials.className="mobile-header-socials";
 });
 document.querySelector("header").appendChild(mobileHeaderSocials);
 [].slice.call(document.querySelectorAll('.mobile-footer .mobile-socials a[aria-label="Instagram"],.mobile-footer .mobile-socials a[aria-label="Spotify"],.mobile-footer .mobile-socials a[aria-label="YouTube"]')).forEach(function(link){link.remove()});
-var jubileeCard=document.querySelector('#discographie .alb[href="#album-jubile"]');
-if(jubileeCard){
-  var excerpt=document.createElement('p');excerpt.className='album-excerpt';
-  excerpt.appendChild(document.createTextNode('extrait de '));
-  var albumLink=document.createElement('a');albumLink.href='#album-in-odium-fidei';albumLink.textContent='In Odium Fidei';
-  excerpt.appendChild(albumLink);jubileeCard.classList.add('has-album-excerpt');
-  jubileeCard.parentNode.insertBefore(excerpt,jubileeCard.nextSibling);
-}
 function go(){var id=(location.hash||"#accueil").slice(1),cur=document.getElementById(id);
 if(!cur||!cur.classList.contains("pg")){id="accueil";cur=document.getElementById(id)}
 P.forEach(function(e){var on=e.id===id;e.classList.toggle("on",on);

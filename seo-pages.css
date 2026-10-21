@@ -51,8 +51,15 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-content .alb b{display:inline-block;padding:.04em .1em 0;background:#fc0;color:#000;font-size:3rem;font-weight:400;line-height:.8}
 .route-content .alb:hover b{background:#fff}
 .route-content .alb span{display:block;margin-top:.7rem;color:#fff;text-decoration:none}
-.route-content .album-excerpt{margin:.1rem 0 1.8rem 13.2rem;color:#fff;font-size:1.45rem;line-height:1.2}
+.route-content .album-excerpt{display:block;margin:.18rem 0 0;color:#fff;font-size:.97rem;line-height:1.2}
 .route-content .album-excerpt a{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
+.route-content .album-featured{display:flex;align-items:center;gap:2.2rem;margin-bottom:1.8rem}
+.route-content .album-featured> a{display:block;flex:none}
+.route-content .album-featured img{display:block;width:11rem;height:11rem;margin:0;border:.2rem solid #000;object-fit:cover}
+.route-content .album-featured-copy>a{color:inherit;text-decoration:none}
+.route-content .album-featured-copy b{display:inline-block;padding:.04em .1em 0;background:#fc0;color:#000;font-size:3rem;font-weight:400;line-height:.8}
+.route-content .album-featured-copy>a:hover b{background:#fff}
+.route-content .album-featured-copy>span{display:block;margin-top:.7rem}
 .route-content .vid{width:100%;max-width:52rem;margin:0 auto 1.2rem}
 .route-content .vid iframe{display:block;width:100%;aspect-ratio:16/9;border:.25rem solid #000;background:#000}
 .route-content a.clip-back{display:inline-block;margin:0 0 .8rem;color:#fc0;font:400 1.15em/.95 "Bebas Neue","Arial Narrow",Impact,sans-serif;text-decoration:none;text-shadow:0 1px 2px #000}
@@ -126,7 +133,11 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
   .route-content .alb img{width:5.5rem;height:5.5rem}
   .route-content .alb b{max-width:100%;font-size:clamp(1rem,4.2vw,1.45rem);line-height:.95;overflow-wrap:anywhere}
   .route-content .alb span{margin-top:.35rem;font-size:.9rem}
-  .route-content .album-excerpt{margin:.1rem 0 1rem 6.5rem;font-size:.9rem}
+  .route-content .album-excerpt{margin:.18rem 0 0;font-size:.6rem}
+  .route-content .album-featured{gap:1rem;margin-bottom:1rem}
+  .route-content .album-featured img{width:5.5rem;height:5.5rem}
+  .route-content .album-featured-copy b{max-width:100%;font-size:clamp(1rem,4.2vw,1.45rem);line-height:.95;overflow-wrap:anywhere}
+  .route-content .album-featured-copy>span{margin-top:.35rem;font-size:.9rem}
   .route-content .ah{flex-direction:column;gap:1rem;margin-bottom:1rem}
   .route-content .ah>img{width:8.5rem;height:8.5rem}
   .route-content .ah p{font-size:1.15rem}
