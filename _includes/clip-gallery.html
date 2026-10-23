@@ -1,8 +1,12 @@
 <div class="tour-gallery">
   {% for photo in site.data.clip_galleries[page.gallery] %}
+  {% assign base = photo.file | split: '.' | first %}
   <figure class="ph">
-    <a href="/images/{{ photo.file | uri_escape }}" target="_blank" rel="noopener" aria-label="Ouvrir la photo : {{ photo.caption | escape }}">
-      <img src="/images/{{ photo.file | uri_escape }}" alt="Photo du tournage de {{ page.clip_title }} — {{ photo.caption | escape }}" loading="lazy">
+    <a href="/images/{{ base | append: '.webp' | uri_escape }}" target="_blank" rel="noopener" aria-label="Ouvrir la photo : {{ photo.caption | escape }}">
+      <picture>
+        <source type="image/webp" srcset="/images/{{ base | append: '.webp' | uri_escape }}">
+        <img src="/images/{{ photo.file | uri_escape }}" alt="Photo du tournage de {{ page.clip_title }} — {{ photo.caption | escape }}" loading="lazy" decoding="async">
+      </picture>
     </a>
     <figcaption>{{ photo.caption | escape }}</figcaption>
   </figure>

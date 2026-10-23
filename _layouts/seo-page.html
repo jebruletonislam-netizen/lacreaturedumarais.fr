@@ -20,12 +20,12 @@
   <meta property="og:url" content="{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}">
   <meta property="og:site_name" content="La Créature du Marais">
   <meta property="og:locale" content="fr_FR">
-  <meta property="og:image" content="{% if page.youtube_id %}https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg{% else %}https://lacreaturedumarais.fr/images/creature.jpg{% endif %}">
-  <meta property="og:image:alt" content="{% if page.youtube_id %}Miniature du clip {{ page.clip_title | escape }}{% else %}Tancrède Charon, La Créature du Marais{% endif %}">
+  <meta property="og:image" content="{% if page.youtube_id %}https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg{% else %}https://lacreaturedumarais.fr/images/og-creature.jpg{% endif %}">
+  <meta property="og:image:alt" content="{% if page.youtube_id %}Miniature du clip {{ page.clip_title | escape }}{% else %}La Créature du Marais, Tancrède Charon en robe noire tenant une lance, sur fond rouge{% endif %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ page.title | escape }}">
   <meta name="twitter:description" content="{{ page.description | escape }}">
-  <meta name="twitter:image" content="https://lacreaturedumarais.fr/images/creature.jpg">
+  <meta name="twitter:image" content="{% if page.youtube_id %}https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg{% else %}https://lacreaturedumarais.fr/images/og-creature.jpg{% endif %}">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

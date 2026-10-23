@@ -66,6 +66,7 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-content .tour-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:1.2rem;max-width:90rem}
 .route-content .tour-gallery .ph{min-width:0;margin:0;border:0;background:transparent}
 .route-content .tour-gallery .ph a{display:block;border:0;background:transparent}
+.route-content .tour-gallery .ph picture{display:block}
 .route-content .tour-gallery .ph img{display:block;width:100%;height:auto;margin:0;aspect-ratio:auto;object-fit:initial;border:0}
 .route-content .tour-gallery .ph a:hover,.route-content .tour-gallery .ph a:focus-visible{outline:.25rem solid var(--route-red)}
 .route-content .tour-gallery .ph figcaption{margin-top:.45rem;padding:.4rem .2rem;color:#fff;text-align:center;font-size:1.35rem;line-height:1.1}
