@@ -489,6 +489,7 @@ main .cc p{font-size:2rem}
 .na{max-width:90rem}
 .na .sub{margin:.2rem 0 .8rem}
 .fold-hide{display:none!important}
+body[data-via-ust] #archive-objets .back{display:none}
 .fold-bar{margin:1.2rem 0 0!important}
 .na .pgrid{max-width:90rem}
 .jb::after{content:"";display:block;clear:both}
@@ -1150,7 +1151,8 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
       var card=document.createElement('a'); card.className='nw'; card.href='#';
       card.setAttribute('aria-label','Agrandir la photo : '+titleText);
       var frame=document.createElement('span');frame.className='nw-image';
-      var img=document.createElement('img'); img.decoding='async'; img.draggable=false; img.alt=(key==='actu'?'Photo de tournage de Misérables — ':'Objet liturgique de La Créature du Marais — ')+titleText; img.loading='lazy';
+      var img=document.createElement('img'); img.decoding='async'; img.draggable=false; img.alt=titleText; img.loading=(grid.children.length<8?'eager':'lazy');
+      img.addEventListener('load',function(){if(window._foldSoon)window._foldSoon();});
       img.onerror=function(){img.onerror=null;img.src=path;}; img.src=path.replace(/\.[^.]+$/,'.webp'); frame.appendChild(img);card.appendChild(frame);
       var title=document.createElement('span');title.className='nw-title';title.textContent=titleText;card.appendChild(title);
       card.addEventListener('click',function(e){
@@ -1201,6 +1203,11 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
   }
   function foldAll(){ folds.forEach(layoutFold); }
   var rz; window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(foldAll,120);});
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href="#archive-objets"]');
+    if(a){ if(a.classList.contains('mq-mobile-only'))document.body.setAttribute('data-via-ust','1'); else document.body.removeAttribute('data-via-ust'); }
+  });
+  var fs; window._foldSoon=function(){clearTimeout(fs);fs=setTimeout(foldAll,60);};
   window.addEventListener('hashchange',function(){setTimeout(foldAll,40);});
   window.addEventListener('load',foldAll);
   foldAll(); setTimeout(foldAll,300);
