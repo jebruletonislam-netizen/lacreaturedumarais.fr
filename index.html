@@ -957,6 +957,7 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
 </script>
 
 <script src="lightbox.js"></script>
+<script src="navdrag.js"></script>
 <script>
 (function(){
   /* Noms des fichiers de chaque galerie de tournage (dossier images/, extension libre : jpg, png, webp). */
@@ -1203,15 +1204,6 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
   }
   function foldAll(){ folds.forEach(layoutFold); }
   var rz; window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(foldAll,120);});
-  (function(){
-    var nv=document.querySelector('nav'),sy=0,st=0,drag=false,moved=false;
-    if(!nv)return;
-    nv.addEventListener('mousedown',function(e){if(e.button||nv.scrollHeight<=nv.clientHeight)return;drag=true;moved=false;sy=e.clientY;st=nv.scrollTop;});
-    window.addEventListener('mousemove',function(e){if(!drag)return;var d=e.clientY-sy;if(Math.abs(d)>4)moved=true;nv.scrollTop=st-d;});
-    window.addEventListener('mouseup',function(){drag=false;});
-    nv.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false;}},true);
-    nv.addEventListener('dragstart',function(e){e.preventDefault();});
-  })();
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('a[href="#archive-objets"]');
     if(a){ if(a.classList.contains('mq-mobile-only'))document.body.setAttribute('data-via-ust','1'); else document.body.removeAttribute('data-via-ust'); }
