@@ -160,7 +160,7 @@ header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bo
 .pf svg{display:block;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .pf .f svg circle.c{fill:none;stroke:currentColor}.pf .f svg .g{fill:none;stroke:currentColor}
 .wrap{display:grid;grid-template-columns:27.5625rem 1fr;min-height:max(calc(100vh - 14.8125rem),52.7rem)}
-nav{position:sticky;top:14.8125rem;align-self:start;height:100vh;min-height:48rem;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem 1fr;border-right:.5625rem solid var(--r);background:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),url(images/fond-vitrail.jpg) center/cover}
+nav{position:sticky;top:14.8125rem;align-self:start;height:calc(100vh - 14.8125rem);min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;grid-auto-rows:min-content;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem 1fr;border-right:.5625rem solid var(--r);background:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),url(images/fond-vitrail.jpg) center/cover}
 nav a{display:flex;align-items:center;justify-content:center;text-decoration:none;border-bottom:.5rem solid var(--r)}
 nav a:last-child{border-bottom:0}
 nav span{color:var(--r);font-size:3.625rem;line-height:.8;padding:.04em .1em 0;outline:1px solid #000;outline-offset:-1px}
@@ -1203,6 +1203,15 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
   }
   function foldAll(){ folds.forEach(layoutFold); }
   var rz; window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(foldAll,120);});
+  (function(){
+    var nv=document.querySelector('nav'),sy=0,st=0,drag=false,moved=false;
+    if(!nv)return;
+    nv.addEventListener('mousedown',function(e){if(e.button||nv.scrollHeight<=nv.clientHeight)return;drag=true;moved=false;sy=e.clientY;st=nv.scrollTop;});
+    window.addEventListener('mousemove',function(e){if(!drag)return;var d=e.clientY-sy;if(Math.abs(d)>4)moved=true;nv.scrollTop=st-d;});
+    window.addEventListener('mouseup',function(){drag=false;});
+    nv.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false;}},true);
+    nv.addEventListener('dragstart',function(e){e.preventDefault();});
+  })();
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('a[href="#archive-objets"]');
     if(a){ if(a.classList.contains('mq-mobile-only'))document.body.setAttribute('data-via-ust','1'); else document.body.removeAttribute('data-via-ust'); }
