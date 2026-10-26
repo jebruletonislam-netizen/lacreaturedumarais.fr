@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BROUILLON — Mode Putride | La Créature du Marais</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
+@font-face{font-family:"Religath Ligatures";src:url("fonts/RELIGATH-LIGATURES.otf") format("opentype");font-display:swap;unicode-range:U+0152-0153}
+:root{
+  --g:#39ff6e;            /* vert maudit : contours */
+  --v:#c58bff;            /* violet pâle mais vif : remplace le rouge */
+  --vd:#7a2dd6;           /* violet profond */
+  --bg:#0b0016;
+  --mh:min(4.25rem,max(2rem,calc(25vh - 4.45rem)));
+  color-scheme:dark
+}
+html{font-size:calc(100vw/120)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:#fff}
+body{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.02em;text-shadow:0 1px 2px rgba(0,0,0,.8)}
+a{color:inherit}
+.bebas,h1,h2,h3,.btn,.nav-txt,.kicker{font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;font-weight:400;letter-spacing:.01em}
+
+/* ---------- en-tête ---------- */
+header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bottom:.5rem solid var(--g);background:#000;overflow:hidden}
+.cre{flex:none;aspect-ratio:1600/900;min-width:0;height:14.3125rem;background:#000;display:flex;overflow:hidden}
+.cre a,.cre picture{display:block;height:100%;width:100%}
+.cre img{height:100%;width:100%;object-fit:cover;object-position:left center;display:block}
+.mid{position:relative;flex:none;width:52.9rem;height:14.3125rem}
+.mid>img{width:100%;height:100%;display:block}
+.mid a{position:absolute;top:67.05%;width:7.56%;height:26.82%;border-radius:50%}
+.mid a:hover{box-shadow:0 0 1.2rem rgba(57,255,110,.8)}
+.ppp{flex:1 1 0;min-width:0;height:14.3125rem;display:block}
+.ppp img{width:100%;height:100%;object-fit:contain;display:block}
+.msoc{display:none}
+
+/* ---------- mise en page ---------- */
+.wrap{display:grid;grid-template-columns:27.5625rem 1fr;min-height:max(calc(100vh - 14.8125rem),52.7rem)}
+nav{position:sticky;top:14.8125rem;align-self:start;height:max(calc(100vh - 14.8125rem),52.7rem);min-height:0;overflow-y:auto;scrollbar-width:none;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem 1fr;border-right:.5625rem solid var(--g);background:linear-gradient(rgba(14,0,28,.78),rgba(14,0,28,.78)),url(images/fond-vitrail.jpg) center/cover}
+nav a{display:flex;align-items:center;justify-content:center;text-decoration:none;border-bottom:.5rem solid var(--g)}
+nav a:last-child{border-bottom:0}
+.nav-icon{display:none;align-items:center;justify-content:center;width:100%;height:100%;color:var(--v)}
+.nav-icon svg{width:3.2rem;height:3.2rem;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 .35rem rgba(57,255,110,.55))}
+.nav-txt{display:block;color:var(--v);font-size:3.625rem;line-height:.9;text-align:center;text-shadow:0 0 .8rem rgba(197,139,255,.6),0 0 .2rem #000}
+nav a:hover .nav-txt,nav a:hover .nav-icon{color:#fc0}
+nav a[aria-current] .nav-txt,nav a[aria-current] .nav-icon{color:#fff}
+
+main{padding:2.2rem 2.4rem 4rem;min-width:0;background:
+  linear-gradient(rgba(14,0,28,.66),rgba(14,0,28,.66)),
+  linear-gradient(#8a2be2,#8a2be2),
+  url(images/fond-vitrail-texte.jpg) center top/cover;
+  background-blend-mode:normal,color,normal}
+.kicker{color:var(--g);font-size:1.5rem;margin:0 0 .3rem;text-shadow:0 0 .6rem rgba(57,255,110,.5)}
+h1{color:var(--v);font-size:5rem;line-height:.95;margin:0 0 1rem;text-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 1.1rem rgba(122,45,214,.55)}
+h2{color:var(--v);font-size:2.6rem;margin:2.4rem 0 .8rem;padding-bottom:.35rem;border-bottom:.25rem solid var(--g);text-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 1rem rgba(122,45,214,.45)}
+main{font-size:clamp(1.3rem,1.55vw,1.9rem)}
+p{font-size:1em;line-height:1.35;margin:0 0 1.1rem;max-width:62rem}
+.lead-title{color:#fc0;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;text-transform:uppercase;text-decoration:underline;text-underline-offset:.12em;font-size:2.4rem;text-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 .9rem rgba(122,45,214,.5)}
+.btn{display:inline-block;border:.2rem solid var(--g);background:#000;color:var(--v);padding:.55rem 1.2rem;font-size:1.7rem;text-decoration:none;margin:0 .5rem .5rem 0;text-shadow:none}
+.btn:hover{color:#fc0;border-color:#fc0}
+.sep{height:.3rem;background:var(--g);box-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 .9rem rgba(122,45,214,.45);margin:2rem 0;border:0}
+
+/* cartes de rubriques */
+.rub{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1.2rem;max-width:90rem}
+.rub article{border:.25rem solid var(--g);background:rgba(8,0,18,.82);padding:1rem 1.1rem;box-shadow:0 0 1rem rgba(122,45,214,.4)}
+.rub svg{width:4.4rem;height:4.4rem;fill:none;stroke:var(--g);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;display:block;margin:0 0 .5rem}
+.rub h3{margin:0 0 .3rem;font-size:2.2rem;color:var(--v)}
+.rub p{font-size:.85em;margin:0}
+
+.mockfoot{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;max-width:62rem;background:#000;border-top:.5rem solid #f00;padding:1rem 1.2rem;color:#f00;font-size:.9em}
+.trap{display:flex;align-items:center;gap:.6rem;background:transparent;color:#f00;border:.15rem dashed #f00;padding:.4rem .9rem;font:400 1.3rem "Bebas Neue",sans-serif;cursor:pointer;opacity:.55;transition:.3s}
+.trap svg{width:1.8rem;height:1.8rem;fill:none;stroke:currentColor;stroke-width:3}
+.trap:hover{opacity:1;color:var(--g);border-color:var(--g);box-shadow:0 0 1.2rem rgba(57,255,110,.7)}
+main{position:relative}
+main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;pointer-events:none;background:
+  radial-gradient(circle at 10% 0,var(--g) 0 .5rem,transparent .55rem) 0 0/9rem 1.6rem repeat-x,
+  radial-gradient(ellipse at 55% 0,var(--g) 0 .8rem,transparent .85rem) 0 0/13rem 1.2rem repeat-x;opacity:.85}
+.rub article{transition:.25s}
+.rub article:hover{transform:translateY(-.2rem);border-color:#fc0;box-shadow:0 0 1.6rem rgba(57,255,110,.55)}
+.rub article:hover svg{stroke:#fc0}
+.note{font-size:1rem;color:#bba;max-width:62rem;border-left:.25rem solid var(--g);padding-left:.8rem}
+
+
+/* discographie unifiée */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(17em,1fr));gap:1.2rem;max-width:95rem;align-items:start}
+.card{border:.25rem solid var(--g);background:rgba(8,0,18,.84);padding:.6rem;box-shadow:0 0 1rem rgba(122,45,214,.4);position:relative}
+.card .cv{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.card.tint .cv{filter:hue-rotate(250deg) saturate(.9)}
+.fr{position:relative;aspect-ratio:1;overflow:hidden;background:#000}
+.fr img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fr .bl{object-fit:cover;filter:blur(1.1rem) brightness(.6);transform:scale(1.2)}
+.fr .ct{object-fit:contain}
+.ph{display:flex;align-items:center;justify-content:center;text-align:center;aspect-ratio:1;background:linear-gradient(160deg,#1a0036,#06000f);color:var(--v);font:400 2.4em "Bebas Neue",sans-serif;line-height:.95;padding:.6em}
+.card h3{margin:.6rem 0 .1rem;color:var(--v);font-size:1.7em;line-height:1}
+.card .m{font-size:.8em;color:#cbb;margin:0 0 .5rem;line-height:1.2}
+.card .tag{position:absolute;top:1rem;left:1rem;background:#000;color:#fc0;border:.15rem solid #fc0;font:400 1.1em "Bebas Neue",sans-serif;padding:0 .5rem;z-index:2}
+.card .lostnote{font-size:.8em;margin:0 0 .6rem;line-height:1.25}
+.card .trk{margin:0 0 .8rem;padding-left:1.4em;font-size:.8em;line-height:1.3}
+.card .trk li{margin:.15rem 0}
+.card .trk li em{float:right;margin-left:.6rem;font-style:normal;color:var(--g);font-family:"Bebas Neue",sans-serif}
+.card .acts{display:flex;flex-wrap:wrap;gap:.4rem}
+.card .btn{font-size:1.2em;padding:.25rem .8rem;margin:0;cursor:pointer;font-family:"Bebas Neue",sans-serif}
+.card iframe{width:100%;border:0;margin-top:.6rem;display:block}
+
+/* bestiaire */
+.fiche{display:grid;grid-template-columns:minmax(12em,22em) 1fr;gap:1.4rem;border:.25rem solid var(--g);background:rgba(8,0,18,.84);padding:1rem;box-shadow:0 0 1.2rem rgba(122,45,214,.45);margin:0 0 1.6rem;max-width:95rem}
+.fiche .pic{aspect-ratio:3/4;overflow:hidden;background:radial-gradient(circle at 50% 40%,#2a0a55,#06000f);border:.15rem solid var(--g)}
+.fiche .pic img{width:100%;height:100%;display:block;object-fit:cover}
+.fiche .pic.cre2 img{object-position:60% 40%;filter:hue-rotate(270deg) saturate(1.05) brightness(1.08)}
+.fiche .pic.ct img{object-fit:contain;object-position:center bottom;padding:.6rem}
+.fiche h3{font-size:3em;line-height:.95;margin:0;color:var(--v)}
+.fiche .role{color:var(--g);font:400 1.3em "Bebas Neue",sans-serif;margin:.2rem 0 .8rem;letter-spacing:.06em}
+.fiche p{font-size:.9em;max-width:none}
+.fiche dl{margin:.4rem 0 0;font-size:.82em;display:grid;grid-template-columns:max-content 1fr;gap:.25rem .9rem}
+.fiche dt{color:var(--g);font-family:"Bebas Neue",sans-serif;font-size:1.25em}
+.fiche dd{margin:0}
+
+/* slime */
+.slime{position:fixed;left:0;top:0;width:100vw;height:180vh;z-index:99;pointer-events:none;transform:translateY(-185vh);will-change:transform}
+.slime svg{position:absolute;display:block;overflow:visible}
+.slime .sl-body{left:0;top:0;width:100%;height:100%}
+.slime .poo{width:min(16vw,9rem);height:min(16vw,9rem);filter:drop-shadow(0 .3rem .2rem rgba(0,0,0,.45))}
+.slime.go{animation:slime 2.8s cubic-bezier(.45,0,.55,1) forwards}
+.slime.rev{animation-direction:reverse}
+@keyframes slime{0%{transform:translateY(-185vh)}38%{transform:translateY(-30vh)}62%{transform:translateY(-30vh)}100%{transform:translateY(105vh)}}
+@media (prefers-reduced-motion:reduce){.slime.go{animation-duration:.4s}}
+@media (max-width:899px){.fiche{grid-template-columns:1fr}.fiche .pic{aspect-ratio:4/5}}
+
+/* ---------- mobile ---------- */
+@media (max-width:899px){
+  html{font-size:16px}
+  main{font-size:1.05rem}
+  header{height:var(--mh);display:flex;flex-direction:row;align-items:center;overflow:visible;border-bottom:.25rem solid var(--g)}
+  header .mid,header .ppp{display:none}
+  .msoc{display:flex;flex:1;align-items:center;justify-content:flex-end;gap:clamp(.35rem,2vw,.75rem);padding:0 .8rem}
+  .msoc a{display:block;flex:none;width:1.785rem;height:1.785rem}
+  .msoc img{display:block;width:100%;height:100%;object-fit:contain;filter:hue-rotate(270deg) brightness(1.25)}
+  .cre{flex:0 0 auto;width:auto;height:100%;aspect-ratio:1600/825}
+  .cre a,.cre picture{width:100%;height:100%}
+  .cre img{width:100%;height:100%;object-fit:cover;object-position:left center}
+  .wrap{display:flex;flex-direction:column;min-height:0}
+  nav{position:sticky;top:var(--mh);z-index:20;width:100%;height:4.2rem;display:flex;flex-direction:row;justify-content:space-around;align-items:center;border:0;border-bottom:.25rem solid var(--g);background:#000;overflow:visible}
+  nav a{flex:1 1 20%;height:4.2rem;border:0}
+  .nav-txt{display:none}
+  .nav-icon{display:flex}
+  .nav-icon svg{width:2.3rem;height:2.3rem;stroke-width:2.2}
+  main{padding:1.2rem 1rem 3rem}
+  h1{font-size:3.2rem}
+  h2{font-size:2rem}
+  .lead-title{font-size:1.7rem}
+  .btn{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="cre"><a aria-label="La Créature du Marais, accueil" href="#"><picture><source media="(max-width:899px)" srcset="images/putride/entete-creature-v3.jpg"><img alt="La Créature du Marais" src="images/putride/entete-creature-v4.jpg"></picture></a></div>
+  <div class="mid"><img alt="Plateformes" src="images/putride/entete-milieu.png"><a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" style="left:15.54%" target="_blank"></a><a aria-label="Apple Musique" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" style="left:25.69%" target="_blank"></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" style="left:36.21%" target="_blank"></a><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" style="left:46.41%" target="_blank"></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" style="left:57.10%" target="_blank"></a><a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" style="left:67.57%" target="_blank"></a><a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" style="left:77.82%" target="_blank"></a></div>
+  <a class="ppp" aria-label="PUANTEUR PUTRIDE Productions" href="#"><img alt="PUANTEUR PUTRIDE Productions" src="images/putride/logo-ppp-entete.jpg"></a>
+  <div class="msoc"><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img alt="" src="images/icone-instagram.png"></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img alt="" src="images/icone-spotify.png"></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img alt="" src="images/icone-youtube.png"></a></div>
+</header>
+
+<div class="wrap">
+<nav aria-label="Navigation du Mode Putride">
+  <a href="#territoire" aria-current="page"><span class="nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><path d="M55.0 15.0L60.0 21.4L57.3 22.0L55.8 19.1L54.6 18.9L57.1 27.5L54.4 31.1L51.3 30.0L49.8 32.9L53.1 33.6L52.8 34.5L54.2 35.1L53.5 35.1L53.4 35.7L56.4 36.2L53.6 37.8L55.5 37.6L56.0 39.1L54.4 38.0L49.8 38.7L49.1 37.8L40.3 37.0L42.6 39.4L40.7 43.1L38.8 43.3L34.5 46.5L33.0 42.7L30.7 43.5L27.4 47.9L26.2 46.9L25.2 49.0L22.4 47.6L23.1 46.3L21.1 45.0L23.3 34.8L18.4 36.6L13.0 36.5L7.6 41.8L4.0 38.3L9.3 34.1L8.3 32.6L7.4 33.2L10.8 29.3L11.8 24.9L13.8 22.7L18.5 21.7L19.2 22.5L19.9 21.4L21.7 21.3L22.4 24.2L25.3 22.6L25.8 24.2L28.6 25.2L29.3 23.2L30.5 24.8L30.7 23.8L31.8 24.5L33.4 21.0L36.0 21.9L35.8 23.8L36.9 24.3L40.6 21.0L42.0 21.0L42.6 21.4L40.0 24.1L42.3 26.1L46.9 22.9L50.5 16.9Z"/></svg></span><span class="nav-txt">TERRITOIRE</span></a>
+  <a href="#bestiaire"><span class="nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><path d="M16 28C16 14 24 8 32 8s16 6 16 20v10c0 10-7 18-16 18s-16-8-16-18z"/><path d="M16 28L8 19l10 3M48 28l8-9-10 3"/><path d="M16 26c7-2 13-6 16-12 3 6 9 10 16 12"/><path d="M22 33l7 3M42 33l-7 3"/><path d="M23 43q9 5 18 0"/><path d="M27 45.500l1.500 7 2-6M37 45.500l-1.500 7-2-6"/></svg></span><span class="nav-txt">BESTIAIRE</span></a>
+  <a href="#discographie"><span class="nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="8"/><circle cx="32" cy="32" r="2"/><path d="M14 22a20 20 0 0 1 10-9M50 42a20 20 0 0 1-10 9"/></svg></span><span class="nav-txt">DISCOGRAPHIE</span></a>
+  <a href="#ustensiles"><span class="nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><g transform="rotate(-40 32 32)"><circle cx="8" cy="32" r="4"/><path d="M12 32h8M20 25v14"/><rect x="23" y="25" width="24" height="14" rx="2"/><path d="M30 25v4M36 25v4M42 25v4"/><path d="M47 28.500l11 3.500-11 3.500"/></g></svg></span><span class="nav-txt">USTENSILES</span></a>
+  <a href="#mefaits"><span class="nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><path d="M32 58V26"/><path d="M32 26V7M29 12l3-6 3 6"/><path d="M17 10v10q0 8 15 8t15-8V10M14 14l3-6 3 6M44 14l3-6 3 6"/></svg></span><span class="nav-txt">MÉFAITS</span></a>
+</nav>
+
+<main>
+  <p class="kicker">BROUILLON · MODE PUTRIDE · NON PUBLIÉ</p>
+  <h1>Mode Putride</h1>
+  <p class="lead-title">La Créature du Marais</p>
+  <p>L'envers du site : le vitrail pourrit en violet, les contours suintent en vert, et les cinq rubriques propres cèdent la place à celles de la fosse. Discographie, albums et paroles restent présents ; seuls les textes de présentation deviennent des confessions, anecdotes et révélations.</p>
+  <p><a class="btn" href="#">↑ REMONTER À LA SURFACE</a></p>
+
+  <h2 id="rubriques">Les rubriques</h2>
+  <div class="rub">
+    <article id="territoire"><svg viewBox="0 0 64 64"><path d="M55.0 15.0L60.0 21.4L57.3 22.0L55.8 19.1L54.6 18.9L57.1 27.5L54.4 31.1L51.3 30.0L49.8 32.9L53.1 33.6L52.8 34.5L54.2 35.1L53.5 35.1L53.4 35.7L56.4 36.2L53.6 37.8L55.5 37.6L56.0 39.1L54.4 38.0L49.8 38.7L49.1 37.8L40.3 37.0L42.6 39.4L40.7 43.1L38.8 43.3L34.5 46.5L33.0 42.7L30.7 43.5L27.4 47.9L26.2 46.9L25.2 49.0L22.4 47.6L23.1 46.3L21.1 45.0L23.3 34.8L18.4 36.6L13.0 36.5L7.6 41.8L4.0 38.3L9.3 34.1L8.3 32.6L7.4 33.2L10.8 29.3L11.8 24.9L13.8 22.7L18.5 21.7L19.2 22.5L19.9 21.4L21.7 21.3L22.4 24.2L25.3 22.6L25.8 24.2L28.6 25.2L29.3 23.2L30.5 24.8L30.7 23.8L31.8 24.5L33.4 21.0L36.0 21.9L35.8 23.8L36.9 24.3L40.6 21.0L42.0 21.0L42.6 21.4L40.0 24.1L42.3 26.1L46.9 22.9L50.5 16.9Z"/></svg><h3>TERRITOIRE</h3><p>Carte interactive de Rouen et lieux de l'œuvre.</p></article>
+    <article id="bestiaire"><svg viewBox="0 0 64 64"><path d="M16 28C16 14 24 8 32 8s16 6 16 20v10c0 10-7 18-16 18s-16-8-16-18z"/><path d="M16 28L8 19l10 3M48 28l8-9-10 3"/><path d="M16 26c7-2 13-6 16-12 3 6 9 10 16 12"/><path d="M22 33l7 3M42 33l-7 3"/><path d="M23 43q9 5 18 0"/><path d="M27 45.500l1.500 7 2-6M37 45.500l-1.500 7-2-6"/></svg><h3>BESTIAIRE</h3><p>Personnages, figures et incarnations.</p></article>
+    <article id="discographie"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="8"/><circle cx="32" cy="32" r="2"/><path d="M14 22a20 20 0 0 1 10-9M50 42a20 20 0 0 1-10 9"/></svg><h3>DISCOGRAPHIE</h3><p>Mêmes albums, mêmes titres, mêmes paroles : seuls les textes de présentation changent.</p></article>
+    <article id="ustensiles"><svg viewBox="0 0 64 64"><g transform="rotate(-40 32 32)"><circle cx="8" cy="32" r="4"/><path d="M12 32h8M20 25v14"/><rect x="23" y="25" width="24" height="14" rx="2"/><path d="M30 25v4M36 25v4M42 25v4"/><path d="M47 28.500l11 3.500-11 3.500"/></g></svg><h3>USTENSILES</h3><p>Cabinet de curiosités : objets, costumes et accessoires.</p></article>
+    <article id="mefaits"><svg viewBox="0 0 64 64"><path d="M32 58V26"/><path d="M32 26V7M29 12l3-6 3 6"/><path d="M17 10v10q0 8 15 8t15-8V10M14 14l3-6 3 6M44 14l3-6 3 6"/></svg><h3>MÉFAITS</h3><p>Journal vivant des sorties et des événements artistiques.</p></article>
+  </div>
+  <hr class="sep">
+
+  <h2 id="bestiaire-fiches">Bestiaire</h2>
+  <p>Personnages, figures et incarnations de la fosse. Fiches en cours : tout ce qui n'est pas encore confirmé reste marqué « à compléter ».</p>
+  <article class="fiche" id="creature">
+    <div class="pic cre2"><img src="images/creature.jpg" alt="La Créature du Marais en long manteau noir, lunettes rondes et lance, sur fond violet" loading="lazy"></div>
+    <div>
+      <h3>La Créature du Marais</h3>
+      <p class="role">TANCRÈDE CHARON · CUL-POINTU · ROUEN</p>
+      <p>Chanteur, compositeur et metteur en scène de ses propres clips, il officie sous la bannière de PUANTEUR PUTRIDE Productions. À la surface, le rouge de la veste côtelée ; ici, la fosse l'a teinté de violet et le fluide vert le ronge de l'intérieur.</p>
+      <p>Son genre officiel : l'<b>opéra gothique électronique catholique traditionnel</b>, carnavalesque et grotesque, sur un Moyen Âge 2 dont le brun est la couleur de prédilection.</p>
+      <dl>
+        <dt>ATTRIBUTS</dt><dd>pantalon marron évasé, grande chemise blanche à col, veste croisée en velours côtelé, canne-épée, crucifix, cidre, drapeau normand, synthétiseur</dd>
+        <dt>TERRAIN</dt><dd>cathédrale, gargouille, saint Romain, côte Sainte-Catherine, Chimaera Rothomagensis</dd>
+        <dt>ENGENDRÉ</dt><dd>Retard-Tinables dès 2017, Les Machines Infernales 2021, Omerta434 2022, Chyren 2023, Confiteor 2024, Jubilé 2025, In Odium Fidei à venir</dd>
+        <dt>NOURRITURES</dt><dd>Costes, Villon, Rabelais, Saint-Amant, Baudelaire, Gainsbourg, Farmer, Thiéfaine, Lully, Rameau, coldwave, post-punk, black metal français, musique médiévale, carnaval, folklore normand</dd>
+        <dt>MOT D'ORDRE</dt><dd>s'imprégner de son image</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="fiche" id="ephebus">
+    <div class="pic ct"><img src="images/putride/ephebus.png" alt="Éphébus : vampire en soutane, ailes de chauve-souris, yeux rouges, crocs, livret Catéchisme saint Pie X" loading="lazy"></div>
+    <div>
+      <h3>Éphébus</h3>
+      <p class="role">VAMPIRE-PRÊTRE · SOUTANE ET CATÉCHISME</p>
+      <p>Prêtre de la fosse : soutane noire, ailes de chauve-souris, yeux rouges, crocs, collier à pointes serti d'une gemme rouge. Il serre contre lui un livret, le <i>Catéchisme saint Pie X</i> : le dogme d'un côté, la morsure de l'autre.</p>
+      <p>Son masque a été exhumé (voir la photo « Découverte du masque d'Éphébus » dans les ustensiles), et il a pour pendant Éphébelle, dont le bonnet est conservé.</p>
+      <dl>
+        <dt>SIGNES</dt><dd>soutane, ailes, crocs, yeux rouges, gemme rouge, Catéchisme saint Pie X</dd>
+        <dt>APPARITIONS</dt><dd>à compléter</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="fiche" id="edwarda">
+    <div class="pic"><img src="images/putride/madame-edwarda.jpg" alt="Madame Edwarda : silhouette encapuchonnée à la cape turquoise et au col à jabot" loading="lazy"></div>
+    <div>
+      <h3>Madame Edwarda</h3>
+      <p class="role">COMPAGNON DE LA CRÉATURE · GUEUX</p>
+      <p>Silhouette encapuchonnée, cape turquoise, col à jabot. C'est l'ami de la Créature, déguisé en gueux dans le clip de <i>Misérables</i>. Son nom rappelle celui de Bataille ; sa cape, elle, ne rappelle rien de sage.</p>
+      <p>Il reviendra dans le futur clip de <i>Scatholique</i>, extrait d'<i>In Odium Fidei</i>, et n'apparaît donc que dans cette version du site.</p>
+      <dl>
+        <dt>VU DANS</dt><dd>le clip de Misérables · le futur clip de Scatholique</dd>
+        <dt>SIGNES</dt><dd>cape turquoise, capuche, col à jabot, déguisement de gueux</dd>
+        <dt>RÉVÉLATIONS</dt><dd>à compléter</dd>
+      </dl>
+    </div>
+  </article>
+  <hr class="sep">
+  <h2 id="discographie-putride">Discographie putride</h2>
+  <p>Une seule discographie : les albums modernes, puis les Retard-Tinables. Les paroles restent sur la fiche de chaque album. Les nouveautés SoundCloud s'écoutent au clic.</p>
+  <div class="cards">
+    <article class="card "><span class="tag">À VENIR</span><img class="cv" src="images/putride/scatholique.jpg" alt="Scatholique" loading="lazy"><h3>Scatholique</h3><p class="m">Single à venir · extrait d&#x27;In Odium Fidei · durée ???</p><div class="acts"></div></article>
+    <article class="card "><span class="tag">À VENIR</span><div class="fr"><img class="bl" src="images/putride/monsieur-clerge.jpg" alt=""><img class="ct" src="images/putride/monsieur-clerge.jpg" alt="Monsieur Clergé"></div><h3>Monsieur Clergé</h3><p class="m">Single à venir · extrait d&#x27;In Odium Fidei · durée ???</p><div class="acts"></div></article>
+    <article class="card tint"><span class="tag">À VENIR</span><img class="cv" src="images/odium-fidei.jpg" alt="In Odium Fidei" loading="lazy"><h3>In Odium Fidei</h3><p class="m">À venir · anecdotes à écrire</p><div class="acts"><a class="btn" href="index.html#album-in-odium-fidei">PAROLES</a></div></article>
+    <article class="card tint"><img class="cv" src="images/pochette-confiteor.jpg" alt="Confiteor" loading="lazy"><h3>Confiteor</h3><p class="m">Anecdotes à écrire</p><div class="acts"><a class="btn" href="index.html#album-confiteor">PAROLES</a></div></article>
+    <article class="card tint"><img class="cv" src="images/pochette-omerta434-chyren.jpg" alt="Omerta434 : Chyren" loading="lazy"><h3>Omerta434 : Chyren</h3><p class="m">Anecdotes à écrire</p><div class="acts"><a class="btn" href="index.html#album-chyren">PAROLES</a></div></article>
+    <article class="card tint"><img class="cv" src="images/pochette-omerta434.jpg" alt="Omerta434" loading="lazy"><h3>Omerta434</h3><p class="m">Anecdotes à écrire</p><div class="acts"><a class="btn" href="index.html#album-omerta434">PAROLES</a></div></article>
+    <article class="card tint"><img class="cv" src="images/pochette-machines-infernales.jpg" alt="Les Machines Infernales" loading="lazy"><h3>Les Machines Infernales</h3><p class="m">Anecdotes à écrire</p><div class="acts"><a class="btn" href="index.html#album-machines">PAROLES</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/mauvaises-nouvelles-des-enfers-2.jpg" alt="Mauvaises Nouvelles des Enfers II" loading="lazy"><h3>Mauvaises Nouvelles des Enfers II</h3><p class="m">2020 · durée ???</p><p class="lostnote">Album perdu : il ne reste que la pochette et quelques reliques d'images, à venir.</p><div class="acts"></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/mauvaises-nouvelles-des-enfers-1.jpg" alt="Mauvaises Nouvelles des Enfers I" loading="lazy"><h3>Mauvaises Nouvelles des Enfers I</h3><p class="m">2020 · durée ???</p><p class="lostnote">Album perdu : il ne reste que la pochette et quelques reliques d'images, à venir.</p><div class="acts"></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/les-gamins-jleur-mets-la-puree.jpg" alt="Les gamins j&#x27;leur mets la purée" loading="lazy"><h3>Les gamins j&#x27;leur mets la purée</h3><p class="m">2019 · 10 titres</p><ol class="trk"><li><span>Intro - Elle est belle cette vache, elle est Tartinable.</span><em>1:01</em></li><li><span>Alors t&#x27;as peur de péter ?</span><em>2:23</em></li><li><span>Voilà comme ça</span><em>2:21</em></li><li><span>Le Retour du Gaulois (HétéroSermions)</span><em>3:06</em></li><li><span>Le Retour de Marvin (Marvin 31)</span><em>2:24</em></li><li><span>Interlude - J&#x27;éjacule ou quoi ?</span><em>0:17</em></li><li><span>Testicule 2.0/Biographie</span><em>3:00</em></li><li><span>Le Colis (partie 1)</span><em>3:02</em></li><li><span>Le Colis (partie 2) (ça part)</span><em>1:21</em></li><li><span>Je te tartine moi non plus</span><em>2:21</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/les-gamins-jleur-mets-la-puree" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/les-gamins-jleur-mets-la-puree" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/palestine-gratuit.jpg" alt="Palestine Gratuit" loading="lazy"><h3>Palestine Gratuit</h3><p class="m">2019 · single · 1 titre</p><ol class="trk"><li><span>Palestine Gratuit</span><em>1:18</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/palestine-gratuit" data-h="166">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/palestine-gratuit" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/jarrive-en-tesla.jpg" alt="J&#x27;arrive en Tesla" loading="lazy"><h3>J&#x27;arrive en Tesla</h3><p class="m">2019 · single · 1 titre</p><ol class="trk"><li><span>J&#x27;arrive en Tesla</span><em>1:41</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/jarrive-en-tesla" data-h="166">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/jarrive-en-tesla" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/peter-sur-la-friture.jpg" alt="Péter sur la friture" loading="lazy"><h3>Péter sur la friture</h3><p class="m">2018 · 7 titres</p><ol class="trk"><li><span>Intro : Perversions Contradictoires</span><em>1:41</em></li><li><span>Spider-Cochon (feat. La Bise JM.)</span><em>4:00</em></li><li><span>Interlude - Essuyer la Confiture</span><em>2:55</em></li><li><span>Coquin</span><em>2:32</em></li><li><span>J&#x27;étais à poil sur ses genoux (feat. Gargamel, La Bise JM.)</span><em>3:06</em></li><li><span>Interlude - Les Voisins Chinois</span><em>3:02</em></li><li><span>J&#x27;aurais dû faire acteur porno</span><em>2:29</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/peter-sur-la-friture" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/peter-sur-la-friture" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/ces-beau-cela.jpg" alt="Ces Beau Cela" loading="lazy"><h3>Ces Beau Cela</h3><p class="m">2018 · 9 titres</p><ol class="trk"><li><span>Est-ce que tu es Tartinable ?</span><em>2:52</em></li><li><span>Ces Beau Cela</span><em>3:05</em></li><li><span>Tu fais des progrès Jean-Marie !</span><em>3:20</em></li><li><span>Je fais pas des Insectes</span><em>2:14</em></li><li><span>Boucheries de Soja (feat. Thierry Ledétraqué)</span><em>2:06</em></li><li><span>Elle m&#x27;a dit qu&#x27;elle avait 20 ans</span><em>1:25</em></li><li><span>Les Cigales elles nous cassent les Couilles (feat. Thierry Ledétraqué et Christophe Chevanne)</span><em>3:49</em></li><li><span>Le Retour des Cigales</span><em>2:09</em></li><li><span>Vive Adolf</span><em>3:12</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/ces-beau-cela" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/ces-beau-cela" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/rien-a-declarer.jpg" alt="Rien à déclarer" loading="lazy"><h3>Rien à déclarer</h3><p class="m">2018 · 6 titres</p><ol class="trk"><li><span>Casso (Columbine Cover)</span><em>3:20</em></li><li><span>Je ricol plus</span><em>3:34</em></li><li><span>S.A.I.Q.U.I.</span><em>3:16</em></li><li><span>Eh bah voilà !</span><em>2:13</em></li><li><span>Oh ça fouille...</span><em>1:58</em></li><li><span>En revoir</span><em>3:29</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/rien-a-declarer" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/rien-a-declarer" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/le-retour-de-la-couche.jpg" alt="Le Retour de la Couche" loading="lazy"><h3>Le Retour de la Couche</h3><p class="m">2018 · 7 titres</p><ol class="trk"><li><span>Durs avec Christophe - Intro</span><em>1:39</em></li><li><span>Oh oui je te respecte...</span><em>4:50</em></li><li><span>Je suis mouillé...</span><em>2:51</em></li><li><span>Paycho</span><em>2:25</em></li><li><span>Musiquedebeauf.mp3 (Remix par Jean-Casimir37)</span><em>3:42</em></li><li><span>Un rêve, tout simplement.</span><em>3:34</em></li><li><span>Je m&#x27;extase sur toi...</span><em>4:08</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/le-retour-de-la-couche" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/le-retour-de-la-couche" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/mais-si-quest-vrai.jpg" alt="Mais si qu&#x27;est vrai" loading="lazy"><h3>Mais si qu&#x27;est vrai</h3><p class="m">2018 · single · 1 titre</p><ol class="trk"><li><span>Ça déconne !</span><em>3:19</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/mais-si-qucest-vrai" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/mais-si-qucest-vrai" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/connasse.jpg" alt="Connasse" loading="lazy"><h3>Connasse</h3><p class="m">2018 · EP · 2 titres</p><ol class="trk"><li><span>À ma demande.</span><em>2:09</em></li><li><span>PLS by Christophe (remake de À ma demande)</span><em>1:29</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/connasse" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/connasse" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><div class="ph">Putain de sa Race</div><h3>Putain de sa Race</h3><p class="m">2018 · single · 1 titre · pochette à retrouver</p><ol class="trk"><li><span>Putain de sa Race</span><em>1:43</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/putain-de-sa-race-2018" data-h="166">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/putain-de-sa-race-2018" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/oh-non-je-fais-appel.jpg" alt="Oh non je fais appel !" loading="lazy"><h3>Oh non je fais appel !</h3><p class="m">2017 · single · 1 titre</p><ol class="trk"><li><span>Oh non je fais appel !</span><em>3:29</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/oh-non-je-fais-appel" data-h="166">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/oh-non-je-fais-appel" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/oh-non-herve.jpg" alt="Oh non Hervé" loading="lazy"><h3>Oh non Hervé</h3><p class="m">2017 · 6 titres</p><ol class="trk"><li><span>Camisole - Ode à Juliette</span><em>1:46</em></li><li><span>Assel est demandé.</span><em>1:32</em></li><li><span>Cachot cachot !</span><em>1:27</em></li><li><span>Ooooooh !</span><em>1:32</em></li><li><span>Camisole (Christophe Chevanne Cover)</span><em>3:20</em></li><li><span>Je suis le juge.</span><em>3:06</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/oh-non-herve" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/oh-non-herve" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/mets-la-cam.jpg" alt="Mets la cam" loading="lazy"><h3>Mets la cam</h3><p class="m">2017 · 5 titres</p><ol class="trk"><li><span>J&#x27;te connais pas hein</span><em>1:13</em></li><li><span>Bah mets la cam Hervé !</span><em>1:58</em></li><li><span>Testicule</span><em>4:10</em></li><li><span>Jean-Marie tu déconnes là ?</span><em>1:54</em></li><li><span>J&#x27;me suis mis trop bien !</span><em>2:32</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/mets-la-cam" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/mets-la-cam" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+    <article class="card "><img class="cv" src="images/retard-tinables/lincontinence.jpg" alt="L&#x27;incontinence" loading="lazy"><h3>L&#x27;incontinence</h3><p class="m">2017 · 12 titres</p><ol class="trk"><li><span>Trois !</span><em>3:21</em></li><li><span>Christophe Chevanne</span><em>2:53</em></li><li><span>Un, Deux, Trois, Quatre, Cinq, Trois !</span><em>2:33</em></li><li><span>La Revanche de Christophe</span><em>3:12</em></li><li><span>Interlude</span><em>1:18</em></li><li><span>Christophe Chevanne ne Mourra Jamais.</span><em>1:57</em></li><li><span>Javel/Christophe</span><em>2:10</em></li><li><span>Christophe&#x27;s Ending.</span><em>1:46</em></li><li><span>Hottest Christophe</span><em>1:54</em></li><li><span>Christophe &amp; Chevanne</span><em>1:57</em></li><li><span>Apocalypse sur Christophe</span><em>0:36</em></li><li><span>Couche.</span><em>0:41</em></li></ol><div class="acts"><button class="btn play" type="button" data-sc="https://soundcloud.com/puanteurputride/sets/lincontinence" data-h="380">▶ ÉCOUTER</button><a class="btn" href="https://soundcloud.com/puanteurputride/sets/lincontinence" rel="noopener" target="_blank">SOUNDCLOUD</a></div></article>
+  </div>
+  <hr class="sep">
+  <h2 id="activation">Comment y descendre depuis le site normal</h2>
+  <p>Proposition : une <b>trappe</b> dans le pied de page du site propre, à côté du © MMXXVI. Un seul geste, sans menu ni réglage. Essaie-la ci-dessous (simulation).</p>
+  <div class="mockfoot">
+    <span>© MMXXVI · La Créature du Marais — Cul-Pointu</span>
+    <button class="trap" id="trap" type="button" aria-label="Entrer dans la fosse : activer le mode putride">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44"/><path d="M8 32h48M32 10v44"/><circle cx="26" cy="32" r="2"/><circle cx="38" cy="32" r="2"/></svg>
+      <span>ENTRER DANS LA FOSSE</span>
+    </button>
+  </div>
+  <p class="note">À l'activation : une coulée de slime vert, avec quelques surprises brunes, balaie l'écran de haut en bas, puis les couleurs, l'en-tête et le bandeau basculent. Le choix serait mémorisé (localStorage), et « ↑ Remonter à la surface » ramène au site propre par la coulée inverse.</p>
+  <p class="note">Notes de brouillon : Territoire = contour officiel de la commune de Rouen. Bestiaire = tête de vampire. Discographie = disque vinyle. Ustensiles = clystère.</p>
+</main>
+</div>
+<div class="slime" id="slime" aria-hidden="true"><svg class="sl-body" viewBox="0 0 100 180" preserveAspectRatio="none"><defs><linearGradient id="slg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dff8f"/><stop offset=".5" stop-color="#2fe05a"/><stop offset="1" stop-color="#17a83a"/></linearGradient></defs><path d="M0,40 L0,20.0 Q3.0,17.0 6.0,25.5 Q9.0,22.5 12.0,20.3 Q15.0,17.3 18.0,23.3 Q21.0,20.3 24.0,22.2 Q27.0,19.2 30.0,22.7 Q33.0,19.7 36.0,23.8 Q39.0,20.8 42.0,21.0 Q45.0,18.0 48.0,22.0 Q51.0,19.0 54.0,23.2 Q57.0,20.2 60.0,25.8 Q63.0,22.8 66.0,24.9 Q69.0,21.9 72.0,21.1 Q75.0,18.1 78.0,26.0 Q81.0,23.0 84.0,24.9 Q87.0,21.9 90.0,22.7 Q93.0,19.7 96.0,25.6 L100,40 L100,140 L99.0,140 C99.0,157.5 93.0,157.5 93.0,140 L92.2,140 C92.2,182.5 87.8,182.5 87.8,140 L85.4,140 C85.4,165.0 78.6,165.0 78.6,140 L76.0,140 C76.0,190.0 72.0,190.0 72.0,140 L69.0,140 C69.0,155.0 63.0,155.0 63.0,140 L60.5,140 C60.5,175.0 55.5,175.0 55.5,140 L53.6,140 C53.6,185.0 46.4,185.0 46.4,140 L44.2,140 C44.2,162.5 39.8,162.5 39.8,140 L37.0,140 C37.0,177.5 31.0,177.5 31.0,140 L28.4,140 C28.4,192.5 23.6,192.5 23.6,140 L21.2,140 C21.2,160.0 14.8,160.0 14.8,140 L12.2,140 C12.2,172.5 7.8,172.5 7.8,140 L6.3,140 C6.3,155.0 0.7,155.0 0.7,140 L0,140 Z" fill="url(#slg)" stroke="#0c5a22" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linejoin="round"/><path d="M8,34 Q20,28 34,34 M60,50 Q74,44 88,52 M14,80 Q22,74 30,82 M70,100 Q80,96 90,104" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/><g fill="#fff" fill-opacity=".35"><ellipse cx="22" cy="60" rx="1.6" ry="1"/><ellipse cx="78" cy="75" rx="2" ry="1.2"/><ellipse cx="50" cy="110" rx="1.4" ry=".9"/><ellipse cx="88" cy="120" rx="1.2" ry=".8"/><ellipse cx="12" cy="125" rx="1.5" ry="1"/></g></svg><svg class="poo" viewBox="0 0 60 60" style="left:8%;top:22%;transform:rotate(-12deg) scale(1)"><g stroke="#2a1406" stroke-width="2.6" stroke-linejoin="round" fill="#8a5a2b"><ellipse cx="30" cy="48" rx="26" ry="9.5"/><ellipse cx="30" cy="34" rx="19" ry="9"/><ellipse cx="30" cy="21" rx="12" ry="8"/><path d="M24 15 Q30 3 38 8 Q33 10 34 14Z"/></g><path d="M12 46 Q20 50 30 50" stroke="#b98450" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="36" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="25" cy="33" r="1.6" fill="#000"/><circle cx="35" cy="33" r="1.6" fill="#000"/><path d="M25 39 Q30 43 35 39" stroke="#2a1406" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><svg class="poo" viewBox="0 0 60 60" style="left:40%;top:31%;transform:rotate(8deg) scale(1.15)"><g stroke="#2a1406" stroke-width="2.6" stroke-linejoin="round" fill="#8a5a2b"><ellipse cx="30" cy="48" rx="26" ry="9.5"/><ellipse cx="30" cy="34" rx="19" ry="9"/><ellipse cx="30" cy="21" rx="12" ry="8"/><path d="M24 15 Q30 3 38 8 Q33 10 34 14Z"/></g><path d="M12 46 Q20 50 30 50" stroke="#b98450" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="36" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="25" cy="33" r="1.6" fill="#000"/><circle cx="35" cy="33" r="1.6" fill="#000"/><path d="M25 39 Q30 43 35 39" stroke="#2a1406" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><svg class="poo" viewBox="0 0 60 60" style="left:72%;top:25%;transform:rotate(14deg) scale(1)"><g stroke="#2a1406" stroke-width="2.6" stroke-linejoin="round" fill="#8a5a2b"><ellipse cx="30" cy="48" rx="26" ry="9.5"/><ellipse cx="30" cy="34" rx="19" ry="9"/><ellipse cx="30" cy="21" rx="12" ry="8"/><path d="M24 15 Q30 3 38 8 Q33 10 34 14Z"/></g><path d="M12 46 Q20 50 30 50" stroke="#b98450" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="36" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="25" cy="33" r="1.6" fill="#000"/><circle cx="35" cy="33" r="1.6" fill="#000"/><path d="M25 39 Q30 43 35 39" stroke="#2a1406" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><svg class="poo" viewBox="0 0 60 60" style="left:22%;top:44%;transform:rotate(6deg) scale(0.9)"><g stroke="#2a1406" stroke-width="2.6" stroke-linejoin="round" fill="#8a5a2b"><ellipse cx="30" cy="48" rx="26" ry="9.5"/><ellipse cx="30" cy="34" rx="19" ry="9"/><ellipse cx="30" cy="21" rx="12" ry="8"/><path d="M24 15 Q30 3 38 8 Q33 10 34 14Z"/></g><path d="M12 46 Q20 50 30 50" stroke="#b98450" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="36" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="25" cy="33" r="1.6" fill="#000"/><circle cx="35" cy="33" r="1.6" fill="#000"/><path d="M25 39 Q30 43 35 39" stroke="#2a1406" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><svg class="poo" viewBox="0 0 60 60" style="left:58%;top:49%;transform:rotate(-9deg) scale(1.1)"><g stroke="#2a1406" stroke-width="2.6" stroke-linejoin="round" fill="#8a5a2b"><ellipse cx="30" cy="48" rx="26" ry="9.5"/><ellipse cx="30" cy="34" rx="19" ry="9"/><ellipse cx="30" cy="21" rx="12" ry="8"/><path d="M24 15 Q30 3 38 8 Q33 10 34 14Z"/></g><path d="M12 46 Q20 50 30 50" stroke="#b98450" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="36" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="25" cy="33" r="1.6" fill="#000"/><circle cx="35" cy="33" r="1.6" fill="#000"/><path d="M25 39 Q30 43 35 39" stroke="#2a1406" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><svg class="poo" viewBox="0 0 60 60" style="left:86%;top:41%;transform:rotate(-6deg) scale(0.85)"><g stroke="#2a1406" stroke-width="2.6" stroke-linejoin="round" fill="#8a5a2b"><ellipse cx="30" cy="48" rx="26" ry="9.5"/><ellipse cx="30" cy="34" rx="19" ry="9"/><ellipse cx="30" cy="21" rx="12" ry="8"/><path d="M24 15 Q30 3 38 8 Q33 10 34 14Z"/></g><path d="M12 46 Q20 50 30 50" stroke="#b98450" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="24" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="36" cy="32" r="4" fill="#fff" stroke="#2a1406" stroke-width="1.6"/><circle cx="25" cy="33" r="1.6" fill="#000"/><circle cx="35" cy="33" r="1.6" fill="#000"/><path d="M25 39 Q30 43 35 39" stroke="#2a1406" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div>
+<script>
+(function(){
+  var s=document.getElementById('slime');
+  function go(rev){s.className='slime go'+(rev?' rev':'');}
+  s.addEventListener('animationend',function(){s.className='slime';});
+  document.getElementById('trap').addEventListener('click',function(){go(false)});
+  Array.prototype.forEach.call(document.querySelectorAll('a.btn[href="#"]'),function(a){a.addEventListener('click',function(ev){ev.preventDefault();go(true)})});
+  Array.prototype.forEach.call(document.querySelectorAll('.play'),function(b){
+    b.addEventListener('click',function(){
+      var c=b.closest('.card'),f=c.querySelector('iframe');
+      if(f){f.remove();b.textContent='▶ ÉCOUTER';return}
+      f=document.createElement('iframe');
+      f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(b.dataset.sc)+'&color=%2339ff6e&auto_play=true&show_teaser=false';
+      f.height=b.dataset.h;f.allow='autoplay';f.title='Lecteur SoundCloud';
+      c.appendChild(f);b.textContent='■ FERMER';
+    });
+  });
+})();
+</script>
+</body>
+</html>
