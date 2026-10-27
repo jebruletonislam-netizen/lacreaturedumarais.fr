@@ -289,11 +289,13 @@ main{position:relative}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .bgz{transform:scale(1);filter:brightness(.42) saturate(.8)}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .fgz{transform:scale(var(--zm));filter:brightness(1.08) contrast(1.06)}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .aur{opacity:1;transform:scale(var(--zm));animation:czpulse 3.8s ease-in-out 1.7s infinite}
-@keyframes czpulse{0%,100%{filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au)) drop-shadow(0 0 4.5rem var(--au))}50%{filter:drop-shadow(0 0 1.2rem var(--au)) drop-shadow(0 0 3.2rem var(--au)) drop-shadow(0 0 6rem var(--au))}}
+@keyframes czpulse{0%,100%{opacity:1}50%{opacity:.7}}
+@media (max-width:899px){.cz .aur{filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.4rem var(--au))}}
 .cz-edw{--au:rgba(255,140,40,.9);--zm:1.06;--zo:50% 88%;--op:50% 40%}
 .cz-rt{--au:rgba(130,230,60,.9);--zm:1.08;--zo:50% 82%}
 .cz-rouen{--au:rgba(218,11,253,.7);--zm:1.22;--zo:50% 55%;--sm:rgba(225,40,255,.95);--sm2:rgba(245,150,255,.8)}
 .cz-rouen .aur2{display:none}
+.cz-rouen .bgz{transform:scale(1)}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen .bgz{transform:scale(.96);filter:brightness(.55) saturate(.85)}
 .cz-rouen::before,.cz-rouen::after{left:-10%;right:-10%;top:-60%;height:140%;filter:blur(.25rem) contrast(1.4);-webkit-mask-image:linear-gradient(180deg,#000 0,#000 45%,transparent 92%);mask-image:linear-gradient(180deg,#000 0,#000 45%,transparent 92%);background:
 radial-gradient(ellipse 5% 38% at 10% 50%,var(--sm),transparent 72%),radial-gradient(ellipse 7% 55% at 22% 38%,var(--sm2),transparent 72%),radial-gradient(ellipse 4% 30% at 33% 62%,var(--sm),transparent 72%),radial-gradient(ellipse 8% 48% at 46% 44%,var(--sm),transparent 72%),radial-gradient(ellipse 5% 34% at 58% 66%,var(--sm2),transparent 72%),radial-gradient(ellipse 7% 52% at 70% 40%,var(--sm),transparent 72%),radial-gradient(ellipse 4% 36% at 81% 58%,var(--sm),transparent 72%),radial-gradient(ellipse 6% 44% at 92% 46%,var(--sm2),transparent 72%)}
@@ -442,3 +444,6 @@ header{overflow:visible}
 
 .fiche2 h3.sub{color:var(--g);font-size:1.45em;margin:1rem 0 .1rem;text-shadow:none}.fiche2 h3.sub+p{margin-top:.1rem}
 .fiche2 .pf.sq{aspect-ratio:1}
+
+/* telephones modestes : on allege les effets les plus couteux */
+@media (max-width:899px){.fr .bl,.pf .bl{filter:blur(.6rem) brightness(.5)}.pf .bl.vio{filter:hue-rotate(270deg) blur(.6rem) brightness(.5)}main section,.gal li{content-visibility:auto;contain-intrinsic-size:auto 18rem}}
