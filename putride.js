@@ -67,7 +67,8 @@
     var a=ev.target.closest&&ev.target.closest('[data-lb]');
     if(!a||!window.openLB)return;
     ev.preventDefault();
-    window.openLB([{src:a.getAttribute('href'),alt:a.dataset.lb}],0);
+    var g=a.closest('.gal'),L=g?[].slice.call(g.querySelectorAll('a[data-lb]')):[a];
+    window.openLB(L.map(function(l){return {src:l.getAttribute('href'),alt:l.dataset.lb};}),Math.max(0,L.indexOf(a)));
   });
 
   /* Éveil d'Éphébus */

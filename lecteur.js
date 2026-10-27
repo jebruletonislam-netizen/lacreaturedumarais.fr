@@ -24,7 +24,11 @@
   var st = document.createElement('style');
   st.textContent = [
     '#lcmp{--lc:#f00;--hv:#fc0;--bg:rgba(0,0,0,.93);position:fixed;left:50%;bottom:.7rem;z-index:90;width:min(46rem,calc(100vw - 1.4rem));transform:translate(-50%,160%);opacity:0;transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .3s;color:#fff;background:var(--bg);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid var(--lc);border-radius:1rem;box-shadow:0 .5rem 1.6rem rgba(0,0,0,.85)}',
-    '#lcmp.pu{--lc:#39ff6e;--bg:rgba(8,0,18,.94)}',
+    '#lcmp.pu{--lc:#c58bff;--hv:#39ff6e;--bg:rgba(11,0,22,.95);border-color:#39ff6e;box-shadow:0 .5rem 1.6rem rgba(0,0,0,.85),0 0 .9rem rgba(122,45,214,.45)}',
+    '#lcmp.pu::before{background:linear-gradient(90deg,transparent,#39ff6e,transparent);filter:drop-shadow(0 0 3px #39ff6e)}',
+    '#lcmp.pu .lp-t{color:#c58bff}#lcmp.pu .lp-a{color:rgba(197,139,255,.68)}#lcmp.pu .lp-p{color:rgba(197,139,255,.7)}',
+    '#lcmp.pu .lp-b{color:#c58bff}#lcmp.pu .lp-x{color:rgba(197,139,255,.75)}#lcmp.pu .lp-bar{background:rgba(197,139,255,.3)}',
+    '#lcmp.pu .lp-b:hover,#lcmp.pu .lp-b:focus-visible,#lcmp.pu .lp-x:hover{color:#39ff6e;border-color:#39ff6e}',
     '#lcmp.on{transform:translate(-50%,0);opacity:1}',
     '#lcmp::before{content:"";position:absolute;left:1.4rem;right:1.4rem;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--lc),transparent);filter:drop-shadow(0 0 3px var(--lc))}',
     '#lcmp .lp-r{display:flex;align-items:center;gap:.8rem;padding:.55rem .7rem .55rem .8rem}',
