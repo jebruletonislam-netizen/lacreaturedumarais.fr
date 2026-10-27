@@ -495,4 +495,73 @@
     else if(ev.key==='ArrowUp'&&as.length){ev.preventDefault();if(i<=0)inp.focus();else as[i-1].focus();}
     else if(ev.key==='Escape'){shut(inp.form);inp.value='';inp.focus();}
   });
+  /* Galeries des fiches : pagination, six rangees par page (12 photos sur
+     telephone, 18 sur tablette, 24 sur ordi). Les photos des autres pages
+     sont seulement masquees : la visionneuse les parcourt toujours toutes,
+     et leurs images (chargement differe) ne sont telechargees qu'une fois
+     affichees. */
+  (function(){
+    var RANGEES=6;
+    function colonnes(g){return getComputedStyle(g).gridTemplateColumns.split(' ').filter(Boolean).length||1;}
+    function bandeau(){/* hauteur des barres collees en haut de l'ecran : en-tete, navigation du telephone */
+      var b=0;
+      Array.prototype.forEach.call(document.querySelectorAll('header,nav'),function(e){
+        var p=getComputedStyle(e).position;if(p!=='sticky'&&p!=='fixed')return;
+        var r=e.getBoundingClientRect();if(r.top<innerHeight/4&&r.bottom<innerHeight/2)b=Math.max(b,r.bottom);
+      });
+      return b;
+    }
+    function remonter(g){
+      var t=g.previousElementSibling&&/^H[23]$/.test(g.previousElementSibling.tagName)?g.previousElementSibling:g;
+      var y=t.getBoundingClientRect().top+scrollY-bandeau()-12;
+      window.scrollTo({top:Math.max(0,y),behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+    }
+    function bouton(texte,nom,fn){
+      var b=document.createElement('button');b.type='button';b.className='btn';b.textContent=texte;
+      b.setAttribute('aria-label',nom);b.addEventListener('click',fn);return b;
+    }
+    function installer(g){
+      var items=Array.prototype.slice.call(g.children);
+      /* une div et non une <nav> : le theme stylise toutes les <nav> en barre de navigation collante */
+      var nav=document.createElement('div');nav.className='gpag';nav.setAttribute('role','navigation');nav.setAttribute('aria-label','Pages de photos');
+      g.parentNode.insertBefore(nav,g.nextSibling);
+      var st={page:0,par:0};
+      function afficher(p,clic){
+        var par=colonnes(g)*RANGEES,n=Math.ceil(items.length/par);
+        st.par=par;
+        if(n<=1){items.forEach(function(li){li.hidden=false;});nav.hidden=true;st.page=0;return;}
+        p=Math.max(0,Math.min(n-1,p));st.page=p;nav.hidden=false;
+        items.forEach(function(li,i){li.hidden=i<p*par||i>=(p+1)*par;});
+        nav.textContent='';
+        var prec=bouton('‹','Page précédente',function(){afficher(st.page-1,true);});prec.disabled=p===0;nav.appendChild(prec);
+        var vues=[0,p-1,p,p+1,n-1].filter(function(x,i,a){return x>=0&&x<n&&a.indexOf(x)===i;}).sort(function(a,b){return a-b;});
+        vues.forEach(function(x,i){
+          if(i&&x-vues[i-1]>1){var et=document.createElement('span');et.className='gp-et';et.textContent='…';et.setAttribute('aria-hidden','true');nav.appendChild(et);}
+          var b=bouton(String(x+1),'Page '+(x+1),function(){afficher(x,true);});
+          if(x===p)b.setAttribute('aria-current','page');
+          nav.appendChild(b);
+        });
+        var suiv=bouton('›','Page suivante',function(){afficher(st.page+1,true);});suiv.disabled=p===n-1;nav.appendChild(suiv);
+        var info=document.createElement('span');info.className='gp-info';
+        info.textContent='Photos '+(p*par+1)+' – '+Math.min(items.length,(p+1)*par)+' sur '+items.length;
+        nav.appendChild(info);
+        if(clic){remonter(g);var c=nav.querySelector('[aria-current]');if(c)c.focus({preventScroll:true});}
+      }
+      g._pages={afficher:afficher,st:st};
+      afficher(0,false);
+    }
+    function installerTout(){Array.prototype.forEach.call(document.querySelectorAll('ul.gal'),function(g){if(!g._pages)installer(g);});}
+    installerTout();
+    /* navigation sans rechargement : nouvelles galeries a chaque page */
+    document.addEventListener('putride:page',installerTout);
+    /* changement de nombre de colonnes : on garde la premiere photo affichee */
+    var rz;
+    window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){
+      Array.prototype.forEach.call(document.querySelectorAll('ul.gal'),function(g){
+        var pg=g._pages;if(!pg)return;
+        var par=colonnes(g)*RANGEES;
+        if(par!==pg.st.par)pg.afficher(Math.floor(pg.st.page*pg.st.par/par),false);
+      });
+    },150);});
+  })();
 })();
