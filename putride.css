@@ -143,7 +143,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .card.open{grid-column:1/-1}
 .card.open iframe{max-width:60rem}
 .sub{color:var(--g);font-size:1.5em;margin:2rem 0 .8rem}
-.perso{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;max-width:44rem;list-style:none;padding:0;margin:0}
+.perso{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;max-width:none;list-style:none;padding:0;margin:0}
 .perso a{display:block;text-decoration:none;border:.25rem solid var(--g);background:rgba(8,0,18,.84);padding:.5rem;box-shadow:0 0 1rem rgba(122,45,214,.4);transition:.25s}
 .perso a:hover{border-color:#fc0;transform:translateY(-.2rem)}
 .pf{display:block;position:relative;aspect-ratio:1;overflow:hidden;background:radial-gradient(circle at 50% 40%,#2a0a55,#06000f)}
@@ -151,7 +151,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .pf .bl{object-fit:cover;filter:blur(1rem) brightness(.5);transform:scale(1.25)}
 .pf .bl.vio{filter:hue-rotate(270deg) blur(1rem) brightness(.5)}
 .pf img.vio{filter:hue-rotate(270deg) saturate(1.05) brightness(1.08)}
-.perso b{display:block;text-align:center;margin:.5rem 0 .1rem;color:var(--v);font:400 1.25em "Bebas Neue",sans-serif;line-height:1.05}
+.perso b{display:block;text-align:center;margin:.5rem 0 .1rem;color:var(--v);font:400 1.1rem "Bebas Neue",sans-serif;line-height:1.05}
 .fiche2{display:grid;grid-template-columns:minmax(14em,24em) 1fr;gap:1.6rem;align-items:start;max-width:95rem}
 .fiche2 .pf{border:.15rem solid var(--g)}
 .fiche2 h1{margin:0}
@@ -200,7 +200,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
   .card .tag{top:.6rem;left:.6rem;font-size:.9em}
   .card .ph{font-size:1.6em}
   .perso{grid-template-columns:repeat(2,1fr);gap:.7rem}
-  .perso{max-width:none}.perso b{font-size:1.15em}.gal{grid-template-columns:repeat(2,1fr)}
+  .perso{max-width:none}.perso b{font-size:1rem}.gal{grid-template-columns:repeat(2,1fr)}
   .fiche2{grid-template-columns:1fr}.map{aspect-ratio:4/5}
   .fiche2 .pf,.eph{max-width:24rem;margin:0 auto}
 }
