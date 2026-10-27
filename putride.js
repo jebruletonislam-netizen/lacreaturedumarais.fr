@@ -68,41 +68,162 @@
       setTimeout(function(){if(done)done();},(reduce?.5:2.2)*1000);
       Promise.all(anims.map(function(a){return a.finished;})).then(function(){s.innerHTML='';busy=false;}).catch(function(){s.innerHTML='';busy=false;});
     };
-    var t=document.getElementById('trap'),u=document.getElementById('up');
-    if(t)t.addEventListener('click',function(){go(false);});
-    if(u)u.addEventListener('click',function(ev){ev.preventDefault();go(true);});
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('.play'),function(b){
-    b.addEventListener('click',function(){
-      var c=b.closest('.card'),f=c.querySelector('iframe');
-      if(f){f.remove();c.classList.remove('open');b.textContent='▶ ÉCOUTER';return;}
-      f=document.createElement('iframe');
-      f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(b.dataset.sc)+'&color=%2339ff6e&auto_play=true&show_teaser=false';
-      f.height=b.dataset.h;f.allow='autoplay';f.title='Lecteur SoundCloud';
-      c.appendChild(f);c.classList.add('open');b.textContent='■ FERMER';
+    document.addEventListener('click',function(ev){
+      var el=ev.target.closest&&ev.target.closest('#trap,#up');
+      if(!el)return;
+      if(el.id==='up')ev.preventDefault();
+      go(el.id==='up');
     });
+  }
+  /* Accordéon des albums */
+  document.addEventListener('click',function(ev){
+    var b=ev.target.closest&&ev.target.closest('.alb');
+    if(!b)return;
+    var p=b.parentNode.querySelector('.apanel');
+    if(!p)return;
+    var open=p.hidden;p.hidden=!open;
+    b.setAttribute('aria-expanded',open);
+    b.parentNode.classList.toggle('open',open);
   });
+
+  /* Lecteur SoundCloud persistant */
+  var pb=null,wg=null,cur=null,apiState=0,apiQ=[];
+  function withApi(cb){
+    if(window.SC&&window.SC.Widget)return cb();
+    apiQ.push(cb);
+    if(apiState)return;
+    apiState=1;
+    var s=document.createElement('script');
+    s.src='https://w.soundcloud.com/player/api.js';
+    s.onload=function(){apiQ.splice(0).forEach(function(f){f();});};
+    document.head.appendChild(s);
+  }
+  function mark(){
+    Array.prototype.forEach.call(document.querySelectorAll('.al'),function(li){
+      var p=li.querySelector('.play');
+      li.classList.toggle('playing',!!(p&&cur&&p.dataset.sc===cur));
+    });
+  }
+  function setPP(on){var b=pb&&pb.querySelector('.pp');if(b){b.textContent=on?'❚❚':'▶';b.setAttribute('aria-pressed',on);}}
+  function mkbar(){
+    if(pb)return;
+    pb=document.createElement('div');pb.id='pbar';pb.setAttribute('role','region');pb.setAttribute('aria-label','Lecteur de la fosse');
+    pb.innerHTML='<div class="pb-top"><button class="pb-b" type="button" data-a="prev" aria-label="Piste précédente">⏮</button><button class="pb-b pp" type="button" data-a="toggle" aria-label="Lecture / pause">▶</button><button class="pb-b" type="button" data-a="next" aria-label="Piste suivante">⏭</button><span class="pb-t">…</span><button class="pb-b" type="button" data-a="min" aria-label="Réduire ou agrandir le lecteur">▾</button><button class="pb-b" type="button" data-a="close" aria-label="Fermer le lecteur">✕</button></div><div class="pb-f"></div>';
+    document.body.appendChild(pb);
+    document.body.classList.add('has-pbar');
+    pb.addEventListener('click',function(ev){
+      var b=ev.target.closest('[data-a]');if(!b)return;
+      var a=b.dataset.a;
+      if(a==='close'){pb.remove();pb=null;wg=null;cur=null;document.body.classList.remove('has-pbar');mark();return;}
+      if(a==='min'){var m=pb.classList.toggle('min');b.textContent=m?'▴':'▾';return;}
+      if(wg)wg[a]();
+    });
+  }
+  function playSC(url,h,title){
+    mkbar();
+    var box=pb.querySelector('.pb-f'),f=box.querySelector('iframe');
+    if(f&&cur===url){if(wg)wg.toggle();pb.classList.remove('min');return;}
+    cur=url;wg=null;
+    if(f)f.remove();
+    f=document.createElement('iframe');
+    f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(url)+'&color=%2339ff6e&auto_play=true&show_teaser=false';
+    f.height=h;f.allow='autoplay';f.title='Lecteur SoundCloud';
+    box.appendChild(f);
+    pb.classList.remove('min');pb.querySelector('.pb-t').textContent=title||'';
+    setPP(true);mark();
+    withApi(function(){
+      if(!pb||f.parentNode!==box)return;
+      wg=SC.Widget(f);
+      wg.bind(SC.Widget.Events.PLAY,function(){setPP(true);wg.getCurrentSound(function(s){if(s&&pb)pb.querySelector('.pb-t').textContent=(title?title+' — ':'')+s.title;});});
+      wg.bind(SC.Widget.Events.PAUSE,function(){setPP(false);});
+    });
+  }
+  document.addEventListener('click',function(ev){
+    var b=ev.target.closest&&ev.target.closest('.play');
+    if(!b)return;
+    ev.preventDefault();
+    playSC(b.dataset.sc,b.dataset.h,b.dataset.t);
+  });
+
+  /* Modale vidéo YouTube */
+  function closeVid(){var m=document.getElementById('vmodal');if(m)m.remove();document.removeEventListener('keydown',escVid);}
+  function escVid(ev){if(ev.key==='Escape')closeVid();}
   document.addEventListener('click',function(ev){
     var a=ev.target.closest&&ev.target.closest('[data-yt]');
-    if(!a)return;
-    ev.preventDefault();
-    var c=a.closest('.card'),id=a.getAttribute('data-yt'),w=c.querySelector('.ytw');
-    if(w){var same=w.getAttribute('data-id')===id;w.remove();c.classList.remove('open');if(same)return;}
-    w=document.createElement('div');w.className='ytw';w.setAttribute('data-id',id);
-    var f=document.createElement('iframe');
-    f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';
-    f.allow='autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;f.title='Lecteur YouTube';
-    w.appendChild(f);c.appendChild(w);c.classList.add('open');
-  });  document.addEventListener('click',function(ev){
+    if(a){
+      ev.preventDefault();closeVid();
+      if(wg)wg.pause();
+      var m=document.createElement('div');m.id='vmodal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');
+      m.innerHTML='<div class="vbox"><div class="vbar"><span></span><button type="button" class="vx" aria-label="Fermer la vidéo">✕</button></div><div class="vfr"><iframe allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Lecteur YouTube"></iframe></div></div>';
+      m.querySelector('span').textContent=a.dataset.t||'';
+      m.querySelector('iframe').src='https://www.youtube-nocookie.com/embed/'+a.getAttribute('data-yt')+'?autoplay=1&rel=0';
+      document.body.appendChild(m);
+      document.addEventListener('keydown',escVid);
+      return;
+    }
+    var m2=document.getElementById('vmodal');
+    if(m2&&(ev.target===m2||ev.target.closest('.vx')))closeVid();
+  });
+
+  document.addEventListener('click',function(ev){
     var a=ev.target.closest&&ev.target.closest('[data-lb]');
     if(!a||!window.openLB)return;
     ev.preventDefault();
     window.openLB([{src:a.getAttribute('href'),alt:a.dataset.lb}],0);
   });
-  var eph=document.getElementById('eph');
-  if(eph){
-    var tog=function(){var on=eph.classList.toggle('on');eph.setAttribute('aria-pressed',on);};
-    eph.addEventListener('pointerdown',function(ev){if(ev.pointerType!=='mouse')tog();});
-    eph.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();tog();}});
+
+  /* Éveil d'Éphébus */
+  function tog(e){var on=e.classList.toggle('on');e.setAttribute('aria-pressed',on);}
+  document.addEventListener('pointerdown',function(ev){
+    var e=ev.target.closest&&ev.target.closest('#eph');
+    if(e&&ev.pointerType!=='mouse')tog(e);
+  });
+  document.addEventListener('keydown',function(ev){
+    var e=ev.target.closest&&ev.target.closest('#eph');
+    if(e&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();tog(e);}
+  });
+
+  /* Navigation sans rechargement : le lecteur survit */
+  var busy=false;
+  function loadScript(src){return new Promise(function(r){var s=document.createElement('script');s.src=src;s.onload=s.onerror=r;document.head.appendChild(s);});}
+  function swap(url,push){
+    return fetch(url).then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(h){
+      var d=new DOMParser().parseFromString(h,'text/html');
+      var nw=d.querySelector('.wrap'),ow=document.querySelector('.wrap');
+      if(!nw||!ow)throw 0;
+      var want=[];
+      Array.prototype.forEach.call(d.querySelectorAll('link[rel=stylesheet][href^="http"]'),function(l){
+        if(!document.querySelector('link[href="'+l.getAttribute('href')+'"]'))document.head.appendChild(l.cloneNode());
+      });
+      Array.prototype.forEach.call(d.querySelectorAll('script[src^="http"]'),function(s){
+        var u=s.getAttribute('src');
+        if(!document.querySelector('script[src="'+u+'"]'))want.push(loadScript(u));
+      });
+      var inl=Array.prototype.filter.call(d.querySelectorAll('body script:not([src])'),function(s){return s.textContent.trim();});
+      var hd=document.querySelector('header'),nh=d.querySelector('header');
+      return Promise.all(want).then(function(){
+        document.title=d.title;
+        if(hd&&nh)hd.innerHTML=nh.innerHTML;
+        ow.innerHTML=nw.innerHTML;
+        if(push)history.pushState({},'',url);
+        window.scrollTo(0,0);
+        inl.forEach(function(s){var x=document.createElement('script');x.textContent=s.textContent;document.body.appendChild(x);x.remove();});
+        mark();
+      });
+    });
   }
+  document.addEventListener('click',function(ev){
+    if(ev.defaultPrevented||ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+    var a=ev.target.closest&&ev.target.closest('a[href]');
+    if(!a||a.target||a.hasAttribute('data-lb')||a.hasAttribute('download'))return;
+    var h=a.getAttribute('href');
+    if(!/^brouillon-[^#?]*\.html$/.test(h)||busy)return;
+    ev.preventDefault();busy=true;
+    swap(h,true).catch(function(){location.href=h;}).then(function(){busy=false;});
+  });
+  window.addEventListener('popstate',function(){
+    var p=location.pathname.split('/').pop();
+    if(/^brouillon-.*\.html$/.test(p))swap(p,false).catch(function(){location.reload();});
+    else location.reload();
+  });
 })();
