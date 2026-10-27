@@ -116,13 +116,13 @@
     var a=ev.target.closest&&ev.target.closest('a[href]');
     if(!a||a.target||a.hasAttribute('data-lb')||a.hasAttribute('download'))return;
     var h=a.getAttribute('href');
-    if(!/^mode-putride[^#?]*\.html$/.test(h)||busy)return;
+    if(!/^\/mode-putride\/[^#?]*$/.test(h)||busy)return;
     ev.preventDefault();busy=true;
     swap(h,true).catch(function(){location.href=h;}).then(function(){busy=false;});
   });
   window.addEventListener('popstate',function(){
-    var p=location.pathname.split('/').pop();
-    if(/^mode-putride.*\.html$/.test(p))swap(p,false).catch(function(){location.reload();});
+    var p=location.pathname;
+    if(/^\/mode-putride\//.test(p))swap(p,false).catch(function(){location.reload();});
     else location.reload();
   });
 
@@ -384,7 +384,7 @@
   })();
 
   /* Recherche : uniquement dans les pages du mode putride */
-  var PAGES=['mode-putride.html','mode-putride-territoire.html','mode-putride-bestiaire.html','mode-putride-discographie.html','mode-putride-ustensiles.html','mode-putride-mefaits.html','mode-putride-archives.html','mode-putride-in-odium-fidei.html','mode-putride-album-ces-beau-cela.html','mode-putride-album-chyren.html','mode-putride-album-confiteor.html','mode-putride-album-connasse.html','mode-putride-album-jarrive-en-tesla.html','mode-putride-album-le-retour-de-la-couche.html','mode-putride-album-les-gamins-jleur-mets-la-puree.html','mode-putride-album-lincontinence.html','mode-putride-album-machines.html','mode-putride-album-mais-si-quest-vrai.html','mode-putride-album-mauvaises-nouvelles-des-enfers-1.html','mode-putride-album-mauvaises-nouvelles-des-enfers-2.html','mode-putride-album-mets-la-cam.html','mode-putride-album-oh-non-herve.html','mode-putride-album-oh-non-je-fais-appel.html','mode-putride-album-omerta434.html','mode-putride-album-palestine-gratuit.html','mode-putride-album-peter-sur-la-friture.html','mode-putride-album-putain-de-sa-race.html','mode-putride-album-rien-a-declarer.html','mode-putride-personnage-createur.html','mode-putride-personnage-edwarda.html','mode-putride-personnage-ephebus.html','mode-putride-personnage-ephebelle.html','mode-putride-personnage-ephebito.html','mode-putride-personnage-ver.html'];
+  var PAGES=['/mode-putride/accueil/','/mode-putride/territoire/','/mode-putride/bestiaire/','/mode-putride/discographie/','/mode-putride/ustensiles/','/mode-putride/mefaits/','/mode-putride/archives/','/mode-putride/in-odium-fidei/','/mode-putride/discographie/ces-beau-cela/','/mode-putride/discographie/chyren/','/mode-putride/discographie/confiteor/','/mode-putride/discographie/connasse/','/mode-putride/discographie/jarrive-en-tesla/','/mode-putride/discographie/le-retour-de-la-couche/','/mode-putride/discographie/les-gamins-jleur-mets-la-puree/','/mode-putride/discographie/lincontinence/','/mode-putride/discographie/machines/','/mode-putride/discographie/mais-si-quest-vrai/','/mode-putride/discographie/mauvaises-nouvelles-des-enfers-1/','/mode-putride/discographie/mauvaises-nouvelles-des-enfers-2/','/mode-putride/discographie/mets-la-cam/','/mode-putride/discographie/oh-non-herve/','/mode-putride/discographie/oh-non-je-fais-appel/','/mode-putride/discographie/omerta434/','/mode-putride/discographie/palestine-gratuit/','/mode-putride/discographie/peter-sur-la-friture/','/mode-putride/discographie/putain-de-sa-race/','/mode-putride/discographie/rien-a-declarer/','/mode-putride/bestiaire/createur/','/mode-putride/bestiaire/edwarda/','/mode-putride/bestiaire/ephebus/','/mode-putride/bestiaire/ephebelle/','/mode-putride/bestiaire/ephebito/','/mode-putride/bestiaire/ver/','/mode-putride/bestiaire/christophe-chevanne/','/mode-putride/bestiaire/herve-martin/','/mode-putride/bestiaire/jean-marie-gomis/','/mode-putride/bestiaire/thierry-haye/','/mode-putride/bestiaire/patrice-strilli/','/mode-putride/bestiaire/patrick-servanin/','/mode-putride/bestiaire/jean-pierre-herlant/','/mode-putride/bestiaire/gilbert-chabrolles/'];
   var IX=null,IXP=null;
   function norm(s){return s.toLowerCase().replace(/œ/g,'oe').replace(/æ/g,'ae').replace(/[’‘]/g,"'").normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
   function build(){
