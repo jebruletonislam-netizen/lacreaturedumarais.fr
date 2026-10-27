@@ -530,7 +530,7 @@ body[data-via-ust] #archive-objets .back{display:none}
   .apple-track-player.beside-art{float:none;clear:both;width:100%;height:8rem}
 }
 </style>
-</head>
+<style>html.slx{background:#5cb82a}html.slx body{visibility:hidden}</style><script>try{if(sessionStorage.getItem("lcm-slime")){document.documentElement.className+=" slx";setTimeout(function(){document.documentElement.classList.remove("slx")},3500)}}catch(e){}</script></head>
 <body class="nojs">
 <header>
 <div class="cre"><a aria-label="La Créature du Marais, accueil" class="ci" href="#accueil"><picture><source media="(max-width:899px)" srcset="images/entete-creature-v3.jpg"/><img alt="La Créature du Marais" src="images/entete-creature-v4.jpg"/></picture></a></div>
@@ -926,7 +926,7 @@ mp.addEventListener("keydown",function(e){if(e.key==="Escape"){closeM();sb.focus
 <footer class="sf">
 <img alt="La Créature du Marais — Cul-Pointu" class="sf-t" src="images/pied-titre.png"/>
 <p class="sf-c">© MMXXVI</p>
-<a class="sf-trap" href="brouillon-mode-putride.html" aria-label="Entrer dans la fosse : mode putride"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44"/><path d="M8 32h48M32 10v44"/><circle cx="26" cy="32" r="2"/><circle cx="38" cy="32" r="2"/></svg><span>ENTRER DANS LA FOSSE</span></a>
+<a class="sf-trap" href="brouillon-mode-putride.html" data-slime="down" aria-label="Entrer dans la fosse : mode putride"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44"/><path d="M8 32h48M32 10v44"/><circle cx="26" cy="32" r="2"/><circle cx="38" cy="32" r="2"/></svg><span>ENTRER DANS LA FOSSE</span></a>
 </footer>
 <script>
 (function(){
@@ -1224,5 +1224,6 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
   foldAll(); setTimeout(foldAll,300);
 })();
 </script>
+<script src="slime.js"></script>
 </body>
 </html>

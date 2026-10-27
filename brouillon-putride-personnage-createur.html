@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="putride.css">
-</head>
+<script>try{if(sessionStorage.getItem("lcm-slime")){document.documentElement.className+=" slx";setTimeout(function(){document.documentElement.classList.remove("slx")},3500)}}catch(e){}</script></head>
 <body>
 <header>
   <div class="cre"><a aria-label="La Créature du Marais, accueil" href="brouillon-mode-putride.html"><picture><source media="(max-width:899px)" srcset="images/putride/entete-creature-v3.jpg"><img alt="La Créature du Marais" src="images/putride/entete-creature-v4.jpg"></picture></a></div>
@@ -42,10 +42,9 @@
   </dl>
   </div></div>
 </main>
-<footer class="pfoot"><p>© MMXXVI · La Créature du Marais — Cul-Pointu</p><a class="pup" href="index.html" aria-label="Remonter à la surface : retour au site normal"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44"/><path d="M8 32h48M32 10v44"/><circle cx="26" cy="32" r="2"/><circle cx="38" cy="32" r="2"/></svg><span>↑ REMONTER À LA SURFACE</span></a></footer>
+<footer class="pfoot"><img alt="La Créature du Marais — Cul-Pointu" class="sf-t" src="images/pied-titre.png"><p class="sf-c">© MMXXVI</p><a class="pup" href="index.html" data-slime="up" aria-label="Remonter à la surface : retour au site normal"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44"/><path d="M8 32h48M32 10v44"/><circle cx="26" cy="32" r="2"/><circle cx="38" cy="32" r="2"/></svg><span>↑ REMONTER À LA SURFACE</span></a></footer>
 </div>
-<div class="slime" id="slime" aria-hidden="true"></div>
 <script src="lightbox.js"></script>
-<script src="putride.js"></script>
+<script src="slime.js"></script><script src="putride.js"></script>
 </body>
 </html>
