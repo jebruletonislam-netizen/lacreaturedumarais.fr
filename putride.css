@@ -52,7 +52,7 @@ h2{color:var(--v);font-size:2.6rem;margin:2.4rem 0 .8rem;padding-bottom:.35rem;b
 main{font-size:clamp(1.3rem,1.55vw,1.9rem)}
 p{font-size:1em;line-height:1.35;margin:0 0 1.1rem;max-width:62rem}
 .lead-title{color:#fc0;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;text-transform:uppercase;text-decoration:underline;text-underline-offset:.12em;font-size:2.4rem;text-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 .9rem rgba(122,45,214,.5)}
-.btn{display:inline-block;border:.2rem solid var(--g);background:#000;color:var(--v);padding:.55rem 1.2rem;font-size:1.7rem;text-decoration:none;margin:0 .5rem .5rem 0;text-shadow:none}
+.btn{display:inline-block;border:.2rem solid #b560ff;background:#000;color:#b560ff;padding:.55rem 1.2rem;font-size:1.7rem;text-decoration:none;margin:0 .5rem .5rem 0;text-shadow:none}
 .btn:hover{color:#fc0;border-color:#fc0}
 .sep{height:.3rem;background:var(--g);box-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 .9rem rgba(122,45,214,.45);margin:2rem 0;border:0}
 
@@ -209,6 +209,9 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .lieux .acts{margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.5rem}
 .lieux .acts .btn{font-size:1rem;padding:.2rem .8rem;cursor:pointer}
 
+.perso .nophoto{display:flex;flex-direction:column;width:100%;border:.25rem solid #b560ff;background:rgba(8,0,18,.84);padding:.5rem;opacity:.75}
+.perso .nophoto .pf{aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.perso .nophoto em{font:400 1.1rem "Bebas Neue",sans-serif;font-style:normal;letter-spacing:.08em;color:rgba(197,139,255,.6)}
 .perso li{display:flex}.perso a{display:flex;flex-direction:column;width:100%}.perso .pf{flex:none;width:100%}.perso b{flex:1;display:flex;align-items:center;justify-content:center;min-height:2.2em}
 .perso .pf.eph{aspect-ratio:1;border:0;cursor:inherit;background:radial-gradient(circle at 50% 45%,#1a0836,#030007 75%)}
 .gal.tall .pf{aspect-ratio:3/4}.fiche2 .pf.tall{aspect-ratio:3/4}
