@@ -284,4 +284,88 @@
     (function tick(){drop();setTimeout(tick,rnd(3200,7500));})();
   })();
 
+  /* Recherche : uniquement dans les pages du mode putride */
+  var PAGES=['mode-putride.html','mode-putride-territoire.html','mode-putride-bestiaire.html','mode-putride-discographie.html','mode-putride-ustensiles.html','mode-putride-mefaits.html','mode-putride-in-odium-fidei.html','mode-putride-personnage-createur.html','mode-putride-personnage-edwarda.html','mode-putride-personnage-ephebus.html','mode-putride-personnage-ephebelle.html','mode-putride-personnage-ephebito.html','mode-putride-personnage-ver.html'];
+  var IX=null,IXP=null;
+  function norm(s){return s.toLowerCase().replace(/œ/g,'oe').replace(/æ/g,'ae').replace(/[’‘]/g,"'").normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  function build(){
+    if(IXP)return IXP;
+    IX=[];
+    IXP=Promise.all(PAGES.map(function(u){
+      return fetch(u).then(function(r){return r.text();}).then(function(h){
+        var d=new DOMParser().parseFromString(h,'text/html'),m=d.querySelector('main');if(!m)return;
+        var t=(d.querySelector('main h1')||{}).textContent||d.title.split('|')[0];t=t.replace(/\s+/g,' ').trim();
+        var k=d.title.split('|')[0].replace(/^\s*mode putride\s*·?\s*/i,'').replace(/\s+/g,' ').trim();
+        if(norm(k)===norm(t))k='';
+        var parts=[];
+        Array.prototype.forEach.call(m.querySelectorAll('h2,h3,p,li,figcaption'),function(p){
+          if(p.closest('.pup,.pfoot'))return;
+          var c=p.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('*'),function(e){e.appendChild(document.createTextNode(' '));});
+          var x=c.textContent.replace(/\s+/g,' ').trim();
+          if(x.length>24||/^H[23]$/.test(p.tagName)&&x.length>2)parts.push({x:x,n:norm(x)});
+        });
+        IX.push({t:t,k:k,h:u,n:norm(t+' '+k),parts:parts});
+      }).catch(function(){});
+    }));
+    return IXP;
+  }
+  function find(q){
+    var nq=norm(q).trim();if(nq.length<2)return[];
+    var w=nq.split(/\s+/);
+    function all(n){return w.every(function(x){return n.indexOf(x)>-1;});}
+    var R=[],has={};
+    IX.forEach(function(e,i){if(all(e.n)){has[e.h]=1;R.push({t:e.t,k:e.k,h:e.h,sc:e.n.indexOf(w[0])===0?0:1,i:i});}});
+    IX.forEach(function(e,i){
+      if(has[e.h])return;
+      for(var j=0;j<e.parts.length;j++){
+        var p=e.parts[j];
+        if(all(p.n)){var a=Math.max(0,Math.max(0,p.n.indexOf(w[0]))-30);if(a)a=p.x.indexOf(' ',a-1)+1||a;R.push({t:e.t,k:e.k,h:e.h,sn:(a?'… ':'')+p.x.substr(a,90)+(a+90<p.x.length?' …':''),sc:6,i:i});break;}
+      }
+    });
+    R.sort(function(a,b){return a.sc-b.sc||a.i-b.i;});
+    return R.slice(0,8);
+  }
+  function out(f){return f.parentNode.querySelector('.sr');}
+  function shut(f){var o=out(f);o.classList.remove('on');o.textContent='';}
+  function upd(inp){
+    var o=out(inp.form),v=inp.value.trim();
+    build().then(function(){
+      if(inp.value.trim()!==v)return;
+      o.textContent='';
+      if(v.length<2){o.classList.remove('on');return;}
+      var R=find(v);
+      if(!R.length){var n=document.createElement('div');n.className='sn';n.textContent='Rien dans la fosse';o.appendChild(n);}
+      R.forEach(function(r){
+        var a=document.createElement('a');a.href=r.h;var b=document.createElement('b');b.textContent=r.t;a.appendChild(b);
+        var s=r.sn?(r.k?r.k+' — ':'')+r.sn:r.k;
+        if(s){var sm=document.createElement('small');sm.textContent=s;a.appendChild(sm);}
+        o.appendChild(a);
+      });
+      o.classList.add('on');
+    });
+  }
+  document.addEventListener('input',function(ev){var i=ev.target;if(i.matches&&i.matches('.sform input'))upd(i);});
+  document.addEventListener('focusin',function(ev){var i=ev.target;if(i.matches&&i.matches('.sform input')){build();if(i.value.trim().length>1)upd(i);}});
+  document.addEventListener('submit',function(ev){
+    var f=ev.target;if(!f.matches||!f.matches('.sform'))return;
+    ev.preventDefault();var a=out(f).querySelector('a');if(a)a.click();
+  });
+  document.addEventListener('click',function(ev){
+    var t=ev.target;
+    var b=t.closest&&t.closest('.sbtn');
+    if(b){
+      var mp=document.getElementById('msearch');
+      if(mp.hasAttribute('hidden')){mp.removeAttribute('hidden');b.setAttribute('aria-expanded','true');mp.querySelector('input').focus();}
+      else{mp.setAttribute('hidden','');b.setAttribute('aria-expanded','false');}
+      return;
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.sr.on'),function(o){if(!o.parentNode.contains(t))shut(o.parentNode.querySelector('form'));});
+  });
+  document.addEventListener('keydown',function(ev){
+    var t=ev.target,box=t.closest&&t.closest('.dsearch,.msp');if(!box)return;
+    var inp=box.querySelector('input'),as=Array.prototype.slice.call(box.querySelectorAll('.sr a')),i=as.indexOf(t);
+    if(ev.key==='ArrowDown'&&as.length){ev.preventDefault();as[Math.min(as.length-1,i+1)].focus();}
+    else if(ev.key==='ArrowUp'&&as.length){ev.preventDefault();if(i<=0)inp.focus();else as[i-1].focus();}
+    else if(ev.key==='Escape'){shut(inp.form);inp.value='';inp.focus();}
+  });
 })();
