@@ -305,7 +305,7 @@ html.slx{background:#5cb82a}html.slx body{visibility:hidden}
 @keyframes pool{to{background-position-x:1.7rem}}
 
 /* pied de page identique au site normal */
-.pfoot{position:relative;z-index:45;padding:2.4rem 1rem 2.4rem}
+.pfoot{grid-column:1/-1;position:relative;z-index:45;padding:2.4rem 1rem 2.4rem}
 .pfoot .sf-t{display:block;margin:0 auto;width:min(66rem,90%);height:auto;mix-blend-mode:screen}
 .pfoot p.sf-c{margin:.2rem 0 0;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;color:#fff;font-size:1.8rem;font-weight:400;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
 @media (max-width:899px){.pfoot{padding:1.6rem 1rem 1.8rem}.pfoot p.sf-c{font-size:1.1rem}}
@@ -318,13 +318,13 @@ html.slx{background:#5cb82a}html.slx body{visibility:hidden}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx) .fxl{opacity:1}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx) .bgz{transform:scale(1)}
 
-/* la Créature : aura rouge */
-.fx-cre{--mw:30%;--mh:50%;--mx:52%;--my:57%}
-.fx-cre .fxl{background:radial-gradient(ellipse 25% 47% at 52% 57%,transparent 52%,rgba(255,30,45,.8) 74%,rgba(190,0,20,.35) 90%,transparent 100%);mix-blend-mode:screen;animation:aura 4.2s ease-in-out infinite}
-:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .bgz{filter:hue-rotate(270deg) saturate(.9) brightness(.5) blur(.12rem)}
+/* la Créature : aura rouge derrière la silhouette détourée */
+.fx .aur{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.14);opacity:0;mix-blend-mode:screen;pointer-events:none;transition:opacity 1.4s ease}
+.fx-cre .fgz{-webkit-mask-image:none;mask-image:none}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .aur{opacity:1;animation:aura 4.2s ease-in-out infinite}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .bgz{filter:hue-rotate(270deg) saturate(.9) brightness(.45) blur(.12rem)}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .fgz{filter:hue-rotate(270deg) saturate(1.2) brightness(1.08) contrast(1.18)}
-@keyframes aura{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
-
+@keyframes aura{0%,100%{transform:scale(1.14)}50%{transform:scale(1.18)}}
 /* Madame Edwarda : feu qui crépite */
 .fx-edw{--mw:27%;--mh:56%;--mx:48%;--my:58%}
 .fx-edw .fxl{mix-blend-mode:screen;background:radial-gradient(ellipse 60% 45% at 8% 100%,rgba(255,150,40,.7),transparent 70%),radial-gradient(ellipse 50% 40% at 95% 95%,rgba(255,90,10,.55),transparent 70%),radial-gradient(ellipse 30% 30% at 20% 60%,rgba(255,190,80,.35),transparent 70%);animation:crack 1.3s steps(1,end) infinite}
@@ -359,5 +359,9 @@ html.slx{background:#5cb82a}html.slx body{visibility:hidden}
 @keyframes swing{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
 .fx-ver{cursor:default}.fx-ito{cursor:default}
 .fx-ver .stg img,.fx-ito .stg img{object-fit:contain}
+.fx-ver .stg img{position:absolute;inset:0;width:100%;height:100%}
+.fx-ver .aur{object-fit:contain;transform:none;clip-path:inset(14.5% 0 18% 0)}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .aur{opacity:1;animation:vaura 3.6s ease-in-out infinite}
+@keyframes vaura{0%,100%{opacity:.85}50%{opacity:1}}
 
 @media (prefers-reduced-motion:reduce){.fx *{animation:none!important;transition-duration:.01s!important}}
