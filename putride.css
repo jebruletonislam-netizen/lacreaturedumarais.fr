@@ -276,23 +276,30 @@ main{position:relative}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx) .fxl{opacity:1}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx) .bgz{transform:scale(1)}
 
-/* la Créature : aura rouge derrière la silhouette détourée */
-.fx .aur{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.14);opacity:0;mix-blend-mode:screen;pointer-events:none;transition:opacity 1.4s ease}
-.fx-cre .fgz{-webkit-mask-image:none;mask-image:none}
-:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .aur{opacity:1;animation:aura 4.2s ease-in-out infinite}
-:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .bgz{filter:hue-rotate(270deg) saturate(.9) brightness(.45) blur(.12rem)}
-:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .fgz{filter:hue-rotate(270deg) saturate(1.2) brightness(1.08) contrast(1.18)}
-@keyframes aura{0%,100%{transform:scale(1.14)}50%{transform:scale(1.18)}}
-/* Madame Edwarda : feu qui crépite */
-.fx-edw{--mw:24%;--mh:52%;--mx:50%;--my:58%}
-.fx-edw .fxl{mix-blend-mode:screen;background:radial-gradient(ellipse 60% 45% at 8% 100%,rgba(255,150,40,.7),transparent 70%),radial-gradient(ellipse 50% 40% at 95% 95%,rgba(255,90,10,.55),transparent 70%),radial-gradient(ellipse 30% 30% at 20% 60%,rgba(255,190,80,.35),transparent 70%);animation:crack 1.3s steps(1,end) infinite}
-:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-edw .bgz{filter:brightness(.5) saturate(.8)}
-:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-edw .fgz{filter:brightness(1.28) contrast(1.06) saturate(1.1)}
-.fx-edw .em{position:absolute;bottom:-4%;width:.28rem;height:.28rem;border-radius:50%;background:#ffb347;box-shadow:0 0 .35rem .1rem rgba(255,140,30,.8);opacity:0}
-:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-edw .em{animation:ember 2.6s ease-out infinite}
+/* personnages détourés : le sujet avance, le décor recule, une aura naît derrière lui */
+.cz{isolation:isolate;--au:rgba(90,160,255,.95);--zm:1.12;--zo:50% 70%;--op:50% 50%}
+.cz .bgz{object-position:var(--op);transform:scale(1.3);transform-origin:50% 55%;transition:transform 1.7s cubic-bezier(.25,.1,.2,1),filter 1.7s ease}
+.cz .fgz,.cz .aur{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--op);-webkit-mask-image:none;mask-image:none;mix-blend-mode:normal;transform:scale(1);transform-origin:var(--zo);transition:transform 1.7s cubic-bezier(.25,.1,.2,1),opacity 1.5s ease,filter 1.7s ease}
+.cz .aur{opacity:0;filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au))}
+.cz .fgz{z-index:2}.cz .aur{z-index:1}.cz .fxl,.cz .em{z-index:3}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .bgz{transform:scale(1);filter:brightness(.42) saturate(.8)}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .fgz{transform:scale(var(--zm));filter:brightness(1.08) contrast(1.06)}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .aur{opacity:1;transform:scale(var(--zm));animation:czpulse 3.8s ease-in-out 1.7s infinite}
+@keyframes czpulse{0%,100%{filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au))}50%{filter:drop-shadow(0 0 1.2rem var(--au)) drop-shadow(0 0 3.2rem var(--au))}}
+.cz-edw{--au:rgba(255,140,40,.9);--zm:1.06;--zo:50% 88%;--op:50% 40%}
+.cz-rt{--au:rgba(130,230,60,.9);--zm:1.08;--zo:50% 82%}
+.cz-rouen{--zm:1.14;--zo:50% 55%}
+.cz-rouen .aur{filter:brightness(0) invert(.82) blur(.9rem)}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen .aur{opacity:.7;animation:czsmoke 5.2s ease-out 1.2s infinite both;transform:scale(1.2)}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen .aur2{animation-delay:3.8s}
+@keyframes czsmoke{0%{opacity:0;transform:translateY(2%) scale(1.1)}30%{opacity:.75}100%{opacity:0;transform:translateY(-7%) scale(1.5)}}
+.cz-edw .fxl{mix-blend-mode:screen;background:radial-gradient(ellipse 60% 45% at 8% 100%,rgba(255,150,40,.7),transparent 70%),radial-gradient(ellipse 50% 40% at 95% 95%,rgba(255,90,10,.55),transparent 70%),radial-gradient(ellipse 30% 30% at 20% 60%,rgba(255,190,80,.35),transparent 70%)}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-edw .fxl{animation:crack 1.3s steps(1,end) infinite}
+.cz-edw .em{position:absolute;bottom:-4%;width:.28rem;height:.28rem;border-radius:50%;background:#ffb347;box-shadow:0 0 .35rem .1rem rgba(255,140,30,.8);opacity:0}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-edw .em{animation:ember 2.6s ease-out infinite both}
 @keyframes crack{0%{opacity:.55;transform:translate(0,0)}9%{opacity:1;transform:translate(1%,-1%)}22%{opacity:.7;transform:translate(-1%,0)}35%{opacity:1;transform:translate(0,-2%)}48%{opacity:.5}61%{opacity:.95;transform:translate(1%,1%)}74%{opacity:.65}88%{opacity:1;transform:translate(-1%,-1%)}}
 @keyframes ember{0%{transform:translate(0,0) scale(1);opacity:0}10%{opacity:1}100%{transform:translate(var(--dx),-12rem) scale(.3);opacity:0}}
-.fx-edw .em{animation-fill-mode:both}
+@media (prefers-reduced-motion:reduce){.cz .aur{animation:none!important}}
 
 /* Éphébelle : cœurs */
 .fx-ebl{--mw:25%;--mh:54%;--mx:54%;--my:58%}
