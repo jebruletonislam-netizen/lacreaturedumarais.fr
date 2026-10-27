@@ -14,7 +14,7 @@
   <div class="cre"><a aria-label="La Créature du Marais, accueil" href="brouillon-mode-putride.html"><picture><source media="(max-width:899px)" srcset="images/putride/entete-creature-v3.jpg"><img alt="La Créature du Marais" src="images/putride/entete-creature-v4.jpg"></picture></a></div>
   <div class="mid"><img alt="Plateformes" src="images/putride/entete-milieu.png"><a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" style="left:15.54%" target="_blank"></a><a aria-label="Apple Musique" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" style="left:25.69%" target="_blank"></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" style="left:36.21%" target="_blank"></a><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" style="left:46.41%" target="_blank"></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" style="left:57.10%" target="_blank"></a><a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" style="left:67.57%" target="_blank"></a><a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" style="left:77.82%" target="_blank"></a></div>
   <a class="ppp" aria-label="PUANTEUR PUTRIDE Productions" href="brouillon-mode-putride.html"><img alt="PUANTEUR PUTRIDE Productions" src="images/putride/logo-ppp-entete.jpg"></a>
-  <div class="msoc"><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img alt="" src="images/icone-instagram.png"></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img alt="" src="images/icone-spotify.png"></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img alt="" src="images/icone-youtube.png"></a></div>
+  <div class="msoc"><a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank"><img alt="" src="images/icone-deezer.png"></a><a aria-label="Apple Musique" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank"><img alt="" src="images/icone-apple-music.png"></a><a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img alt="" src="images/icone-spotify.png"></a><a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img alt="" src="images/icone-instagram.png"></a><a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img alt="" src="images/icone-youtube.png"></a><a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" target="_blank"><img alt="" src="images/icone-x.png"></a><a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank"><img alt="" src="images/icone-tiktok.png"></a></div>
 </header>
 
 <div class="wrap">
@@ -30,17 +30,39 @@
 <p class="kicker">BROUILLON · MODE PUTRIDE · TERRITOIRE</p>
   <h1>Territoire</h1>
   <p>Carte de Rouen et lieux de l'œuvre.</p>
-  <div class="map"><iframe title="Carte de Rouen" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=1.0500%2C49.4250%2C1.1350%2C49.4660&layer=mapnik&marker=49.445755%2C1.091657"></iframe></div>
+  <div class="map"><div id="lmap" role="application" aria-label="Carte de Rouen"></div></div>
   <h2>Lieux</h2>
   <ul class="lieux">
-    <li id="vampirium"><b>Le Vampirium</b><span>22 rue Saint-Patrice, 76000 Rouen · siège du vicaire <a class="lk" href="brouillon-putride-personnage-ephebus.html">Éphébus</a></span>
-      <a class="btn" style="margin-top:.5rem" href="https://www.openstreetmap.org/?mlat=49.445755&amp;mlon=1.091657#map=18/49.445755/1.091657" rel="noopener" target="_blank">VOIR SUR LA CARTE</a></li>
+    <li id="vampirium"><b>Le Vampirium</b><span>22 rue Saint-Patrice, 76000 Rouen. Siège du vicaire <a class="lk" href="brouillon-putride-personnage-ephebus.html">Éphébus Hitler</a> : soutane noire, crocs acérés, catéchisme de saint Pie X.</span><div class="acts"><button class="btn goto" type="button" data-k="vampirium">SUR LA CARTE</button> <a class="btn" href="brouillon-putride-personnage-ephebus.html">VOIR LA FICHE</a></div></li>
+    <li id="antre"><b>L'antre du Père qui se la touche</b><span>Place de la Rougemare. Autrefois Cathorouen ; désormais l'antre du Père qui se la touche.</span><div class="acts"><button class="btn goto" type="button" data-k="antre">SUR LA CARTE</button> </div></li>
+    <li id="cathedrale"><b>La cathédrale Notre-Dame</b><span>Place de la Cathédrale. Gothique, flèche vertigineuse, façade que Monet a peinte et repeinte : le grand décor de la ville, et celui où tout ce qui se profane prend son sens.</span><div class="acts"><button class="btn goto" type="button" data-k="cathedrale">SUR LA CARTE</button> <a class="btn" href="https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Notre-Dame_de_Rouen" rel="noopener" target="_blank">EN SAVOIR PLUS</a></div></li>
+    <li id="saint-maclou"><b>Saint-Maclou</b><span>Place Barthélémy. L'église gothique flamboyante, ses portails sculptés et son quartier de ruelles à colombages.</span><div class="acts"><button class="btn goto" type="button" data-k="saint-maclou">SUR LA CARTE</button> <a class="btn" href="https://fr.wikipedia.org/wiki/%C3%89glise_Saint-Maclou_de_Rouen" rel="noopener" target="_blank">EN SAVOIR PLUS</a></div></li>
+    <li id="aitre"><b>L'Aître Saint-Maclou</b><span>186 rue Martainville. Ancien charnier de la peste : une cour à colombages dont les poutres sont sculptées de têtes de mort, d'ossements et d'outils de fossoyeur.</span><div class="acts"><button class="btn goto" type="button" data-k="aitre">SUR LA CARTE</button> <a class="btn" href="https://fr.wikipedia.org/wiki/A%C3%AEtre_Saint-Maclou" rel="noopener" target="_blank">EN SAVOIR PLUS</a></div></li>
+    <li id="viol"><b>Rue du Viol</b><span>Anciennement rue des Chanoines. Prenez garde à <a class="lk" href="images/putride/fourolle.jpg" data-lb="La Fourolle">la Fourolle</a> si vous y mendiez.</span><div class="acts"><button class="btn goto" type="button" data-k="viol">SUR LA CARTE</button> </div></li>
+    <li id="fontaine"><b>La fontaine Sainte-Marie</b><span>Rue Sainte-Marie, quartier Saint-Marc. La fontaine où l'on vient se pencher sur l'eau.</span><div class="acts"><button class="btn goto" type="button" data-k="fontaine">SUR LA CARTE</button> </div></li>
+    <li id="cote"><b>La côte Sainte-Catherine</b><span>Route de la Corniche, au-dessus de la ville. Le panorama sur Rouen, la Seine et ses ponts : le point de vue pour contempler le territoire d'en haut.</span><div class="acts"><button class="btn goto" type="button" data-k="cote">SUR LA CARTE</button> <a class="btn" href="https://fr.wikipedia.org/wiki/C%C3%B4te_Sainte-Catherine" rel="noopener" target="_blank">EN SAVOIR PLUS</a></div></li>
   </ul>
   <p class="note">D'autres lieux de l'œuvre viendront s'ajouter à cette carte.</p>
 
 </main>
 </div>
 <script src="lightbox.js"></script>
-<script src="putride.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  if(!window.L)return;
+  var P=[["vampirium","Le Vampirium",49.445755,1.091657],["antre","L\'antre du Père qui se la touche",49.4450751,1.0985346],["cathedrale","La cathédrale Notre-Dame",49.440288,1.0948212],["saint-maclou","Saint-Maclou",49.4397819,1.0983808],["aitre","L\'Aître Saint-Maclou",49.4402647,1.0998461],["viol","Rue du Viol",49.4408263,1.0967638],["fontaine","La fontaine Sainte-Marie",49.4471566,1.1005869],["cote","La côte Sainte-Catherine",49.4336018,1.1098726]];
+  var m=L.map('lmap',{scrollWheelZoom:false}),mk={};
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(m);
+  var ic=L.divIcon({className:'pin',html:'<i></i>',iconSize:[26,34],iconAnchor:[13,34],popupAnchor:[0,-30]});
+  P.forEach(function(p){mk[p[0]]=L.marker([p[2],p[3]],{icon:ic,title:p[1]}).addTo(m).bindPopup('<b>'+p[1]+'</b>');});
+  m.fitBounds(P.map(function(p){return [p[2],p[3]];}),{padding:[30,30]});
+  Array.prototype.forEach.call(document.querySelectorAll('.goto'),function(b){
+    b.addEventListener('click',function(){var k=b.dataset.k;document.querySelector('.map').scrollIntoView({behavior:'smooth',block:'center'});m.setView(mk[k].getLatLng(),17);mk[k].openPopup();});
+  });
+  m.on('click',function(){m.scrollWheelZoom.enable();});
+})();
+</script><script src="putride.js"></script>
 </body>
 </html>
