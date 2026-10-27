@@ -347,13 +347,13 @@ main{position:relative}
 @keyframes heart{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:0}12%{opacity:.95}100%{transform:translate(var(--dx),-14rem) scale(1.1) rotate(var(--r));opacity:0}}
 
 /* Le Ver : goutte qui s'écrase, zoom lent */
-.fx-ver .stg{position:absolute;inset:0;transform-origin:56% 47%;transition:transform 9s cubic-bezier(.25,.1,.3,1)}
+.fx-ver .stg{position:absolute;inset:0;transform-origin:60% 46%;transition:transform 9s cubic-bezier(.25,.1,.3,1)}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .stg{transform:scale(2)}
-.fx-ver .gout{position:absolute;left:56.4%;top:48.5%;width:2.4%;aspect-ratio:1/1.35;border-radius:50% 50% 50% 50%/35% 35% 65% 65%;background:radial-gradient(circle at 35% 30%,#d4f58a,#6fc230 55%,#2c7a1c);box-shadow:0 0 .2rem rgba(10,46,14,.8);transform:translate(-50%,0) scale(0);transform-origin:50% 0;opacity:0}
-.fx-ver .splat{position:absolute;left:56.4%;top:76%;width:8%;aspect-ratio:2.2/1;border-radius:50%;background:radial-gradient(ellipse,#8fe04a 0 40%,#3e9a22 62%,transparent 70%);transform:translate(-50%,-50%) scale(0);opacity:0}
+.fx-ver .gout{position:absolute;left:59.3%;top:49%;width:2.4%;aspect-ratio:1/1.35;border-radius:50% 50% 50% 50%/35% 35% 65% 65%;background:radial-gradient(circle at 35% 30%,#d4f58a,#6fc230 55%,#2c7a1c);box-shadow:0 0 .2rem rgba(10,46,14,.8);transform:translate(-50%,0) scale(0);transform-origin:50% 0;opacity:0}
+.fx-ver .splat{position:absolute;left:59.3%;top:86%;width:8%;aspect-ratio:2.2/1;border-radius:50%;background:radial-gradient(ellipse,#8fe04a 0 40%,#3e9a22 62%,transparent 70%);transform:translate(-50%,-50%) scale(0);opacity:0}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .gout{animation:dgo 3.4s ease-in infinite}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .splat{animation:dsp 3.4s ease-out infinite}
-@keyframes dgo{0%{top:48.5%;opacity:1;transform:translate(-50%,0) scale(.1)}22%{top:48.8%;transform:translate(-50%,0) scale(1,1.1)}38%{top:50%;transform:translate(-50%,0) scale(.95,1.7)}68%{top:75%;opacity:1;transform:translate(-50%,0) scale(.8,1.5)}70%,100%{top:76%;opacity:0;transform:translate(-50%,0) scale(.5)}}
+@keyframes dgo{0%{top:49%;opacity:1;transform:translate(-50%,0) scale(.1)}22%{top:49.3%;transform:translate(-50%,0) scale(1,1.1)}38%{top:51%;transform:translate(-50%,0) scale(.95,1.7)}68%{top:85%;opacity:1;transform:translate(-50%,0) scale(.8,1.5)}70%,100%{top:86%;opacity:0;transform:translate(-50%,0) scale(.5)}}
 @keyframes dsp{0%,67%{opacity:0;transform:translate(-50%,-50%) scale(0)}70%{opacity:1;transform:translate(-50%,-50%) scale(.4)}90%{opacity:.85;transform:translate(-50%,-50%) scale(1.5,.8)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.9,.8)}}
 
 /* Éphébito : pendule */
@@ -363,7 +363,7 @@ main{position:relative}
 .fx-ver{cursor:default}.fx-ito{cursor:default}
 .fx-ver .stg img,.fx-ito .stg img{object-fit:contain}
 .fx-ver .stg img{position:absolute;inset:0;width:100%;height:100%}
-.fx-ver .aur{object-fit:contain;transform:none;clip-path:inset(14.5% 0 18% 0)}
+.fx-ver .aur{object-fit:contain;transform:none}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .aur{opacity:1;animation:vaura 3.6s ease-in-out infinite}
 @keyframes vaura{0%,100%{opacity:.85}50%{opacity:1}}
 

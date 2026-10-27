@@ -68,7 +68,7 @@
   }
   function mkbar(){
     if(pb)return;
-    pb=document.createElement('div');pb.id='pbar';pb.setAttribute('role','region');pb.setAttribute('aria-label','Lecteur de la fosse');
+    pb=document.createElement('div');pb.id='pbar';pb.setAttribute('role','region');pb.setAttribute('aria-label','Lecteur de l'égout');
     pb.innerHTML='<div class="pb-drip" aria-hidden="true"></div>'
       +'<div class="pb-main">'
       +'<img class="pb-art" alt="" width="56" height="56">'
@@ -334,7 +334,7 @@
       o.textContent='';
       if(v.length<2){o.classList.remove('on');return;}
       var R=find(v);
-      if(!R.length){var n=document.createElement('div');n.className='sn';n.textContent='Rien dans la fosse';o.appendChild(n);}
+      if(!R.length){var n=document.createElement('div');n.className='sn';n.textContent='Rien dans l'égout';o.appendChild(n);}
       R.forEach(function(r){
         var a=document.createElement('a');a.href=r.h;var b=document.createElement('b');b.textContent=r.t;a.appendChild(b);
         var s=r.sn?(r.k?r.k+' — ':'')+r.sn:r.k;
