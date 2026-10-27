@@ -280,12 +280,12 @@ main{position:relative}
 .cz{isolation:isolate;--au:rgba(90,160,255,.95);--zm:1.12;--zo:50% 70%;--op:50% 50%}
 .cz .bgz{object-position:var(--op);transform:scale(1.3);transform-origin:50% 55%;transition:transform 1.7s cubic-bezier(.25,.1,.2,1),filter 1.7s ease}
 .cz .fgz,.cz .aur{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--op);-webkit-mask-image:none;mask-image:none;mix-blend-mode:normal;transform:scale(1);transform-origin:var(--zo);transition:transform 1.7s cubic-bezier(.25,.1,.2,1),opacity 1.5s ease,filter 1.7s ease}
-.cz .aur{opacity:0;filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au))}
+.cz .aur{opacity:0;filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au)) drop-shadow(0 0 4.5rem var(--au))}
 .cz .fgz{z-index:2}.cz .aur{z-index:1}.cz .fxl,.cz .em{z-index:3}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .bgz{transform:scale(1);filter:brightness(.42) saturate(.8)}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .fgz{transform:scale(var(--zm));filter:brightness(1.08) contrast(1.06)}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz) .aur{opacity:1;transform:scale(var(--zm));animation:czpulse 3.8s ease-in-out 1.7s infinite}
-@keyframes czpulse{0%,100%{filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au))}50%{filter:drop-shadow(0 0 1.2rem var(--au)) drop-shadow(0 0 3.2rem var(--au))}}
+@keyframes czpulse{0%,100%{filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au)) drop-shadow(0 0 4.5rem var(--au))}50%{filter:drop-shadow(0 0 1.2rem var(--au)) drop-shadow(0 0 3.2rem var(--au)) drop-shadow(0 0 6rem var(--au))}}
 .cz-edw{--au:rgba(255,140,40,.9);--zm:1.06;--zo:50% 88%;--op:50% 40%}
 .cz-rt{--au:rgba(130,230,60,.9);--zm:1.08;--zo:50% 82%}
 .cz-rouen{--zm:1.14;--zo:50% 55%}
