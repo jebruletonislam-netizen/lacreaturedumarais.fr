@@ -17,7 +17,9 @@
     pause: '<path d="M9 5.5v13M15 5.5v13"/>',
     prev: '<path d="M6.5 5.5v13M18 5.5v13L9.5 12z"/>',
     next: '<path d="M17.5 5.5v13M6 5.5v13L14.5 12z"/>',
-    close: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>'
+    close: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
+    vol: '<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11"/>',
+    mute: '<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>'
   };
   function svg(p) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + p + '</svg>'; }
 
@@ -29,6 +31,16 @@
     '#lcmp.pu .lp-t{color:#c58bff}#lcmp.pu .lp-a{color:rgba(197,139,255,.68)}#lcmp.pu .lp-p{color:rgba(197,139,255,.7)}',
     '#lcmp.pu .lp-b{color:#c58bff}#lcmp.pu .lp-x{color:rgba(197,139,255,.75)}#lcmp.pu .lp-bar{background:rgba(197,139,255,.3)}',
     '#lcmp.pu .lp-b:hover,#lcmp.pu .lp-b:focus-visible,#lcmp.pu .lp-x:hover{color:#39ff6e;border-color:#39ff6e}',
+    '#lcmp .lp-v{display:flex;align-items:center;gap:.3rem;flex:none}',
+    '#lcmp .lp-vol{-webkit-appearance:none;appearance:none;width:5.2rem;height:1rem;margin:0;background:transparent;cursor:pointer}',
+    '#lcmp .lp-vol::-webkit-slider-runnable-track{height:2px;background:linear-gradient(90deg,var(--lc) var(--vp,100%),rgba(255,255,255,.28) var(--vp,100%))}',
+    '#lcmp .lp-vol::-moz-range-track{height:2px;background:rgba(255,255,255,.28)}',
+    '#lcmp .lp-vol::-moz-range-progress{height:2px;background:var(--lc)}',
+    '#lcmp .lp-vol::-webkit-slider-thumb{-webkit-appearance:none;width:.7rem;height:.7rem;margin-top:-.3rem;border-radius:50%;background:var(--lc);border:0}',
+    '#lcmp .lp-vol::-moz-range-thumb{width:.7rem;height:.7rem;border-radius:50%;background:var(--lc);border:0}',
+    '#lcmp .lp-vol:focus-visible{outline:1px solid var(--hv);outline-offset:.2rem}',
+    '#lcmp.nv .lp-v{opacity:.35}#lcmp.nv .lp-vol{pointer-events:none}',
+    '@media (max-width:899px){#lcmp .lp-v{display:none}}',
     '#lcmp.on{transform:translate(-50%,0);opacity:1}',
     '#lcmp::before{content:"";position:absolute;left:1.4rem;right:1.4rem;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--lc),transparent);filter:drop-shadow(0 0 3px var(--lc))}',
     '#lcmp .lp-r{display:flex;align-items:center;gap:.8rem;padding:.55rem .7rem .55rem .8rem}',
@@ -105,10 +117,14 @@
       '<button class="lp-b" type="button" data-a="next" aria-label="Titre suivant">' + svg(IC.next) + '</button></div>' +
       '<div class="lp-m"><div class="lp-n"><span class="lp-t"></span><span class="lp-a"></span></div>' +
       '<div class="lp-p"><span class="lp-cur">0:00</span><div class="lp-bar" role="slider" tabindex="0" aria-label="Position dans le titre" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i class="lp-fill"></i></div><span class="lp-dur">0:00</span></div></div>' +
+      '<div class="lp-v"><button class="lp-b lp-mu" type="button" data-a="mute" aria-label="Couper le son">' + svg(IC.vol) + '</button><input class="lp-vol" type="range" min="0" max="100" step="1" aria-label="Volume"></div>' +
       '<button class="lp-b lp-x" type="button" data-a="close" aria-label="Fermer le lecteur">' + svg(IC.close) + '</button></div>' +
       '<div class="lp-f"></div>';
     document.body.appendChild(el);
     if (window.ResizeObserver) new ResizeObserver(pad).observe(el);
+    var vr = $('.lp-vol');
+    vr.addEventListener('input', function () { vol = vr.value / 100; muted = false; try { localStorage.setItem('lcm-vol', vol); } catch (x) {} applyVol(); });
+    applyVol();
     el.addEventListener('click', function (e) {
       var b = e.target.closest('[data-a]');
       if (b) act(b.dataset.a);
@@ -138,8 +154,25 @@
     else if (mode === 'sc' && wg && sc.dur) { sc.pos = r * sc.dur; wg.seekTo(sc.pos); setProg(sc.pos / 1000, sc.dur / 1000); }
   }
 
+  var vol = 1, muted = false;
+  try { var sv = parseFloat(localStorage.getItem('lcm-vol')); if (sv >= 0 && sv <= 1) vol = sv; } catch (e) {}
+  function applyVol() {
+    var v = muted ? 0 : vol;
+    if (el) {
+      var r = $('.lp-vol'), m = $('.lp-mu');
+      r.value = Math.round(v * 100); r.style.setProperty('--vp', Math.round(v * 100) + '%');
+      m.innerHTML = svg(v === 0 ? IC.mute : IC.vol);
+      m.setAttribute('aria-label', v === 0 ? 'Rétablir le son' : 'Couper le son');
+      var nv = mode === 'sp' || mode === 'am';
+      el.classList.toggle('nv', nv);
+      r.title = nv ? 'Volume géré par le lecteur Spotify / Apple (non réglable ici)' : '';
+    }
+    if (au.a) au.a.volume = v;
+    if (wg) { try { wg.setVolume(Math.round(v * 100)); } catch (e) {} }
+  }
   function act(a) {
     if (a === 'close') return close();
+    if (a === 'mute') { muted = !muted; if (!muted && vol === 0) vol = .5; applyVol(); return; }
     if (mode === 'au' && au.a) {
       if (a === 'toggle') { if (au.a.paused) au.a.play(); else au.a.pause(); }
       else auStep(a === 'next' ? 1 : -1);
@@ -166,6 +199,7 @@
   function show(bc) {
     el.classList.toggle('bc', !!bc);
     el.classList.add('on');
+    applyVol();
     pad();
   }
   function close() {
@@ -355,6 +389,7 @@
     var a = new Audio();
     a.preload = 'auto';
     au = { a: a, list: list, i: i, o: o };
+    applyVol();
     a.onplay = function () { setPP(true); };
     a.onpause = function () { setPP(false); };
     a.ontimeupdate = function () { setProg(a.currentTime, a.duration || 0); };
@@ -410,10 +445,11 @@
       if (mode !== 'sc' || key !== k) return;
       var w = wg = SC.Widget(fr), E = SC.Widget.Events;
       w.bind(E.READY, function () {
+        applyVol();
         scInfo(artist);
         setTimeout(function () { if (wg === w) w.isPaused(function (p) { if (p) w.play(); }); }, 1200);
       });
-      w.bind(E.PLAY, function () { setPP(true); scInfo(artist); });
+      w.bind(E.PLAY, function () { setPP(true); scInfo(artist); applyVol(); });
       w.bind(E.PAUSE, function () { setPP(false); });
       w.bind(E.FINISH, function () { setPP(false); });
       w.bind(E.PLAY_PROGRESS, function (e) {
