@@ -41,11 +41,14 @@ nav a:last-child{border-bottom:0}
 nav a:hover .nav-txt,nav a:hover .nav-icon{color:#fc0}
 nav a[aria-current] .nav-txt,nav a[aria-current] .nav-icon{color:#fff}
 
-main{padding:2.2rem 2.4rem 4rem;min-width:0;background:
-  linear-gradient(rgba(14,0,28,.66),rgba(14,0,28,.66)),
+main{--mf:clamp(1.5rem,5vw,6rem);padding:2.2rem 2.4rem 4rem;min-width:0;background-color:#0e001c;background-image:
+  linear-gradient(to right,#0e001c,transparent var(--mf),transparent calc(100% - var(--mf)),#0e001c),
+  linear-gradient(to bottom,#0e001c,transparent 5rem,transparent calc(100% - 4rem),#0e001c),
+  linear-gradient(rgba(14,0,28,.55),rgba(14,0,28,.55)),
   linear-gradient(#8a2be2,#8a2be2),
-  url(images/fond-vitrail-texte.jpg) center top/cover;
-  background-blend-mode:normal,color,normal}
+  url(images/fond-vitrail-texte.jpg);
+  background-position:center,center,0 0,0 0,center top;background-size:100% 100%,100% 100%,auto,auto,100% auto;background-repeat:no-repeat,no-repeat,repeat,repeat,repeat-y;
+  background-blend-mode:normal,normal,normal,color,normal}
 .kicker{color:var(--g);font-size:1.5rem;margin:0 0 .3rem;text-shadow:0 0 .6rem rgba(57,255,110,.5)}
 h1{color:var(--v);font-size:5rem;line-height:.95;margin:0 0 1rem;text-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 1.1rem rgba(122,45,214,.55)}
 h2{color:var(--v);font-size:2.6rem;margin:2.4rem 0 .8rem;padding-bottom:.35rem;border-bottom:.25rem solid var(--g);text-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 1rem rgba(122,45,214,.45)}
