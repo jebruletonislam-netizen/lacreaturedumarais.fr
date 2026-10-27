@@ -1,158 +1,47 @@
 (function(){
-  /* Accordéon des albums */
-  document.addEventListener('click',function(ev){
-    var b=ev.target.closest&&ev.target.closest('.alb');
-    if(!b)return;
-    var p=b.parentNode.querySelector('.apanel');
-    if(!p)return;
-    var open=p.hidden;p.hidden=!open;
-    b.setAttribute('aria-expanded',open);
-    b.parentNode.classList.toggle('open',open);
-  });
-
-  /* Lecteur SoundCloud persistant */
-  var pb=null,wg=null,cur=null,apiState=0,apiQ=[],dur=0,pos=0,fbT=null;
-  var IC={
-    play:'<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>',
-    pause:'<svg viewBox="0 0 24 24"><path d="M6 4.5h4.4v15H6zM13.6 4.5H18v15h-4.4z"/></svg>',
-    prev:'<svg viewBox="0 0 24 24"><path d="M6 5h2.4v14H6zM19 5v14L9.5 12z"/></svg>',
-    next:'<svg viewBox="0 0 24 24"><path d="M15.6 5H18v14h-2.4zM5 5l9.5 7L5 19z"/></svg>',
-    list:'<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
-    close:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>'
-  };
-  function withApi(cb){
-    if(window.SC&&window.SC.Widget)return cb();
-    apiQ.push(cb);
-    if(apiState)return;
-    apiState=1;
-    var s=document.createElement('script');
-    s.src='https://w.soundcloud.com/player/api.js';
-    s.onload=function(){apiQ.splice(0).forEach(function(f){f();});};
-    document.head.appendChild(s);
-  }
-  function mark(){
-    Array.prototype.forEach.call(document.querySelectorAll('.al'),function(li){
-      var p=li.querySelector('.play');
-      li.classList.toggle('playing',!!(p&&cur&&(p.dataset.sc||p.dataset.emb)===cur));
-    });
-  }
-  function fmt(ms){var s=Math.max(0,Math.round(ms/1000));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
-  function q(sel){return pb&&pb.querySelector(sel);}
-  function setPP(on){
-    if(!pb)return;
-    var b=q('.pp');b.innerHTML=on?IC.pause:IC.play;b.setAttribute('aria-label',on?'Pause':'Lecture');
-    pb.classList.toggle('on',on);
-  }
-  function setProg(rel){
-    if(!pb)return;
-    rel=clampP(rel);
-    q('.pb-fill').style.width=(rel*100)+'%';
-    q('.pb-bar').setAttribute('aria-valuenow',Math.round(rel*100));
-    q('.pb-cur').textContent=fmt(pos);
-    q('.pb-dur').textContent=dur?fmt(dur):'0:00';
-  }
-  function clampP(v){return v<0?0:v>1?1:v;}
-  function info(album){
-    if(!wg||!pb)return;
-    wg.getCurrentSound(function(s){
-      if(!s||!pb)return;
-      wg.getSounds(function(a){
-        wg.getCurrentSoundIndex(function(i){
-          if(!pb)return;
-          var n=a&&a.length>1?(i+1)+' / '+a.length+'  ·  ':'';
-          q('.pb-tr').textContent=n+s.title;
-          dur=s.duration||dur;setProg(dur?pos/dur:0);
-        });
-      });
-    });
-  }
-  function mkbar(){
-    if(pb)return;
-    pb=document.createElement('div');pb.id='pbar';pb.setAttribute('role','region');pb.setAttribute('aria-label','Lecteur de l\u2019égout');
-    pb.innerHTML='<div class="pb-drip" aria-hidden="true"></div>'
-      +'<div class="pb-main">'
-      +'<img class="pb-art" alt="" width="56" height="56">'
-      +'<div class="pb-info"><b class="pb-al"></b><span class="pb-tr">Chargement…</span></div>'
-      +'<div class="pb-ctl"><button class="pb-b" type="button" data-a="prev" aria-label="Titre précédent">'+IC.prev+'</button>'
-      +'<button class="pb-b pp" type="button" data-a="toggle" aria-label="Lecture">'+IC.play+'</button>'
-      +'<button class="pb-b" type="button" data-a="next" aria-label="Titre suivant">'+IC.next+'</button></div>'
-      +'<div class="pb-prog"><span class="pb-cur">0:00</span><div class="pb-bar" role="slider" tabindex="0" aria-label="Position dans le titre" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i class="pb-fill"></i></div><span class="pb-dur">0:00</span></div>'
-      +'<div class="pb-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>'
-      +'<div class="pb-end"><button class="pb-b sm" type="button" data-a="list" aria-label="Afficher la liste des titres" aria-expanded="false">'+IC.list+'</button>'
-      +'<button class="pb-b sm" type="button" data-a="close" aria-label="Fermer le lecteur">'+IC.close+'</button></div>'
-      +'</div><div class="pb-f"></div>';
-    document.body.appendChild(pb);
-    document.body.classList.add('has-pbar');
-    if(window.ResizeObserver)new ResizeObserver(function(){if(pb)document.body.style.paddingBottom=pb.offsetHeight+'px';}).observe(pb);
-    pb.addEventListener('click',function(ev){
-      var b=ev.target.closest('[data-a]');
-      if(b){
-        var a=b.dataset.a;
-        if(a==='close'){pb.remove();pb=null;wg=null;cur=null;dur=pos=0;document.body.classList.remove('has-pbar');document.body.style.paddingBottom='';mark();return;}
-        if(a==='list'){var o=pb.classList.toggle('open');b.setAttribute('aria-expanded',o);return;}
-        if(wg)wg[a]();
-        return;
-      }
-      var bar=ev.target.closest('.pb-bar');
-      if(bar&&wg&&dur){var r=bar.getBoundingClientRect();pos=clampP((ev.clientX-r.left)/r.width)*dur;wg.seekTo(pos);setProg(pos/dur);}
-    });
-    pb.addEventListener('keydown',function(ev){
-      if(!ev.target.classList.contains('pb-bar')||!wg||!dur)return;
-      var d=ev.key==='ArrowRight'?5000:ev.key==='ArrowLeft'?-5000:0;
-      if(!d)return;
-      ev.preventDefault();pos=Math.max(0,Math.min(dur,pos+d));wg.seekTo(pos);setProg(pos/dur);
-    });
-  }
-  function playSC(url,h,title,art){
-    mkbar();
-    var box=q('.pb-f'),f=box.querySelector('iframe');
-    if(f&&cur===url){if(wg)wg.toggle();return;}
-    pb.classList.remove('emb');
-    cur=url;wg=null;dur=pos=0;
-    if(f)f.remove();
-    f=document.createElement('iframe');
-    f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(url)+'&color=%2339ff6e&auto_play=true&show_teaser=false';
-    f.height=h;f.allow='autoplay';f.title='Liste des titres SoundCloud';
-    box.appendChild(f);
-    var im=q('.pb-art');if(art){im.src=art;im.hidden=false;}else im.hidden=true;
-    q('.pb-al').textContent=title||'';q('.pb-tr').textContent='Chargement…';
-    setPP(true);setProg(0);mark();
-    clearTimeout(fbT);
-    fbT=setTimeout(function(){if(pb&&!wg)pb.classList.add('open');},6000);
-    withApi(function(){
-      if(!pb||f.parentNode!==box)return;
-      wg=SC.Widget(f);
-      var E=SC.Widget.Events;
-      wg.bind(E.READY,function(){info(title);});
-      wg.bind(E.PLAY,function(){setPP(true);info(title);});
-      wg.bind(E.PAUSE,function(){setPP(false);});
-      wg.bind(E.FINISH,function(){setPP(false);});
-      wg.bind(E.PLAY_PROGRESS,function(e){pos=e.currentPosition;if(!dur&&e.relativePosition)dur=pos/e.relativePosition;setProg(e.relativePosition);});
-    });
-  }
-  function playEmb(src,h,title,art){
-    mkbar();
-    var box=q('.pb-f'),f=box.querySelector('iframe');
-    if(f&&cur===src)return;
-    cur=src;wg=null;dur=pos=0;clearTimeout(fbT);
-    if(f)f.remove();
-    f=document.createElement('iframe');
-    f.src=src;f.height=h;f.allow='autoplay *; encrypted-media *';f.title='Lecteur';
-    box.appendChild(f);
-    pb.classList.add('emb','open');pb.classList.remove('on');
-    q('.pp').setAttribute('aria-label','Lecture');
-    var im=q('.pb-art');if(art){im.src=art;im.hidden=false;}else im.hidden=true;
-    q('.pb-al').textContent=title||'';q('.pb-tr').textContent=src.indexOf('bandcamp')>-1?'Album entier · Bandcamp':'Album · Apple Musique';
-    mark();
+  /* Pages d'album : lecture et paroles */
+  var CLIPS={'Chimaera Rothomagensis':'A_SfjREwRWI','La côte Sainte-Catherine':'bThq8uPYgFA','La Chute':'34-C5ls5eWM','Dis, ferme un instant les yeux':'65E0wA7msv4','Jubilé':'btnbqG0_kc0'};
+  function cfg(s,i,t){
+    var o={index:i,title:t||s.dataset.title,artist:s.dataset.artist,art:s.dataset.art};
+    if(s.dataset.sc)o.sc=s.dataset.sc;else o.section=s.dataset.sec;
+    return o;
   }
   document.addEventListener('click',function(ev){
-    var b=ev.target.closest&&ev.target.closest('.play');
-    if(!b)return;
+    var t=ev.target.closest&&ev.target.closest('[data-all],.trp');
+    if(!t||!window.LCMPlayer)return;
+    var s=t.closest('.alp');if(!s)return;
     ev.preventDefault();
-    var im=b.closest('.al')&&b.closest('.al').querySelector('.alb>img');
-    if(b.dataset.emb){playEmb(b.dataset.emb,b.dataset.h,b.dataset.t,im&&im.getAttribute('src'));return;}
-    playSC(b.dataset.sc,b.dataset.h,b.dataset.t,im&&im.getAttribute('src'));
+    if(t.matches('.trp'))LCMPlayer.play(cfg(s,+t.dataset.i,t.querySelector('span').textContent));
+    else LCMPlayer.play(cfg(s,0));
   });
+  function lyrics(b,t){
+    var g=window.LCM_G&&window.LCM_G[t],yt=CLIPS[t];
+    if(yt){
+      var c=document.createElement('button');c.type='button';c.className='vid big';c.dataset.yt=yt;c.dataset.t=t+' (clip)';c.textContent='\u25B6 CLIP';
+      b.appendChild(c);
+    }
+    if(g){
+      var f=document.createElement('iframe');f.className='lyf';f.title='Paroles de '+t;f.loading='lazy';
+      f.srcdoc="<!doctype html><html><head><meta charset='utf-8'><base target='_blank'><style>html,body{margin:0;padding:0;background:#fff;color:#000;color-scheme:light}body{padding:.5rem;font:16px/1.4 Arial,sans-serif}</style></head><body><div id='rg_embed_link_"+g.id+"' class='rg_embed_link' data-song-id='"+g.id+"'><a href='"+g.url+"'>Paroles de \u201C"+t.replace(/&/g,'&amp;')+"\u201D \u2014 Cul-Pointu</a></div><script crossorigin src='https://genius.com/songs/"+g.id+"/embed.js'><\/script></body></html>";
+      var fit=function(){try{var h=f.contentDocument.documentElement.scrollHeight;if(h>40)f.style.height=h+'px';}catch(e){}};
+      f.addEventListener('load',function(){fit();var n=0,iv=setInterval(function(){fit();if(++n>40||!f.isConnected)clearInterval(iv);},500);});
+      b.appendChild(f);
+    }else if(!yt){
+      var p=document.createElement('p');p.className='lypend';p.textContent='Paroles \u00E0 venir';b.appendChild(p);
+    }
+  }
+  document.addEventListener('toggle',function(ev){
+    var d=ev.target;
+    if(!d.matches||!d.matches('.alp .tl details'))return;
+    var b=d.querySelector('.ly'),s=d.closest('.alp');
+    if(!d.open){b.textContent='';d.dataset.l='';return;}
+    Array.prototype.forEach.call(d.parentNode.querySelectorAll('details[open]'),function(o){if(o!==d)o.open=false;});
+    if(d.dataset.l)return;d.dataset.l=1;
+    var t=d.dataset.t,i=Array.prototype.indexOf.call(d.parentNode.children,d);
+    if(window.LCMPlayer)LCMPlayer.play(cfg(s,i,t));
+    var go=function(){if(d.open&&d.dataset.l)lyrics(b,t);};
+    if(window.LCM_G)go();else loadScript('putride-genius.js').then(go);
+  },true);
 
   /* Modale vidéo YouTube */
   function closeVid(){var m=document.getElementById('vmodal');if(m)m.remove();document.removeEventListener('keydown',escVid);}
@@ -161,7 +50,7 @@
     var a=ev.target.closest&&ev.target.closest('[data-yt]');
     if(a){
       ev.preventDefault();closeVid();
-      if(wg)wg.pause();
+      if(window.LCMPlayer)LCMPlayer.pause();
       var m=document.createElement('div');m.id='vmodal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');
       m.innerHTML='<div class="vbox"><div class="vbar"><span></span><button type="button" class="vx" aria-label="Fermer la vidéo">✕</button></div><div class="vfr"><iframe allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Lecteur YouTube"></iframe></div></div>';
       m.querySelector('span').textContent=a.dataset.t||'';
@@ -218,7 +107,6 @@
         window.scrollTo(0,0);
         document.dispatchEvent(new Event('putride:page'));
         inl.forEach(function(s){var x=document.createElement('script');x.textContent=s.textContent;document.body.appendChild(x);x.remove();});
-        mark();
       });
     });
   }
@@ -302,7 +190,7 @@
   })();
 
   /* Recherche : uniquement dans les pages du mode putride */
-  var PAGES=['mode-putride.html','mode-putride-territoire.html','mode-putride-bestiaire.html','mode-putride-discographie.html','mode-putride-ustensiles.html','mode-putride-mefaits.html','mode-putride-in-odium-fidei.html','mode-putride-personnage-createur.html','mode-putride-personnage-edwarda.html','mode-putride-personnage-ephebus.html','mode-putride-personnage-ephebelle.html','mode-putride-personnage-ephebito.html','mode-putride-personnage-ver.html'];
+  var PAGES=['mode-putride.html','mode-putride-territoire.html','mode-putride-bestiaire.html','mode-putride-discographie.html','mode-putride-ustensiles.html','mode-putride-mefaits.html','mode-putride-in-odium-fidei.html','mode-putride-album-ces-beau-cela.html','mode-putride-album-chyren.html','mode-putride-album-confiteor.html','mode-putride-album-connasse.html','mode-putride-album-jarrive-en-tesla.html','mode-putride-album-le-retour-de-la-couche.html','mode-putride-album-les-gamins-jleur-mets-la-puree.html','mode-putride-album-lincontinence.html','mode-putride-album-machines.html','mode-putride-album-mais-si-quest-vrai.html','mode-putride-album-mauvaises-nouvelles-des-enfers-1.html','mode-putride-album-mauvaises-nouvelles-des-enfers-2.html','mode-putride-album-mets-la-cam.html','mode-putride-album-oh-non-herve.html','mode-putride-album-oh-non-je-fais-appel.html','mode-putride-album-omerta434.html','mode-putride-album-palestine-gratuit.html','mode-putride-album-peter-sur-la-friture.html','mode-putride-album-putain-de-sa-race.html','mode-putride-album-rien-a-declarer.html','mode-putride-personnage-createur.html','mode-putride-personnage-edwarda.html','mode-putride-personnage-ephebus.html','mode-putride-personnage-ephebelle.html','mode-putride-personnage-ephebito.html','mode-putride-personnage-ver.html'];
   var IX=null,IXP=null;
   function norm(s){return s.toLowerCase().replace(/œ/g,'oe').replace(/æ/g,'ae').replace(/[’‘]/g,"'").normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
   function build(){
