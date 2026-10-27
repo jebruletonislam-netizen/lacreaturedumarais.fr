@@ -125,18 +125,25 @@
       var d = e.key === 'ArrowRight' ? 5 : e.key === 'ArrowLeft' ? -5 : 0;
       if (!d) return;
       e.preventDefault();
-      if (mode === 'sc') seekTo(sc.pos / 1000 + d, sc.dur / 1000);
+      if (mode === 'au' && au.a) seekTo(au.a.currentTime + d, au.a.duration);
+      else if (mode === 'sc') seekTo(sc.pos / 1000 + d, sc.dur / 1000);
       else if (mode === 'sp') seekTo(sp.pos / 1000 + d, sp.dur / 1000);
     });
   }
   function seekTo(s, dur) { if (dur > 0) seek(Math.min(1, Math.max(0, s / dur))); }
   function seek(r) {
-    if (mode === 'sp' && spc && sp.dur) { sp.pos = r * sp.dur; spc.seek(sp.pos / 1000); setProg(sp.pos / 1000, sp.dur / 1000); }
+    if (mode === 'au' && au.a && au.a.duration) { au.a.currentTime = r * au.a.duration; setProg(au.a.currentTime, au.a.duration); }
+    else if (mode === 'sp' && spc && sp.dur) { sp.pos = r * sp.dur; spc.seek(sp.pos / 1000); setProg(sp.pos / 1000, sp.dur / 1000); }
     else if (mode === 'sc' && wg && sc.dur) { sc.pos = r * sc.dur; wg.seekTo(sc.pos); setProg(sc.pos / 1000, sc.dur / 1000); }
   }
 
   function act(a) {
     if (a === 'close') return close();
+    if (mode === 'au' && au.a) {
+      if (a === 'toggle') { if (au.a.paused) au.a.play(); else au.a.pause(); }
+      else auStep(a === 'next' ? 1 : -1);
+      return;
+    }
     if (mode === 'sp' && spc) {
       if (a === 'toggle') spc.togglePlay();
       else if (a === 'next') spStep(1);
@@ -150,6 +157,7 @@
 
   function stopAll() {
     if (wg) { try { wg.pause(); } catch (e) {} }
+    auStop();
     spStop();
     wg = null; mode = ''; key = '';
     if (el) $('.lp-f').textContent = '';
@@ -169,6 +177,7 @@
     pad();
   }
   function pause() {
+    if (mode === 'au' && au.a) { au.a.pause(); return; }
     if (mode === 'sp' && spc) { try { spc.pause(); } catch (e) {} return; }
     if (mode === 'sc' && wg) wg.pause();
   }
@@ -306,6 +315,51 @@
     return true;
   }
 
+  /* Fichiers retrouves, heberges sur le site : meme barre, aucun lecteur visible */
+  var au = { a: null, list: [], i: 0, o: null };
+  function auStop() {
+    if (au.a) { au.a.onended = au.a.ontimeupdate = au.a.onplay = au.a.onpause = au.a.onloadedmetadata = null; au.a.pause(); au.a.removeAttribute('src'); au.a.load(); }
+    au.a = null;
+  }
+  function auLoad(i) {
+    var n = au.list[i];
+    if (!n) return;
+    au.i = i;
+    key = 'au' + n.src;
+    setNames(n.title, au.o.artist || 'Cul-Pointu');
+    setProg(0, 0);
+    au.a.src = n.src;
+    var p = au.a.play();
+    if (p && p.catch) p.catch(function () { setPP(false); });
+  }
+  function auStep(d) {
+    if (d < 0 && au.a.currentTime > 3) { au.a.currentTime = 0; return; }
+    var n = au.i + d;
+    if (n >= 0 && n < au.list.length) auLoad(n);
+  }
+  function playAU(o) {
+    var list = o.list && o.list.length ? o.list : [{ src: o.src, title: o.title }];
+    var i = Math.max(0, list.findIndex(function (x) { return x.src === o.src; }));
+    if (mode === 'au' && au.a && key === 'au' + o.src) {
+      show(false);
+      if (au.a.paused) au.a.play(); else au.a.pause();
+      return;
+    }
+    stopAll();
+    mode = 'au';
+    var a = new Audio();
+    a.preload = 'auto';
+    au = { a: a, list: list, i: i, o: o };
+    a.onplay = function () { setPP(true); };
+    a.onpause = function () { setPP(false); };
+    a.ontimeupdate = function () { setProg(a.currentTime, a.duration || 0); };
+    a.onloadedmetadata = function () { setProg(a.currentTime, a.duration || 0); };
+    a.onended = function () { if (au.i < au.list.length - 1) auLoad(au.i + 1); else setPP(false); };
+    setPP(true);
+    show(false);
+    auLoad(i);
+  }
+
   /* SoundCloud : album complet, commandé par la barre */
   function withApi(cb) {
     if (window.SC && window.SC.Widget) return cb();
@@ -366,6 +420,7 @@
 
   function play(o) {
     mk();
+    if (o.src) return playAU(o);
     if (o.sc) return playSC(o);
     var c = CAT[o.section];
     if (!c) return;

@@ -392,6 +392,10 @@ header{overflow:visible}
 .trl .trw{display:flex;align-items:center;gap:.6rem}
 .trl .trp{flex:1;min-width:0;width:auto}
 .trl .trw em{flex:none;padding-right:.4rem;font-style:normal;color:var(--g);font:400 1.3rem "Bebas Neue",sans-serif}
+.trl .trn{margin:0;padding:0 .4rem .5rem;font-size:.85rem;font-style:italic;color:#e8dcff;opacity:.8;border-bottom:.1rem solid rgba(57,255,110,.45)}
+.trl .trw.loc{border-bottom:0}
+.trl .lyw{margin:.4rem 0 .8rem}
+.trl .lyw iframe.lyf{display:block;width:100%;max-width:60rem;border:0;background:#fff;min-height:10rem}
 .trl .vid{margin:0}
 .alp .bio{max-width:75rem;margin:1.6rem 0 0}
 @media (max-width:899px){
