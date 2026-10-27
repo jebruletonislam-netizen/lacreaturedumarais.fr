@@ -400,3 +400,7 @@ header{overflow:visible}
   .msp .sr:not(.on){display:none}
   .sr a,.sr .sn{font-size:1.15rem}.sr small{font-size:.85rem}
 }
+
+/* Lecteur : mode intégré (Bandcamp / Apple Musique) */
+#pbar.emb .pb-ctl,#pbar.emb .pb-prog,#pbar.emb .pb-eq,#pbar.emb [data-a=list]{display:none}
+#pbar.emb .pb-info{flex:1 1 auto}

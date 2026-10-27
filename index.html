@@ -848,7 +848,7 @@ d.classList.remove("track-art-open");
 d.dataset.l="";return;
 }
 [].slice.call(trackList.querySelectorAll("details[open]")).forEach(function(other){if(other!==d)other.open=false});
-if(d.dataset.l)return;d.dataset.l=1;
+if(d.dataset.l)return;d.dataset.l=1;if(window.LCMPlayer){var th=summary&&summary.querySelector(".track-art-thumb"),ah=section&&section.querySelector(".ah img");LCMPlayer.play({section:section&&section.id,index:trackIndex,apple:appleId,title:t,art:(th||ah)&&(th||ah).getAttribute("src")})}
 if(g||clip||appleId||t==="Misérables"){
 var trackBio=document.createElement("div");trackBio.className="track-bio";
 if(t==="Jubilé"){
@@ -865,7 +865,7 @@ if(sourceArt&&artContent){var expandedArt=sourceArt.cloneNode();expandedArt.clas
 }
 if(clip){var galleryLink=document.createElement("a");galleryLink.className="clip-gallery-link";galleryLink.href=clip.url;galleryLink.textContent="PHOTOS DU TOURNAGE →";b.appendChild(galleryLink)}
 var layout=document.createElement("div");layout.className=clip?"clip-lyric-layout":"";
-if(appleId){var preview=document.createElement("iframe");preview.className="apple-track-player";preview.loading="lazy";preview.allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write";preview.referrerPolicy="strict-origin-when-cross-origin";preview.title="Aperçu Apple Music de "+t;preview.src="https://embed.music.apple.com/fr/song/"+appleId+"?theme=dark";if(typeof expandedArt!=="undefined"&&expandedArt&&expandedArt.parentNode){preview.classList.add("beside-art");expandedArt.parentNode.insertBefore(preview,expandedArt.nextSibling)}else b.insertBefore(preview,b.firstChild)}
+
 if(clip){var player=document.createElement("iframe");player.className="clip-lyric-player";player.loading="lazy";player.allowFullscreen=true;player.referrerPolicy="strict-origin-when-cross-origin";player.title="Clip de "+t;player.src="https://www.youtube.com/embed/"+clip.video;layout.appendChild(player)}
 if(g){var id=g.id,f=document.createElement("iframe");
 f.title="Paroles de "+t;f.className="lyf";f.setAttribute("loading","lazy");
@@ -963,7 +963,7 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
 })();
 </script>
 
-<script src="lightbox.js"></script>
+<script src="lightbox.js"></script><script src="lecteur.js"></script>
 <script src="navdrag.js"></script>
 <script>
 (function(){

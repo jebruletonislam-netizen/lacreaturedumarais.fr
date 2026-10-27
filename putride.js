@@ -33,7 +33,7 @@
   function mark(){
     Array.prototype.forEach.call(document.querySelectorAll('.al'),function(li){
       var p=li.querySelector('.play');
-      li.classList.toggle('playing',!!(p&&cur&&p.dataset.sc===cur));
+      li.classList.toggle('playing',!!(p&&cur&&(p.dataset.sc||p.dataset.emb)===cur));
     });
   }
   function fmt(ms){var s=Math.max(0,Math.round(ms/1000));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
@@ -68,7 +68,7 @@
   }
   function mkbar(){
     if(pb)return;
-    pb=document.createElement('div');pb.id='pbar';pb.setAttribute('role','region');pb.setAttribute('aria-label','Lecteur de l'égout');
+    pb=document.createElement('div');pb.id='pbar';pb.setAttribute('role','region');pb.setAttribute('aria-label','Lecteur de l\u2019égout');
     pb.innerHTML='<div class="pb-drip" aria-hidden="true"></div>'
       +'<div class="pb-main">'
       +'<img class="pb-art" alt="" width="56" height="56">'
@@ -107,6 +107,7 @@
     mkbar();
     var box=q('.pb-f'),f=box.querySelector('iframe');
     if(f&&cur===url){if(wg)wg.toggle();return;}
+    pb.classList.remove('emb');
     cur=url;wg=null;dur=pos=0;
     if(f)f.remove();
     f=document.createElement('iframe');
@@ -129,11 +130,27 @@
       wg.bind(E.PLAY_PROGRESS,function(e){pos=e.currentPosition;if(!dur&&e.relativePosition)dur=pos/e.relativePosition;setProg(e.relativePosition);});
     });
   }
+  function playEmb(src,h,title,art){
+    mkbar();
+    var box=q('.pb-f'),f=box.querySelector('iframe');
+    if(f&&cur===src)return;
+    cur=src;wg=null;dur=pos=0;clearTimeout(fbT);
+    if(f)f.remove();
+    f=document.createElement('iframe');
+    f.src=src;f.height=h;f.allow='autoplay *; encrypted-media *';f.title='Lecteur';
+    box.appendChild(f);
+    pb.classList.add('emb','open');pb.classList.remove('on');
+    q('.pp').setAttribute('aria-label','Lecture');
+    var im=q('.pb-art');if(art){im.src=art;im.hidden=false;}else im.hidden=true;
+    q('.pb-al').textContent=title||'';q('.pb-tr').textContent=src.indexOf('bandcamp')>-1?'Album entier · Bandcamp':'Album · Apple Musique';
+    mark();
+  }
   document.addEventListener('click',function(ev){
     var b=ev.target.closest&&ev.target.closest('.play');
     if(!b)return;
     ev.preventDefault();
     var im=b.closest('.al')&&b.closest('.al').querySelector('.alb>img');
+    if(b.dataset.emb){playEmb(b.dataset.emb,b.dataset.h,b.dataset.t,im&&im.getAttribute('src'));return;}
     playSC(b.dataset.sc,b.dataset.h,b.dataset.t,im&&im.getAttribute('src'));
   });
 
@@ -334,7 +351,7 @@
       o.textContent='';
       if(v.length<2){o.classList.remove('on');return;}
       var R=find(v);
-      if(!R.length){var n=document.createElement('div');n.className='sn';n.textContent='Rien dans l'égout';o.appendChild(n);}
+      if(!R.length){var n=document.createElement('div');n.className='sn';n.textContent='Rien dans l\u2019égout';o.appendChild(n);}
       R.forEach(function(r){
         var a=document.createElement('a');a.href=r.h;var b=document.createElement('b');b.textContent=r.t;a.appendChild(b);
         var s=r.sn?(r.k?r.k+' — ':'')+r.sn:r.k;
