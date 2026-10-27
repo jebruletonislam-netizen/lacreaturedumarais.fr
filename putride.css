@@ -145,7 +145,8 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .pf .bl.vio{filter:hue-rotate(270deg) blur(1rem) brightness(.5)}
 .pf img.vio{filter:hue-rotate(270deg) saturate(1.05) brightness(1.08)}
 .perso b{display:block;text-align:center;margin:.5rem 0 .1rem;color:var(--v);font:400 1.1rem "Bebas Neue",sans-serif;line-height:1.05}
-.fiche2{display:grid;grid-template-columns:minmax(14em,24em) 1fr;gap:1.6rem;align-items:start;max-width:95rem}
+.fiche2{display:grid;grid-template-columns:minmax(14em,24em) 1fr;gap:1.6rem;align-items:start;max-width:none}
+.fiche2 p{max-width:none}
 .fiche2 .pf{border:.15rem solid var(--g)}
 .fiche2 h1{margin:0}
 .role{color:var(--g);font:400 1.3em "Bebas Neue",sans-serif;margin:.2rem 0 .8rem;letter-spacing:.06em}
