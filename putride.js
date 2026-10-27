@@ -83,6 +83,17 @@
     });
   });
   document.addEventListener('click',function(ev){
+    var a=ev.target.closest&&ev.target.closest('[data-yt]');
+    if(!a)return;
+    ev.preventDefault();
+    var c=a.closest('.card'),id=a.getAttribute('data-yt'),w=c.querySelector('.ytw');
+    if(w){var same=w.getAttribute('data-id')===id;w.remove();c.classList.remove('open');if(same)return;}
+    w=document.createElement('div');w.className='ytw';w.setAttribute('data-id',id);
+    var f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';
+    f.allow='autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;f.title='Lecteur YouTube';
+    w.appendChild(f);c.appendChild(w);c.classList.add('open');
+  });  document.addEventListener('click',function(ev){
     var a=ev.target.closest&&ev.target.closest('[data-lb]');
     if(!a||!window.openLB)return;
     ev.preventDefault();
