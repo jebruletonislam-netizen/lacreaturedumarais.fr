@@ -57,9 +57,10 @@
     '#lcmp .lp-yt{display:block;margin-top:.4rem;text-align:center;font:400 .9rem "Bebas Neue",sans-serif;letter-spacing:.1em;color:rgba(255,255,255,.62);text-decoration:none}',
     '#lcmp .lp-yt:hover,#lcmp .lp-yt:focus-visible{color:var(--hv);text-decoration:underline;outline:0}',
     '#lcmp .lp-f iframe.hid{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}',
-    '#lcmp>.sph{position:fixed;left:-420px;top:0;width:300px;height:80px;pointer-events:none}',
-    '#lcmp>.sph.vis{position:static;width:auto;height:auto;padding:0 .8rem .6rem;pointer-events:auto}',
-    '#lcmp>.sph iframe{display:block;width:100%;height:80px;border:0;border-radius:.7rem;color-scheme:dark}',
+    '.lcm-sph{position:fixed;left:0;bottom:0;width:300px;height:80px;opacity:0;pointer-events:none;z-index:-1;overflow:hidden}',
+    '.lcm-sph iframe{display:block;width:100%;height:80px;border:0;color-scheme:dark}',
+    '#lcmp>.lcm-sph.vis{position:static;width:auto;height:auto;opacity:1;pointer-events:auto;z-index:auto;overflow:visible;padding:0 .8rem .6rem}',
+    '#lcmp>.lcm-sph.vis iframe{border-radius:.7rem}',
     '#lcmp.bc .lp-c,#lcmp.bc .lp-p{display:none}',
     '#lcmp.bc .lp-r{padding-bottom:.4rem}',
     '@media (max-width:899px){#lcmp{bottom:.45rem;width:calc(100vw - .9rem);border-radius:.9rem}#lcmp .lp-r{gap:.55rem;padding:.5rem .5rem .5rem .6rem}#lcmp .lp-t{font-size:1.1rem}#lcmp .lp-a{font-size:.85rem}#lcmp .lp-b{width:1.8rem;height:1.8rem}#lcmp .lp-b.pp{width:2.3rem;height:2.3rem}}',
@@ -145,7 +146,7 @@
       return;
     }
     if (mode === 'sp' && spc) {
-      if (a === 'toggle') spc.togglePlay();
+      if (a === 'toggle') { sp.want = sp.paused; spc.togglePlay(); }
       else if (a === 'next') spStep(1);
       else spStep(-1);
       return;
@@ -178,7 +179,7 @@
   }
   function pause() {
     if (mode === 'au' && au.a) { au.a.pause(); return; }
-    if (mode === 'sp' && spc) { try { spc.pause(); } catch (e) {} return; }
+    if (mode === 'sp' && spc) { sp.want = false; try { spc.pause(); } catch (e) {} return; }
     if (mode === 'sc' && wg) wg.pause();
   }
 
@@ -285,10 +286,11 @@
       if (n) setNames(n.trackName, n.artistName);
     });
     var host = sp.host = document.createElement('div');
-    host.className = 'sph';
+    host.className = 'lcm-sph';
     var inner = document.createElement('div');
     host.appendChild(inner);
-    el.appendChild(host);
+    document.body.appendChild(host);
+    sp.want = true; sp.paused = false; sp.res = 0;
     withSpotify(function (api) {
       if (tok !== spTok) return;
       api.createController(inner, { uri: 'spotify:track:' + c.sp[idx], width: '100%', height: 80 }, function (ctl) {
@@ -298,14 +300,17 @@
         ctl.addListener('playback_update', function (e) {
           var d = e && e.data;
           if (!d || tok !== spTok) return;
+          var was = sp.paused === false, near = sp.dur > 0 && sp.pos >= sp.dur - 1500;
           sp.pos = d.position || 0; sp.dur = d.duration || 0;
           setPP(!d.isPaused);
-          if (!d.isPaused) { sp.played = true; host.classList.remove('vis'); pad(); }
+          sp.paused = !!d.isPaused;
+          if (d.isPaused && was && !near && sp.want && document.hidden && Date.now() - sp.res > 4000) { sp.res = Date.now(); try { ctl.resume(); } catch (x) {} }
+          if (!d.isPaused) { sp.played = true; sp.want = true; if (host.classList.contains('vis')) { host.classList.remove('vis'); sp.hide = 1; } pad(); }
           setProg(sp.pos / 1000, sp.dur / 1000);
           if (d.isPaused && sp.played && sp.dur > 0 && sp.pos >= sp.dur - 400 && !sp.fin) { sp.fin = true; setTimeout(function () { if (tok === spTok) spStep(1); }, 300); }
         });
         /* si le navigateur bloque la lecture automatique, le lecteur Spotify apparait pour un clic */
-        sp.timer = setTimeout(function () { if (tok === spTok && !sp.played) { host.classList.add('vis'); setPP(false); pad(); } }, 6000);
+        sp.timer = setTimeout(function () { if (tok === spTok && !sp.played) { el.appendChild(host); host.classList.add('vis'); setPP(false); pad(); } }, 6000);
       });
     }, function () {
       if (tok !== spTok) return;
@@ -318,7 +323,7 @@
   /* Fichiers retrouves, heberges sur le site : meme barre, aucun lecteur visible */
   var au = { a: null, list: [], i: 0, o: null };
   function auStop() {
-    if (au.a) { au.a.onended = au.a.ontimeupdate = au.a.onplay = au.a.onpause = au.a.onloadedmetadata = null; au.a.pause(); au.a.removeAttribute('src'); au.a.load(); }
+    if (au.a) { au.a.onended = au.a.ontimeupdate = au.a.onplay = au.a.onpause = au.a.onloadedmetadata = au.a.onerror = null; au.a.pause(); au.a.removeAttribute('src'); au.a.load(); }
     au.a = null;
   }
   function auLoad(i) {
@@ -354,6 +359,7 @@
     a.onpause = function () { setPP(false); };
     a.ontimeupdate = function () { setProg(a.currentTime, a.duration || 0); };
     a.onloadedmetadata = function () { setProg(a.currentTime, a.duration || 0); };
+    a.onerror = function () { setPP(false); setNames(au.list[au.i].title, 'Fichier indisponible'); };
     a.onended = function () { if (au.i < au.list.length - 1) auLoad(au.i + 1); else setPP(false); };
     setPP(true);
     show(false);
@@ -426,6 +432,17 @@
     if (!c) return;
     if (c.sp && playSP(o, c) !== false) return;
     if (c.apple) return playAP(o, c);
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (mode === 'sp' && spc && sp.want && sp.paused && sp.played && !(sp.dur > 0 && sp.pos >= sp.dur - 1500)) { try { spc.resume(); } catch (e) {} }
+  });
+  if ('mediaSession' in navigator) {
+    var ms = function (n, f) { try { navigator.mediaSession.setActionHandler(n, f); } catch (e) {} };
+    ms('play', function () { if (el && mode) act('toggle'); });
+    ms('pause', function () { if (el && mode) pause(); });
+    ms('nexttrack', function () { if (el && mode) act('next'); });
+    ms('previoustrack', function () { if (el && mode) act('prev'); });
   }
 
   window.LCMPlayer = { play: play, close: close, pause: pause };

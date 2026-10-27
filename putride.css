@@ -1,8 +1,8 @@
-@font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
+﻿@font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
 @font-face{font-family:"Religath Ligatures";src:url("fonts/RELIGATH-LIGATURES.otf") format("opentype");font-display:swap;unicode-range:U+0152-0153}
 :root{
   --g:#39ff6e;            /* vert maudit : contours */
-  --v:#c58bff;            /* violet pâle mais vif : remplace le rouge */
+  --v:#c58bff;            /* violet pÃ¢le mais vif : remplace le rouge */
   --vd:#7a2dd6;           /* violet profond */
   --bg:#0b0016;
   --mh:min(4.25rem,max(2rem,calc(25vh - 4.45rem)));
@@ -15,7 +15,7 @@ body{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-s
 a{color:inherit}
 .bebas,h1,h2,h3,.btn,.nav-txt,.kicker{font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;font-weight:400;letter-spacing:.01em}
 
-/* ---------- en-tête ---------- */
+/* ---------- en-tÃªte ---------- */
 header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bottom:.5rem solid var(--g);background:#000;overflow:hidden}
 .cre{flex:1 1 0;min-width:0;height:14.3125rem;background:#000;display:flex;justify-content:flex-start;overflow:hidden}
 .cre a,.cre picture{display:block;height:100%}
@@ -77,11 +77,10 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .note{font-size:1rem;color:#bba;max-width:62rem;border-left:.25rem solid var(--g);padding-left:.8rem}
 
 
-/* discographie unifiée */
+/* discographie unifiÃ©e */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(17em,1fr));gap:1.2rem;max-width:95rem;align-items:start}
 .card{border:.25rem solid var(--g);background:rgba(8,0,18,.84);padding:.6rem;box-shadow:0 0 1rem rgba(122,45,214,.4);position:relative}
 .card .cv{width:100%;aspect-ratio:1;object-fit:cover;display:block}
-.card.tint .cv{filter:hue-rotate(250deg) saturate(.9)}
 .fr{position:relative;aspect-ratio:1;overflow:hidden;background:#000}
 .fr img{position:absolute;inset:0;width:100%;height:100%;display:block}
 .fr .bl{object-fit:cover;filter:blur(1.1rem) brightness(.6);transform:scale(1.2)}
@@ -125,7 +124,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
   .btn{font-size:1.3rem}
 }
 
-/* pages séparées */
+/* pages sÃ©parÃ©es */
 .lk{color:#fc0;text-decoration:underline;text-underline-offset:.15em;cursor:pointer;background:none;border:0;padding:0;font:inherit;text-shadow:inherit}
 .lk:hover{color:var(--g)}
 .back{margin:0 0 1rem}
@@ -199,6 +198,11 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
   .fiche2 .pf,.eph{max-width:24rem;margin:0 auto}
 }
 .fiche2 .pf{aspect-ratio:3/4}.fiche2 .pf.wide{aspect-ratio:16/9}
+@media (min-width:900px){
+.fiche2:has(>div:first-child :is(.pf,.eph,.map)){display:flow-root}
+.fiche2>div:first-child:has(:is(.pf,.eph,.map)){float:left;width:min(24em,36%);margin:0 1.8rem .9rem 0}
+.fiche2 :is(h2,.gal,iframe){clear:both}
+}
 .map #lmap{width:100%;height:100%;background:#0a0014}
 .map .leaflet-tile-pane{filter:invert(1) hue-rotate(250deg) brightness(.9) contrast(.95) saturate(.8)}
 .leaflet-container{font-family:"Bebas Neue",sans-serif}
@@ -216,7 +220,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .rt .pf{aspect-ratio:1}.rt .pf img{width:100%;height:100%;object-fit:cover}
 .perso .pf.eph{aspect-ratio:1;border:0;cursor:inherit;background:radial-gradient(circle at 50% 45%,#1a0836,#030007 75%)}
 .gal.tall .pf{aspect-ratio:3/4}.fiche2 .pf.tall{aspect-ratio:3/4}
-.pfoot{margin-top:0;border-top:.5rem solid #f00;background:#000;text-align:center}.pfoot p{margin:0;font-size:2.2rem;line-height:1.1}.pup{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;padding:.3rem .8rem;border:.12rem dashed var(--g);color:var(--g);text-decoration:none;font:400 1.1rem "Bebas Neue",sans-serif;letter-spacing:.06em;opacity:.7;transition:.3s}.pup svg{width:1.4rem;height:1.4rem;fill:none;stroke:currentColor;stroke-width:3}.pup:hover,.pup:focus-visible{opacity:1;color:#fc0;border-color:#fc0;box-shadow:0 0 1rem rgba(255,204,0,.6)}
+.pfoot{margin-top:0;border-top:.5rem solid var(--g);background:#000;text-align:center}.pfoot p{margin:0;font-size:2.2rem;line-height:1.1}.pup{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;padding:.3rem .8rem;border:.12rem dashed var(--g);color:var(--g);text-decoration:none;font:400 1.1rem "Bebas Neue",sans-serif;letter-spacing:.06em;opacity:.7;transition:.3s}.pup svg{width:1.4rem;height:1.4rem;fill:none;stroke:currentColor;stroke-width:3}.pup:hover,.pup:focus-visible{opacity:1;color:#fc0;border-color:#fc0;box-shadow:0 0 1rem rgba(255,204,0,.6)}
 .vid{display:inline-block;margin-left:.5rem;padding:0 .4rem;border:.12rem solid #fc0;color:#fc0;font:400 1rem "Bebas Neue",sans-serif;text-decoration:none;letter-spacing:.04em}
 .vid:hover{background:#fc0;color:#000}
 .disc{list-style:none;margin:0 auto;padding:0;max-width:62rem;display:grid;gap:1rem}
@@ -224,7 +228,6 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .alb{all:unset;box-sizing:border-box;display:flex;color:#fff;align-items:center;gap:1.1rem;width:100%;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.8)}
 .alb:focus-visible{outline:.2rem solid #fc0}
 .alb>img,.alb>.phs{flex:none;width:9rem;height:9rem;object-fit:contain;background:#000;display:flex;align-items:center;justify-content:center;text-align:center;font:400 1.3rem "Bebas Neue",sans-serif;color:var(--v);border:.15rem solid #000}
-.alb>img.tint{filter:hue-rotate(250deg) saturate(.9)}
 .at{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;min-width:0;flex:1}
 .at b{background:var(--v);color:#000;font:400 2.4rem/1.1 "Bebas Neue",sans-serif;padding:0 .5rem;letter-spacing:.02em;text-shadow:none;transition:.2s}
 .alb:hover .at b{background:#fff}
@@ -267,7 +270,7 @@ main{position:relative}
 .pfoot .sf-t{display:block;margin:0 auto;width:min(66rem,90%);height:auto;mix-blend-mode:screen}
 .pfoot p.sf-c{margin:.2rem auto 0;max-width:none;width:100%;text-align:center;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;color:#fff;font-size:1.8rem;font-weight:400;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
 @media (max-width:899px){.pfoot{border-top-width:.25rem}.pfoot .sf-t{width:min(18rem,90vw)}.pfoot p.sf-c{font-size:1.1rem;margin-top:.1rem}}
-/* éveils des personnages */
+/* Ã©veils des personnages */
 .fx{position:relative;overflow:hidden;cursor:pointer;outline-offset:.2rem;-webkit-tap-highlight-color:transparent;background:#05000c}
 .fx .bgz,.fx .fgz{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.14);transition:transform 1.8s cubic-bezier(.3,.1,.2,1),filter 1.8s ease}
 .fx .fgz{-webkit-mask-image:radial-gradient(ellipse var(--mw) var(--mh) at var(--mx) var(--my),#000 55%,transparent 100%);mask-image:radial-gradient(ellipse var(--mw) var(--mh) at var(--mx) var(--my),#000 55%,transparent 100%)}
@@ -276,7 +279,7 @@ main{position:relative}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx) .fxl{opacity:1}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx) .bgz{transform:scale(1)}
 
-/* personnages détourés : le sujet avance, le décor recule, une aura naît derrière lui */
+/* personnages dÃ©tourÃ©s : le sujet avance, le dÃ©cor recule, une aura naÃ®t derriÃ¨re lui */
 .cz{isolation:isolate;--au:rgba(90,160,255,.95);--zm:1.12;--zo:50% 70%;--op:50% 50%}
 .cz .bgz{object-position:var(--op);transform:scale(1.3);transform-origin:50% 55%;transition:transform 1.7s cubic-bezier(.25,.1,.2,1),filter 1.7s ease}
 .cz .fgz,.cz .aur{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--op);-webkit-mask-image:none;mask-image:none;mix-blend-mode:normal;transform:scale(1);transform-origin:var(--zo);transition:transform 1.7s cubic-bezier(.25,.1,.2,1),opacity 1.5s ease,filter 1.7s ease}
@@ -288,11 +291,13 @@ main{position:relative}
 @keyframes czpulse{0%,100%{filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au)) drop-shadow(0 0 4.5rem var(--au))}50%{filter:drop-shadow(0 0 1.2rem var(--au)) drop-shadow(0 0 3.2rem var(--au)) drop-shadow(0 0 6rem var(--au))}}
 .cz-edw{--au:rgba(255,140,40,.9);--zm:1.06;--zo:50% 88%;--op:50% 40%}
 .cz-rt{--au:rgba(130,230,60,.9);--zm:1.08;--zo:50% 82%}
-.cz-rouen{--zm:1.14;--zo:50% 55%}
-.cz-rouen .aur{filter:brightness(0) invert(.82) blur(.9rem)}
-:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen .aur{opacity:.7;animation:czsmoke 5.2s ease-out 1.2s infinite both;transform:scale(1.2)}
-:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen .aur2{animation-delay:3.8s}
-@keyframes czsmoke{0%{opacity:0;transform:translateY(2%) scale(1.1)}30%{opacity:.75}100%{opacity:0;transform:translateY(-7%) scale(1.5)}}
+.cz-rouen{--au:rgba(150,70,255,.9);--zm:1.25;--zo:50% 55%}
+.cz-rouen .aur2{display:none}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen .bgz{transform:scale(.92);filter:brightness(.32) saturate(.7)}
+.cz::before,.cz::after{content:"";position:absolute;left:-15%;right:-15%;top:-30%;height:75%;z-index:1;pointer-events:none;opacity:0;mix-blend-mode:screen;filter:blur(1.1rem);background:radial-gradient(ellipse 35% 45% at 20% 50%,var(--sm,rgba(140,60,255,.8)),transparent 70%),radial-gradient(ellipse 40% 50% at 55% 40%,var(--sm2,rgba(190,130,255,.55)),transparent 70%),radial-gradient(ellipse 30% 45% at 85% 55%,var(--sm,rgba(140,60,255,.8)),transparent 70%)}
+.cz::after{animation-delay:2.4s!important;transform:scaleX(-1)}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz)::before,:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz)::after{animation:czfall 4.8s ease-in infinite}
+@keyframes czfall{0%{opacity:0;transform:translateY(-15%) scale(1)}25%{opacity:.9}100%{opacity:0;transform:translateY(120%) scale(1.3)}}
 .cz-edw .fxl{mix-blend-mode:screen;background:radial-gradient(ellipse 60% 45% at 8% 100%,rgba(255,150,40,.7),transparent 70%),radial-gradient(ellipse 50% 40% at 95% 95%,rgba(255,90,10,.55),transparent 70%),radial-gradient(ellipse 30% 30% at 20% 60%,rgba(255,190,80,.35),transparent 70%)}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-edw .fxl{animation:crack 1.3s steps(1,end) infinite}
 .cz-edw .em{position:absolute;bottom:-4%;width:.28rem;height:.28rem;border-radius:50%;background:#ffb347;box-shadow:0 0 .35rem .1rem rgba(255,140,30,.8);opacity:0}
@@ -301,14 +306,14 @@ main{position:relative}
 @keyframes ember{0%{transform:translate(0,0) scale(1);opacity:0}10%{opacity:1}100%{transform:translate(var(--dx),-12rem) scale(.3);opacity:0}}
 @media (prefers-reduced-motion:reduce){.cz .aur{animation:none!important}}
 
-/* Éphébelle : cœurs */
+/* Ã‰phÃ©belle : cÅ“urs */
 .fx-ebl{--mw:25%;--mh:54%;--mx:54%;--my:58%}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ebl .bgz{filter:brightness(.55) saturate(.9) blur(.1rem)}
 .fx-ebl .hr{position:absolute;bottom:18%;left:var(--x);font-size:var(--s);line-height:1;color:var(--c);opacity:0;text-shadow:0 0 .5rem rgba(255,40,100,.8);transform-origin:50% 100%}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ebl .hr{animation:heart var(--d) ease-out infinite var(--w)}
 @keyframes heart{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:0}12%{opacity:.95}100%{transform:translate(var(--dx),-14rem) scale(1.1) rotate(var(--r));opacity:0}}
 
-/* Le Ver : goutte qui s'écrase, zoom lent */
+/* Le Ver : goutte qui s'Ã©crase, zoom lent */
 .fx-ver .stg{position:absolute;inset:0;transform-origin:60% 46%;transition:transform 9s cubic-bezier(.25,.1,.3,1)}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .stg{transform:scale(2)}
 .fx-ver .gout{position:absolute;left:59.3%;top:49%;width:2.4%;aspect-ratio:1/1.35;border-radius:50% 50% 50% 50%/35% 35% 65% 65%;background:radial-gradient(circle at 35% 30%,#d4f58a,#6fc230 55%,#2c7a1c);box-shadow:0 0 .2rem rgba(10,46,14,.8);transform:translate(-50%,0) scale(0);transform-origin:50% 0;opacity:0}
@@ -318,7 +323,7 @@ main{position:relative}
 @keyframes dgo{0%{top:49%;opacity:1;transform:translate(-50%,0) scale(.1)}22%{top:49.3%;transform:translate(-50%,0) scale(1,1.1)}38%{top:51%;transform:translate(-50%,0) scale(.95,1.7)}68%{top:85%;opacity:1;transform:translate(-50%,0) scale(.8,1.5)}70%,100%{top:86%;opacity:0;transform:translate(-50%,0) scale(.5)}}
 @keyframes dsp{0%,67%{opacity:0;transform:translate(-50%,-50%) scale(0)}70%{opacity:1;transform:translate(-50%,-50%) scale(.4)}90%{opacity:.85;transform:translate(-50%,-50%) scale(1.5,.8)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.9,.8)}}
 
-/* Éphébito : pendule */
+/* Ã‰phÃ©bito : pendule */
 .fx-ito .stg{position:absolute;inset:0;transform-origin:60% 0}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ito .stg{animation:swing 2.8s ease-in-out infinite}
 @keyframes swing{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
@@ -333,7 +338,7 @@ main{position:relative}
 
 @media (prefers-reduced-motion:reduce){.fx *{animation:none!important;transition-duration:.01s!important}}
 
-/* recherche (symétrique du site normal, en vert) */
+/* recherche (symÃ©trique du site normal, en vert) */
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 header{overflow:visible}
 .dsearch{position:absolute;top:1rem;left:50%;transform:translateX(-50%);width:34rem;z-index:5}
@@ -365,12 +370,11 @@ header{overflow:visible}
   .sr a,.sr .sn{font-size:1.15rem}.sr small{font-size:.85rem}
 }
 
-/* Lecteur : mode intégré (Bandcamp / Apple Musique) */
+/* Lecteur : mode intÃ©grÃ© (Bandcamp / Apple Musique) */
 
 /* pages d'album */
 .alp .ah{display:grid;grid-template-columns:minmax(12rem,22rem) 1fr;gap:1.8rem;align-items:start;margin:.4rem 0 1rem}
 .alp .ah>img{width:100%;aspect-ratio:1;object-fit:contain;background:#000;border:.15rem solid var(--g)}
-.alp .ah>img.tint{filter:hue-rotate(250deg) saturate(.9)}
 .alp .ah h1{margin:0 0 .5rem}
 .alp .am{margin:.2rem 0 1rem;color:#e8dcff;font-size:1.1em}
 .alp .abt{display:flex;flex-wrap:wrap;gap:.2rem}

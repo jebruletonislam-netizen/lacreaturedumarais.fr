@@ -18,6 +18,7 @@
   +'#lb .lb-bar button{flex:none;width:4.2rem;height:3.4rem;font-size:2.4rem}'
   +'#lb .lb-c{flex:1;font-size:1.2rem}'
   +'#lb .lb-x{width:3.8rem;height:3.8rem;font-size:2.2rem}}';
+  if(document.querySelector('link[href*="putride.css"]'))css+='#lb{background:rgba(8,0,18,.97)}#lb button{background:#0b0016;color:#c58bff;border-color:#39ff6e}#lb button:hover,#lb button:focus-visible{background:#39ff6e;color:#0b0016}#lb .lb-c{color:#c58bff}#lb img{box-shadow:0 0 1.6rem rgba(122,45,214,.55);border:.12rem solid #39ff6e}';
   var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 
   var LB=null;
