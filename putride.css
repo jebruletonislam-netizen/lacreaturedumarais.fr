@@ -71,9 +71,6 @@ p{font-size:1em;line-height:1.35;margin:0 0 1.1rem;max-width:62rem}
 .trap svg{width:1.8rem;height:1.8rem;fill:none;stroke:currentColor;stroke-width:3}
 .trap:hover{opacity:1;color:var(--g);border-color:var(--g);box-shadow:0 0 1.2rem rgba(57,255,110,.7)}
 main{position:relative}
-main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;pointer-events:none;background:
-  radial-gradient(circle at 10% 0,var(--g) 0 .5rem,transparent .55rem) 0 0/9rem 1.6rem repeat-x,
-  radial-gradient(ellipse at 55% 0,var(--g) 0 .8rem,transparent .85rem) 0 0/13rem 1.2rem repeat-x;opacity:.85}
 .rub article{transition:.25s}
 .rub article:hover{transform:translateY(-.2rem);border-color:#fc0;box-shadow:0 0 1.6rem rgba(57,255,110,.55)}
 .rub article:hover svg{stroke:#fc0}
