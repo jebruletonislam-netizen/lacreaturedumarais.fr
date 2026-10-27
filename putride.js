@@ -167,11 +167,11 @@
   /* Éveil d'Éphébus */
   function tog(e){var on=e.classList.toggle('on');e.setAttribute('aria-pressed',on);}
   document.addEventListener('pointerdown',function(ev){
-    var e=ev.target.closest&&ev.target.closest('#eph');
+    var e=ev.target.closest&&ev.target.closest('#eph,.fx');
     if(e&&ev.pointerType!=='mouse')tog(e);
   });
   document.addEventListener('keydown',function(ev){
-    var e=ev.target.closest&&ev.target.closest('#eph');
+    var e=ev.target.closest&&ev.target.closest('#eph,.fx');
     if(e&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();tog(e);}
   });
 

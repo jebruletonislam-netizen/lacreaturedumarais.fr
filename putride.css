@@ -309,3 +309,55 @@ html.slx{background:#5cb82a}html.slx body{visibility:hidden}
 .pfoot .sf-t{display:block;margin:0 auto;width:min(66rem,90%);height:auto;mix-blend-mode:screen}
 .pfoot p.sf-c{margin:.2rem 0 0;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;color:#fff;font-size:1.8rem;font-weight:400;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
 @media (max-width:899px){.pfoot{padding:1.6rem 1rem 1.8rem}.pfoot p.sf-c{font-size:1.1rem}}
+/* éveils des personnages */
+.fx{position:relative;overflow:hidden;cursor:pointer;outline-offset:.2rem;-webkit-tap-highlight-color:transparent;background:#05000c}
+.fx .bgz,.fx .fgz{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.14);transition:transform 1.8s cubic-bezier(.3,.1,.2,1),filter 1.8s ease}
+.fx .fgz{-webkit-mask-image:radial-gradient(ellipse var(--mw) var(--mh) at var(--mx) var(--my),#000 55%,transparent 100%);mask-image:radial-gradient(ellipse var(--mw) var(--mh) at var(--mx) var(--my),#000 55%,transparent 100%)}
+.fx .fxl{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.4s ease}
+.fiche2 .pf.fx{aspect-ratio:1}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx) .fxl{opacity:1}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx) .bgz{transform:scale(1)}
+
+/* la Créature : aura rouge */
+.fx-cre{--mw:30%;--mh:50%;--mx:52%;--my:57%}
+.fx-cre .fxl{background:radial-gradient(ellipse 25% 47% at 52% 57%,transparent 52%,rgba(255,30,45,.8) 74%,rgba(190,0,20,.35) 90%,transparent 100%);mix-blend-mode:screen;animation:aura 4.2s ease-in-out infinite}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .bgz{filter:hue-rotate(270deg) saturate(.9) brightness(.5) blur(.12rem)}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .fgz{filter:hue-rotate(270deg) saturate(1.2) brightness(1.08) contrast(1.18)}
+@keyframes aura{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+
+/* Madame Edwarda : feu qui crépite */
+.fx-edw{--mw:27%;--mh:56%;--mx:48%;--my:58%}
+.fx-edw .fxl{mix-blend-mode:screen;background:radial-gradient(ellipse 60% 45% at 8% 100%,rgba(255,150,40,.7),transparent 70%),radial-gradient(ellipse 50% 40% at 95% 95%,rgba(255,90,10,.55),transparent 70%),radial-gradient(ellipse 30% 30% at 20% 60%,rgba(255,190,80,.35),transparent 70%);animation:crack 1.3s steps(1,end) infinite}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-edw .bgz{filter:brightness(.5) saturate(.8)}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-edw .fgz{filter:brightness(1.28) contrast(1.06) saturate(1.1)}
+.fx-edw .em{position:absolute;bottom:-4%;width:.28rem;height:.28rem;border-radius:50%;background:#ffb347;box-shadow:0 0 .35rem .1rem rgba(255,140,30,.8);opacity:0}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-edw .em{animation:ember 2.6s ease-out infinite}
+@keyframes crack{0%{opacity:.55;transform:translate(0,0)}9%{opacity:1;transform:translate(1%,-1%)}22%{opacity:.7;transform:translate(-1%,0)}35%{opacity:1;transform:translate(0,-2%)}48%{opacity:.5}61%{opacity:.95;transform:translate(1%,1%)}74%{opacity:.65}88%{opacity:1;transform:translate(-1%,-1%)}}
+@keyframes ember{0%{transform:translate(0,0) scale(1);opacity:0}10%{opacity:1}100%{transform:translate(var(--dx),-12rem) scale(.3);opacity:0}}
+.fx-edw .em{animation-fill-mode:both}
+
+/* Éphébelle : cœurs */
+.fx-ebl{--mw:25%;--mh:54%;--mx:54%;--my:58%}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ebl .bgz{filter:brightness(.55) saturate(.9) blur(.1rem)}
+.fx-ebl .hr{position:absolute;bottom:18%;left:var(--x);font-size:var(--s);line-height:1;color:var(--c);opacity:0;text-shadow:0 0 .5rem rgba(255,40,100,.8);transform-origin:50% 100%}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ebl .hr{animation:heart var(--d) ease-out infinite var(--w)}
+@keyframes heart{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:0}12%{opacity:.95}100%{transform:translate(var(--dx),-14rem) scale(1.1) rotate(var(--r));opacity:0}}
+
+/* Le Ver : goutte qui s'écrase, zoom lent */
+.fx-ver .stg{position:absolute;inset:0;transform-origin:56% 47%;transition:transform 9s cubic-bezier(.25,.1,.3,1)}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .stg{transform:scale(2)}
+.fx-ver .gout{position:absolute;left:56.4%;top:48.5%;width:2.4%;aspect-ratio:1/1.35;border-radius:50% 50% 50% 50%/35% 35% 65% 65%;background:radial-gradient(circle at 35% 30%,#d4f58a,#6fc230 55%,#2c7a1c);box-shadow:0 0 .2rem rgba(10,46,14,.8);transform:translate(-50%,0) scale(0);transform-origin:50% 0;opacity:0}
+.fx-ver .splat{position:absolute;left:56.4%;top:76%;width:8%;aspect-ratio:2.2/1;border-radius:50%;background:radial-gradient(ellipse,#8fe04a 0 40%,#3e9a22 62%,transparent 70%);transform:translate(-50%,-50%) scale(0);opacity:0}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .gout{animation:dgo 3.4s ease-in infinite}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ver .splat{animation:dsp 3.4s ease-out infinite}
+@keyframes dgo{0%{top:48.5%;opacity:1;transform:translate(-50%,0) scale(.1)}22%{top:48.8%;transform:translate(-50%,0) scale(1,1.1)}38%{top:50%;transform:translate(-50%,0) scale(.95,1.7)}68%{top:75%;opacity:1;transform:translate(-50%,0) scale(.8,1.5)}70%,100%{top:76%;opacity:0;transform:translate(-50%,0) scale(.5)}}
+@keyframes dsp{0%,67%{opacity:0;transform:translate(-50%,-50%) scale(0)}70%{opacity:1;transform:translate(-50%,-50%) scale(.4)}90%{opacity:.85;transform:translate(-50%,-50%) scale(1.5,.8)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.9,.8)}}
+
+/* Éphébito : pendule */
+.fx-ito .stg{position:absolute;inset:0;transform-origin:60% 0}
+:is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-ito .stg{animation:swing 2.8s ease-in-out infinite}
+@keyframes swing{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
+.fx-ver{cursor:default}.fx-ito{cursor:default}
+.fx-ver .stg img,.fx-ito .stg img{object-fit:contain}
+
+@media (prefers-reduced-motion:reduce){.fx *{animation:none!important;transition-duration:.01s!important}}
