@@ -412,5 +412,5 @@ header{overflow:visible}
 #mpool{display:none}
 @media (max-width:899px){
  .dpool{display:none}
- #mpool{display:block;position:fixed;left:0;right:0;bottom:-20px;height:0;opacity:0;z-index:38;pointer-events:none;background:linear-gradient(180deg,rgba(140,205,62,.8),rgba(86,160,36,.88) 18%,rgba(46,118,30,.93) 55%,rgba(16,64,22,.96))}
+ #mpool{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:38;pointer-events:none}
 }
