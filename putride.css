@@ -390,3 +390,21 @@ header{overflow:visible}
  .tl summary,.trp{font-size:1.4rem;gap:.6rem}
  .tl .ly{padding-left:.4rem}
 }
+
+/* archives + blason mobile du pied de page */
+.arch{max-width:62rem}
+.arch .arch-side{color:var(--v);font-size:1.15em}
+.alist{display:grid;gap:.8rem;max-width:62rem;margin:1.6rem 0 2rem}
+.alist .alb{border:.15rem solid var(--g);padding:.9rem 1rem;background:rgba(8,0,18,.7)}
+.alist .alb:hover{border-color:#fc0}
+.arvs{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:1rem;max-width:80rem}
+.arv{all:unset;box-sizing:border-box;position:relative;display:block;cursor:pointer;aspect-ratio:16/9;background:#000;border:.15rem solid var(--g);overflow:hidden}
+.arv img{width:100%;height:100%;object-fit:cover;display:block;opacity:.8;transition:.2s;filter:hue-rotate(250deg) saturate(.9)}
+.arv span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.6rem;color:#fff;text-shadow:0 0 .6rem #000}
+.arv:hover,.arv:focus-visible{border-color:#fc0}.arv:hover img{opacity:1}
+.mppp{display:none}
+@media (max-width:899px){
+ .arvs{grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+ .pfoot .mppp{display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+ .mppp img{height:6rem;width:auto;display:block;mix-blend-mode:screen;pointer-events:auto}
+}
