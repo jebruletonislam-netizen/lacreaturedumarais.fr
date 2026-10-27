@@ -35,9 +35,9 @@ header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bo
 nav{position:sticky;top:14.8125rem;align-self:start;height:max(calc(100vh - 14.8125rem),52.7rem);min-height:0;overflow-y:auto;scrollbar-width:none;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem 1fr;border-right:.5625rem solid var(--g);background:linear-gradient(rgba(14,0,28,.78),rgba(14,0,28,.78)),url(images/fond-vitrail.jpg) center/cover}
 nav a{display:flex;align-items:center;justify-content:center;text-decoration:none;border-bottom:.5rem solid var(--g)}
 nav a:last-child{border-bottom:0}
-.nav-icon{display:none;align-items:center;justify-content:center;width:100%;height:100%;color:#8816ff}
+.nav-icon{display:none;align-items:center;justify-content:center;width:100%;height:100%;color:#9608f8}
 .nav-icon svg{width:3.2rem;height:3.2rem;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 .35rem rgba(57,255,110,.55))}
-.nav-txt{display:block;color:#8816ff;font-size:3.625rem;line-height:.9;text-align:center;text-shadow:0 0 .8rem rgba(197,139,255,.6),0 0 .2rem #000}
+.nav-txt{display:block;color:#9608f8;font-size:3.625rem;line-height:.9;text-align:center;text-shadow:0 0 .8rem rgba(197,139,255,.6),0 0 .2rem #000}
 nav a:hover .nav-txt,nav a:hover .nav-icon{color:#fc0}
 nav a[aria-current] .nav-txt,nav a[aria-current] .nav-icon{color:#fff}
 
@@ -52,7 +52,7 @@ h2{color:var(--v);font-size:2.6rem;margin:2.4rem 0 .8rem;padding-bottom:.35rem;b
 main{font-size:clamp(1.3rem,1.55vw,1.9rem)}
 p{font-size:1em;line-height:1.35;margin:0 0 1.1rem;max-width:62rem}
 .lead-title{color:#fc0;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;text-transform:uppercase;text-decoration:underline;text-underline-offset:.12em;font-size:2.4rem;text-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 .9rem rgba(122,45,214,.5)}
-.btn{display:inline-block;border:.2rem solid #b560ff;background:#000;color:#b560ff;padding:.55rem 1.2rem;font-size:1.7rem;text-decoration:none;margin:0 .5rem .5rem 0;text-shadow:none}
+.btn{display:inline-block;border:.2rem solid #9608f8;background:#000;color:#9608f8;padding:.55rem 1.2rem;font-size:1.7rem;text-decoration:none;margin:0 .5rem .5rem 0;text-shadow:none}
 .btn:hover{color:#fc0;border-color:#fc0}
 .sep{height:.3rem;background:var(--g);box-shadow:0 0 .35rem rgba(122,45,214,.9),0 0 .9rem rgba(122,45,214,.45);margin:2rem 0;border:0}
 
@@ -106,7 +106,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
   header .mid,header .ppp{display:none}
   .msoc{display:flex;flex:1;flex-wrap:nowrap;align-items:center;justify-content:center;gap:.3rem;padding:0 .6rem 0 1rem;min-width:0}
   .msoc a{display:block;flex:0 1 2.4rem;min-width:0;aspect-ratio:1}
-  .msoc img{display:block;width:100%;height:100%;object-fit:contain;filter:hue-rotate(270deg) brightness(1.25)}
+  .msoc img{display:block;width:100%;height:100%;object-fit:contain}
   .cre{flex:0 0 auto;width:auto;height:100%;aspect-ratio:1600/825}
   .cre a{flex:none;width:100%;height:100%}
   .cre picture{width:100%;height:100%}
