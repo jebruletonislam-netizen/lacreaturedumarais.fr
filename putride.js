@@ -160,12 +160,12 @@
     var SL=window.Slime||{},CO=SL.couleurs||{vert:'#8fd61f',ombre:'#4f9a17',clair:'#d6ff86',trait:'#2c6a0c',reflet:'#f4ffd9'};
     var layer=document.createElement('div');layer.id='drips';layer.setAttribute('aria-hidden','true');
     document.body.appendChild(layer);
-    var lvl=0,pool=null,dl=0,tilt=0,tiltT=0,tv=0;
+    var lvl=0,pool=null,dl=0,tilt=0,tiltT=0,tv=0,vid=0,lvlVid=0,VIDANGE=2.4;
     var isM=function(){return innerWidth<900;};
     var clamp=function(v,a,b){return v<a?a:v>b?b:v;};
     var inc=function(w){return w*w*.035*(isM()?2.2:1);};
     var mainBox=function(){var m=document.querySelector('main');return m&&m.getBoundingClientRect();};
-    var cap=function(){var m=document.querySelector('main');return Math.min(innerHeight*(isM()?.14:.11),m?m.offsetHeight*.5:1e9);};
+    var cap=function(){var m=document.querySelector('main');return Math.min(innerHeight*(isM()?.08:.11),m?m.offsetHeight*.5:1e9);};
     /* mobile : fluide simule en particules ; gravite et secousses viennent des capteurs du telephone */
     var cv=document.createElement('canvas');cv.id='mpool';cv.setAttribute('aria-hidden','true');document.body.appendChild(cv);
     var cx=cv.getContext('2d'),lo=document.createElement('canvas'),lc=lo.getContext('2d',{willReadFrequently:true});
@@ -269,7 +269,9 @@
       }
       for(i=items.length-1;i>=0;i--){
         var it=items[i];if(!it.on)continue;
-        it.s=Math.min(1,it.s+dt*3);
+        /* une crotte qui s'en va retrecit doucement au lieu de disparaitre */
+        it.s=it.sort?it.s-dt*2:Math.min(1,it.s+dt*3);
+        if(it.s<=0&&it.sort){it.on=false;it.sort=false;it.s=0;continue;}
         it.vx+=ax*dt;it.vy+=ay*dt;
         var nc=0,mvx=0,mvy=0,icx=clamp((it.x/H)|0,0,GC-1),icy=clamp((it.y/H)|0,0,GR-1);
         for(var yy=Math.max(0,icy-1);yy<=Math.min(GR-1,icy+1);yy++)for(var xx=Math.max(0,icx-1);xx<=Math.min(GC-1,icx+1);xx++)for(j=head[yy*GC+xx];j>=0;j=nxt[j]){
@@ -296,7 +298,7 @@
       }
     }
     function drawItem(it){
-      var e=it.s,pop=e<1?1+Math.sin(e*Math.PI)*.35:1;
+      var e=it.s,pop=e<1&&!it.sort?1+Math.sin(e*Math.PI)*.35:1;
       if(SL.crotte)SL.crotte(cx,it.x,it.y+10*it.z,28*it.z*Math.min(1,e*1.4)*pop,it.rot,it.sq);
     }
     function odeurs(){
@@ -319,10 +321,10 @@
       for(i=0;i<len;i+=4){
         v=d[i+3];
         if(v<62){d[i+3]=0;continue;}
-        /* facon dessin anime : un lisere sombre au bord, puis un aplat citron ou les crottes transparaissent */
+        /* facon dessin anime : un lisere sombre au bord, puis un aplat citron translucide : on lit le texte au travers */
         if(v<80){d[i]=44;d[i+1]=106;d[i+2]=12;d[i+3]=255;}
-        else if(v<96){d[i]=79;d[i+1]=154;d[i+2]=23;d[i+3]=250;}
-        else{d[i]=143;d[i+1]=214;d[i+2]=31;d[i+3]=228;}
+        else if(v<96){d[i]=79;d[i+1]=154;d[i+2]=23;d[i+3]=205;}
+        else{d[i]=143;d[i+1]=214;d[i+2]=31;d[i+3]=150;}
       }
       lc.putImageData(im,0,0);
       cx.drawImage(lo,0,0,CW,CH);
@@ -335,14 +337,16 @@
         if(innerWidth!==CW||innerHeight!==CH)sizeCv();
         bo=bOff();
         gx+=(tgx-gx)*.35;gy+=(tgy-gy)*.35;gm+=(tgm-gm)*.35;tilt+=(gx-tilt)*.1;
+        /* vidange : le niveau baisse, on retire des particules au hasard, les crottes coulent */
+        if(vid>0){vid=Math.max(0,vid-dt);lvl=lvlVid*vid/VIDANGE;var garde=Math.round(lvl*CW/AREA);while(P.length>garde)P.splice((Math.random()*P.length)|0,1);if(!vid){lvl=0;resetFx();}}
         var target=Math.min(NMAX,Math.round(lvl*CW/AREA)),k=0,i;
         while(P.length<target&&k<3){
           var sx=clamp((pendX||CW/2)+rnd(-8,8),10,CW-10);
           P.push({x:sx,y:Math.min(vsurf(sx)-14,floorY()-8),px:0,py:0,vx:rnd(-30,30),vy:140});k++;
         }
         items.forEach(function(it){
-          if(!it.on&&lvl>it.thr){it.on=true;it.s=0;it.x=clamp(pendX||CW/2,20,CW-20)+rnd(-20,20);it.y=Math.max(14,vsurf(it.x)-30);it.vx=0;it.vy=0;it.rot=0;}
-          else if(it.on&&lvl<it.thr-8)it.on=false;
+          if(!it.on&&lvl>it.thr){it.on=true;it.sort=false;it.s=0;it.x=clamp(pendX||CW/2,20,CW-20)+rnd(-20,20);it.y=Math.max(14,vsurf(it.x)-30);it.vx=0;it.vy=0;it.rot=0;}
+          else if(it.on&&lvl<it.thr-8)it.sort=true;
         });
         var any=P.length||drops.length||items.some(function(it){return it.on;});
         work=!!any;
@@ -367,7 +371,7 @@
       pool.style.height=lvl+'px';pool.style.opacity=lvl>1?1:0;
     };
     /* chaque nouvelle page repart d'un sol propre */
-    document.addEventListener('putride:page',function(){lvl=0;dl=0;resetFx();pool=null;layer.textContent='';show();});
+    document.addEventListener('putride:page',function(){if(isM()&&P.length){vid=VIDANGE;lvlVid=lvl;}else{lvl=0;resetFx();}dl=0;pool=null;layer.textContent='';show();});
     show();
     function sources(){
       var r=[],m=mainBox();if(!m)return r;
@@ -420,15 +424,41 @@
     /* Nappe de slime facon Martin Mystere, accrochee sous la barre du haut :
        une couche qui deborde du bord vert, et des coulures qui s'allongent
        lentement, s'etranglent puis lachent leur goutte, avant de remonter
-       en rebondissant. */
+       mollement. Une coulure ne descend jamais sur du texte : elle s'arrete
+       au-dessus du premier mot, et se retire doucement si un mot passe
+       dessous quand on fait defiler la page. */
     (function(){
-      var NS='http://www.w3.org/2000/svg',svg=null,coul=[],haut=-1,larg=0,der=0;
+      var NS='http://www.w3.org/2000/svg',svg=null,coul=[],haut=-1,larg=0,der=0,revu=0,aRevoir=true;
       function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
       function bord(){
         var b=0,hd=document.querySelector('header'),nv=document.querySelector('nav');
         if(hd)b=hd.getBoundingClientRect().bottom;
         if(nv&&isM()){var r=nv.getBoundingClientRect();if(r.top<innerHeight/3)b=Math.max(b,r.bottom);}
         return Math.round(b);
+      }
+      /* y a-t-il une lettre a cet endroit de l'ecran ? (la nappe, les gouttes et
+         la flaque ignorent le pointeur : on touche bien ce qu'il y a dessous) */
+      var caret=document.caretPositionFromPoint?function(x,y){var p=document.caretPositionFromPoint(x,y);return p&&[p.offsetNode,p.offset];}
+        :document.caretRangeFromPoint?function(x,y){var r=document.caretRangeFromPoint(x,y);return r&&[r.startContainer,r.startOffset];}:null;
+      var plage=document.createRange();
+      function lettre(x,y){
+        if(!caret||x<0||y<0||x>=innerWidth||y>=innerHeight)return false;
+        var p=caret(x,y);
+        if(!p||!p[0]||p[0].nodeType!==3)return false;
+        var t=p[0].data;
+        for(var o=Math.max(0,p[1]-1);o<=Math.min(t.length-1,p[1]);o++){
+          if(/\s/.test(t.charAt(o)))continue;
+          plage.setStart(p[0],o);plage.setEnd(p[0],o+1);
+          var b=plage.getBoundingClientRect();
+          if(x>=b.left-3&&x<=b.right+3&&y>=b.top-2&&y<=b.bottom+2)return true;
+        }
+        return false;
+      }
+      /* longueur que peut prendre la coulure avant de toucher un mot */
+      function limite(c){
+        var x0=c.x-c.w*.18,xs=[x0-c.w*.38,x0,x0+c.w*.38],y0=haut-3,fin=Math.min(c.lmax,140)+8;
+        for(var dy=10;dy<=fin;dy+=6)for(var k=0;k<3;k++)if(lettre(xs[k],y0+dy))return Math.max(5,dy-8);
+        return 999;
       }
       /* une coulure : tige qui s'affine, puis goutte ronde au bout ; e (0..1) l'etrangle avant la chute */
       function forme(x,w,L,e){
@@ -437,7 +467,7 @@
           'A'+r+','+r+' 0 1 0 '+(x+n)+','+yn+'C'+(x+n)+','+c2+' '+(x+h)+','+c1+' '+(x+h)+',-4Z';
       }
       function construire(){
-        larg=innerWidth;haut=bord();
+        larg=innerWidth;haut=bord();aRevoir=true;
         if(svg)svg.remove();
         svg=el('svg',{id:'nappe','aria-hidden':'true',width:larg,height:150,viewBox:'0 0 '+larg+' 150'});
         svg.style.top=(haut-3)+'px';
@@ -450,23 +480,24 @@
         el('path',{d:d},go);
         el('path',{d:d,transform:'translate(0,-3)'},gb);
         el('path',{d:'M6,3H'+(larg-6),'stroke-width':2.2,'stroke-dasharray':'38 22 12 46 26 34','stroke-dashoffset':rnd(0,170).toFixed(0),opacity:.8},gr);
-        /* les coulures : moins nombreuses sur telephone et sur les appareils modestes */
+        /* les coulures : moins nombreuses et plus fines sur telephone et sur les appareils modestes */
         coul=[];
-        var n=Math.max(3,Math.round(larg/(LOW?160:115)));
+        var n=Math.max(3,Math.round(larg/(LOW?160:115))),mob=isM();
         for(var i=0;i<n;i++){
-          var w=rnd(11,22),cx0=clamp((i+.5)*larg/n+rnd(-.3,.3)*larg/n,w,larg-w),lmin=w*rnd(1.6,2.4);
-          var c={x:cx0,w:w,lmin:lmin,lmax:Math.min(115,lmin+rnd(25,70)),L:lmin*rnd(1,1.8),v:rnd(3,7),ph:'pousse',t:rnd(0,3),f:rnd(0,6.28),e:0};
+          var w=mob?rnd(9,16):rnd(11,22),cx0=clamp((i+.5)*larg/n+rnd(-.3,.3)*larg/n,w,larg-w),lmin=w*rnd(1.6,2.4);
+          var c={x:cx0,w:w,lmin:lmin,lmax:Math.min(115,lmin+rnd(25,70)),lim:999,L:lmin*rnd(1,1.8),v:rnd(3,7),ph:'pousse',t:rnd(0,3),f:rnd(0,6.28),e:0};
           c.o=el('path',{},go);c.b=el('path',{transform:'translate('+(-w*.18).toFixed(1)+',-2)'},gb);
           c.r=el('path',{'stroke-width':Math.max(2,w*.12).toFixed(1),opacity:.9},gr);c.g=el('ellipse',{},ge);
           coul.push(c);
         }
       }
       function dessiner(c,tt){
-        var w=c.w*(1+.05*Math.sin(tt*2.6+c.f)),r=w*.42,d=forme(c.x,w,c.L,c.e);
-        c.o.setAttribute('d',d);c.b.setAttribute('d',d);
-        var xr=c.x-w*.3-w*.18,y2=c.L-r*1.9;
+        /* une coulure tres courte devient une simple bosse : sa goutte se reduit avec elle */
+        var w=Math.max(4,Math.min(c.w,c.L/1.7))*(1+.05*Math.sin(tt*2.6+c.f)),r=w*.42,d=forme(c.x,w,c.L,c.e),dx=c.w*.18-w*.18;
+        c.o.setAttribute('d',d);c.b.setAttribute('d',d);c.b.setAttribute('transform','translate('+(-c.w*.18+dx).toFixed(1)+',-2)');
+        var xr=c.x-w*.3-c.w*.18,y2=c.L-r*1.9;
         c.r.setAttribute('d',y2>10?'M'+xr.toFixed(1)+',6Q'+(xr+w*.05).toFixed(1)+','+((6+y2)/2).toFixed(1)+' '+(xr+w*.08).toFixed(1)+','+y2.toFixed(1):'M0,0');
-        c.g.setAttribute('cx',(c.x-r*.36-w*.18).toFixed(1));c.g.setAttribute('cy',(c.L-r*1.15).toFixed(1));
+        c.g.setAttribute('cx',(c.x-r*.36-c.w*.18).toFixed(1));c.g.setAttribute('cy',(c.L-r*1.15).toFixed(1));
         c.g.setAttribute('rx',(r*.2).toFixed(1));c.g.setAttribute('ry',(r*.34).toFixed(1));
       }
       /* la goutte se detache au bout de la coulure et tombe comme les autres */
@@ -477,31 +508,46 @@
         layer.appendChild(d);
         chute(d,x,y0,w,k,false);
       }
+      var REPLI=2.8; /* secondes pour remonter apres avoir lache sa goutte */
       function animer(now){
         var dt=Math.min(.1,(now-der)/1000||0);der=now;
         if(innerWidth!==larg||Math.abs(bord()-haut)>1)construire();
+        /* sonder le texte sous les coulures : au defilement, et de temps en temps
+           (images qui se chargent, page qui change sans rechargement) */
+        if((aRevoir&&now-revu>200)||now-revu>900){revu=now;aRevoir=false;coul.forEach(function(c){c.lim=limite(c);});}
         var tt=now/1000;
         coul.forEach(function(c){
           c.t+=dt;
+          var plafond=Math.min(c.lmax,c.lim);
+          /* un mot passe dessous : elle se retire, lentement, sans lacher sa goutte */
+          if(c.L>plafond+(c.ph==='etrangle'?5:1)&&c.ph!=='rebond'){c.L=Math.max(plafond,c.L-dt*40);if(c.ph==='etrangle'){c.ph='pousse';c.e=0;}}
           if(c.ph==='pousse'){
             /* plus elle est lourde, plus elle descend vite */
-            c.L+=c.v*dt*(1+(c.L-c.lmin)/c.lmax*1.5);
-            if(c.L>=c.lmax){c.ph='etrangle';c.t=0;}
+            if(c.L<plafond)c.L=Math.min(plafond,c.L+c.v*dt*(1+(c.L-c.lmin)/c.lmax*1.5));
+            /* arretee par un mot assez longtemps, elle lache quand meme sa goutte si elle est
+               assez longue pour en former une : la goutte ne fait que traverser le texte */
+            c.bloque=c.L>=plafond-.5&&plafond<c.lmax?(c.bloque||0)+dt:0;
+            if(c.L>=c.lmax-.5||(c.bloque>4&&c.L>c.w*1.8)){c.ph='etrangle';c.t=0;c.bloque=0;}
           }else if(c.ph==='etrangle'){
-            c.e=Math.min(1,c.t/.35);c.L+=dt*18;
+            c.e=Math.min(1,c.t/.35);c.L=Math.min(c.L+dt*18,plafond+4);
             if(c.t>=.35){
               /* pas trop de gouttes a la fois ; sinon elle remonte sans lacher */
-              if(!document.hidden&&layer.childElementCount<(LOW?10:22)&&Math.random()<(isM()?.7:.4))lacher(c);
-              c.ph='rebond';c.t=0;c.e=0;c.from=c.L;
+              var part=!document.hidden&&layer.childElementCount<(LOW?10:22)&&Math.random()<(isM()?.7:.4);
+              if(part)lacher(c);
+              /* la goutte emporte le bout de la coulure, le reste remonte en douceur */
+              c.ph='rebond';c.t=0;c.e=0;c.from=part?c.L-c.w*.35:c.L;
             }
           }else if(c.ph==='rebond'){
-            /* elle remonte d'un coup et oscille, comme un elastique */
-            c.L=c.lmin+(c.from*.45-c.lmin)*Math.exp(-c.t*5)*Math.cos(c.t*14);
-            if(c.t>1.1){c.ph='repos';c.t=0;c.L=c.lmin;c.pause=rnd(.5,4);c.lmax=Math.min(115,c.lmin+rnd(25,70));c.v=rnd(3,7);}
+            /* remontee molle, comme une pate qui se retracte, avec un leger tremblement */
+            var u=Math.min(1,c.t/REPLI),cible=Math.min(c.lmin,c.lim);
+            c.L=c.from+(cible-c.from)*(1-Math.pow(1-u,3))+Math.sin(c.t*6.5)*2.5*(1-u);
+            if(u>=1){c.ph='repos';c.t=0;c.L=cible;c.pause=rnd(.8,4);c.lmax=Math.min(115,c.lmin+rnd(25,70));c.v=rnd(3,7);}
           }else if(c.t>c.pause)c.ph='pousse';
           dessiner(c,tt);
         });
       }
+      addEventListener('scroll',function(){aRevoir=true;},{passive:true});
+      document.addEventListener('putride:page',function(){aRevoir=true;});
       construire();
       var sauter=false;
       (function boucle(now){
