@@ -1,4 +1,4 @@
-﻿@font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
+@font-face{font-family:"Religath";src:url("fonts/RELIGATH-Demo.otf") format("opentype");font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
 @font-face{font-family:"Religath Ligatures";src:url("fonts/RELIGATH-LIGATURES.otf") format("opentype");font-display:swap;unicode-range:U+0152-0153}
 :root{
   --g:#39ff6e;            /* vert maudit : contours */
@@ -291,9 +291,14 @@ main{position:relative}
 @keyframes czpulse{0%,100%{filter:drop-shadow(0 0 .8rem var(--au)) drop-shadow(0 0 2.2rem var(--au)) drop-shadow(0 0 4.5rem var(--au))}50%{filter:drop-shadow(0 0 1.2rem var(--au)) drop-shadow(0 0 3.2rem var(--au)) drop-shadow(0 0 6rem var(--au))}}
 .cz-edw{--au:rgba(255,140,40,.9);--zm:1.06;--zo:50% 88%;--op:50% 40%}
 .cz-rt{--au:rgba(130,230,60,.9);--zm:1.08;--zo:50% 82%}
-.cz-rouen{--au:rgba(150,70,255,.9);--zm:1.25;--zo:50% 55%}
+.cz-rouen{--au:rgba(218,11,253,.7);--zm:1.22;--zo:50% 55%;--sm:rgba(225,40,255,.95);--sm2:rgba(245,150,255,.8)}
 .cz-rouen .aur2{display:none}
-:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen .bgz{transform:scale(.92);filter:brightness(.32) saturate(.7)}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen .bgz{transform:scale(.96);filter:brightness(.55) saturate(.85)}
+.cz-rouen::before,.cz-rouen::after{left:-10%;right:-10%;top:-60%;height:140%;filter:blur(.25rem) contrast(1.4);-webkit-mask-image:linear-gradient(180deg,#000 0,#000 45%,transparent 92%);mask-image:linear-gradient(180deg,#000 0,#000 45%,transparent 92%);background:
+radial-gradient(ellipse 5% 38% at 10% 50%,var(--sm),transparent 72%),radial-gradient(ellipse 7% 55% at 22% 38%,var(--sm2),transparent 72%),radial-gradient(ellipse 4% 30% at 33% 62%,var(--sm),transparent 72%),radial-gradient(ellipse 8% 48% at 46% 44%,var(--sm),transparent 72%),radial-gradient(ellipse 5% 34% at 58% 66%,var(--sm2),transparent 72%),radial-gradient(ellipse 7% 52% at 70% 40%,var(--sm),transparent 72%),radial-gradient(ellipse 4% 36% at 81% 58%,var(--sm),transparent 72%),radial-gradient(ellipse 6% 44% at 92% 46%,var(--sm2),transparent 72%)}
+.cz-rouen::after{background:radial-gradient(ellipse 6% 46% at 6% 42%,var(--sm2),transparent 72%),radial-gradient(ellipse 4% 32% at 17% 64%,var(--sm),transparent 72%),radial-gradient(ellipse 8% 54% at 29% 40%,var(--sm),transparent 72%),radial-gradient(ellipse 5% 38% at 41% 60%,var(--sm),transparent 72%),radial-gradient(ellipse 7% 50% at 53% 36%,var(--sm2),transparent 72%),radial-gradient(ellipse 4% 30% at 64% 62%,var(--sm),transparent 72%),radial-gradient(ellipse 8% 52% at 76% 42%,var(--sm),transparent 72%),radial-gradient(ellipse 5% 40% at 88% 60%,var(--sm2),transparent 72%)}
+:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen::before,:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz).cz-rouen::after{animation:rfall 5.2s ease-in infinite}
+@keyframes rfall{0%{opacity:0;transform:translateY(-8%) scale(1,.7)}20%{opacity:.95}60%{opacity:.7;transform:translateY(35%) scale(1.05,1.15) skewX(4deg)}100%{opacity:0;transform:translateY(75%) scale(1.15,1.4) skewX(-5deg)}}
 .cz::before,.cz::after{content:"";position:absolute;left:-15%;right:-15%;top:-30%;height:75%;z-index:1;pointer-events:none;opacity:0;mix-blend-mode:screen;filter:blur(1.1rem);background:radial-gradient(ellipse 35% 45% at 20% 50%,var(--sm,rgba(140,60,255,.8)),transparent 70%),radial-gradient(ellipse 40% 50% at 55% 40%,var(--sm2,rgba(190,130,255,.55)),transparent 70%),radial-gradient(ellipse 30% 45% at 85% 55%,var(--sm,rgba(140,60,255,.8)),transparent 70%)}
 .cz::after{animation-delay:2.4s!important;transform:scaleX(-1)}
 :is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz)::before,:is(.cz:hover,.cz.on,.cz:focus-visible,.perso a:hover .cz,.perso a:focus-visible .cz,.perso a:active .cz)::after{animation:czfall 4.8s ease-in infinite}
