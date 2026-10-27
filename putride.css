@@ -26,8 +26,8 @@ header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bo
 .mid>img{width:100%;height:100%;display:block}
 .mid a{position:absolute;top:67.05%;width:7.56%;height:26.82%;border-radius:50%}
 .mid a:hover{box-shadow:0 0 1.2rem rgba(57,255,110,.8)}
-.ppp{flex:1 1 0;min-width:0;height:14.3125rem;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.ppp img{width:auto;max-width:78%;height:56%;object-fit:contain;display:block}
+.ppp{position:relative;flex:1 1 0;min-width:0;height:14.3125rem;display:block;text-decoration:none;overflow:hidden}
+.ppp img{position:absolute;right:2.71rem;top:2.31rem;display:block;height:8.93rem;width:auto}
 .msoc{display:none}
 
 /* ---------- mise en page ---------- */
@@ -306,8 +306,6 @@ main{position:relative}
 .dpool::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(210,255,150,.14) 45%,transparent 60%);background-size:200% 100%;animation:sheen 14s ease-in-out infinite}
 @keyframes pool{to{background-position-x:14rem}}
 @keyframes sheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
-.ppp{gap:1.2rem;text-decoration:none}
-.ppp img{max-width:94%;height:auto;max-height:94%;flex:none}
 
 /* pied de page identique au site normal */
 .pfoot{grid-column:1/-1;position:relative;z-index:45;padding:2.8rem 1rem 3rem}
