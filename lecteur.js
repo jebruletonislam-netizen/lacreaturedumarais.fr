@@ -54,6 +54,8 @@
     '#lcmp .lp-x{width:1.7rem;height:1.7rem;color:rgba(255,255,255,.7)}',
     '#lcmp .lp-f{padding:0 .8rem .6rem}#lcmp .lp-f:empty{display:none}',
     '#lcmp .lp-f iframe{display:block;width:100%;border:0;border-radius:.7rem;background:transparent;color-scheme:dark}',
+    '#lcmp .lp-yt{display:block;margin-top:.4rem;text-align:center;font:400 .9rem "Bebas Neue",sans-serif;letter-spacing:.1em;color:rgba(255,255,255,.62);text-decoration:none}',
+    '#lcmp .lp-yt:hover,#lcmp .lp-yt:focus-visible{color:var(--hv);text-decoration:underline;outline:0}',
     '#lcmp .lp-f iframe.hid{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}',
     '#lcmp>.sph{position:fixed;left:-420px;top:0;width:300px;height:80px;pointer-events:none}',
     '#lcmp>.sph.vis{position:static;width:auto;height:auto;padding:0 .8rem .6rem;pointer-events:auto}',
@@ -201,6 +203,13 @@
       fr.title = 'Lecture : ' + (o.title || '');
       fr.src = 'https://embed.music.apple.com/fr/album/' + c.apple + (t ? '?i=' + t.trackId + '&' : '?') + 'theme=dark';
       $('.lp-f').appendChild(fr);
+      var yq = encodeURIComponent((t ? t.artistName + ' ' + t.trackName : (o.artist || 'Cul-Pointu') + ' ' + (o.title || '')).trim());
+      var ym = document.createElement('a');
+      ym.className = 'lp-yt';
+      ym.target = '_blank'; ym.rel = 'noopener';
+      ym.href = 'https://music.youtube.com/search?q=' + yq;
+      ym.textContent = 'Ne joue pas ? Écouter sur YouTube Musique ↗';
+      $('.lp-f').appendChild(ym);
       if (t) setNames(t.trackName, t.artistName);
       pad();
     });
