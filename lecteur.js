@@ -46,11 +46,16 @@
     '#lcmp .lp-r{display:flex;align-items:center;gap:.8rem;padding:.55rem .7rem .55rem .8rem}',
     '#lcmp .lp-c{display:flex;align-items:center;gap:.3rem;flex:none}',
     '#lcmp .lp-m{flex:1;min-width:0}',
-    '#lcmp .lp-n{display:flex;align-items:baseline;gap:.55rem;min-width:0;line-height:1.1;white-space:nowrap}',
-    '#lcmp .lp-t{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font:400 1.2rem "Bebas Neue",sans-serif;letter-spacing:.06em;color:#fff}',
+    '#lcmp .lp-n{overflow:hidden;line-height:1.1;white-space:nowrap}',
+    '#lcmp .lp-w{display:inline-flex;align-items:baseline;gap:.55rem;will-change:transform}',
+    '#lcmp .lp-n.ov{-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}',
+    '#lcmp .lp-n.ov .lp-w{animation:lpscroll var(--ld,8s) ease-in-out infinite alternate}',
+    '@keyframes lpscroll{0%,18%{transform:translateX(0)}82%,100%{transform:translateX(var(--lx,0))}}',
+    '@media (prefers-reduced-motion:reduce){#lcmp .lp-n.ov .lp-w{animation:none}}',
+    '#lcmp .lp-t{flex:none;font:400 1.2rem "Bebas Neue",sans-serif;letter-spacing:.06em;color:#fff}',
     '#lcmp .lp-t:empty,#lcmp .lp-a:empty{display:none}',
     '#lcmp .lp-t:not(:empty)+.lp-a:not(:empty)::before{content:"\\00b7";margin-right:.55rem;color:var(--lc)}',
-    '#lcmp .lp-a{flex:0 100 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font:400 .95rem "Bebas Neue",sans-serif;letter-spacing:.1em;color:rgba(255,255,255,.62)}',
+    '#lcmp .lp-a{flex:none;font:400 .95rem "Bebas Neue",sans-serif;letter-spacing:.1em;color:rgba(255,255,255,.62)}',
     '#lcmp .lp-p{display:flex;align-items:center;gap:.6rem;margin-top:.1rem;font:400 .85rem "Bebas Neue",sans-serif;letter-spacing:.08em;color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums}',
     '#lcmp .lp-p span{flex:none;min-width:2.1rem}#lcmp .lp-p span:last-child{text-align:right}',
     '#lcmp .lp-bar{position:relative;flex:1;height:1px;background:rgba(255,255,255,.28);cursor:pointer;touch-action:none}',
@@ -92,7 +97,19 @@
     b.innerHTML = svg(on ? IC.pause : IC.play);
     b.setAttribute('aria-label', on ? 'Pause' : 'Lecture');
   }
-  function setNames(t, a) { $('.lp-t').textContent = t || ''; $('.lp-a').textContent = a || ''; }
+  function fitNames() {
+    var n = $('.lp-n'), w = $('.lp-w');
+    if (!n || !w) return;
+    n.classList.remove('ov');
+    var d = w.scrollWidth - n.clientWidth;
+    if (d > 4) {
+      w.style.setProperty('--lx', '-' + (d + 12) + 'px');
+      w.style.setProperty('--ld', Math.max(6, (d + 12) / 28) + 's');
+      n.classList.add('ov');
+    }
+  }
+  function setNames(t, a) { $('.lp-t').textContent = t || ''; $('.lp-a').textContent = a || ''; fitNames(); }
+  window.addEventListener('resize', fitNames);
   function setProg(pos, dur) {
     if (!el) return;
     var r = dur > 0 ? Math.min(1, Math.max(0, pos / dur)) : 0;
@@ -115,7 +132,7 @@
       '<div class="lp-c"><button class="lp-b" type="button" data-a="prev" aria-label="Titre précédent">' + svg(IC.prev) + '</button>' +
       '<button class="lp-b pp" type="button" data-a="toggle" aria-label="Lecture">' + svg(IC.play) + '</button>' +
       '<button class="lp-b" type="button" data-a="next" aria-label="Titre suivant">' + svg(IC.next) + '</button></div>' +
-      '<div class="lp-m"><div class="lp-n"><span class="lp-t"></span><span class="lp-a"></span></div>' +
+      '<div class="lp-m"><div class="lp-n"><div class="lp-w"><span class="lp-t"></span><span class="lp-a"></span></div></div>' +
       '<div class="lp-p"><span class="lp-cur">0:00</span><div class="lp-bar" role="slider" tabindex="0" aria-label="Position dans le titre" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i class="lp-fill"></i></div><span class="lp-dur">0:00</span></div></div>' +
       '<div class="lp-v"><button class="lp-b lp-mu" type="button" data-a="mute" aria-label="Couper le son">' + svg(IC.vol) + '</button><input class="lp-vol" type="range" min="0" max="100" step="1" aria-label="Volume"></div>' +
       '<button class="lp-b lp-x" type="button" data-a="close" aria-label="Fermer le lecteur">' + svg(IC.close) + '</button></div>' +
