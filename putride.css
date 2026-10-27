@@ -210,6 +210,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .leaflet-container{font-family:"Bebas Neue",sans-serif}
 .leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#0a0014;color:#e6d4ff;border:1px solid var(--g)}
 .leaflet-popup-content{margin:.5rem .8rem;font-size:1.1rem}
-.pin i{display:block;width:26px;height:26px;border:3px solid #39ff6e;background:#7a2dd6;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 0 .6rem rgba(57,255,110,.7)}
+.pin i{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:3px solid #39ff6e;background:#7a2dd6;color:#fff;font:400 16px "Bebas Neue",sans-serif;font-style:normal;border-radius:50%;box-shadow:0 0 .6rem rgba(57,255,110,.7)}
+.lieux{counter-reset:none}.lieux .num{display:inline-flex;align-items:center;justify-content:center;width:1.5em;height:1.5em;margin-right:.5em;border:.12em solid var(--g);border-radius:50%;background:#7a2dd6;color:#fff;font-style:normal;font-size:.8em}
 .lieux .acts{margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.5rem}
 .lieux .acts .btn{font-size:1rem;padding:.2rem .8rem;cursor:pointer}
