@@ -213,6 +213,8 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .perso .nophoto .pf{aspect-ratio:1;display:flex;align-items:center;justify-content:center}
 .perso .nophoto em{font:400 1.1rem "Bebas Neue",sans-serif;font-style:normal;letter-spacing:.08em;color:rgba(197,139,255,.6)}
 .perso li{display:flex}.perso a{display:flex;flex-direction:column;width:100%}.perso .pf{flex:none;width:100%}.perso b{flex:1;display:flex;align-items:center;justify-content:center;min-height:2.2em}
+.rt .dsc{display:block;margin:.1rem .2rem .2rem;text-align:center;color:#e4d6f5;font:400 .82rem/1.35 "Cormorant Garamond",serif;text-shadow:0 .08rem .2rem #000}
+.rt .pf{aspect-ratio:1}.rt .pf img{width:100%;height:100%;object-fit:cover}
 .perso .pf.eph{aspect-ratio:1;border:0;cursor:inherit;background:radial-gradient(circle at 50% 45%,#1a0836,#030007 75%)}
 .gal.tall .pf{aspect-ratio:3/4}.fiche2 .pf.tall{aspect-ratio:3/4}
 .pfoot{margin-top:0;border-top:.5rem solid #f00;background:#000;text-align:center}.pfoot p{margin:0;font-size:2.2rem;line-height:1.1}.pup{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;padding:.3rem .8rem;border:.12rem dashed var(--g);color:var(--g);text-decoration:none;font:400 1.1rem "Bebas Neue",sans-serif;letter-spacing:.06em;opacity:.7;transition:.3s}.pup svg{width:1.4rem;height:1.4rem;fill:none;stroke:currentColor;stroke-width:3}.pup:hover,.pup:focus-visible{opacity:1;color:#fc0;border-color:#fc0;box-shadow:0 0 1rem rgba(255,204,0,.6)}
