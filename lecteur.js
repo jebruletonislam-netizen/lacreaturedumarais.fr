@@ -3,14 +3,10 @@
   if (window.LCMPlayer) return;
 
   var PU = !!document.querySelector('link[href*="putride.css"]');
-  var BC = 'https://bandcamp.com/EmbeddedPlayer/';
   var CAT = {
-    'album-jubile': { bc: 1, tracks: [3122725257] },
-    'album-in-odium-fidei': { bc: 1, tracks: [3122725257, null] },
-    'album-confiteor': {
-      bc: 1, album: 2622800798,
-      tracks: [529538052, 1953726612, 307222221, 1293959869, 3563231983, 1065734181, 1376355599, 3712871818, 236502483, 2978539117, 3947055957, 3015407476, 1467769340, 3534172063, 727326060, 552797033, 3727861423, 1195546728, 617627255, 1808643370, 2359246974, 3106310752, 3899465197, 3836476605, 3322594165, 2870407366, 176692474, 3789271194, 1289517984, 3181543043, 3629528581, 1994685982, 100489308, 2863169318]
-    },
+    'album-jubile': { apple: 1855845168 },
+    'album-in-odium-fidei': { apple: 1855845168, tracks: [0, null] },
+    'album-confiteor': { apple: 1842647218 },
     'album-chyren': { apple: 1835753265 },
     'album-omerta434': { apple: 1739538878 },
     'album-machines': { apple: 1842736843 }
@@ -53,7 +49,7 @@
     '#lcmp .lp-b:hover,#lcmp .lp-b:focus-visible{color:var(--hv);border-color:var(--hv)}',
     '#lcmp .lp-x{width:1.7rem;height:1.7rem;color:rgba(255,255,255,.7)}',
     '#lcmp .lp-f{padding:0 .8rem .6rem}#lcmp .lp-f:empty{display:none}',
-    '#lcmp .lp-f iframe{display:block;width:100%;border:0;background:transparent}',
+    '#lcmp .lp-f iframe{display:block;width:100%;border:0;border-radius:.7rem;background:transparent;color-scheme:dark}',
     '#lcmp .lp-f iframe.hid{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}',
     '#lcmp.bc .lp-c,#lcmp.bc .lp-p{display:none}',
     '#lcmp.bc .lp-r{padding-bottom:.4rem}',
@@ -63,7 +59,6 @@
   document.head.appendChild(st);
 
   var el = null, mode = '', key = '';
-  var au = null, ap = { album: 0, list: [], i: 0 };
   var wg = null, sc = { url: '', i: 0, dur: 0, pos: 0 };
   var apiState = 0, apiQ = [];
 
@@ -121,32 +116,24 @@
       var d = e.key === 'ArrowRight' ? 5 : e.key === 'ArrowLeft' ? -5 : 0;
       if (!d) return;
       e.preventDefault();
-      if (mode === 'ap' && au) seekTo(au.currentTime + d, au.duration);
-      else if (mode === 'sc') seekTo(sc.pos / 1000 + d, sc.dur / 1000);
+      if (mode === 'sc') seekTo(sc.pos / 1000 + d, sc.dur / 1000);
     });
   }
   function seekTo(s, dur) { if (dur > 0) seek(Math.min(1, Math.max(0, s / dur))); }
   function seek(r) {
-    if (mode === 'ap' && au && au.duration) { au.currentTime = r * au.duration; setProg(au.currentTime, au.duration); }
-    else if (mode === 'sc' && wg && sc.dur) { sc.pos = r * sc.dur; wg.seekTo(sc.pos); setProg(sc.pos / 1000, sc.dur / 1000); }
+    if (mode === 'sc' && wg && sc.dur) { sc.pos = r * sc.dur; wg.seekTo(sc.pos); setProg(sc.pos / 1000, sc.dur / 1000); }
   }
 
   function act(a) {
     if (a === 'close') return close();
-    if (mode === 'ap') {
-      if (a === 'toggle') { if (au.paused) au.play().catch(function () {}); else au.pause(); }
-      else if (a === 'next') go(ap.i + 1);
-      else if (a === 'prev') { if (au.currentTime > 3) au.currentTime = 0; else go(ap.i - 1); }
-    } else if (mode === 'sc' && wg) {
+    if (mode === 'sc' && wg) {
       if (a === 'toggle') wg.toggle(); else wg[a]();
     }
   }
 
   function stopAll() {
-    if (au) { au.pause(); au.removeAttribute('src'); au.load(); }
     if (wg) { try { wg.pause(); } catch (e) {} }
     wg = null; mode = ''; key = '';
-    ap = { album: 0, list: [], i: 0 };
     if (el) $('.lp-f').textContent = '';
   }
   function show(bc) {
@@ -164,85 +151,41 @@
     pad();
   }
   function pause() {
-    if (mode === 'ap' && au) au.pause();
-    else if (mode === 'sc' && wg) wg.pause();
+    if (mode === 'sc' && wg) wg.pause();
   }
 
-  /* Bandcamp : lecture intégrale, avec la barre de leur lecteur sous le titre */
-  function playBC(o, c, id) {
-    var k = 'bc' + id;
-    if (key === k && mode === 'bc') { show(true); return; }
-    stopAll();
-    mode = 'bc'; key = k;
-    var base = c.album ? 'album=' + c.album + '/' : '';
-    var fr = document.createElement('iframe');
-    fr.height = 42;
-    fr.allow = 'autoplay *; encrypted-media *';
-    fr.title = 'Lecture : ' + (o.title || '');
-    fr.src = BC + base + 'size=small/bgcol=000000/linkcol=' + (PU ? '39ff6e' : 'ff3030') + '/artwork=none/transparent=true/track=' + id + '/';
-    $('.lp-f').appendChild(fr);
-    setNames(o.title, o.artist || 'Cul-Pointu');
-    show(true);
-  }
-
-  /* Apple Musique : extraits de 30 s, commandés par la barre */
+  /* Apple Musique : lecteur integre sous la barre (ecoute complete pour les abonnes, extraits sinon) */
   var cache = {};
   function lookup(id) {
     if (!cache[id]) {
       cache[id] = fetch('https://itunes.apple.com/lookup?id=' + id + '&entity=song&country=fr').then(function (r) { return r.json(); }).then(function (j) {
-        return j.results.filter(function (x) { return x.wrapperType === 'track' && x.previewUrl; }).sort(function (a, b) {
+        return j.results.filter(function (x) { return x.wrapperType === 'track'; }).sort(function (a, b) {
           return (a.discNumber - b.discNumber) || (a.trackNumber - b.trackNumber);
         });
       });
     }
     return cache[id];
   }
-  function audio() {
-    if (au) return au;
-    au = new Audio();
-    au.preload = 'auto';
-    au.addEventListener('play', function () { if (mode === 'ap') setPP(true); });
-    au.addEventListener('pause', function () { if (mode === 'ap') setPP(false); });
-    au.addEventListener('timeupdate', function () { if (mode === 'ap') setProg(au.currentTime, au.duration); });
-    au.addEventListener('loadedmetadata', function () { if (mode === 'ap') setProg(au.currentTime, au.duration); });
-    au.addEventListener('ended', function () { if (mode === 'ap') { if (ap.i + 1 < ap.list.length) go(ap.i + 1); else setPP(false); } });
-    return au;
-  }
-  function go(i) {
-    if (mode !== 'ap' || !ap.list.length) return;
-    i = Math.min(ap.list.length - 1, Math.max(0, i));
-    ap.i = i;
-    var t = ap.list[i];
-    setNames(t.trackName, t.artistName);
-    setProg(0, 0);
-    audio().src = t.previewUrl;
-    au.play().catch(function () { setPP(false); });
-  }
   function playAP(o, c) {
-    if (mode === 'ap' && ap.album === c.apple && ap.list.length) { show(false); go(o.index || 0); return; }
+    var idx = o.index || 0;
+    if (c.tracks) { if (c.tracks[idx] == null) return; idx = c.tracks[idx]; }
+    var k = 'am' + c.apple + ':' + idx;
+    if (key === k && mode === 'am') { show(true); return; }
     stopAll();
-    mode = 'ap'; key = 'ap' + c.apple; ap.album = c.apple;
+    mode = 'am'; key = k;
     setNames(o.title, o.artist || 'Cul-Pointu');
-    setProg(0, 0); setPP(false);
-    show(false);
-    var id = c.apple;
-    lookup(id).then(function (list) {
-      if (mode !== 'ap' || ap.album !== id) return;
-      if (!list.length) throw 0;
-      ap.list = list;
-      go(o.index || 0);
-    }).catch(function () {
-      if (mode !== 'ap' || ap.album !== id) return;
-      delete cache[id];
-      if (!o.apple) { close(); return; }
-      /* repli : lecteur Apple Musique intégré */
-      mode = 'bc'; key = 'am' + o.apple;
+    show(true);
+    lookup(c.apple).catch(function () { return []; }).then(function (list) {
+      if (key !== k) return;
+      var t = list[idx];
       var fr = document.createElement('iframe');
-      fr.height = 150; fr.allow = 'autoplay *; encrypted-media *';
+      fr.height = 175;
+      fr.allow = 'autoplay *; encrypted-media *; fullscreen *';
       fr.title = 'Lecture : ' + (o.title || '');
-      fr.src = 'https://embed.music.apple.com/fr/song/' + o.apple + '?theme=dark';
+      fr.src = 'https://embed.music.apple.com/fr/album/' + c.apple + (t ? '?i=' + t.trackId + '&' : '?') + 'theme=dark';
       $('.lp-f').appendChild(fr);
-      show(true);
+      if (t) setNames(t.trackName, t.artistName);
+      pad();
     });
   }
 
@@ -309,8 +252,6 @@
     if (o.sc) return playSC(o);
     var c = CAT[o.section];
     if (!c) return;
-    var id = c.bc && c.tracks && c.tracks[o.index || 0];
-    if (id) return playBC(o, c, id);
     if (c.apple) return playAP(o, c);
   }
 

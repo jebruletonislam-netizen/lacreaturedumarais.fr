@@ -267,8 +267,8 @@ nav a:hover .nav-txt{color:#fc0;text-shadow:0 0 .2rem #000}
 @media (max-width:899px){
   header{display:flex;flex-direction:row;align-items:center;height:var(--mobile-header-height);border-bottom:.25rem solid var(--r)}
   header .arc,header .ppp,header .mid{display:none}
-  .mobile-header-socials{display:flex;flex:1;align-items:center;justify-content:flex-end;gap:clamp(.35rem,2vw,.75rem);padding:0 .8rem}
-  .mobile-header-socials a{display:block;flex:none;width:1.785rem;height:1.785rem}
+  .mobile-header-socials{display:flex;flex:1;align-items:center;justify-content:flex-end;gap:clamp(.4rem,2.5vw,.9rem);padding:0 .8rem 0 1rem;min-width:0}
+  .mobile-header-socials a{display:block;flex:0 1 2.5rem;min-width:0;aspect-ratio:1}
   .mobile-header-socials img{display:block;width:100%;height:100%;object-fit:contain}
   .cre{display:block;position:relative;flex:0 0 auto;width:auto;height:100%;aspect-ratio:1600/825;background:#000}
   .cre .ci{width:100%;height:100%;aspect-ratio:auto}
@@ -713,6 +713,15 @@ body[data-via-ust] #archive-objets .back{display:none}
 <h3>PHOTOS DU TOURNAGE</h3>
 <!-- Pour ajouter une photo : <a class="nw" href="images/….jpg"><img alt="…" src="images/….jpg"/></a> dans la div ci-dessous -->
 <div class="tour-gallery" data-empty="PHOTOS DU TOURNAGE À VENIR" data-gallery="dis"></div>
+</section>
+<section class="pg cp" data-title="Misérables" id="clip-miserables">
+<p><a class="back" href="/videos/">← VIDÉOS</a></p>
+<h2>Misérables</h2><p class="note">Clip à venir · second single d’<a class="album-link" href="#album-in-odium-fidei">In Odium Fidei</a></p>
+<div class="clip-description"><p><strong>« Misérables » met en scène une population de gueux catholiques, revanchards et déclassés,</strong> projetée dans un <strong>« Moyen Âge 2 »</strong> où les vieux réflexes religieux, sociaux et politiques reviennent sous des formes grotesques.</p>
+<p>La foi y côtoie la débauche, la dévotion la rancœur, et les références à la monarchie ou à la tradition deviennent les accessoires d’une petite cour de pauvres types qui rêvent de grandeur. Les personnages cherchent leur revanche autant qu’ils cherchent le salut, oscillant entre la posture de l’absolutiste, celle du pécheur repentant et celle du marginal qui n’a plus grand-chose à perdre.</p>
+<p>Le clip ne cherche donc pas à rendre ses gueux sympathiques. Il les laisse sales, excessifs, contradictoires et parfois franchement ridicules — tout en leur donnant quelque chose de profondément humain : cette conviction que, lorsqu’on a été misérable assez longtemps, <strong>la revanche finit par prendre la place de la dignité</strong>.</p></div>
+<h3>PHOTOS DU TOURNAGE</h3>
+<div class="pgrid" data-fold="toggle" data-gallery-list="actu" data-empty="PHOTOS À VENIR"></div>
 </section>
 <section class="pg" data-title="Actualités" id="nouvelles">
 <h2>ACTUALITÉS</h2>

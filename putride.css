@@ -105,8 +105,8 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
   main{font-size:1.05rem}
   header{height:var(--mh);display:flex;flex-direction:row;align-items:center;overflow:visible;border-bottom:.25rem solid var(--g)}
   header .mid,header .ppp{display:none}
-  .msoc{display:flex;flex:1;flex-wrap:nowrap;align-items:center;justify-content:center;gap:.15rem;padding:0 .3rem;min-width:0}
-  .msoc a{display:block;flex:0 1 1.3rem;min-width:0;aspect-ratio:1}
+  .msoc{display:flex;flex:1;flex-wrap:nowrap;align-items:center;justify-content:center;gap:.3rem;padding:0 .6rem 0 1rem;min-width:0}
+  .msoc a{display:block;flex:0 1 2.4rem;min-width:0;aspect-ratio:1}
   .msoc img{display:block;width:100%;height:100%;object-fit:contain;filter:hue-rotate(270deg) brightness(1.25)}
   .cre{flex:0 0 auto;width:auto;height:100%;aspect-ratio:1600/825}
   .cre a{flex:none;width:100%;height:100%}
@@ -176,7 +176,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .gal a:hover{border-color:#fc0}
 .gal .pf{aspect-ratio:16/9}
 .gal b{display:block;text-align:center;margin:.3rem 0 0;color:var(--v);font:400 1.3em "Bebas Neue",sans-serif}
-.map{position:relative;border:.25rem solid var(--g);box-shadow:0 0 1.2rem rgba(122,45,214,.45);max-width:95rem;aspect-ratio:16/9;background:#000}
+.map{position:relative;isolation:isolate;z-index:0;border:.25rem solid var(--g);box-shadow:0 0 1.2rem rgba(122,45,214,.45);max-width:95rem;aspect-ratio:16/9;background:#000}
 .map iframe{width:100%;height:100%;border:0;display:block;filter:invert(1) hue-rotate(250deg) brightness(.9) contrast(.95) saturate(.8)}
 .lieux{list-style:none;margin:1rem 0 0;padding:0;max-width:95rem}
 .lieux li{border:.2rem solid var(--g);background:rgba(8,0,18,.84);padding:.7rem 1rem;margin:0 0 .6rem}
