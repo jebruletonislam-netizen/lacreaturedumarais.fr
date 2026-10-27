@@ -284,7 +284,7 @@ main{position:relative}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-cre .fgz{filter:hue-rotate(270deg) saturate(1.2) brightness(1.08) contrast(1.18)}
 @keyframes aura{0%,100%{transform:scale(1.14)}50%{transform:scale(1.18)}}
 /* Madame Edwarda : feu qui crépite */
-.fx-edw{--mw:27%;--mh:56%;--mx:48%;--my:58%}
+.fx-edw{--mw:24%;--mh:52%;--mx:50%;--my:58%}
 .fx-edw .fxl{mix-blend-mode:screen;background:radial-gradient(ellipse 60% 45% at 8% 100%,rgba(255,150,40,.7),transparent 70%),radial-gradient(ellipse 50% 40% at 95% 95%,rgba(255,90,10,.55),transparent 70%),radial-gradient(ellipse 30% 30% at 20% 60%,rgba(255,190,80,.35),transparent 70%);animation:crack 1.3s steps(1,end) infinite}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-edw .bgz{filter:brightness(.5) saturate(.8)}
 :is(.fx:hover,.fx.on,.fx:focus-visible,.perso a:hover .fx,.perso a:focus-visible .fx,.perso a:active .fx).fx-edw .fgz{filter:brightness(1.28) contrast(1.06) saturate(1.1)}

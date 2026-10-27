@@ -344,14 +344,14 @@
     fr.className = 'hid';
     fr.allow = 'autoplay';
     fr.title = 'Lecture : ' + (o.title || '');
-    fr.src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(o.sc) + '&auto_play=' + (sc.i ? 'false' : 'true') + '&show_teaser=false&visual=false';
+    fr.src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(o.sc) + '&auto_play=true' + (sc.i ? '&start_track=' + sc.i : '') + '&show_teaser=false&visual=false';
     $('.lp-f').appendChild(fr);
     withApi(function () {
       if (mode !== 'sc' || key !== k) return;
       var w = wg = SC.Widget(fr), E = SC.Widget.Events;
       w.bind(E.READY, function () {
-        if (sc.i) { w.skip(sc.i); w.play(); }
         scInfo(artist);
+        setTimeout(function () { if (wg === w) w.isPaused(function (p) { if (p) w.play(); }); }, 1200);
       });
       w.bind(E.PLAY, function () { setPP(true); scInfo(artist); });
       w.bind(E.PAUSE, function () { setPP(false); });
