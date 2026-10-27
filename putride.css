@@ -307,9 +307,9 @@ main{position:relative}
 @keyframes pool{to{background-position-x:14rem}}
 @keyframes sheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
 .ppp{gap:1.2rem;text-decoration:none}
-.ppp img{max-width:45%;height:58%;flex:none}
-.ppp .pt{display:flex;flex-direction:column;align-items:flex-start;color:#fff;font:400 2rem/1.05 "Bebas Neue",sans-serif;letter-spacing:.06em;text-shadow:0 0 .5rem rgba(255,255,255,.35)}
-.ppp .pt i{font:italic 400 1.5rem/1.1 "Cinzel",Georgia,serif;letter-spacing:.04em}
+.ppp img{max-width:45%;height:58%;flex:none;filter:drop-shadow(0 .15rem .15rem #f00) drop-shadow(0 .35rem .8rem rgba(255,0,0,.75))}
+.ppp .pt{display:flex;flex-direction:column;align-items:flex-start;color:#fff;font:500 2rem/1.1 "Cinzel",Georgia,serif;letter-spacing:.03em;text-shadow:0 .15rem .2rem #f00,0 .3rem .9rem rgba(255,0,0,.8)}
+.ppp .pt i{font-style:normal;font-size:1.65rem}
 
 /* pied de page identique au site normal */
 .pfoot{grid-column:1/-1;position:relative;z-index:45;padding:2.8rem 1rem 3rem}
