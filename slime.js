@@ -7,46 +7,46 @@
   var lerp=function(a,b,t){return a+(b-a)*t;};
   var fall=function(q){return Math.pow(q,1.55);};
 
-  function mess(s){
-    var lobes=[],n=3+((Math.random()*3)|0);
-    for(var i=0;i<n;i++)lobes.push({x:(i/(n-1||1)-.5)*s*1.1+rnd(-.08,.08)*s,y:rnd(-.12,.12)*s,r:s*rnd(.22,.36),pts:(function(){var p=[];for(var k=0;k<18;k++)p.push(rnd(.85,1.14));return p;})()});
-    var corn=[],seeds=[];
-    for(var c=0;c<4;c++)corn.push({x:rnd(-.45,.45)*s,y:rnd(-.2,.2)*s,a:rnd(0,3)});
-    for(var q=0;q<7;q++)seeds.push({x:rnd(-.5,.5)*s,y:rnd(-.25,.25)*s});
-    return {lobes:lobes,corn:corn,seeds:seeds,drip:rnd(.2,.5)*s,dx:rnd(-.3,.3)*s};
-  }
-  function blob(c,l){
-    var n=l.pts.length;
-    c.beginPath();
-    for(var i=0;i<=n;i++){
-      var a=i/n*6.2832,r=l.r*l.pts[i%n],x=l.x+Math.cos(a)*r*1.18,y=l.y+Math.sin(a)*r*.82;
-      if(i===0)c.moveTo(x,y);else c.lineTo(x,y);
-    }
-    c.closePath();
-  }
-  function turd(c,x,y,s,rot,m){
-    c.save();c.translate(x,y);c.rotate(rot);
-    c.lineJoin='round';c.lineWidth=Math.max(2,s*.05);c.strokeStyle='#120802';
-    c.fillStyle='#2b1807';
-    c.beginPath();c.moveTo(m.dx-s*.05,0);c.quadraticCurveTo(m.dx,m.drip*.6,m.dx,m.drip);c.lineTo(m.dx+s*.05,m.drip*.2);c.lineTo(m.dx+s*.05,0);c.fill();
-    c.beginPath();c.arc(m.dx,m.drip,s*.05,0,6.2832);c.fill();
-    m.lobes.forEach(function(l){
-      var g=c.createRadialGradient(l.x-l.r*.4,l.y-l.r*.5,l.r*.1,l.x,l.y,l.r*1.3);
-      g.addColorStop(0,'#7b5a28');g.addColorStop(.45,'#4a2c0e');g.addColorStop(1,'#1e1004');
-      c.fillStyle=g;blob(c,l);c.fill();c.stroke();
+  /* Palette facon dessin anime (Martin Mystere) : aplats, ombre franche en bas
+     a droite, liseré clair en haut a gauche, reflets blancs en trainees. */
+  var VERT='#8fd61f',VERT_OMBRE='#4f9a17',VERT_CLAIR='#d6ff86',VERT_TRAIT='#2c6a0c',REFLET='#f4ffd9';
+  var BRUN='#8a5524',BRUN_OMBRE='#5a3311',BRUN_CLAIR='#c98d4c',BRUN_TRAIT='#2a1405';
+
+  /* Crotte de dessin anime : trois etages et une pointe, contour franc, ombre
+     et reflet en aplats. Origine au milieu de la base ; s = largeur de la base ;
+     sq ecrase (>0) ou etire (<0) la forme, pour les rebonds. */
+  function crotte(c,x,y,s,rot,sq){
+    sq=sq||0;
+    c.save();c.translate(x,y);c.rotate(rot||0);c.scale((1+sq*.6)*s/28,(1-sq)*s/28);
+    c.lineJoin='round';c.lineCap='round';c.lineWidth=2.2;c.strokeStyle=BRUN_TRAIT;
+    var pointe=new Path2D();
+    pointe.moveTo(-5,-26);pointe.bezierCurveTo(-4,-33,3,-32,7,-37);pointe.bezierCurveTo(7,-31,5,-27,4,-25);pointe.closePath();
+    c.fillStyle=BRUN;c.fill(pointe);c.stroke(pointe);
+    [[0,-23.5,7.5,5],[0,-15.5,11,6],[0,-6.5,14,6.8]].forEach(function(e){
+      var p=new Path2D();p.ellipse(e[0],e[1],e[2],e[3],0,0,6.2832);
+      c.fillStyle=BRUN_OMBRE;c.fill(p);
+      c.save();c.clip(p);
+      c.fillStyle=BRUN;c.beginPath();c.ellipse(e[0]-e[2]*.12,e[1]-e[3]*.2,e[2]*.92,e[3]*.78,0,0,6.2832);c.fill();
+      c.fillStyle=BRUN_CLAIR;c.beginPath();c.ellipse(e[0]-e[2]*.45,e[1]-e[3]*.4,e[2]*.34,e[3]*.26,-.35,0,6.2832);c.fill();
+      c.restore();
+      c.stroke(p);
     });
-    c.strokeStyle='rgba(15,8,2,.7)';c.lineWidth=Math.max(1.5,s*.03);
-    m.lobes.forEach(function(l){c.beginPath();c.moveTo(l.x-l.r*.7,l.y+l.r*.1);c.quadraticCurveTo(l.x,l.y+l.r*.35,l.x+l.r*.6,l.y-l.r*.05);c.stroke();});
-    m.lobes.forEach(function(l){
-      c.fillStyle='rgba(255,226,160,.55)';c.beginPath();c.ellipse(l.x-l.r*.35,l.y-l.r*.42,l.r*.3,l.r*.12,-.4,0,6.2832);c.fill();
-      c.fillStyle='rgba(150,170,60,.25)';c.beginPath();c.ellipse(l.x+l.r*.3,l.y+l.r*.3,l.r*.3,l.r*.14,.3,0,6.2832);c.fill();
-    });
-    c.fillStyle='#e0c040';
-    m.corn.forEach(function(k){c.save();c.translate(k.x,k.y);c.rotate(k.a);c.beginPath();c.ellipse(0,0,s*.05,s*.032,0,0,6.2832);c.fill();c.restore();});
-    c.fillStyle='#0d0601';
-    m.seeds.forEach(function(k){c.beginPath();c.arc(k.x,k.y,s*.02,0,6.2832);c.fill();});
+    c.fillStyle='#fff3dc';c.beginPath();c.ellipse(-3.4,-25.4,1.7,1,-.4,0,6.2832);c.fill();
     c.restore();
   }
+  /* Lignes d'odeur au-dessus d'une crotte (t en secondes). */
+  function odeur(c,x,y,s,t){
+    c.save();c.lineCap='round';c.lineWidth=Math.max(1.5,s*.075);
+    for(var i=0;i<3;i++){
+      var ph=(t*.5+i/3)%1,ox=x+(i-1)*s*.34,oy=y-s*1.15-ph*s*.8,a=Math.sin(ph*Math.PI);
+      c.strokeStyle='rgba(196,240,96,'+(a*.8).toFixed(2)+')';
+      c.beginPath();
+      for(var k=0;k<=8;k++){var yy=oy-k*s*.06,xx=ox+Math.sin(k*.9+t*5+i*2)*s*.08;if(k)c.lineTo(xx,yy);else c.moveTo(xx,yy);}
+      c.stroke();
+    }
+    c.restore();
+  }
+
   function run(dir,phase,hold){
     return new Promise(function(resolve){
       var W=window.innerWidth,H=window.innerHeight,dpr=Math.min(window.devicePixelRatio||1,1.5);
@@ -60,15 +60,17 @@
       for(var i=0;i<n;i++){
         var w=sp*rnd(1.7,2.5),L=H*rnd(.05,.24),r=Math.max(4,w*rnd(.3,.42));
         cols.push({x:(i+.5)*sp+rnd(-sp*.25,sp*.25),w:w,L:L,r:r,Lt:H*rnd(.04,.12),
-          F0:-r-L-10,Ff:H+L+r+40,s:rnd(0,.3),d:rnd(.7,1)});
+          F0:-r-L-10,Ff:H+L+r+40,s:rnd(0,.3),d:rnd(.7,1),
+          /* reflet : une trainee courte qui descend avec le front de la coulure,
+             une autre accrochee plus haut, qui glisse avec la queue du rideau */
+          rg:rnd(.15,.6)*L+r,rl:rnd(.25,.5)*L+20,rb:rnd(-.05,.05),rt:rnd(.08,.55)*H,rh:rnd(.04,.1)*H});
       }
-      var chunks=[],bubbles=[],murk=[];
-      var cs=clamp(sp*2.6,34,92);
-      for(var k=0;k<(W<700?7:13);k++){var j=(Math.random()*n)|0;chunks.push({m:mess(cs),j:j,off:rnd(.05,.9)*H*.6+cs,s:cs*rnd(.8,1.2),rot:rnd(-.6,.6),dx:rnd(-.3,.3)*sp});}
-      for(var b=0;b<34;b++)bubbles.push({j:(Math.random()*n)|0,off:rnd(10,H*.7),dx:rnd(-.4,.4),r:rnd(3,9)});
-      for(var m=0;m<14;m++)murk.push({j:(Math.random()*n)|0,off:rnd(20,H*.8),r:rnd(30,90)});
-      var grad=c.createLinearGradient(0,0,W*.35,H);
-      grad.addColorStop(0,'#3f9a1f');grad.addColorStop(.5,'#84d13a');grad.addColorStop(1,'#a8de4a');
+      /* des crottes emportees par le slime : grosses, et des miettes */
+      var chunks=[];
+      var cs=clamp(sp*2.6,34,80);
+      for(var k=0;k<(W<700?7:13);k++)chunks.push({j:(Math.random()*n)|0,off:rnd(.05,.9)*H*.6+cs,s:cs*rnd(.75,1.15),rot:rnd(-.5,.5),dx:rnd(-.25,.25)*sp,wob:rnd(0,6.28)});
+      for(var b=0;b<(W<700?6:12);b++)chunks.push({j:(Math.random()*n)|0,off:rnd(10,H*.7),s:rnd(11,18),rot:rnd(-.9,.9),dx:rnd(-.35,.35)*sp,wob:rnd(0,6.28)});
+      var sy=dir==='up'?-1:1;
       var tCover=D*1.3,tTotal=phase==='both'?tCover+hld+DR*1.3:(phase==='cover'?tCover:DR*1.3);
 
       function hw(o,y,T,F){
@@ -109,42 +111,55 @@
           }
           if(F>-o.r&&F<H+o.r&&F>T){P.moveTo(o.x+o.r,F);P.arc(o.x,F,o.r,0,6.2832);}
         });
-        c.lineJoin='round';c.lineWidth=8;c.strokeStyle='#0a2e0e';c.stroke(P);
-        c.fillStyle=grad;c.fill(P);
+        /* contour, puis trois aplats : l'ombre reste en bas a droite, le liseré clair en haut a gauche */
+        c.lineJoin='round';c.lineWidth=5;c.strokeStyle=VERT_TRAIT;c.stroke(P);
         c.save();c.clip(P);
-        murk.forEach(function(m){
-          var o=cols[m.j],y=S[m.j].F-o.L-m.off;
-          var g=c.createRadialGradient(o.x,y,0,o.x,y,m.r);
-          g.addColorStop(0,'rgba(90,55,12,.4)');g.addColorStop(1,'rgba(90,55,12,0)');
-          c.fillStyle=g;c.fillRect(o.x-m.r,y-m.r,m.r*2,m.r*2);
-        });
-        cols.forEach(function(o,i){
-          var T=S[i].T,F=S[i].F,ya=Math.max(T+o.Lt,-10),yb=F-o.L*.9;
-          if(yb>ya&&i%3===0){
-            c.lineCap='round';
-            c.strokeStyle='rgba(255,255,230,.22)';c.lineWidth=Math.max(2,o.w*.07);
-            c.beginPath();c.moveTo(o.x-o.w*.22,ya);c.lineTo(o.x-o.w*.22,yb);c.stroke();
-            c.strokeStyle='rgba(8,60,14,.3)';c.lineWidth=Math.max(3,o.w*.13);
-            c.beginPath();c.moveTo(o.x+o.w*.28,ya);c.lineTo(o.x+o.w*.28,yb);c.stroke();
-          }
-          if(F>-o.r&&F<H+o.r){
-            c.fillStyle='rgba(255,255,235,.65)';c.beginPath();c.ellipse(o.x-o.r*.35,F-o.r*.3,o.r*.22,o.r*.4,.3,0,6.2832);c.fill();
-          }
-        });
-        bubbles.forEach(function(bb){
-          var o=cols[bb.j],y=S[bb.j].F-o.L-bb.off,x=o.x+bb.dx*o.w*.5;
-          if(y<-20||y>H+20)return;
-          c.strokeStyle='rgba(230,255,200,.7)';c.lineWidth=1.5;c.fillStyle='rgba(255,255,255,.12)';
-          c.beginPath();c.arc(x,y,bb.r,0,6.2832);c.fill();c.stroke();
-          c.fillStyle='rgba(255,255,255,.8)';c.beginPath();c.arc(x-bb.r*.35,y-bb.r*.35,bb.r*.22,0,6.2832);c.fill();
-        });
-        c.restore();
+        c.fillStyle=VERT_OMBRE;c.fill(P);
+        c.save();c.translate(-6,-9*sy);c.fillStyle=VERT_CLAIR;c.fill(P);c.restore();
+        c.save();c.translate(-3,-5*sy);c.fillStyle=VERT;c.fill(P);c.restore();
+        /* les crottes baignent dans le slime : dessinees dedans, puis voilees */
         chunks.forEach(function(ch){
           var o=cols[ch.j],y=S[ch.j].F-o.L-ch.off;
-          if(y<-ch.s||y>H+ch.s)return;
+          if(y<-ch.s*2||y>H+ch.s*2)return;
           if(y<S[ch.j].T+ch.s*.6)return;
-          turd(c,o.x+ch.dx,y,ch.s,ch.rot,ch.m);
+          c.save();c.translate(o.x+ch.dx,y);if(sy<0)c.scale(1,-1);
+          crotte(c,0,0,ch.s,ch.rot+Math.sin(t*4+ch.wob)*.12,Math.sin(t*6+ch.wob)*.06);
+          /* elle s'enfonce : un bourrelet de slime lui mange le bas, cerne d'ombre et de reflet */
+          var bx=ch.s*.68,by=ch.s*.2,bc=-ch.s*.04;
+          c.fillStyle=VERT;c.beginPath();c.ellipse(0,bc,bx,by,0,0,6.2832);c.fill();
+          c.lineCap='round';c.lineWidth=Math.max(1.5,ch.s*.06);
+          c.strokeStyle=VERT_OMBRE;c.beginPath();c.ellipse(0,bc,bx,by,0,Math.PI*1.06,Math.PI*1.94);c.stroke();
+          c.strokeStyle=REFLET;c.beginPath();c.ellipse(0,bc+by*.25,bx*.8,by*.7,0,Math.PI*1.12,Math.PI*1.38);c.stroke();
+          c.restore();
         });
+        c.globalAlpha=.16;c.fillStyle=VERT;c.fill(P);c.globalAlpha=1;
+        /* reflets : trainees blanches courtes et galbees, eclat sur les gouttes */
+        c.lineCap='round';
+        cols.forEach(function(o,i){
+          var T=S[i].T,F=S[i].F,yb=F-o.rg,ya=Math.max(yb-o.rl,T+o.Lt);
+          var xr=o.x-o.w*.27;
+          if(yb>ya+8&&i%2===0){
+            c.strokeStyle=REFLET;c.globalAlpha=.9;c.lineWidth=Math.max(2.5,o.w*.08);
+            c.beginPath();c.moveTo(xr,ya);c.quadraticCurveTo(xr+o.w*o.rb*4,(ya+yb)/2,xr+o.w*.04,yb);c.stroke();
+            c.globalAlpha=1;
+          }
+          /* du relief : une arete d'ombre au-dessus de la goutte, quelques reflets plus haut */
+          var bas=F-o.L*.9,haut=Math.max(T+o.Lt+10,F-o.L*2.4),h1=T+o.Lt+o.rt,h2=Math.min(h1+o.rh,bas);
+          if(i%3===1&&bas>haut+20){
+            c.strokeStyle=VERT_OMBRE;c.globalAlpha=.5;c.lineWidth=Math.max(2,o.w*.07);
+            c.beginPath();c.moveTo(o.x+o.w*.3,haut);c.lineTo(o.x+o.w*.3,bas);c.stroke();
+            c.globalAlpha=1;
+          }
+          if(i%4===1&&h2>h1+10){
+            c.strokeStyle=REFLET;c.globalAlpha=.85;c.lineWidth=Math.max(2.5,o.w*.08);
+            c.beginPath();c.moveTo(xr,h1);c.quadraticCurveTo(xr+o.w*o.rb*4,(h1+h2)/2,xr+o.w*.03,h2);c.stroke();
+            c.globalAlpha=1;
+          }
+          if(F>-o.r&&F<H+o.r){
+            c.fillStyle=REFLET;c.beginPath();c.ellipse(o.x-o.r*.38,F-o.r*.3*sy,o.r*.16,o.r*.34,.3*sy,0,6.2832);c.fill();
+          }
+        });
+        c.restore();
         document.documentElement.classList.remove('slx');
         if(t<tTotal){requestAnimationFrame(frame);}
         else{
@@ -192,5 +207,6 @@
     var d=ev.target.closest&&ev.target.closest('#trap');
     if(d&&!busy&&!reduce){busy=true;run('down','both').then(function(){busy=false;});}
   });
-  window.Slime={run:run};
+  /* crotte et odeur sont aussi utilisees par la flaque du mode putride (putride.js) */
+  window.Slime={run:run,crotte:crotte,odeur:odeur,couleurs:{vert:VERT,ombre:VERT_OMBRE,clair:VERT_CLAIR,trait:VERT_TRAIT,reflet:REFLET}};
 })();
