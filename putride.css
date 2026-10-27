@@ -169,11 +169,11 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .eph .sheen{z-index:2;pointer-events:none;opacity:0;transition:opacity 1.8s ease .3s;mix-blend-mode:screen;background:linear-gradient(180deg,rgba(255,40,40,.0) 8%,rgba(200,20,30,.45) 40%,rgba(120,0,10,.15) 90%);-webkit-mask:url(images/putride/ephebus-corps.png) center/100% 100% no-repeat;mask:url(images/putride/ephebus-corps.png) center/100% 100% no-repeat}
 .eph .eye{position:absolute;z-index:3;width:6%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#ffd0d0 0 12%,#ff2a2a 30%,rgba(255,0,0,.4) 55%,rgba(255,0,0,0) 72%);transform:translate(-50%,-50%) scale(.3);opacity:0;transition:opacity 1s ease .5s,transform 1s ease .5s;mix-blend-mode:screen}
 .eph .e1{left:45.4%;top:17.2%}.eph .e2{left:52%;top:16.5%}
-.eph:hover .halo,.eph.on .halo,.eph:focus-visible .halo{opacity:1;animation:breath 4.5s ease-in-out infinite 1.6s}
-.eph:hover .wl,.eph.on .wl,.eph:focus-visible .wl{transform:rotate(-9deg)}
-.eph:hover .wr,.eph.on .wr,.eph:focus-visible .wr{transform:rotate(9deg)}
-.eph:hover .sheen,.eph.on .sheen,.eph:focus-visible .sheen{opacity:1}
-.eph:hover .eye,.eph.on .eye,.eph:focus-visible .eye{opacity:.9;transform:translate(-50%,-50%) scale(1)}
+.eph:hover .halo,.eph.on .halo,.eph:focus-visible .halo,.perso a:hover .eph .halo,.perso a:focus-visible .eph .halo,.perso a:active .eph .halo{opacity:1;animation:breath 4.5s ease-in-out infinite 1.6s}
+.eph:hover .wl,.eph.on .wl,.eph:focus-visible .wl,.perso a:hover .eph .wl,.perso a:focus-visible .eph .wl,.perso a:active .eph .wl{transform:rotate(-9deg)}
+.eph:hover .wr,.eph.on .wr,.eph:focus-visible .wr,.perso a:hover .eph .wr,.perso a:focus-visible .eph .wr,.perso a:active .eph .wr{transform:rotate(9deg)}
+.eph:hover .sheen,.eph.on .sheen,.eph:focus-visible .sheen,.perso a:hover .eph .sheen,.perso a:focus-visible .eph .sheen,.perso a:active .eph .sheen{opacity:1}
+.eph:hover .eye,.eph.on .eye,.eph:focus-visible .eye,.perso a:hover .eph .eye,.perso a:focus-visible .eph .eye,.perso a:active .eph .eye{opacity:.9;transform:translate(-50%,-50%) scale(1)}
 @keyframes breath{0%,100%{opacity:.8}50%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.eph .halo{animation:none!important}.eph *{transition-duration:.01s!important}}
 .pf.wide{aspect-ratio:16/9}
@@ -214,3 +214,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:0;height:1.6rem;poi
 .lieux{counter-reset:none}.lieux .num{display:inline-flex;align-items:center;justify-content:center;width:1.5em;height:1.5em;margin-right:.5em;border:.12em solid var(--g);border-radius:50%;background:#7a2dd6;color:#fff;font-style:normal;font-size:.8em}
 .lieux .acts{margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.5rem}
 .lieux .acts .btn{font-size:1rem;padding:.2rem .8rem;cursor:pointer}
+
+.perso li{display:flex}.perso a{display:flex;flex-direction:column;width:100%}.perso .pf{flex:none;width:100%}.perso b{flex:1;display:flex;align-items:center;justify-content:center;min-height:2.2em}
+.perso .pf.eph{aspect-ratio:1;border:0;cursor:inherit;background:radial-gradient(circle at 50% 45%,#1a0836,#030007 75%)}
+.gal.tall .pf{aspect-ratio:3/4}.fiche2 .pf.tall{aspect-ratio:3/4}
