@@ -258,10 +258,12 @@ html.slx{background:#5cb82a}html.slx body{visibility:hidden}
 /* gouttes ambiantes */
 #drips{position:fixed;inset:0;z-index:40;pointer-events:none;overflow:hidden}
 #drips i{position:absolute;display:block}
-#drips .dd{background:radial-gradient(circle at 35% 30%,#d4f58a,#6fc230 55%,#2c7a1c);border-radius:50% 50% 50% 50%/32% 32% 68% 68%;transform-origin:50% 0;box-shadow:0 0 .2rem rgba(10,46,14,.7);will-change:transform}
-#drips .dsp{background:#7fd13a;border-radius:50%}
-#drips .dbu{width:48px;height:14px;background:radial-gradient(ellipse at 50% 100%,#8fe04a 0 55%,transparent 58%)}
-#drips .drp{width:44px;height:9px;border:2px solid rgba(190,255,120,.85);border-radius:50%}
+#drips .dd{background:radial-gradient(ellipse 18% 24% at 32% 36%,#f4ffd9 0 65%,transparent 72%),linear-gradient(90deg,#8fd61f 0 58%,#4f9a17 63%);border-radius:50% 50% 50% 50%/32% 32% 68% 68%;transform-origin:50% 0;box-shadow:0 0 0 1.5px #2c6a0c;will-change:transform}
+#drips .dsp{background:#8fd61f;border-radius:50%;box-shadow:0 0 0 1.5px #2c6a0c}
+#drips .dbu{width:48px;height:14px;background:radial-gradient(ellipse at 50% 100%,#8fd61f 0 52%,#2c6a0c 53% 57%,transparent 59%)}
+/* nappe de slime sous la barre du haut (dessinee par putride.js) */
+#nappe{position:fixed;left:0;top:0;z-index:41;pointer-events:none;overflow:visible}
+#drips .drp{width:44px;height:9px;border:2px solid #d6ff86;border-radius:50%}
 main{position:relative}
 .dpool{position:absolute;left:0;right:0;bottom:0;height:0;opacity:0;pointer-events:none;z-index:2;background:linear-gradient(180deg,rgba(140,205,62,.78),rgba(86,160,36,.86) 14%,rgba(46,118,30,.92) 55%,rgba(16,64,22,.95));box-shadow:inset 0 .12rem .2rem rgba(225,255,160,.45);transition:height 1.6s ease-out,opacity .6s}
 .dpool::before{content:"";position:absolute;left:0;right:0;top:-.3rem;height:.32rem;background:radial-gradient(ellipse 7rem .3rem at 50% 100%,rgba(140,205,62,.78) 0 96%,transparent 100%) 0 0/14rem .32rem repeat-x;animation:pool 24s linear infinite}
