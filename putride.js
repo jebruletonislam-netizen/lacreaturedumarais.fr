@@ -1,6 +1,7 @@
 (function(){
   /* Pages d'album : lecture et paroles */
-  var CLIPS={'Chimaera Rothomagensis':'A_SfjREwRWI','La côte Sainte-Catherine':'bThq8uPYgFA','La Chute':'34-C5ls5eWM','Dis, ferme un instant les yeux':'65E0wA7msv4','Jubilé':'btnbqG0_kc0','Misérables':'7K6sEj3D5BQ'};
+  var CLIPS={'Chimaera Rothomagensis':'A_SfjREwRWI','La côte Sainte-Catherine':'bThq8uPYgFA','La Chute':'34-C5ls5eWM','Dis, ferme un instant les yeux':'65E0wA7msv4','Jubilé':'btnbqG0_kc0'};
+  if(Date.now()>=Date.parse('2026-10-31T19:15:00+01:00'))CLIPS['Misérables']='7K6sEj3D5BQ';
   function cfg(s,i,t){
     var o={index:i,title:t||s.dataset.title,artist:s.dataset.artist,art:s.dataset.art};
     if(s.dataset.sc)o.sc=s.dataset.sc;else o.section=s.dataset.sec;
