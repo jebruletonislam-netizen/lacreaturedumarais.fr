@@ -7,7 +7,7 @@
 <title>Mode Putride · Territoire | La Créature du Marais</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/putride.css?v=13">
+<link rel="stylesheet" href="/putride.css?v=14">
 <script>try{if(sessionStorage.getItem("lcm-slime")){document.documentElement.className+=" slx";setTimeout(function(){document.documentElement.classList.remove("slx")},3500)}}catch(e){}</script><link href="/images/favicon.png" rel="icon" type="image/png"><link href="/images/favicon.png" rel="apple-touch-icon">
 </head>
 <body>
@@ -45,6 +45,7 @@
     <li id="cote"><b><em class="num">8</em>La côte Sainte-Catherine</b><span>Au-dessus de la ville. Le panorama sur Rouen, la Seine et ses ponts : le point de vue pour contempler le territoire d'en haut, et le décor d'un <a class="lk" href="/#clip-cote">clip</a>.</span><div class="acts"><button class="btn goto" type="button" data-k="cote">SUR LA CARTE</button> <a class="btn" href="https://lacreaturedumarais.fr/video/clip-cote-sainte-catherine/" rel="noopener" target="_blank">VIDÉO</a> </div></li>
     <li id="archeveche"><b><em class="num">9</em>L'archevêché de Rouen</b><span>Cour des Libraires, contre la cathédrale : QG des vampires présidé par Monseigneur Dominique Lebrun, comme par hasard, encore du marron…</span><div class="acts"><button class="btn goto" type="button" data-k="archeveche">SUR LA CARTE</button> </div></li>
     <li id="delycium"><b><em class="num">10</em>Le Délycium</b><span>Tout au fond de l’impasse des Anciens Moulins. Lieu de vie et de relaxation pour les gueux, lieu de fête et résidence de <a class="lk" href="/mode-putride/bestiaire/createur/">la Créature</a> et de <a class="lk" href="/mode-putride/bestiaire/edwarda/">Madame Edwarda</a>. Riche en fluide vert et en copeaux de merde.</span><div class="acts"><button class="btn goto" type="button" data-k="delycium">SUR LA CARTE</button> </div></li>
+    <li id="fromagerie"><b><em class="num">11</em>La fromagerie</b><span>69 rue Armand Barbès, à Sotteville-lès-Rouen. Un <a class="lk" href="/mode-putride/bestiaire/retard-tinables/">Retard-Tinable</a> renégat et rebellé contre son maître y prépare du saint-vergeron à foison pour contrer le réseau tentaculaire d’agents mendiants de <a class="lk" href="/mode-putride/bestiaire/createur/">la Créature</a>.</span><div class="acts"><button class="btn goto" type="button" data-k="fromagerie">SUR LA CARTE</button> <a class="btn" href="/mode-putride/bestiaire/retard-tinables/">LES RETARD-TINABLES</a></div></li>
   </ol>
   <p class="note">D'autres lieux de l'œuvre viendront s'ajouter à cette carte.</p>
 
@@ -57,18 +58,42 @@
 <script>
 (function(){
   if(!window.L)return;
-  var P=[["vampirium","1. Le Vampirium",49.445755,1.091657],["antre","2. L\'antre du Père qui se la touche",49.4450751,1.0985346],["cathedrale","3. La cathédrale Notre-Dame",49.440288,1.0948212],["saint-maclou","4. Saint-Maclou",49.4397819,1.0983808],["aitre","5. L\'Aître Saint-Maclou",49.4402647,1.0998461],["viol","6. Rue du Viol",49.4408263,1.0967638],["fontaine","7. La fontaine Sainte-Marie",49.4471566,1.1005869],["cote","8. La côte Sainte-Catherine",49.4336018,1.1098726],["archeveche","9. L\'archevêché de Rouen",49.4402126,1.0963527],["delycium","10. Le Délycium",49.4400421,1.0976809]];
+  var P=[["vampirium","1. Le Vampirium",49.445755,1.091657],["antre","2. L\'antre du Père qui se la touche",49.4450751,1.0985346],["cathedrale","3. La cathédrale Notre-Dame",49.440288,1.0948212],["saint-maclou","4. Saint-Maclou",49.4397819,1.0983808],["aitre","5. L\'Aître Saint-Maclou",49.4402647,1.0998461],["viol","6. Rue du Viol",49.4408263,1.0967638],["fontaine","7. La fontaine Sainte-Marie",49.4471566,1.1005869],["cote","8. La côte Sainte-Catherine",49.4336018,1.1098726],["archeveche","9. L\'archevêché de Rouen",49.4402126,1.0963527],["delycium","10. Le Délycium",49.4400421,1.0976809],["fromagerie","11. La fromagerie",49.423794,1.090938]];
   var m=L.map('lmap',{scrollWheelZoom:false}),mk={};
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(m);
   var ic=function(n){return L.divIcon({className:'pin',html:'<i>'+n+'</i>',iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-14]});};
   P.forEach(function(p,n){mk[p[0]]=L.marker([p[2],p[3]],{icon:ic(n+1),title:p[1]}).addTo(m).bindPopup('<b>'+p[1]+'</b>');});
   m.fitBounds(P.map(function(p){return [p[2],p[3]];}),{padding:[30,30]});
+  /* nuage noir et chauves-souris sur l'église Saint-Patrice : ancré aux coordonnées, il suit tous les niveaux de zoom */
+  (function(){
+    var C=[49.44593,1.09155],A=.00052,B=.00075,NS='http://www.w3.org/2000/svg';
+    var el=function(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+    var svg=el('svg',{viewBox:'0 0 300 300',preserveAspectRatio:'none','aria-hidden':'true',focusable:'false'}),defs=el('defs',{},svg);
+    var g1=el('radialGradient',{id:'ncg'},defs);
+    [['0','#0a060f',1],['.72','#050308',1],['.9','#000',.92],['1','#000',0]].forEach(function(t){el('stop',{offset:t[0],'stop-color':t[1],'stop-opacity':t[2]},g1);});
+    [[150,150,104],[150,150,90],[108,135,70],[192,140,72],[124,188,68],[180,188,70],[150,104,64],[150,204,58],[94,166,58],[206,166,60],[100,114,54],[200,112,54],
+     [66,140,46],[234,140,46],[150,66,46],[150,236,44],[108,230,44],[192,230,44],[76,190,42],[224,192,42],[82,98,40],[218,98,40],[150,150,60]].forEach(function(c){el('circle',{cx:c[0],cy:c[1],r:c[2],fill:'url(#ncg)'},svg);});
+    var low=(navigator.hardwareConcurrency||4)<=4,calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    /* centre x, centre y, rayon x, rayon y, duree, taille, sens */
+    var bats=[[150,150,70,42,9,2,1],[150,150,92,56,13,1.8,0],[150,140,56,32,7.5,1.7,1],[150,165,64,36,10,1.8,0],[150,150,90,66,16,1.9,1],[140,120,46,56,8,1.6,1],
+      [160,110,50,38,11,1.7,0],[150,190,82,28,12,1.8,1],[130,150,56,66,9.5,1.6,0],[170,150,56,62,14,1.9,1],[150,95,88,32,15,1.5,0]];
+    var BAT='M0-3C2-6 4-5 5-2C9-6 15-8 20-4C17-3 16 0 15 3C13 1 11 1 9 3C8 1 6 2 5 4L3 3C2 6 1 8 0 10C-1 8-2 6-3 3L-5 4C-6 2-8 1-9 3C-11 1-13 1-15 3C-16 0-17-3-20-4C-15-8-9-6-5-2C-4-5-2-6 0-3Z';
+    bats.slice(0,low?6:bats.length).forEach(function(b,i){
+      var g=el('g',calm?{transform:'translate('+(b[0]-b[2]*.6)+' '+(b[1]-b[3]*.4)+')'}:{},svg),sg=el('g',{transform:'scale('+b[5]+')'},g),w=el('g',{},sg);
+      el('path',{d:BAT,fill:'#000',stroke:'#a66bff','stroke-width':'.8','stroke-opacity':'.75','stroke-linejoin':'round'},w);
+      if(calm)return;
+      var rx=b[2],ry=b[3],sw=b[6];
+      el('animateMotion',{path:'M'+(b[0]-rx)+','+b[1]+' a'+rx+','+ry+' 0 1,'+sw+' '+(2*rx)+',0 a'+rx+','+ry+' 0 1,'+sw+' '+(-2*rx)+',0',dur:b[4]+'s',repeatCount:'indefinite',begin:'-'+(i*1.7)+'s'},g);
+      el('animateTransform',{attributeName:'transform',type:'scale',values:'1 1;1 .35;1 1',dur:(.38+i%3*.06)+'s',repeatCount:'indefinite',begin:'-'+(i*.13)+'s'},w);
+    });
+    L.svgOverlay(svg,[[C[0]-A,C[1]-B],[C[0]+A,C[1]+B]],{interactive:false,className:'nuage'}).addTo(m);
+  })();
   Array.prototype.forEach.call(document.querySelectorAll('.goto'),function(b){
     b.addEventListener('click',function(){var k=b.dataset.k;document.querySelector('.map').scrollIntoView({behavior:'smooth',block:'center'});m.setView(mk[k].getLatLng(),17);mk[k].openPopup();});
   });
   m.on('click',function(){m.scrollWheelZoom.enable();});
 })();
-</script><script src="/slime.js?v=2"></script><script src="/lecteur.js?v=4"></script><script src="/putride.js?v=10"></script>
+</script><script src="/slime.js?v=2"></script><script src="/lecteur.js?v=4"></script><script src="/putride.js?v=11"></script>
 <script src="/apercu.js" defer></script>
 </body>
 </html>

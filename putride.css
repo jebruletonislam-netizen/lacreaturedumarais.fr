@@ -468,3 +468,24 @@ header{overflow:visible}
 .gpag .gp-info{flex-basis:100%;text-align:center;color:var(--v);font:400 1.1rem "Bebas Neue",sans-serif;letter-spacing:.08em;text-shadow:0 0 .3rem #000,0 0 .7rem #000}
 @media (max-width:599px){.gpag{gap:.35rem}.gpag .btn{min-width:2.3rem;font-size:1.2rem;padding:.15rem .5rem}}
 .gal li:has(b){display:flex}.gal li:has(b) a{width:100%;display:flex;flex-direction:column}.gal li:has(b) .pf{flex:none}.gal li:has(b) b{flex:1;display:flex;align-items:center;justify-content:center;line-height:1.05}
+/* page des Retard-Tinables : bandeau vert pleine largeur, frise de carriere */
+.rtban{grid-column:1/-1;background:var(--g);padding:.55rem 0;line-height:0;text-align:center;box-shadow:0 0 1.6rem rgba(57,255,110,.55)}
+.rtban img{display:block;margin:0 auto;width:auto;max-width:100%;height:auto;max-height:min(62vh,60rem)}
+.fiche2.solo{display:block}.fiche2.solo .perso{max-width:none}
+.role a,.h2l{color:inherit;text-decoration:none}.role a{border-bottom:.12rem dotted currentColor}.role a:hover,.h2l:hover{color:#fc0}
+.hist{display:flex;align-items:flex-end;gap:.5rem;margin:1.2rem 0 .4rem;max-width:60rem}
+.hist>div{flex:1;text-align:center;min-width:0}
+.hist b{display:block;font:400 1.2em "Bebas Neue",sans-serif;color:#fff}
+.hist i{display:block;background:var(--g);box-shadow:0 0 .8rem rgba(57,255,110,.5)}
+.hist .cp i{background:#9608f8;box-shadow:0 0 .8rem rgba(150,8,248,.6)}
+.hist span{display:block;margin-top:.2rem;font-size:.8em;opacity:.85}
+.leg{font-size:.85em;margin:.2rem 0 1.2rem}.leg span{display:inline-block;width:.9em;height:.9em;margin:0 .3em 0 .9em;vertical-align:-.1em;background:var(--g)}.leg span:first-child{margin-left:0}.leg .cp{background:#9608f8}
+.chrono{list-style:none;padding:0;margin:1rem 0 1.4rem;border-left:.25rem solid var(--g);max-width:70rem}
+.chrono>li{position:relative;padding:.1rem 0 1.1rem 1.5rem}
+.chrono>li::before{content:"";position:absolute;left:-.75rem;top:.55rem;width:1.1rem;height:1.1rem;border-radius:50%;background:var(--g);box-shadow:0 0 .8rem rgba(57,255,110,.7)}
+.chrono h3{margin:0 0 .2rem;color:var(--g);font:400 1.9em "Bebas Neue",sans-serif;text-shadow:none}
+.chrono .yn{margin:0 0 .4rem}
+.chrono ul,.chrono-after{list-style:none;padding:0;margin:.2rem 0 0}
+.chrono ul li,.chrono-after li{margin:.15rem 0}
+.chrono small,.chrono-after small{opacity:.75}
+.chrono-after b{color:#c58bff;font:400 1.2em "Bebas Neue",sans-serif;margin-right:.5rem}
