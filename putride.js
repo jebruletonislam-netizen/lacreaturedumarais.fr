@@ -1,6 +1,7 @@
 (function(){
   /* Pages d'album : lecture et paroles */
-  var CLIPS={'Chimaera Rothomagensis':'A_SfjREwRWI','La côte Sainte-Catherine':'bThq8uPYgFA','La Chute':'34-C5ls5eWM','Dis, ferme un instant les yeux':'65E0wA7msv4','Jubilé':'btnbqG0_kc0'};
+  var CLIPS={'Chimaera Rothomagensis':'A_SfjREwRWI','La côte Sainte-Catherine':'bThq8uPYgFA','La Chute':'34-C5ls5eWM','Dis, ferme un instant les yeux':'65E0wA7msv4','Jubilé':'btnbqG0_kc0','Misérables':'7K6sEj3D5BQ'};
+  var LYT={'Misérables':[["Cathos pervers mais repentants", "Misérables, absolutistes", "Ardents mais mous, farceurs, pédants", "La misère ? Notre atavisme"], ["Un nouveau monde s’offre à nous", "La post-France, moyen-âge 2", "Ce nouveau monde est fait pour nous", "Où l’outrance transcende le jeu"], ["Mais lorsqu’on rôde dans le quartier", "En quête de bon lait cru,", "On voit ce qui a émergé ;", "Encore plus que nous, ça pue !", "On a beau l’avoir mérité…", "Par les baloches du cornu..!", "Oh pitié ! J’en peux plus !", "Le centre ville c’est plein de pédés !!!"], ["Regarde-nous,", "C’est nous les revanchards", "Regarde-nous,", "Les rescapés des cauchemars", "Prends pitié de nous", "Du fond de ton plumard", "L’avenir est à nous", "Sale gwer, vise le purgatoire"], ["On festoie dans des décombres", "Qui puent la sueur et le vin noir", "On espère la grâce dans l’ombre", "Nous qui nous repentons trop tard", "Le bénédicité dé-halalise", "Voilà notre kebab purifié", "Notre paroisse traumatise", "On préfère presque les athées"], ["Français de souche, fils de rien", "La Patrie est aux ordures.", "Quand se ravivent mes fêlures,", "J’arrache même mes poils pubiens !", "Ma moustache goutte, mon vit s’affole,", "Je vois des Vertus qui s’envolent", "Comme je crache, comme je m’immole !", "Le fou chante et tu rigoles...", "« Va-t’en loin, goy abject ! »", "Je hurle, ivre de poison", "Et dans ma gorge, une tempête", "Chante la ruine de ma maison"], ["Regarde-nous,", "C’est nous : les revanchards", "Regarde-nous,", "Fruits des soixante-huitards", "Prends pitié de nous", "Pour seul délice : le bazar", "L’avenir n’attend que nous", "Sale gwer, dévore les ciboires"], ["Regarde-nous,", "C’est nous les revenchards", "Regarde-nous,", "Les nouveaux clochards", "Prends pitié de nous,", "Lève-toi de ton plumard"], ["Regarde-nous,", "C’est nous les revanchards", "Regarde-nous,", "Même si t’en as marre", "Prends pitié de nous,", "Il n’est jamais trop tard", "L’avenir est à nous", "Sale gwer, hante les exutoires."]]};
   function cfg(s,i,t){
     var o={index:i,title:t||s.dataset.title,artist:s.dataset.artist,art:s.dataset.art};
     if(s.dataset.sc)o.sc=s.dataset.sc;else o.section=s.dataset.sec;
@@ -43,13 +44,18 @@
       var c=document.createElement('button');c.type='button';c.className='vid big';c.dataset.yt=yt;c.dataset.t=t+' (clip)';c.textContent='\u25B6 CLIP';
       b.appendChild(c);
     }
+    if(LYT[t]){
+      var y=document.createElement('div');y.className='lyt';
+      LYT[t].forEach(function(st){var p=document.createElement('p');st.forEach(function(l,i){if(i)p.appendChild(document.createElement('br'));p.appendChild(document.createTextNode(l));});y.appendChild(p);});
+      b.appendChild(y);
+    }
     if(g){
       var f=document.createElement('iframe');f.className='lyf';f.title='Paroles de '+t;f.loading='lazy';
       f.srcdoc="<!doctype html><html><head><meta charset='utf-8'><base target='_blank'><style>html,body{margin:0;padding:0;background:#fff;color:#000;color-scheme:light}body{padding:.5rem;font:16px/1.4 Arial,sans-serif}</style></head><body><div id='rg_embed_link_"+g.id+"' class='rg_embed_link' data-song-id='"+g.id+"'><a href='"+g.url+"'>Paroles de \u201C"+t.replace(/&/g,'&amp;')+"\u201D \u2014 Cul-Pointu</a></div><script crossorigin src='https://genius.com/songs/"+g.id+"/embed.js'><\/script></body></html>";
       var fit=function(){try{var h=f.contentDocument.documentElement.scrollHeight;if(h>40)f.style.height=h+'px';}catch(e){}};
       f.addEventListener('load',function(){fit();var n=0,iv=setInterval(function(){fit();if(++n>40||!f.isConnected)clearInterval(iv);},500);});
       b.appendChild(f);
-    }else if(!yt){
+    }else if(!yt&&!LYT[t]){
       var p=document.createElement('p');p.className='lypend';p.textContent='Paroles \u00E0 venir';b.appendChild(p);
     }
   }
