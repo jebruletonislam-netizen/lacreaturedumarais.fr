@@ -4,6 +4,7 @@
 *{box-sizing:border-box}
 html{font-size:calc(100vw/120)}
 body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.01em}
+.route-header::before{content:none;display:none;background:none}
 .route-header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;padding:0;border:0;border-bottom:.5rem solid var(--route-red);background:#000;overflow:hidden}
 .route-cre{position:relative;display:flex;flex:1 1 0;justify-content:flex-start;min-width:0;height:14.3125rem;background:#000}
 .route-cre .route-cre-link{display:block;flex:none;height:100%;aspect-ratio:1920/1080}
