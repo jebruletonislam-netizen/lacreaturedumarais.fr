@@ -18,7 +18,7 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-ppp .route-ppp-logo{position:absolute;top:2.31rem;right:2.71rem;display:block;width:auto;height:8.93rem;max-width:calc(100% - 3.4rem);object-fit:contain;object-position:right center}
 .route-mobile-header-socials,.route-mobile-footer,.route-footer{display:none}
 .route-wrap{display:grid;grid-template-columns:27.5625rem minmax(0,1fr);min-height:max(calc(100vh - 14.8125rem),52.7rem)}
-.route-side-nav{position:sticky;top:14.8125rem;align-self:start;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem 1fr;height:calc(100vh - 14.8125rem);min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;grid-auto-rows:min-content;border-right:.5625rem solid var(--route-red);background:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),url("/images/fond-vitrail.jpg") center/cover}
+.route-side-nav{position:sticky;top:min(14.8125rem,calc(100vh - 49.5625rem));align-self:start;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem minmax(11rem,1fr);height:max(calc(100vh - 14.8125rem),49.5625rem);min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;grid-auto-rows:min-content;border-right:.5625rem solid var(--route-red);background:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),url("/images/fond-vitrail.jpg") center/cover}
 .route-side-nav>a{display:flex;align-items:center;justify-content:center;text-decoration:none;border-bottom:.5rem solid var(--route-red)}
 .route-side-nav>a:last-child{border-bottom:0}
 .route-nav-icon{display:none;align-items:center;justify-content:center;width:100%;height:100%;padding:0!important;outline:0!important;background:transparent!important;color:var(--route-red)!important}
@@ -174,11 +174,13 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 /* videos : Misérables en tête, espace doublé et trait rouge de la largeur des cartes */
 .route-content .cc.cc-first{border-bottom:.6rem solid var(--route-red);padding-bottom:3.7rem;margin-bottom:.9rem}
 @media(max-width:899px){.route-content .cc.cc-first{grid-column:1/-1;border-bottom:.5rem solid var(--route-red);padding-bottom:1.05rem;margin-bottom:.05rem}}
-/* en-tête (ordi) : lueur dans le cercle et autour du motif au survol des réseaux */
-@media(min-width:900px){
-.route-mid>a{overflow:hidden}
-.route-mid>a::before{content:"";position:absolute;inset:0;border-radius:50%;background:url("/images/entete-milieu.png") no-repeat;background-size:1322.75% 372.85%;background-position:var(--bx,0) 91.62%;filter:blur(.2rem) saturate(.3) brightness(1.7);mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
-.route-mid>a:hover::before,.route-mid>a:focus-visible::before{opacity:.8}
-.route-mid>a:hover,.route-mid>a:focus-visible{box-shadow:0 0 1.2rem rgba(255,60,60,.9),inset 0 0 1.1rem rgba(255,60,60,.85);outline:0}
-.route-mid>a[aria-label="Deezer"]{--bx:0.17%}.route-mid>a[aria-label="Apple Musique"]{--bx:0.28%}.route-mid>a[aria-label="Spotify"]{--bx:0.39%}.route-mid>a[aria-label="Instagram"]{--bx:0.50%}.route-mid>a[aria-label="YouTube"]{--bx:0.62%}.route-mid>a[aria-label="X"]{--bx:0.73%}.route-mid>a[aria-label="TikTok"]{--bx:0.84%}
+/* en-tête (ordi) : au survol, lueur rouge qui épouse exactement les motifs */
+@media (min-width:900px){
+.route-mid>a{overflow:visible}
+.route-mid>a::before{content:"";position:absolute;inset:-.9rem;background:url(/images/lueur-plateformes.webp) no-repeat;background-size:52.9rem 14.3125rem;background-position:calc(.9rem - var(--ax,0rem)) calc(.9rem - 9.5965rem);mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
+.route-mid>a:hover::before,.route-mid>a:focus-visible::before{opacity:1}
+.route-mid>a:hover,.route-mid>a:focus-visible{box-shadow:none;outline:0}
+.route-mid>a[aria-label="Deezer"]{--ax:8.221rem}.route-mid>a[aria-label="Apple Musique"]{--ax:13.590rem}.route-mid>a[aria-label="Spotify"]{--ax:19.155rem}.route-mid>a[aria-label="Instagram"]{--ax:24.551rem}.route-mid>a[aria-label="YouTube"]{--ax:30.206rem}.route-mid>a[aria-label="X"]{--ax:35.745rem}.route-mid>a[aria-label="TikTok"]{--ax:41.167rem}
+.route-ppp::after{content:"";position:absolute;right:calc(2.71rem - 0.727rem);top:calc(2.31rem - 0.727rem);height:calc(8.93rem + 1.453rem);aspect-ratio:1329/686;max-width:calc(100% - 3.4rem + 1.453rem);background:url(/images/lueur-ppp.webp) right center/contain no-repeat;mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
+.route-ppp:hover::after,.route-ppp:focus-visible::after{opacity:1}
 }
