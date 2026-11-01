@@ -212,6 +212,8 @@ main{position:relative}
 .pin i{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:3px solid #39ff6e;background:#7a2dd6;color:#fff;font:400 16px "Bebas Neue",sans-serif;font-style:normal;border-radius:50%;box-shadow:0 0 .6rem rgba(57,255,110,.7)}
 .pin .eg{position:absolute;right:-5px;bottom:-5px;width:14px;height:14px;border-radius:50%;background:#e0001b;border:1.5px solid #2a0008}
 .eg-dot{cursor:help}
+.voix{margin:0 0 1rem}.voix .tl{margin-bottom:.6rem;max-width:38rem}
+.voixnone{margin:0 0 1rem;color:#e8dcff;opacity:.75;font-style:italic}
 .leaflet-tooltip.ver-tip{background:#12001c;border:.2rem solid #ffd400;border-radius:0;color:#ffd400;font:400 1.5rem "Bebas Neue",sans-serif;letter-spacing:.05em;padding:.35rem .8rem;box-shadow:0 0 1.2rem rgba(255,212,0,.45)}
 .leaflet-tooltip-top.ver-tip::before{border-top-color:#ffd400}
 .ver-tip .vt{display:flex;align-items:center;gap:.7rem;white-space:nowrap}
