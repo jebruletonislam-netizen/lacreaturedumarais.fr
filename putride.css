@@ -8,7 +8,7 @@
   --mh:min(4.25rem,max(2rem,calc(25vh - 4.45rem)));
   color-scheme:dark
 }
-html{font-size:calc(100vw/120)}
+html{font-size:max(calc(100vw/120),min(10px,calc(100vw/104)));-webkit-text-size-adjust:100%;text-size-adjust:100%}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:#fff}
 body{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.02em;text-shadow:0 1px 2px rgba(0,0,0,.8)}
@@ -27,12 +27,12 @@ header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bo
 .mid a{position:absolute;top:67.05%;width:7.56%;height:26.82%;border-radius:50%}
 .mid a:hover{box-shadow:0 0 1.2rem rgba(57,255,110,.8)}
 .ppp{position:relative;flex:1 1 0;min-width:0;height:14.3125rem;display:block;text-decoration:none;overflow:hidden}
-.ppp img{position:absolute;right:2.71rem;top:2.31rem;display:block;height:8.93rem;width:auto}
+.ppp img{position:absolute;right:2.71rem;top:2.31rem;display:block;height:8.93rem;width:auto;max-width:calc(100% - 3.4rem);object-fit:contain;object-position:right center}
 .msoc{display:none}
 
 /* ---------- mise en page ---------- */
 .wrap{display:grid;grid-template-columns:27.5625rem 1fr;min-height:max(calc(100vh - 14.8125rem),52.7rem)}
-nav{position:sticky;top:14.8125rem;align-self:start;height:max(calc(100vh - 14.8125rem),52.7rem);min-height:0;overflow-y:auto;scrollbar-width:none;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem 1fr;border-right:.5625rem solid var(--g);background:linear-gradient(rgba(14,0,28,.78),rgba(14,0,28,.78)),url(images/fond-vitrail.jpg) center/cover}
+nav{position:sticky;top:14.8125rem;align-self:start;height:calc(100vh - 14.8125rem);min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;grid-auto-rows:min-content;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem 1fr;border-right:.5625rem solid var(--g);background:linear-gradient(rgba(14,0,28,.78),rgba(14,0,28,.78)),url(images/fond-vitrail.jpg) center/cover}
 nav a{display:flex;align-items:center;justify-content:center;text-decoration:none;border-bottom:.5rem solid var(--g)}
 nav a:last-child{border-bottom:0}
 .nav-icon{display:none;align-items:center;justify-content:center;width:100%;height:100%;color:#9608f8}
@@ -468,9 +468,6 @@ header{overflow:visible}
 .gpag .gp-info{flex-basis:100%;text-align:center;color:var(--v);font:400 1.1rem "Bebas Neue",sans-serif;letter-spacing:.08em;text-shadow:0 0 .3rem #000,0 0 .7rem #000}
 @media (max-width:599px){.gpag{gap:.35rem}.gpag .btn{min-width:2.3rem;font-size:1.2rem;padding:.15rem .5rem}}
 .gal li:has(b){display:flex}.gal li:has(b) a{width:100%;display:flex;flex-direction:column}.gal li:has(b) .pf{flex:none}.gal li:has(b) b{flex:1;display:flex;align-items:center;justify-content:center;line-height:1.05}
-/* page des Retard-Tinables : bandeau vert pleine largeur, frise de carriere */
-.rtban{grid-column:1/-1;background:var(--g);padding:.55rem 0;line-height:0;text-align:center;box-shadow:0 0 1.6rem rgba(57,255,110,.55)}
-.rtban img{display:block;margin:0 auto;width:auto;max-width:100%;height:auto;max-height:min(62vh,60rem)}
 .fiche2.solo{display:block}.fiche2.solo .perso{max-width:none}
 .role a,.h2l{color:inherit;text-decoration:none}.role a{border-bottom:.12rem dotted currentColor}.role a:hover,.h2l:hover{color:#fc0}
 .hist{display:flex;align-items:flex-end;gap:.5rem;margin:1.2rem 0 .4rem;max-width:60rem}
@@ -489,3 +486,22 @@ header{overflow:visible}
 .chrono ul li,.chrono-after li{margin:.15rem 0}
 .chrono small,.chrono-after small{opacity:.75}
 .chrono-after b{color:#c58bff;font:400 1.2em "Bebas Neue",sans-serif;margin-right:.5rem}
+/* rubriques : même comportement que le mode normal (le bandeau défile et se laisse glisser quand l'écran est court) */
+@media (min-width:900px){nav a:last-child{align-self:start;height:11rem}}
+/* en-tête (ordi) : lueur dans le cercle et autour du motif au survol des réseaux */
+@media (min-width:900px){
+.mid a{overflow:hidden}
+.mid a::before{content:"";position:absolute;inset:0;border-radius:50%;background:url(images/putride/entete-milieu.png) no-repeat;background-size:1322.75% 372.85%;background-position:var(--bx,0) 91.62%;filter:blur(.35rem) saturate(1.6) brightness(1.9);mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
+.mid a:hover::before,.mid a:focus-visible::before{opacity:1}
+.mid a:hover,.mid a:focus-visible{box-shadow:0 0 1.2rem rgba(57,255,110,.8),inset 0 0 1.1rem rgba(57,255,110,.8);outline:0}
+.mid a[aria-label="Deezer"]{--bx:0.17%}.mid a[aria-label="Apple Musique"]{--bx:0.28%}.mid a[aria-label="Spotify"]{--bx:0.39%}.mid a[aria-label="Instagram"]{--bx:0.50%}.mid a[aria-label="YouTube"]{--bx:0.62%}.mid a[aria-label="X"]{--bx:0.73%}.mid a[aria-label="TikTok"]{--bx:0.84%}
+}
+/* page des Retard-Tinables : l'image (cadre vert) est à droite du texte, qui l'enveloppe */
+.rtfig{margin:0;padding:.45rem;background:var(--g);line-height:0;box-shadow:0 0 1.4rem rgba(57,255,110,.5)}
+.rtfig img{display:block;width:100%;height:auto}
+@media (min-width:900px){.fiche2.solo .rtfig{float:right;width:min(46%,52rem);margin:.3rem 0 1.2rem 2.2rem}.fiche2.solo h2{clear:both}}
+@media (max-width:899px){.fiche2.solo .rtfig{margin:0 -1rem 1.2rem}}
+/* attributs des personnages : liens jaunes plus petits que leur intitulé, restant lisibles */
+.fiche2 h3.sub+p{font-size:.8em;line-height:1.4}
+.fiche2 dd{font-size:.88em;line-height:1.35}
+@media (max-width:899px){.fiche2 h3.sub+p{font-size:.9em}.fiche2 dd{font-size:.95em}}

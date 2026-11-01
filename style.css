@@ -3,7 +3,7 @@
 @font-face{font-family:"Religath";src:url("/fonts/RELIGATH-Demo.otf") format("opentype");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0000-0151,U+0154-10FFFF}
 @font-face{font-family:"Religath Ligatures";src:url("/fonts/RELIGATH-LIGATURES.otf") format("opentype");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+0152-0153}
 *{box-sizing:border-box;margin:0}
-html{font-size:calc(100vw/120)}
+html{font-size:max(calc(100vw/120),min(10px,calc(100vw/104)));-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.01em;min-height:100vh}
 a{color:inherit}
 a:focus-visible{outline:.2rem solid #fff;outline-offset:.2rem}
