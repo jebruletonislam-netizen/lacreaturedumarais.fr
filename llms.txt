@@ -1,27 +1,34 @@
 # La Créature du Marais (Cul-Pointu)
 
-> Projet musical de Tancrède Charon, artiste indépendant de Rouen, Normandie. Chanson gothique et baroque, rap, post-punk, poésie de gueux et mystique catholique.
+> Projet musical de Tancrède Charon, artiste indépendant de Rouen, Normandie. Chanson gothique et baroque, rap, post-punk, coldwave, poésie de gueux et mystique catholique. Publié sous le nom de scène Cul-Pointu, par PUANTEUR PUTRIDE Productions.
 
 Site officiel : https://lacreaturedumarais.fr/
 
 ## Pages
-- [Accueil](https://lacreaturedumarais.fr/): nouvelles, albums, clips, archives
-- [La Créature du Marais](https://lacreaturedumarais.fr/la-creature-du-marais/): fiche artiste
-- [Biographie](https://lacreaturedumarais.fr/biographie/): parcours, des Retard-Tinables à Confiteor
-- [Discographie](https://lacreaturedumarais.fr/discographie/): albums et singles
-- [Vidéos](https://lacreaturedumarais.fr/videos/): clips
-- [Presse](https://lacreaturedumarais.fr/presse/): informations presse
+- [Accueil](https://lacreaturedumarais.fr/) : dernier méfait, nouvelles, archives
+- [La Créature du Marais](https://lacreaturedumarais.fr/la-creature-du-marais/) : identité du projet et profils officiels
+- [Biographie](https://lacreaturedumarais.fr/biographie/) : parcours, des Retard-Tinables à Confiteor
+- [Discographie](https://lacreaturedumarais.fr/discographie/) : albums et singles
+- [Nouvelles](https://lacreaturedumarais.fr/nouvelles/) : sorties, clips, tournages
+- [Vidéos](https://lacreaturedumarais.fr/videos/) : clips officiels
+- [FAQ](https://lacreaturedumarais.fr/faq/) : qui est Cul-Pointu, par quel album commencer, où écouter
+- [Presse](https://lacreaturedumarais.fr/presse/) : dossier de presse (PDF), visuels HD, extraits à citer
 - [Contact](https://lacreaturedumarais.fr/contact/)
 
+## Noms
+- Tancrède Charon : l'artiste
+- La Créature du Marais : son personnage, le nom du site
+- Cul-Pointu : le nom d'artiste sous lequel les disques sont publiés
+
 ## Sorties
-- [Confiteor](https://lacreaturedumarais.fr/confiteor.html) (album, 11 septembre 2024, 34 titres, environ 2 h)
-- [Jubilé](https://lacreaturedumarais.fr/jubile.html) (single, 6 décembre 2025)
-- [Omerta434 : Chyren](https://lacreaturedumarais.fr/omerta434-chyren.html) (2023)
-- [Omerta434](https://lacreaturedumarais.fr/omerta434.html) (2022)
-- [Les Machines Infernales](https://lacreaturedumarais.fr/les-machines-infernales.html) (2021)
-- [In Odium Fidei](https://lacreaturedumarais.fr/#album-in-odium-fidei) (prochain album) : singles Jubilé et Misérables
-- Misérables (second single d’In Odium Fidei et son clip, 31 octobre 2026 à 19 h 15)
-- Clips : Chimaera Rothomagensis, La côte Sainte-Catherine, La Chute, Dis, ferme un instant les yeux
+- [Misérables](https://lacreaturedumarais.fr/discographie/miserables/) : single (31 octobre 2026), second extrait d'In Odium Fidei, avec son [clip](https://lacreaturedumarais.fr/video/clip-miserables/)
+- [Jubilé](https://lacreaturedumarais.fr/discographie/jubile/) : single (6 décembre 2025), premier extrait d'In Odium Fidei
+- [In Odium Fidei](https://lacreaturedumarais.fr/discographie/in-odium-fidei/) : prochain album
+- [Confiteor](https://lacreaturedumarais.fr/discographie/confiteor/) : album, 11 septembre 2024, 34 titres, environ 2 h
+- [Omerta434 : Chyren](https://lacreaturedumarais.fr/discographie/omerta434-chyren/) : album, 1er novembre 2023, 26 titres
+- [Omerta434](https://lacreaturedumarais.fr/discographie/omerta434/) : album, 10 juin 2022, 17 titres
+- [Les Machines Infernales](https://lacreaturedumarais.fr/discographie/les-machines-infernales/) : album, 25 mai 2021, 20 titres
+- Clips : Misérables, Chimaera Rothomagensis, La côte Sainte-Catherine, La Chute, Dis, ferme un instant les yeux
 
 ## Écoute
 - Bandcamp : https://cul-pointu.bandcamp.com/

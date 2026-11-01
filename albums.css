@@ -1,0 +1,111 @@
+/* Pages dédiées (albums, singles, nouvelles, FAQ, presse) : composants communs au gabarit seo-page */
+.route-content .crumbs{margin:0 0 1rem;font:400 1.5rem/1.2 "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.06em;color:#fff;text-shadow:0 1px 2px #000}
+.route-content .crumbs a{color:#fc0;text-decoration:none}.route-content .crumbs a:hover{color:#fff;text-decoration:underline}
+.route-content .crumbs span[aria-hidden]{margin:0 .35em;opacity:.7}
+.route-content .crumbs [aria-current]{color:#fff}
+.route-content .meta{margin:0 0 1.2rem;font:400 1.9rem/1.2 "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.04em;color:#fff}
+/* fiche de sortie */
+.route-content .ah{display:flex;gap:2.4rem;align-items:flex-start;margin:0 0 1.8rem}
+.route-content .ah img{display:block;flex:none;width:17rem;height:17rem;object-fit:cover;border:.2rem solid #000}
+.route-content .ah p.meta{margin:0 0 .8rem}
+.route-content .ah-text{min-width:0}
+.route-content .ah .btn{margin:.3rem .6rem .3rem 0}
+.route-content .status{display:inline-block;margin:0 0 .8rem;padding:.15rem .6rem 0;background:#fc0;color:#000;font:400 1.5rem/1.1 "Bebas Neue",sans-serif;letter-spacing:.06em}
+/* liste des titres */
+.route-content .tl{max-width:86rem;margin:0 0 1.2rem}
+.route-content .tl details,.route-content .faq details{display:block}
+.route-content .tl details{border-bottom:1px solid rgba(255,255,255,.3)}
+.route-content .tl summary{display:flex;align-items:center;gap:.65rem;padding:.55rem 0;cursor:pointer;list-style:none;color:#fff;font:400 2.2rem/1.1 "Bebas Neue",sans-serif}
+.route-content .tl summary::-webkit-details-marker{display:none}
+.route-content .tl summary b{min-width:3.2rem;color:var(--route-red);font-weight:400}
+.route-content .tl summary:hover,.route-content .tl details[open] summary{color:var(--route-red)}
+.route-content .tl .clip-link{flex:none;margin-left:auto;font:700 1.15rem/1 "Bebas Neue",sans-serif;letter-spacing:.05em;color:#fc0}
+.route-content .tl .track-thumb{width:4rem;height:4rem;flex:none;object-fit:cover;border:.1rem solid rgba(255,255,255,.4)}
+.route-content .tl .ly{padding:.6rem 0 1.4rem;min-height:2rem}
+.route-content .lyf{display:block;width:100%;height:12rem;border:0;background:#fff}
+.route-content .hint{margin:0 0 .8rem;opacity:.8}
+/* panneau titre : clip à gauche, paroles à droite, description sous le clip */
+.route-content .tp{display:flow-root;clear:both;max-width:100%;margin:.4rem 0 1rem}
+.route-content .tp-r{float:right;width:calc(48% - 1.6rem);margin:0 0 1rem 1.6rem;min-width:0}
+.route-content .tp-l{width:52%;min-width:0}
+.route-content .tp .vid{max-width:none;margin:0 0 .8rem}
+.route-content .tp-bio p{margin:.35rem 0;max-width:none}
+.route-content .tp-bio:empty{display:none}
+.route-content .tp-l .clip-gallery-link{display:block;margin:0 0 .7rem}
+/* lecteur YouTube léger : l'iframe ne se charge qu'au clic */
+.route-content .yt{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:.25rem solid #000;background:#000;cursor:pointer;overflow:hidden;font:inherit}
+.route-content .yt img{display:block;width:100%;height:100%;object-fit:cover}
+.route-content .yt-p{position:absolute;left:50%;top:50%;width:6rem;height:6rem;margin:-3rem 0 0 -3rem;border-radius:50%;border:.25rem solid var(--route-red);background:rgba(0,0,0,.65)}
+.route-content .yt-p::before{content:"";position:absolute;left:50%;top:50%;margin:-1.35rem 0 0 -.9rem;border-style:solid;border-width:1.35rem 0 1.35rem 2.3rem;border-color:transparent transparent transparent var(--route-red)}
+.route-content .yt:hover,.route-content .yt:focus-visible{outline:.25rem solid var(--route-red)}
+.route-content .yt-live{display:block;width:100%;aspect-ratio:16/9;border:.25rem solid #000;background:#000}
+/* texte courant d'une page dédiée */
+.route-content .bio{max-width:86rem}
+.route-content .bio h3{margin-top:2rem}
+.route-content .bio p{max-width:none}
+.route-content .article p{max-width:86rem}
+.route-content .article .vid{float:right;width:min(46%,44rem);max-width:none;margin:.2rem 0 1rem 2rem}
+.route-content .article::after{content:"";display:block;clear:both}
+/* autour d'une sortie (fil rouge) */
+.route-content .release-strip{clear:both;margin:2.4rem 0 1.4rem;padding:1rem 0 0;border-top:.25rem solid var(--route-red)}
+.route-content .release-strip h2{margin:0 0 1rem;border:0;padding:0}
+.route-content .release-strip ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(20rem,1fr));gap:1.2rem;list-style:none;margin:0;padding:0}
+.route-content .release-strip li{margin:0;max-width:none}
+.route-content .release-strip a{display:flex;flex-direction:column;gap:.35rem;text-decoration:none!important;color:#fff!important}
+.route-content .release-strip img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border:.2rem solid #000}
+.route-content .release-strip img.sq{aspect-ratio:1;max-width:14rem}
+.route-content .release-strip .k{font:400 1.2rem/1 "Bebas Neue",sans-serif;letter-spacing:.08em;color:var(--route-red)}
+.route-content .release-strip b{font:400 2rem/1 "Bebas Neue",sans-serif;color:#fc0}
+.route-content .release-strip a:hover b{color:#fff}
+/* sortie précédente / suivante */
+.route-content .prevnext{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:1.6rem 0 0;padding-top:1rem;border-top:1px solid rgba(255,255,255,.3);font:400 1.8rem/1.1 "Bebas Neue",sans-serif}
+/* liste de nouvelles */
+.route-content .news-list{list-style:none;margin:0;padding:0;display:grid;gap:1.6rem;max-width:90rem}
+.route-content .news-list li{display:grid;grid-template-columns:minmax(0,22rem) minmax(0,1fr);gap:1.6rem;align-items:center;margin:0;padding:0 0 1.4rem;border-bottom:.2rem solid rgba(255,0,0,.55);max-width:none}
+.route-content .news-list img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border:.2rem solid #000}
+.route-content .news-list img.wide{aspect-ratio:16/9}
+.route-content .news-list h2{margin:.2rem 0 .4rem;border:0;padding:0;font-size:3rem}
+.route-content .news-list h2 a{color:#fc0;text-decoration:none}.route-content .news-list h2 a:hover{color:#fff}
+.route-content .news-list p{margin:.3rem 0}
+/* FAQ */
+.route-content .faq details{max-width:86rem;border-bottom:1px solid rgba(255,255,255,.3);padding:.2rem 0}
+.route-content .faq summary{cursor:pointer;padding:.5rem 0;font:400 2.4rem/1.1 "Bebas Neue",sans-serif;color:#fc0;list-style:none}
+.route-content .faq summary::-webkit-details-marker{display:none}
+.route-content .faq summary::before{content:"+";display:inline-block;width:1.6rem;color:var(--route-red)}
+.route-content .faq details[open] summary::before{content:"–"}
+.route-content .faq .a{padding:0 0 1rem 1.6rem}
+/* presse */
+.route-content .quote{margin:1rem 0;padding:.4rem 1.2rem;border-left:.4rem solid var(--route-red);max-width:80rem}
+.route-content .quote p{margin:.3rem 0}.route-content .quote cite{display:block;font:400 1.4rem/1.2 "Bebas Neue",sans-serif;letter-spacing:.06em;color:#fc0;font-style:normal}
+.route-content .kit{display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:1.2rem;list-style:none;margin:0;padding:0;max-width:90rem}
+.route-content .kit li{margin:0;max-width:none}
+.route-content .kit a{display:block;text-decoration:none!important;color:#fff!important}
+.route-content .kit img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border:.2rem solid #000;background:#000}
+.route-content .kit span{display:block;margin-top:.3rem;font:400 1.5rem/1.15 "Bebas Neue",sans-serif;letter-spacing:.04em}
+.route-content .kit small{display:block;opacity:.75;font:400 1.2rem/1.2 "Bebas Neue",sans-serif;letter-spacing:.04em}
+.route-content table.facts{border-collapse:collapse;max-width:86rem;width:100%}
+.route-content table.facts th,.route-content table.facts td{padding:.35rem .8rem;border-bottom:1px solid rgba(255,255,255,.3);text-align:left;font:400 1.5rem/1.25 "Bebas Neue",sans-serif;letter-spacing:.03em}
+.route-content table.facts th{color:var(--route-red);width:14rem}
+@media (max-width:899px){
+.route-content .crumbs{font-size:1rem}
+.route-content .meta{font-size:1.15rem}
+.route-content .ah{gap:1rem}
+.route-content .ah img{width:8.5rem;height:8.5rem}
+.route-content .tl summary{font-size:1.15rem;padding:.65rem 0}
+.route-content .tl summary b{min-width:2.3rem}
+.route-content .tl .track-thumb{width:3rem;height:3rem}
+.route-content .tp{display:flex;flex-direction:column}
+.route-content .tp-r{float:none;width:auto;margin:.6rem 0 0;order:3}
+.route-content .tp-l{width:auto;order:1}.route-content .tp-bio{order:2}
+.route-content .yt-p{width:3.4rem;height:3.4rem;margin:-1.7rem 0 0 -1.7rem;border-width:.15rem}
+.route-content .yt-p::before{margin:-.75rem 0 0 -.45rem;border-width:.75rem 0 .75rem 1.2rem}
+.route-content .article .vid{float:none;width:100%;margin:0 0 1rem}
+.route-content .release-strip ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+.route-content .release-strip b{font-size:1.15rem}.route-content .release-strip .k{font-size:.8rem}
+.route-content .prevnext{font-size:1.1rem}
+.route-content .news-list li{grid-template-columns:minmax(0,7rem) minmax(0,1fr);gap:.8rem}
+.route-content .news-list h2{font-size:1.4rem}
+.route-content .faq summary{font-size:1.25rem}
+.route-content .kit{grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+.route-content table.facts th,.route-content table.facts td{font-size:.95rem}.route-content table.facts th{width:7rem}
+}

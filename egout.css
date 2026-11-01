@@ -9,3 +9,24 @@
 @keyframes egdrip{0%{opacity:0;transform:scale(.2)}12%{opacity:1;transform:scale(1)}30%{opacity:1;transform:translateY(0) scale(.85,1.35)}90%{opacity:1;transform:translateY(12px) scale(.8,1.2)}100%{opacity:0;transform:translateY(14px) scale(.7,1.1)}}
 @keyframes egbulge{0%,100%{transform:scale(1,1)}50%{transform:scale(1.03,1.1)}}
 @media (prefers-reduced-motion:reduce){.egout .eg-b{animation:none}.egout .eg-d{animation:none;opacity:1}}
+
+/* écran d'entrée du mode putride */
+#egin{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;background:#000;color:#f00;opacity:0;transition:opacity .45s ease;pointer-events:all;text-align:center}
+#egin.on{opacity:1}
+#egin svg{width:min(48vw,24rem);height:auto;overflow:visible}
+#egin p{margin:0;font:400 clamp(1.8rem,5vw,3.2rem)/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.08em;color:#f00;text-shadow:0 0 .7rem rgba(255,0,0,.55)}
+#egin small{font:400 clamp(1rem,2.4vw,1.5rem)/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.1em;color:#7fd13a;opacity:0;transition:opacity .6s ease .9s}
+#egin.on small{opacity:1}
+#egin.on p{animation:egin-p 1.7s ease forwards}
+#egin .egin-lid{transform-box:fill-box;transform-origin:100% 50%;transition:transform 1s cubic-bezier(.5,0,.2,1) .35s,opacity .4s ease 1.2s}
+#egin.on .egin-lid{transform:translate(52px,-30px) rotate(-62deg) scale(.45,1.02)}
+#egin .egin-f{transform-box:fill-box;transform-origin:50% 100%;transform:scale(.3,.1);opacity:0;transition:transform 1s ease .75s,opacity .5s ease .75s}
+#egin.on .egin-f{transform:scale(1,1);opacity:1;animation:egin-b 1.6s ease-in-out 1.7s infinite}
+#egin .egin-d path{fill:#7fd13a;transform-box:fill-box;transform-origin:50% 0;opacity:0}
+#egin.on .egin-d path{animation:egin-d 1.4s ease-in .9s infinite}
+#egin.on .egin-d path:nth-child(2){animation-delay:1.35s}
+#egin.on .egin-d path:nth-child(3){animation-delay:1.8s}
+@keyframes egin-p{0%{opacity:0;transform:translateY(.6rem)}40%{opacity:1;transform:none}100%{opacity:1}}
+@keyframes egin-b{0%,100%{transform:scale(1,1)}50%{transform:scale(1.04,1.1)}}
+@keyframes egin-d{0%{opacity:0;transform:scale(.2)}15%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(16px) scale(.8,1.3)}}
+@media (prefers-reduced-motion:reduce){#egin{display:none}}

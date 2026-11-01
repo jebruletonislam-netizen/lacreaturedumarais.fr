@@ -1,0 +1,13 @@
+/* TEAM */
+Artiste : Tancrède Charon (La Créature du Marais, Cul-Pointu)
+Site : https://lacreaturedumarais.fr/
+Contact : puanteur.putride.productions@gmail.com
+Lieu : Rouen, Normandie, France
+
+/* SITE */
+Dernière mise à jour : 2026-11-01
+Langue : français
+Structure : PUANTEUR PUTRIDE Productions
+Technologies : HTML, CSS, JavaScript, Jekyll (GitHub Pages)
+Plan du site : https://lacreaturedumarais.fr/sitemap.xml
+Résumé pour les IA : https://lacreaturedumarais.fr/llms.txt

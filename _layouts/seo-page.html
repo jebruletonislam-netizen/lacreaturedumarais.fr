@@ -5,28 +5,32 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{ page.title | escape }}</title>
   <meta name="description" content="{{ page.description | escape }}">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="{{ page.robots | default: 'index,follow' }}">
   <meta name="theme-color" content="#000000">
-  <link rel="stylesheet" href="/egout.css?v=1">
+  <link rel="stylesheet" href="/egout.css?v=2">
   <link rel="canonical" href="{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}">
+  <link rel="alternate" hreflang="fr" href="{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}">
+  <link rel="alternate" hreflang="x-default" href="{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}">
   <link rel="icon" href="/images/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/seo-pages.css">
-  <meta property="og:type" content="{% if page.youtube_id %}video.other{% else %}website{% endif %}">
+  <link rel="stylesheet" href="/charte.css?v=1">
+  {% if page.albums_css %}<link rel="stylesheet" href="/albums.css?v=1">{% endif %}
+  <meta property="og:type" content="{% if page.youtube_id %}video.other{% elsif page.og_type %}{{ page.og_type }}{% else %}website{% endif %}">
   <meta property="og:title" content="{{ page.title | escape }}">
   <meta property="og:description" content="{{ page.description | escape }}">
   <meta property="og:url" content="{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}">
   <meta property="og:site_name" content="La Créature du Marais">
   <meta property="og:locale" content="fr_FR">
-  <meta property="og:image" content="{% if page.youtube_id %}https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg{% else %}https://lacreaturedumarais.fr/images/og-creature.jpg{% endif %}">
-  <meta property="og:image:alt" content="{% if page.youtube_id %}Miniature du clip {{ page.clip_title | escape }}{% else %}La Créature du Marais, Tancrède Charon en robe noire tenant une lance, sur fond rouge{% endif %}">
+  <meta property="og:image" content="{% if page.youtube_id %}https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg{% elsif page.og_image %}{{ page.og_image }}{% else %}https://lacreaturedumarais.fr/images/og-creature.jpg{% endif %}">
+  <meta property="og:image:alt" content="{% if page.youtube_id %}Miniature du clip {{ page.clip_title | escape }}{% elsif page.og_alt %}{{ page.og_alt | escape }}{% else %}La Créature du Marais, Tancrède Charon en robe noire tenant une lance, sur fond rouge{% endif %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ page.title | escape }}">
   <meta name="twitter:description" content="{{ page.description | escape }}">
-  <meta name="twitter:image" content="{% if page.youtube_id %}https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg{% else %}https://lacreaturedumarais.fr/images/og-creature.jpg{% endif %}">
+  <meta name="twitter:image" content="{% if page.youtube_id %}https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg{% elsif page.og_image %}{{ page.og_image }}{% else %}https://lacreaturedumarais.fr/images/og-creature.jpg{% endif %}">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -78,6 +82,8 @@
     "name": {{ page.clip_title | jsonify }},
     "description": {{ page.description | jsonify }},
     "thumbnailUrl": ["https://img.youtube.com/vi/{{ page.youtube_id }}/maxresdefault.jpg"],
+    {% if page.upload_date %}"uploadDate": "{{ page.upload_date }}",{% endif %}
+    {% if page.duration %}"duration": "{{ page.duration }}",{% endif %}
     "embedUrl": "https://www.youtube.com/embed/{{ page.youtube_id }}",
     "url": "https://lacreaturedumarais.fr{{ page.url }}",
     "inLanguage": "fr-FR",
@@ -99,11 +105,11 @@
       "itemListOrder": "https://schema.org/ItemListOrderDescending",
       "numberOfItems": 5,
       "itemListElement": [
-        {"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "In Odium Fidei", "url": "https://lacreaturedumarais.fr/#album-in-odium-fidei"}},
-        {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Confiteor", "url": "https://lacreaturedumarais.fr/confiteor.html"}},
-        {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Omerta434 : Chyren", "url": "https://lacreaturedumarais.fr/omerta434-chyren.html"}},
-        {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "Omerta434", "url": "https://lacreaturedumarais.fr/omerta434.html"}},
-        {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Les Machines Infernales", "url": "https://lacreaturedumarais.fr/les-machines-infernales.html"}}
+        {"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "In Odium Fidei", "url": "https://lacreaturedumarais.fr/discographie/in-odium-fidei/"}},
+        {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Confiteor", "url": "https://lacreaturedumarais.fr/discographie/confiteor/"}},
+        {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Omerta434 : Chyren", "url": "https://lacreaturedumarais.fr/discographie/omerta434-chyren/"}},
+        {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "Omerta434", "url": "https://lacreaturedumarais.fr/discographie/omerta434/"}},
+        {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Les Machines Infernales", "url": "https://lacreaturedumarais.fr/discographie/les-machines-infernales/"}}
       ]
     }
   }
@@ -116,12 +122,12 @@
       <a class="route-cre-link" href="/" aria-label="La Créature du Marais, accueil">
         <picture>
           <source media="(max-width:899px)" srcset="/images/entete-creature-v3.jpg">
-          <img src="/images/entete-creature-v4.jpg" alt="La Créature du Marais">
+          <img decoding="async" width="1600" height="900" src="/images/entete-creature-v4.webp" alt="La Créature du Marais">
         </picture>
       </a>
     </div>
     <div class="route-mid">
-      <img src="/images/entete-milieu.png" alt="Plateformes">
+      <img decoding="async" width="1700" height="479" src="/images/entete-milieu.webp" alt="Plateformes">
       <a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank" style="left:15.54%"></a>
       <a aria-label="Apple Musique" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank" style="left:25.69%"></a>
       <a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank" style="left:36.21%"></a>
@@ -131,12 +137,12 @@
       <a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank" style="left:77.82%"></a>
     </div>
     <a aria-label="Archives PUANTEUR PUTRIDE Productions" class="route-ppp" href="/#archives">
-      <img class="route-ppp-logo" src="/images/logo-ppp-entete.jpg" alt="PUANTEUR PUTRIDE Productions">
+      <img decoding="async" width="1233" height="590" class="route-ppp-logo" src="/images/logo-ppp-entete.webp" alt="PUANTEUR PUTRIDE Productions">
     </a>
     <div class="route-mobile-header-socials" aria-label="Réseaux sociaux">
-      <a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img src="/images/icone-instagram.png" alt=""></a>
-      <a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img src="/images/icone-spotify.png" alt=""></a>
-      <a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img src="/images/icone-youtube.png" alt=""></a>
+      <a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img decoding="async" width="152" height="152" src="/images/icone-instagram.webp" alt=""></a>
+      <a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img decoding="async" width="152" height="152" src="/images/icone-spotify.webp" alt=""></a>
+      <a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img decoding="async" width="152" height="152" src="/images/icone-youtube.webp" alt=""></a>
     </div>
   </header>
   <div class="route-wrap">
@@ -144,34 +150,40 @@
       <a href="/discographie/" aria-label="Discographie"><span class="route-nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><circle cx="32" cy="32" r="24"></circle><circle cx="32" cy="32" r="8"></circle><circle cx="32" cy="32" r="2"></circle><path d="M14 22a20 20 0 0 1 10-9M50 42a20 20 0 0 1-10 9"></path></svg></span><span class="route-nav-text">DISCOGRAPHIE</span></a>
       <a href="/biographie/" aria-label="Biographie"><span class="route-nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><rect height="46" rx="2" width="34" x="15" y="9"></rect><path d="M22 20h20M22 29h20M22 38h15M22 47h12"></path></svg></span><span class="route-nav-text">BIOGRAPHIE</span></a>
       <a href="/videos/" aria-label="Vidéos"><span class="route-nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><rect height="32" rx="3" width="48" x="8" y="16"></rect><path d="M26 24l16 8-16 8z"></path></svg></span><span class="route-nav-text">VIDÉOS</span></a>
-      <a href="/#nouvelles" aria-label="Nouvelles"><span class="route-nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><path d="M18 12h28v40H18z"></path><path d="M24 22h16M24 31h16M24 40h12"></path></svg></span><span class="route-nav-text">NOUVELLES</span></a>
+      <a href="/nouvelles/" aria-label="Nouvelles"><span class="route-nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><path d="M18 12h28v40H18z"></path><path d="M24 22h16M24 31h16M24 40h12"></path></svg></span><span class="route-nav-text">NOUVELLES</span></a>
       <a href="/contact/" aria-label="Contact"><span class="route-nav-icon"><svg aria-hidden="true" viewBox="0 0 64 64"><rect height="32" rx="3" width="46" x="9" y="16"></rect><path d="M11 19l21 17 21-17"></path></svg></span><span class="route-nav-text">CONTACT</span></a>
     </nav>
     <main class="route-main">
       <section class="route-content">
+        {% if page.crumb_title %}
+        <div class="crumbs" role="navigation" aria-label="Fil d'Ariane"><a href="/">Accueil</a>{% if page.crumb_parent %} <span aria-hidden="true">›</span> <a href="{{ page.crumb_parent_url }}">{{ page.crumb_parent }}</a>{% endif %} <span aria-hidden="true">›</span> <span aria-current="page">{{ page.crumb_title }}</span></div>
+        <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://lacreaturedumarais.fr/"}{% if page.crumb_parent %},{"@type":"ListItem","position":2,"name":{{ page.crumb_parent | jsonify }},"item":"https://lacreaturedumarais.fr{{ page.crumb_parent_url }}"},{"@type":"ListItem","position":3,"name":{{ page.crumb_title | jsonify }},"item":"{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}"}{% else %},{"@type":"ListItem","position":2,"name":{{ page.crumb_title | jsonify }},"item":"{{ page.canonical_url | default: page.url | prepend: 'https://lacreaturedumarais.fr' }}"}{% endif %}]}</script>
+        {% endif %}
         {{ content }}
       </section>
     </main>
   </div>
   <footer class="route-mobile-footer" aria-label="Réseaux sociaux et PUANTEUR PUTRIDE Productions">
     <div class="route-mobile-socials">
-      <a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank"><img src="/images/icone-deezer.png" alt=""></a>
-      <a aria-label="Apple Musique" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank"><img src="/images/icone-apple-music.png" alt=""></a>
-      <a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img src="/images/icone-spotify.png" alt=""></a>
-      <a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img src="/images/icone-instagram.png" alt=""></a>
-      <a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img src="/images/icone-youtube.png" alt=""></a>
-      <a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" target="_blank"><img src="/images/icone-x.png" alt=""></a>
-      <a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank"><img src="/images/icone-tiktok.png" alt=""></a>
+      <a aria-label="Deezer" href="https://www.deezer.com/fr/artist/110734722" rel="noopener" target="_blank"><img decoding="async" loading="lazy" width="152" height="152" src="/images/icone-deezer.webp" alt=""></a>
+      <a aria-label="Apple Musique" href="https://music.apple.com/fr/artist/cul-pointu/1535689871" rel="noopener" target="_blank"><img decoding="async" loading="lazy" width="152" height="152" src="/images/icone-apple-music.webp" alt=""></a>
+      <a aria-label="Spotify" href="https://open.spotify.com/artist/6TyTUlT9oP50a9Wdi4qc7J" rel="noopener" target="_blank"><img decoding="async" loading="lazy" width="152" height="152" src="/images/icone-spotify.webp" alt=""></a>
+      <a aria-label="Instagram" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank"><img decoding="async" loading="lazy" width="152" height="152" src="/images/icone-instagram.webp" alt=""></a>
+      <a aria-label="YouTube" href="https://www.youtube.com/@LaCreatureduMarais" rel="noopener" target="_blank"><img decoding="async" loading="lazy" width="152" height="152" src="/images/icone-youtube.webp" alt=""></a>
+      <a aria-label="X" href="https://x.com/TancredeCharon" rel="noopener" target="_blank"><img decoding="async" loading="lazy" width="152" height="152" src="/images/icone-x.webp" alt=""></a>
+      <a aria-label="TikTok" href="https://www.tiktok.com/@lacreaturedumarais" rel="noopener" target="_blank"><img decoding="async" loading="lazy" width="152" height="152" src="/images/icone-tiktok.webp" alt=""></a>
     </div>
-    <a aria-label="Archives PUANTEUR PUTRIDE Productions" class="route-mobile-ppp" href="/#archives"><img src="/images/logo-ppp-entete.jpg" alt="PUANTEUR PUTRIDE Productions"></a>
+    <a aria-label="Archives PUANTEUR PUTRIDE Productions" class="route-mobile-ppp" href="/#archives"><img decoding="async" loading="lazy" width="1233" height="590" src="/images/logo-ppp-entete.webp" alt="PUANTEUR PUTRIDE Productions"></a>
   </footer>
   <footer class="route-footer">
-    <img class="route-footer-title" src="/images/pied-titre.png" alt="La Créature du Marais — Cul-Pointu">
+    <img decoding="async" loading="lazy" width="1400" height="283" class="route-footer-title" src="/images/pied-titre.webp" alt="La Créature du Marais — Cul-Pointu">
     <p class="route-footer-copyright">© MMXXVI</p>
     <a class="egout" href="/mode-putride/accueil/" data-slime="down" aria-label="Entrer dans l’égout : mode putride"><svg viewBox="0 0 80 84" aria-hidden="true" focusable="false"><g class="eg-lid" transform="rotate(24 66 30)"><ellipse cx="66" cy="30" rx="9.5" ry="16" fill="#000"/><ellipse cx="66" cy="30" rx="6" ry="10.5"/><path d="M66 14v32M57.5 30h17M59.5 21h13M59.5 39h13"/></g><ellipse cx="40" cy="55" rx="29" ry="10.5" fill="#000"/><ellipse cx="40" cy="55" rx="22.5" ry="7.5" fill="#000"/><path class="eg-f eg-b" d="M18 55C18 47 27 45 31 49C33 41 47 41 49 49C55 45 62 48 62 55A22 7.5 0 0 1 18 55Z"/><path class="eg-s" d="M25 60.500v4M40 62.500v4M54 60v3"/><path class="eg-d" style="animation-delay:0s" d="M25 66 c-1.7 2.3-2.5 3.6-2.5 4.8a2.5 2.5 0 0 0 5 0c0-1.2-.8-2.5-2.5-4.8z"/><path class="eg-d" style="animation-delay:1.2s" d="M40 68 c-1.7 2.3-2.5 3.6-2.5 4.8a2.5 2.5 0 0 0 5 0c0-1.2-.8-2.5-2.5-4.8z"/><path class="eg-d" style="animation-delay:2.4s" d="M54 63 c-1.7 2.3-2.5 3.6-2.5 4.8a2.5 2.5 0 0 0 5 0c0-1.2-.8-2.5-2.5-4.8z"/></svg><span>ENTRER DANS L’ÉGOUT</span></a>
   </footer>
   <script src="/lightbox.js"></script>
   <script src="/navdrag.js"></script>
+  <script src="/egout.js?v=1"></script>
+  {% if page.player %}<script src="/putride-genius.js?v=2"></script><script src="/lecteur.js?v=4"></script><script src="/titres.js?v=1"></script>{% endif %}
   <script src="/slime.js?v=2"></script>
 <script src="/apercu.js" defer></script>
 </body>

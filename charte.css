@@ -1,0 +1,24 @@
+/* Charte graphique commune au site normal et au mode putride (jetons de design).
+   Le site normal est rouge/jaune/bleu nuit, le mode putride vert/violet : mêmes polices, mêmes ombres, mêmes proportions de liens. */
+:root{
+  --c-black:#000;
+  --c-white:#fff;
+  --c-yellow:#fc0;           /* liens, titres, boutons au survol */
+  --c-red:#f00;              /* site normal : bordures, boutons, accent */
+  --c-green:#39ff6e;         /* mode putride : bordures, accent */
+  --c-violet:#9608f8;        /* mode putride : titres, piliers, logos */
+  --c-violet-light:#c58bff;
+  --c-night:#000080;         /* site normal : fond de texte */
+  --f-title:"Religath","Religath Ligatures","Cinzel",Georgia,serif;
+  --f-ui:"Bebas Neue","Arial Narrow",Impact,sans-serif;
+  --shadow-text:0 1px 2px rgba(0,0,0,.8);
+  --shadow-glow-red:0 0 .7rem rgba(255,0,0,.55);
+  --shadow-glow-green:0 0 .7rem rgba(57,255,110,.5);
+  --shadow-glow-violet:0 0 .8rem rgba(197,139,255,.6);
+  --link-size:1em;           /* lien dans un texte courant */
+  --link-size-attr:.8em;     /* lien dans les attributs d'une fiche (plus petit que l'intitulé, lisible) */
+  --border-thick:.5rem;      /* trait des bandeaux */
+  --border-thin:.2rem;       /* trait des boutons et cadres */
+}
+/* images avec dimensions explicites : la hauteur reste proportionnelle sauf si une règle plus spécifique en décide autrement */
+:where(img[width][height]){height:auto}
