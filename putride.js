@@ -378,6 +378,7 @@
       var a=Math.max(m.left,0)+10,b=Math.min(m.right,innerWidth-16)-10,floor=isM()?innerHeight-bOff()-lvl:m.bottom-lvl;
       /* sous les barres du haut, ce sont les coulures de la nappe qui lachent les gouttes (cf. plus bas) */
       Array.prototype.forEach.call(document.querySelectorAll('main h2'),function(e){var q=e.getBoundingClientRect();if(q.bottom>180&&q.bottom<Math.min(innerHeight,floor)-120)r.push({y:q.bottom-2,a:q.left+10,b:Math.min(q.right,q.left+400)});});
+      Array.prototype.forEach.call(document.querySelectorAll('main .rtfig'),function(e){var q=e.getBoundingClientRect();if(q.bottom>180&&q.bottom<Math.min(innerHeight,floor)-120)r.push({y:q.bottom-2,a:q.left+10,b:q.right-10});});
       return r;
     }
     function splash(x,y,w){
