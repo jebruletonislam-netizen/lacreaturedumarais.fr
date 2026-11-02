@@ -19,7 +19,7 @@ a{color:inherit}
 header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bottom:.5rem solid var(--g);background:#000;overflow:hidden}
 .cre{flex:1 1 0;min-width:0;height:14.3125rem;background:#000;display:flex;justify-content:flex-start;overflow:hidden}
 .cre a,.cre picture{display:block;height:100%}
-.cre a{flex:none;width:calc(14.3125rem*16/9)}
+.cre a{flex:none;width:calc(14.3125rem*1117/576)}
 .cre picture{width:100%}
 .cre img{height:100%;width:100%;object-fit:cover;object-position:left center;display:block}
 .mid{position:relative;flex:none;width:52.9rem;height:14.3125rem}
@@ -107,7 +107,7 @@ main{position:relative}
   .msoc{display:flex;flex:1;flex-wrap:nowrap;align-items:center;justify-content:center;gap:.3rem;padding:0 .6rem 0 1rem;min-width:0}
   .msoc a{display:block;flex:0 1 2.4rem;min-width:0;aspect-ratio:1}
   .msoc img{display:block;width:100%;height:100%;object-fit:contain}
-  .cre{flex:0 0 auto;width:auto;height:100%;aspect-ratio:1600/825}
+  .cre{flex:0 0 auto;width:auto;height:100%;aspect-ratio:1117/576}
   .cre a{flex:none;width:100%;height:100%}
   .cre picture{width:100%;height:100%}
   .cre img{width:100%;height:100%;object-fit:cover;object-position:left center}
@@ -498,9 +498,9 @@ header{overflow:visible}
 /* en-tête (ordi) : au survol, lueur verte qui épouse exactement les motifs */
 @media (min-width:900px){
 .mid a{overflow:visible}
-.mid a::before{content:"";position:absolute;inset:-.9rem;background:url(images/putride/lueur-plateformes.webp) no-repeat;background-size:52.9rem 14.3125rem;background-position:calc(.9rem - var(--ax,0rem)) calc(.9rem - 9.5965rem);mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
+.mid a::before{content:"";position:absolute;inset:-2.4rem;background:url(images/putride/lueur-plateformes.webp?v=2) no-repeat;background-size:52.9rem 14.3125rem;background-position:calc(2.4rem - var(--ax,0rem)) calc(2.4rem - 9.5965rem);mix-blend-mode:screen;-webkit-mask-image:radial-gradient(circle closest-side,#000 60%,transparent 100%);mask-image:radial-gradient(circle closest-side,#000 60%,transparent 100%);opacity:0;transition:opacity .25s;pointer-events:none}
 .mid a:hover::before,.mid a:focus-visible::before{opacity:1}
-.mid a:hover,.mid a:focus-visible{box-shadow:none;outline:0}
+.mid a:hover,.mid a:focus-visible{box-shadow:0 0 .9rem rgba(57,255,110,.55),inset 0 0 .8rem rgba(57,255,110,.5);outline:0}
 .mid a[aria-label="Deezer"]{--ax:8.221rem}.mid a[aria-label="Apple Musique"]{--ax:13.590rem}.mid a[aria-label="Spotify"]{--ax:19.155rem}.mid a[aria-label="Instagram"]{--ax:24.551rem}.mid a[aria-label="YouTube"]{--ax:30.206rem}.mid a[aria-label="X"]{--ax:35.745rem}.mid a[aria-label="TikTok"]{--ax:41.167rem}
 .ppp::after{content:"";position:absolute;right:calc(2.71rem - 0.698rem);top:calc(2.31rem - 0.698rem);height:calc(8.93rem + 1.396rem);aspect-ratio:1379/710;max-width:calc(100% - 3.4rem + 1.396rem);background:url(images/putride/lueur-ppp.webp) right center/contain no-repeat;mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
 .ppp:hover::after,.ppp:focus-visible::after{opacity:1}

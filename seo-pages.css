@@ -177,9 +177,9 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 /* en-tête (ordi) : au survol, lueur rouge qui épouse exactement les motifs */
 @media (min-width:900px){
 .route-mid>a{overflow:visible}
-.route-mid>a::before{content:"";position:absolute;inset:-.9rem;background:url(/images/lueur-plateformes.webp) no-repeat;background-size:52.9rem 14.3125rem;background-position:calc(.9rem - var(--ax,0rem)) calc(.9rem - 9.5965rem);mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
+.route-mid>a::before{content:"";position:absolute;inset:-2.4rem;background:url(/images/lueur-plateformes.webp?v=2) no-repeat;background-size:52.9rem 14.3125rem;background-position:calc(2.4rem - var(--ax,0rem)) calc(2.4rem - 9.5965rem);mix-blend-mode:screen;-webkit-mask-image:radial-gradient(circle closest-side,#000 60%,transparent 100%);mask-image:radial-gradient(circle closest-side,#000 60%,transparent 100%);opacity:0;transition:opacity .25s;pointer-events:none}
 .route-mid>a:hover::before,.route-mid>a:focus-visible::before{opacity:1}
-.route-mid>a:hover,.route-mid>a:focus-visible{box-shadow:none;outline:0}
+.route-mid>a:hover,.route-mid>a:focus-visible{box-shadow:0 0 .9rem rgba(255,40,40,.55),inset 0 0 .8rem rgba(255,40,40,.5);outline:0}
 .route-mid>a[aria-label="Deezer"]{--ax:8.221rem}.route-mid>a[aria-label="Apple Musique"]{--ax:13.590rem}.route-mid>a[aria-label="Spotify"]{--ax:19.155rem}.route-mid>a[aria-label="Instagram"]{--ax:24.551rem}.route-mid>a[aria-label="YouTube"]{--ax:30.206rem}.route-mid>a[aria-label="X"]{--ax:35.745rem}.route-mid>a[aria-label="TikTok"]{--ax:41.167rem}
 .route-ppp::after{content:"";position:absolute;right:calc(2.71rem - 0.727rem);top:calc(2.31rem - 0.727rem);height:calc(8.93rem + 1.453rem);aspect-ratio:1329/686;max-width:calc(100% - 3.4rem + 1.453rem);background:url(/images/lueur-ppp.webp) right center/contain no-repeat;mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
 .route-ppp:hover::after,.route-ppp:focus-visible::after{opacity:1}
