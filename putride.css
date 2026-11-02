@@ -543,3 +543,14 @@ header{overflow:visible}
 .vthumb>a:hover .vplay{background:var(--g);color:#000}
 /* phrase d'accroche en tête de fiche */
 .accroche{margin:.1rem 0 .9rem;color:var(--c-violet-light,#c58bff);font-size:1.12em;line-height:1.3;font-style:italic;max-width:62rem}
+/* fiches : portraits-emblèmes, textes longs, listes */
+.pf.emb{display:grid;place-items:center;color:var(--g)}
+.pf.emb svg{width:64%;height:64%;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 .5rem rgba(57,255,110,.6))}
+.rsec{display:flow-root;max-width:80rem}
+.rsec h2{margin:1.6rem 0 .5rem}
+.rsec p,.rsec li{line-height:1.55}
+.rlist{margin:.6rem 0 1rem 1.2rem;padding:0}
+.rlist li{margin:.55rem 0}
+.rsec .rsrc{font-size:.85em;opacity:.85}
+/* carte du Territoire : centrée à l'écran, elle tient en entier entre l'en-tête fixe et le bas de la fenêtre (ordinateur) */
+@media (min-width:900px){.map{aspect-ratio:auto;max-width:80rem;height:min(max(18rem,calc(100vh - 30.625rem)),50rem)}}
