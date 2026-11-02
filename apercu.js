@@ -4,21 +4,21 @@
   window.__apercu = 1;
 
   var fine = matchMedia('(hover:hover) and (pointer:fine)');
-  var PUT = !!document.querySelector('link[href$="putride.css"]');
+  var PUT = !!document.querySelector('link[href*="putride.css"]');
   var ACC = PUT ? (getComputedStyle(document.documentElement).getPropertyValue('--g').trim() || '#39ff6a') : '#ff0000';
   var GLOW = PUT ? 'rgba(57,255,106,.35)' : 'rgba(255,0,0,.4)';
   var PROD = 'https://lacreaturedumarais.fr';
 
   var st = document.createElement('style');
   st.textContent =
-    '.ap{position:fixed;left:0;top:0;z-index:99990;width:250px;max-width:calc(100vw - 24px);background:linear-gradient(180deg,rgba(14,0,0,.97),rgba(0,0,0,.98));color:#fff;border:1px solid ' + ACC + ';border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.75),0 0 12px ' + GLOW + ';text-shadow:0 1px 2px #000;pointer-events:none;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(5px);transition:opacity .16s,transform .16s,visibility 0s .16s;text-align:left;font-size:13px;line-height:1.35;letter-spacing:0;text-transform:none}' +
+    '.ap{position:fixed;left:0;top:0;z-index:99990;width:250px;max-width:calc(100vw - 24px);background:linear-gradient(180deg,rgba(14,0,0,.97),rgba(0,0,0,.98));color:#fff;border:1px solid ' + ACC + ';border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.75),0 0 12px ' + GLOW + ';text-shadow:0 1px 2px #000;pointer-events:none;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(5px);transition:opacity .16s,transform .16s,visibility 0s .16s;text-align:left;font:400 13px/1.35 "Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-variant:normal;letter-spacing:0;text-transform:none}' +
     '.ap.on{opacity:1;visibility:visible;transform:none;transition:opacity .16s,transform .16s}' +
     '.ap-i{display:block;width:100%;height:auto;max-height:110px;object-fit:contain;background:#000}' +
     '.ap-b{padding:9px 12px 10px}' +
     '.ap-k,.ap-t,.ap-f{font-family:"Bebas Neue",Impact,sans-serif;font-weight:400}' +
     '.ap-k{font-size:11px;line-height:1;letter-spacing:.24em;color:' + ACC + ';opacity:.9}' +
     '.ap-t{display:inline-block;max-width:100%;margin:5px 0 0;padding-bottom:2px;font-size:19px;line-height:1.05;letter-spacing:.04em;text-transform:uppercase;overflow-wrap:anywhere;border-bottom:1px solid ' + ACC + '}' +
-    '.ap-p{margin:7px 0 0;font-size:13px;line-height:1.35;color:#e6e6e6}' +
+    '.ap-p{margin:7px 0 0;font-size:13px;line-height:1.35;color:#e6e6e6;text-transform:none}' +
     '.ap-f{margin-top:8px;font-size:11px;line-height:1;letter-spacing:.14em;opacity:.55;overflow-wrap:anywhere}' +
     '@media (prefers-reduced-motion:reduce){.ap,.ap.on{transition:none;transform:none}}';  document.head.appendChild(st);
 
@@ -104,8 +104,20 @@
         list = list.concat(n.tagName === 'P' ? [n] : [].slice.call(n.querySelectorAll('p')));
       }
     } else list = [].slice.call(root.querySelectorAll('p'));
-    for (i = 0; i < list.length; i++) { var t = txt(list[i]); if (t.length >= 40) return t; }
+    for (i = 0; i < list.length; i++) {
+      if (list[i].matches('.trn,.kicker,.back,.lostnote,.note,.voixnone,.sr')) continue;
+      var t = txt(list[i]); if (t.length >= 40) return t;
+    }
     return '';
+  }
+  function pageText(d, main) {
+    var md = d.querySelector('meta[name="description"]');
+    if (md && md.content.trim()) return md.content.trim();
+    var ac = main.querySelector('.accroche');
+    if (ac && txt(ac).length >= 20) return txt(ac);
+    var am = main.querySelector('.alp .am'), ln = main.querySelector('.alp .lostnote');
+    if (am && txt(am)) return txt(am) + (ln && txt(ln) ? ' · ' + txt(ln) : '');
+    return firstP(main, false);
   }
   function pickImg(root, base) {
     var imgs = root.querySelectorAll('img'), i, s;
@@ -133,8 +145,7 @@
       var ptitle = txt(main.querySelector('h1')) || txt(d.querySelector('title')).split(' | ')[0];
       if (!el) title = ptitle; else if (!title) title = ptitle;
       if (!text && !el) {
-        var md = d.querySelector('meta[name="description"]');
-        text = (!el && md && md.content) ? md.content.trim() : firstP(main, false);
+        text = pageText(d, main);
       }
     }
     if (!img) {
