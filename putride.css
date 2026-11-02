@@ -514,5 +514,7 @@ header{overflow:visible}
 .fiche2 h3.sub+p{font-size:var(--link-size-attr,.8em);line-height:1.4}
 .fiche2 dd{font-size:.88em;line-height:1.35}
 @media (max-width:899px){.fiche2 h3.sub+p{font-size:.9em}.fiche2 dd{font-size:.95em}}
+/* paragraphe de texte courant placé juste après un sous-titre de fiche */
+.fiche2 h3.sub+p.prose{font-size:1em;line-height:1.5}
 /* phrase d'accroche en tête de fiche */
 .accroche{margin:.1rem 0 .9rem;color:var(--c-violet-light,#c58bff);font-size:1.12em;line-height:1.3;font-style:italic;max-width:62rem}
