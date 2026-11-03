@@ -6,7 +6,7 @@
   var fine = matchMedia('(hover:hover) and (pointer:fine)');
   var PUT = !!document.querySelector('link[href*="putride.css"]');
   var ACC = PUT ? (getComputedStyle(document.documentElement).getPropertyValue('--g').trim() || '#39ff6a') : '#ff0000';
-  var GLOW = PUT ? 'rgba(57,255,106,.35)' : 'rgba(255,0,0,.4)';
+  var GLOW = PUT ? (document.body.classList.contains('cachot') ? 'rgba(255,255,255,.3)' : 'rgba(57,255,106,.35)') : 'rgba(255,0,0,.4)';
   var PROD = 'https://lacreaturedumarais.fr';
 
   var st = document.createElement('style');

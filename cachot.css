@@ -1,0 +1,210 @@
+/* Mode Cachot : le site de PUANTEUR PUTRIDE, sous les égouts.
+   Squelette identique au mode putride (cachot-base.css, déjà en noir et blanc) ; ce fichier construit le cachot :
+   murs de pierre, fenêtre à barreaux, plaques de fer rivetées, cadre de fer.
+   Palette : noir et blanc en écrasante majorité, rouge et jaune en simples touches (titres, repères) ; le bleu est réservé à des cas très rares. */
+:root{--cadre:rgba(255,255,255,.5)}
+html,body{background:#000}
+.cachot{--brique:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='80'%3E%3Cpath d='M0 1H160M0 41H160M1 0V40M81 40V80' fill='none' stroke='%23ffffff' stroke-opacity='.075' stroke-width='2'/%3E%3C/svg%3E")}
+
+/* ---------- en-tête : logo blanc, piliers qui pleurent de part et d'autre de la croix ---------- */
+.cachot .cre{display:flex;align-items:center;background:#000}
+.cachot .cre a{display:block;flex:none;width:auto;height:100%;padding:1.1rem 0 1.1rem 2.6rem}
+.cachot .cre img{display:block;width:auto;height:100%;object-fit:contain;filter:drop-shadow(0 0 .8rem rgba(255,255,255,.28))}
+.cachot .mid.cr-mid{display:flex;align-items:center;justify-content:space-between;width:36rem;padding:0 1.4rem}
+.cachot .cr-mid>img.cr-pil{display:block;width:auto;height:100%;flex:none}
+.cachot .cr-mid>img.cr-pil.mir{transform:scaleX(-1)}
+.cachot .cr-mid .cr-croix{position:static;display:grid;place-items:center;width:9rem;height:9rem;border-radius:50%;color:#fff;text-decoration:none;transition:color .25s,filter .25s,transform .25s}
+.cachot .cr-croix svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;filter:drop-shadow(0 0 .45rem rgba(255,255,255,.65));animation:cr-pouls 4.6s ease-in-out infinite}
+.cachot .cr-croix .cr-c{stroke-width:1.9}
+.cachot .cr-croix .cr-x{stroke-width:2.6;stroke-linecap:square}
+.cachot .cr-mid .cr-croix:hover,.cachot .cr-mid .cr-croix:focus-visible{color:var(--rouge);transform:scale(1.06);outline:0}
+.cachot .cr-croix:hover svg,.cachot .cr-croix:focus-visible svg{filter:drop-shadow(0 0 .7rem rgba(225,0,25,.85))}
+@keyframes cr-pouls{0%,100%{opacity:.82}50%{opacity:1}}
+.cachot .cr-cote{flex:1 1 0;min-width:0}
+
+/* ---------- navigation : plaques de fer rivetées, grille de cachot en bas ---------- */
+.cachot nav{grid-template-rows:repeat(3,11rem) minmax(8rem,1fr);background:#0b0b0b;border-right:.9rem solid #1b1b1b;box-shadow:inset -.14rem 0 0 rgba(255,255,255,.3)}
+.cachot nav a{position:relative;border-bottom:.5rem solid #1b1b1b;transition:background .2s;
+  background:
+    radial-gradient(circle at left 1.3rem top 1.3rem,#cfcfcf 0 .26rem,#303030 .3rem .5rem,transparent .55rem),
+    radial-gradient(circle at right 1.3rem top 1.3rem,#cfcfcf 0 .26rem,#303030 .3rem .5rem,transparent .55rem),
+    radial-gradient(circle at left 1.3rem bottom 1.3rem,#cfcfcf 0 .26rem,#303030 .3rem .5rem,transparent .55rem),
+    radial-gradient(circle at right 1.3rem bottom 1.3rem,#cfcfcf 0 .26rem,#303030 .3rem .5rem,transparent .55rem),
+    linear-gradient(#171717,#0a0a0a)}
+.cachot nav a:hover{background-color:#222}
+.cachot nav a[aria-current]{background:
+    radial-gradient(circle at left 1.3rem top 1.3rem,#555 0 .26rem,#bbb .3rem .5rem,transparent .55rem),
+    radial-gradient(circle at right 1.3rem top 1.3rem,#555 0 .26rem,#bbb .3rem .5rem,transparent .55rem),
+    radial-gradient(circle at left 1.3rem bottom 1.3rem,#555 0 .26rem,#bbb .3rem .5rem,transparent .55rem),
+    radial-gradient(circle at right 1.3rem bottom 1.3rem,#555 0 .26rem,#bbb .3rem .5rem,transparent .55rem),
+    #fff}
+.cachot nav a[aria-current] .nav-txt,.cachot nav a[aria-current] .nav-icon{color:#000;text-shadow:none}
+.cachot .nav-txt{font-family:"Cinzel",Georgia,serif;font-weight:700;font-size:2.6rem;letter-spacing:.14em;text-shadow:none}
+.cachot .nav-icon svg{filter:none}
+.cachot .cr-grille{border-bottom:0;background:
+    radial-gradient(ellipse 70% 60% at 50% 30%,rgba(255,255,255,.14),transparent 70%),
+    repeating-linear-gradient(90deg,transparent 0 2.2rem,#2a2a2a 2.2rem 2.9rem,transparent 2.9rem 5.1rem),#050505}
+
+/* ---------- page : mur de pierre, fenêtre à barreaux, cadre de fer ---------- */
+.cachot main{padding:3.2rem 3.4rem 4.6rem;background-color:#0b0b0b;background-image:
+  linear-gradient(to right,#000,transparent 5rem,transparent calc(100% - 5rem),#000),
+  linear-gradient(to bottom,#000,transparent 4rem,transparent calc(100% - 4rem),#000),
+  radial-gradient(ellipse 60% 34% at 78% 0,rgba(255,255,255,.12),transparent 72%),
+  var(--brique);
+  background-size:100% 100%,100% 100%,100% 100%,16rem 8rem;background-repeat:no-repeat,no-repeat,no-repeat,repeat}
+.cachot main::before{content:"";position:absolute;right:4.2rem;top:3rem;width:min(21rem,33%);aspect-ratio:3/4;border-radius:50% 50% 0 0/36% 36% 0 0;border:.5rem solid #1d1d1d;opacity:.55;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(90deg,#000 0 .5rem,transparent .5rem 3.5rem),var(--astre,none) center/cover no-repeat,#040404;
+  box-shadow:inset 0 0 2.4rem #000,0 0 0 .13rem rgba(255,255,255,.4),0 0 4rem rgba(255,255,255,.08)}
+.cachot main::after{content:"";position:absolute;inset:1rem;border:.5rem solid #1b1b1b;pointer-events:none;z-index:2;
+  box-shadow:inset 0 0 0 .12rem rgba(255,255,255,.42),0 0 0 .12rem rgba(255,255,255,.16);
+  background:
+    radial-gradient(circle at 1.2rem 1.2rem,#d0d0d0 0 .3rem,#2c2c2c .34rem .55rem,transparent .6rem),
+    radial-gradient(circle at calc(100% - 1.2rem) 1.2rem,#d0d0d0 0 .3rem,#2c2c2c .34rem .55rem,transparent .6rem),
+    radial-gradient(circle at 1.2rem calc(100% - 1.2rem),#d0d0d0 0 .3rem,#2c2c2c .34rem .55rem,transparent .6rem),
+    radial-gradient(circle at calc(100% - 1.2rem) calc(100% - 1.2rem),#d0d0d0 0 .3rem,#2c2c2c .34rem .55rem,transparent .6rem)}
+.cachot main>*{position:relative;z-index:1}
+.cachot .kicker{display:inline-block;margin:0 0 1.1rem;padding:.2rem 1.1rem .1rem;background:var(--rouge);color:#fff;font-size:1.25rem;letter-spacing:.34em;text-shadow:none}
+.cachot h1{font-family:"Cinzel",Georgia,serif;font-weight:700;font-size:4.2rem;line-height:1.08;letter-spacing:.1em;text-shadow:none;margin:0 0 1.6rem;animation:cr-glitch 5.2s steps(1,end) infinite}
+@keyframes cr-glitch{0%,89%,100%{text-shadow:none}90%{text-shadow:-.05em 0 var(--rouge),.05em 0 var(--jaune)}92%{text-shadow:.07em 0 var(--rouge),-.06em 0 var(--jaune)}94%{text-shadow:-.03em 0 var(--rouge),.03em 0 var(--jaune)}96%{text-shadow:none}}
+.cachot h2{position:relative;font-family:"Cinzel",Georgia,serif;font-weight:700;font-size:2.1rem;letter-spacing:.1em;margin:3rem 0 1.5rem;padding-bottom:.9rem;border-bottom:.18rem solid #fff;text-shadow:none}
+.cachot h2::after{content:"";position:absolute;left:0;bottom:-.5rem;width:7rem;height:.5rem;background:var(--rouge)}
+.cachot h3{font-family:"Cinzel",Georgia,serif;font-weight:700;letter-spacing:.08em}
+.cachot .lead-title{display:block;margin:0 0 1.6rem;font-size:2.1rem;letter-spacing:.14em;text-shadow:none}
+.cachot .role{color:var(--jaune);letter-spacing:.22em}
+.cachot .accroche{color:#f1f1f1;border-left:.3rem solid var(--rouge);padding-left:1rem}
+.cachot .sub{color:var(--rouge);letter-spacing:.14em}
+.cachot .fiche2 .pf{outline:.1rem solid rgba(255,255,255,.35);outline-offset:.45rem;background:radial-gradient(circle at 50% 42%,#1b1b1b,#000 76%)}
+.cachot .pf.emb img{width:64%;height:64%;object-fit:contain;margin:auto}
+.cachot .pf.emb.plein img{width:100%;height:100%}
+.cachot .note{border-left-color:var(--rouge);color:#cfcfcf}
+.cachot .rlist li::marker{color:var(--rouge)}
+.cachot .lk{color:var(--jaune)}
+.cachot .lk:hover{color:#fff}
+.cachot .btn{font-family:"Cinzel",Georgia,serif;font-weight:700;letter-spacing:.12em;font-size:1.3rem}
+.cachot .btn:hover{background:var(--jaune);color:#000;border-color:var(--jaune)}
+.cachot .btn.rouge{border-color:var(--rouge);color:#fff;background:var(--rouge)}
+.cachot .btn.rouge:hover{background:#fff;color:var(--rouge);border-color:#fff}
+
+/* ---------- pied de page : deux échappées ---------- */
+.cachot .pfoot{border-top:.5rem solid #fff;box-shadow:0 -.18rem 0 var(--rouge);padding-bottom:1.4rem}
+.cachot .pfoot p.sf-c{font-family:"Cinzel",Georgia,serif;font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:1.3rem;margin-top:1.6rem}
+.cachot .pfoot .pup{margin:1rem .5rem 0}
+.cachot .pfoot .pup.chateau{border-style:solid}
+
+/* ---------- cartes de rubrique : aplat noir, coin rouge, inversion au survol ---------- */
+.cachot .rub article{position:relative;overflow:hidden;background:#000;border-width:.2rem;box-shadow:none;transition:background .2s,color .2s,transform .2s,box-shadow .2s}
+.cachot .rub article::before{content:"";position:absolute;left:0;top:0;width:2.1rem;height:2.1rem;background:var(--rouge);clip-path:polygon(0 0,100% 0,0 100%)}
+.cachot .rub article:hover{background:#fff;color:#000;border-color:#fff;transform:translate(-.2rem,-.2rem);box-shadow:.5rem .5rem 0 var(--rouge)}
+.cachot .rub article:hover :is(h3,p){color:#000;text-shadow:none}
+.cachot .rub article:hover svg{stroke:#000}
+.cachot .rub h3{font-size:1.9rem}
+
+/* ---------- affiches et armes ---------- */
+.affiches{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1.6rem;margin:1.2rem 0 2rem;max-width:84rem;align-items:start}
+.aff{position:relative;margin:0;padding:.6rem;background:#000;border:.15rem solid #fff}
+.aff::before{content:"";position:absolute;left:0;top:0;width:1.6rem;height:1.6rem;background:var(--rouge);clip-path:polygon(0 0,100% 0,0 100%);z-index:2}
+.aff img{display:block;width:100%;height:auto}
+.aff figcaption{padding:.6rem .2rem .1rem;font:500 .8em/1.4 "Cinzel",Georgia,serif;letter-spacing:.04em;color:#e8e8e8}
+.armes{display:grid;grid-template-columns:repeat(2,minmax(0,18rem));gap:1.6rem;margin:1.2rem 0 2rem}
+.armes figure{margin:0;padding:.6rem;background:#000;border:.15rem solid #fff}
+.armes img{display:block;width:100%;height:auto}
+.armes figcaption{padding:.5rem .2rem .1rem;font:500 .8em/1.4 "Cinzel",Georgia,serif;color:#e8e8e8}
+.cachot .rfig{padding:.6rem;background:#000;border:.15rem solid #fff}
+.cachot .rfig figcaption{font:500 .8em/1.4 "Cinzel",Georgia,serif;color:#e8e8e8}
+
+/* ---------- vidéos : vignette en niveaux de gris, lecteur chargé au clic ---------- */
+.fv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem;margin:.9rem 0 1.8rem;max-width:84rem}
+.fv-grid.wide{grid-template-columns:minmax(0,46rem)}
+.fv-item{position:relative;min-width:0;margin:0;padding:.5rem;background:#000;border:.15rem solid #fff;transition:box-shadow .2s,transform .2s}
+.fv-item:hover{transform:translate(-.15rem,-.15rem);box-shadow:.4rem .4rem 0 var(--rouge)}
+.fv{all:unset;display:block;position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;cursor:pointer;background:#000}
+.fv:focus-visible{outline:.2rem solid var(--jaune)}
+.fv img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15) brightness(.82);transition:filter .3s,transform .5s}
+.fv:hover img,.fv:focus-visible img{filter:grayscale(.05) contrast(1.05) brightness(1);transform:scale(1.03)}
+.fv-play{position:absolute;left:50%;top:50%;width:4.4rem;height:4.4rem;margin:-2.2rem 0 0 -2.2rem;display:grid;place-items:center;border:.2rem solid #fff;border-radius:50%;background:rgba(0,0,0,.78);color:#fff;font-size:1.5rem;padding-left:.2rem;transition:.2s}
+.fv:hover .fv-play,.fv:focus-visible .fv-play{background:var(--rouge);border-color:var(--rouge)}
+.fv-item figcaption{padding:.5rem .2rem .15rem;color:#ececec;font-size:.95rem;line-height:1.4}
+.fv-item .vfr{border:0}
+
+/* ---------- la tombe de Kavod : pierre au néon, brume, cierges et fleurs ---------- */
+.tombe{position:relative;aspect-ratio:8/5;max-width:84rem;margin:1.4rem 0 1rem;overflow:hidden;background:#000;border:.2rem solid #fff;box-shadow:0 0 0 .5rem #000,0 0 0 .62rem rgba(255,255,255,.35),0 0 3rem rgba(255,255,255,.1)}
+.tombe>*{position:absolute}
+.tb-ciel{inset:0;background:radial-gradient(ellipse 90% 70% at 72% 8%,rgba(255,255,255,.12),transparent 60%),linear-gradient(#000,#070707 70%,#101010)}
+.tb-lune{right:9%;top:5%;width:15%;height:auto;aspect-ratio:1;opacity:.95;mix-blend-mode:screen;-webkit-mask-image:radial-gradient(circle,#000 38%,transparent 70%);mask-image:radial-gradient(circle,#000 38%,transparent 70%);animation:tb-lune 9s ease-in-out infinite}
+@keyframes tb-lune{0%,100%{opacity:.8}50%{opacity:1}}
+.tb-etoiles{inset:0;pointer-events:none}
+.tb-etoiles i{position:absolute;width:.18rem;height:.18rem;border-radius:50%;background:#fff;opacity:.2;animation:tb-scint 4s ease-in-out infinite}
+@keyframes tb-scint{0%,100%{opacity:.1}50%{opacity:.95}}
+.tb-scene{inset:0;width:100%;height:100%}
+.tb-scene .fond{fill:none;stroke:#fff;stroke-opacity:.22;stroke-width:1.4}
+.tb-scene .grille{fill:none;stroke:#fff;stroke-opacity:.5;stroke-width:2.2;filter:drop-shadow(0 0 3px rgba(255,255,255,.55))}
+.tb-scene .stele-ext{fill:#050505;stroke:#fff;stroke-width:3.4;stroke-linejoin:round;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 14px rgba(255,255,255,.55))}
+.tb-scene .stele-int{fill:none;stroke:#fff;stroke-opacity:.6;stroke-width:1.3}
+.tb-scene .croix{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:square;filter:drop-shadow(0 0 6px #fff)}
+.tb-scene .nom{font-family:"Cinzel",Georgia,serif;font-weight:700;fill:#fff;filter:drop-shadow(0 0 5px rgba(255,255,255,.8))}
+.tb-scene .filet{stroke:var(--rouge);stroke-width:3;filter:drop-shadow(0 0 5px var(--rouge))}
+.tb-scene .dates{font-family:"Cinzel",Georgia,serif;font-weight:500;fill:#fff;filter:drop-shadow(0 0 4px rgba(255,255,255,.7))}
+.tb-scene .ere{font-family:"Cinzel",Georgia,serif;font-weight:500;fill:var(--jaune);filter:drop-shadow(0 0 4px rgba(255,204,0,.6))}
+.tb-scene .motte{fill:#050505;stroke:#fff;stroke-opacity:.7;stroke-width:2;filter:drop-shadow(0 0 4px rgba(255,255,255,.4))}
+.tb-scene .cire{fill:#f2f2f2;stroke:#fff;stroke-width:1.4;filter:drop-shadow(0 0 4px rgba(255,255,255,.7))}
+.tb-scene .meche{stroke:#fff;stroke-width:1.6}
+.tb-scene .flamme{opacity:0;transform-box:fill-box;transform-origin:50% 100%;transition:opacity .6s}
+.tb-scene .flamme .ext{fill:var(--rouge);filter:drop-shadow(0 0 7px var(--rouge))}
+.tb-scene .flamme .int{fill:var(--jaune)}
+.tb-scene .halo{opacity:0;transition:opacity .8s}
+.tombe.allume .flamme{opacity:1;animation:tb-flamme .18s ease-in-out infinite alternate}
+.tombe.allume .halo{opacity:1;animation:tb-halo 2.4s ease-in-out infinite}
+@keyframes tb-flamme{from{transform:scale(1,1) skewX(-3deg)}to{transform:scale(.88,1.12) skewX(3deg)}}
+@keyframes tb-halo{0%,100%{opacity:.75}50%{opacity:1}}
+.tb-scene .fleur{fill:#000;stroke:#fff;stroke-width:1.8;filter:drop-shadow(0 0 4px rgba(255,255,255,.7))}
+.tb-scene .tige{fill:none;stroke:#fff;stroke-width:1.8}
+.tb-scene .fleur-nv{animation:tb-pose .7s ease-out both}
+@keyframes tb-pose{from{opacity:0;transform:translateY(-1.6rem)}to{opacity:1;transform:none}}
+.tb-brume{left:-30%;width:160%;height:34%;bottom:-2%;pointer-events:none;filter:blur(1.4rem);opacity:.55;background:radial-gradient(ellipse 14% 50% at 10% 55%,rgba(255,255,255,.55),transparent 70%),radial-gradient(ellipse 18% 46% at 36% 60%,rgba(255,255,255,.45),transparent 70%),radial-gradient(ellipse 15% 52% at 62% 52%,rgba(255,255,255,.5),transparent 70%),radial-gradient(ellipse 17% 44% at 88% 58%,rgba(255,255,255,.45),transparent 70%);animation:tb-brume 26s linear infinite}
+.tb-brume.b2{bottom:-8%;opacity:.4;animation-duration:38s;animation-direction:reverse}
+@keyframes tb-brume{from{transform:translateX(0)}to{transform:translateX(18%)}}
+.tb-gestes{display:flex;flex-wrap:wrap;gap:.8rem;margin:.4rem 0 1.6rem}
+.tb-gestes .btn{cursor:pointer;margin:0}
+.tb-gestes .btn[aria-pressed="true"]{background:#fff;color:#000}
+.tb-etat{min-height:1.5em;font-family:"Cinzel",Georgia,serif;letter-spacing:.08em;color:#d9d9d9}
+
+/* ---------- fenêtres communes (lecteur, visionneuse) ---------- */
+body.cachot #lcmp.pu{--lc:#fff;--hv:#fc0;--bg:rgba(0,0,0,.95);border-color:#fff;box-shadow:0 .5rem 1.6rem rgba(0,0,0,.85)}
+body.cachot #lcmp.pu::before{background:linear-gradient(90deg,transparent,#fff,transparent);filter:none}
+body.cachot #lcmp.pu :is(.lp-t,.lp-b){color:#fff}
+body.cachot #lcmp.pu :is(.lp-a,.lp-p){color:rgba(255,255,255,.68)}
+body.cachot #lcmp.pu .lp-x{color:rgba(255,255,255,.75)}
+body.cachot #lcmp.pu .lp-bar{background:rgba(255,255,255,.3)}
+body.cachot #lcmp.pu :is(.lp-b:hover,.lp-b:focus-visible,.lp-x:hover){color:#fc0;border-color:#fc0}
+body.cachot #lb{background:rgba(0,0,0,.97)}
+body.cachot #lb button{background:#000;color:#fff;border-color:#fff}
+body.cachot #lb button:hover,body.cachot #lb button:focus-visible{background:#fff;color:#000}
+body.cachot #lb .lb-c{color:#fff}
+body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
+
+@media (max-width:899px){
+  .cachot header .mid.cr-mid{display:flex!important;flex:1 1 0;width:auto;min-width:0;height:100%;padding:0 .3rem}
+  .cachot header .cr-cote{display:none}
+  .cachot .cre{flex:0 0 auto;aspect-ratio:auto;width:auto}
+  .cachot .cre a{width:auto;height:100%;padding:.45rem .3rem .45rem .7rem}
+  .cachot .cr-mid .cr-croix{width:3.4rem;height:3.4rem}
+  .cachot nav{grid-template-rows:none;background:#000;border-right:0;box-shadow:none}
+  .cachot nav a,.cachot nav a[aria-current]{background-image:none}
+  .cachot nav a{background:#0b0b0b}
+  .cachot nav a[aria-current]{background:#fff}
+  .cachot .cr-grille{display:none}
+  .cachot main{padding:1.8rem 1.3rem 3rem}
+  .cachot main::after{inset:.5rem;border-width:.3rem}
+  .cachot main::before{width:34%;right:1.4rem;top:1.6rem}
+  .cachot h1{font-size:2.4rem;letter-spacing:.07em}
+  .cachot h2{font-size:1.5rem;letter-spacing:.07em}
+  .cachot .kicker{font-size:1rem;letter-spacing:.22em}
+  .cachot .lead-title{font-size:1.4rem}
+  .cachot .nav-txt{font-size:1.2rem}
+  .fv-grid{grid-template-columns:1fr}
+  .fv-play{width:3.6rem;height:3.6rem;margin:-1.8rem 0 0 -1.8rem}
+  .armes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tombe{aspect-ratio:4/5}
+  .tb-scene{object-fit:cover}
+}
+@media (prefers-reduced-motion:reduce){.cachot h1,.cr-croix svg,.tb-lune,.tb-etoiles i,.tb-brume,.tombe.allume .flamme,.tombe.allume .halo{animation:none}.fv img,.fv-item,.cachot .rub article{transition:none}}
