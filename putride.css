@@ -593,3 +593,28 @@ header{overflow:visible}
 @keyframes gate-g2{0%,86%,100%{clip-path:inset(60% 0 0 0);transform:translate(.18rem,0)}88%{clip-path:inset(30% 0 36% 0);transform:translate(.55rem,0)}91%{clip-path:inset(72% 0 4% 0);transform:translate(-.4rem,0)}93%{clip-path:inset(46% 0 30% 0);transform:translate(.3rem,0)}}
 @media (max-width:899px){.gate-in{padding:2.2rem .8rem 2rem}.gate-t{font-size:2.5rem;letter-spacing:.05em;white-space:nowrap}.gate-k{font-size:1rem;letter-spacing:.28em}.gate-s{font-size:1rem}}
 @media (prefers-reduced-motion:reduce){.gate,.gate::before,.gate::after,.gate-k,.gate-t::before,.gate-t::after{animation:none}}
+/* « Plus bas » : question de sécurité et giclée de fluide */
+.pb{max-width:62rem;margin:1.2rem 0 2rem}
+.pb-lock{position:relative;border:.2rem solid #240a2c;background:#030006;padding:2.2rem 1.6rem 1.8rem;box-shadow:0 0 0 .15rem #000,0 0 1.6rem rgba(255,23,54,.22),inset 0 0 2.4rem rgba(0,0,0,.9);overflow:hidden}
+.pb-lock::before{content:"";position:absolute;left:0;right:0;top:0;height:.9rem;background:repeating-linear-gradient(-45deg,#0b0b0b 0 .9rem,#c6ff3c .9rem 1.8rem);animation:gate-tape 6s linear infinite}
+.pb-k{margin:.6rem 0 1.2rem;text-align:center;font:400 1.2rem/1 "Bebas Neue",sans-serif;letter-spacing:.36em;color:#ff1736;text-shadow:0 0 .6rem rgba(255,23,54,.7)}
+.pb-form{display:grid;gap:1rem;justify-items:center}
+.pb-q{font:400 3.2rem/1.1 "Bebas Neue",sans-serif;letter-spacing:.05em;text-align:center;color:#c6ff3c;text-shadow:0 0 .8rem rgba(198,255,60,.4),0 .12rem 0 #000}
+.pb-row{display:flex;gap:.8rem;width:100%;max-width:44rem}
+.pb-row input{flex:1;min-width:0;background:#000;color:#fff;border:.2rem solid #c6ff3c;border-radius:0;padding:.5rem 1rem;font:400 2.4rem/1.2 "Bebas Neue",sans-serif;letter-spacing:.08em;caret-color:#ff1736;text-align:center;outline:0}
+.pb-row input:focus{border-color:#ff1736;box-shadow:0 0 1.2rem rgba(255,23,54,.55)}
+.pb-row .btn{font-size:2rem;padding:.2rem 1.2rem;cursor:pointer}
+.pb-row .btn:disabled,.pb-row input:disabled{opacity:.55;cursor:wait}
+.pb-msg{min-height:1.6em;margin:0;text-align:center;font:400 1.8rem/1.2 "Bebas Neue",sans-serif;letter-spacing:.08em;color:#ff1736}
+.pb-no{animation:pb-shake .5s}
+.pb-ok{animation:pb-ok .65s forwards}
+.pb-open{margin:0}
+.pb-open[hidden]{display:none}
+@keyframes pb-shake{0%,100%{transform:none}15%{transform:translateX(-1rem) rotate(-.6deg)}35%{transform:translateX(.9rem) rotate(.5deg)}55%{transform:translateX(-.6rem)}75%{transform:translateX(.4rem)}}
+@keyframes pb-ok{to{box-shadow:0 0 0 .15rem #000,0 0 3rem #c6ff3c;opacity:.2;transform:scale(.97)}}
+.pb-fx{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:100000;pointer-events:none;will-change:transform}
+.pb-goo{filter:url(#pb-goo) drop-shadow(3px 0 0 #0b0b0b) drop-shadow(-3px 0 0 #0b0b0b) drop-shadow(0 3px 0 #0b0b0b) drop-shadow(0 -3px 0 #0b0b0b)}
+.pb-gloss{z-index:100001}
+.pb-flash{position:fixed;inset:0;z-index:100000;pointer-events:none;background:radial-gradient(circle at 50% 60%,rgba(124,255,28,.75),rgba(224,16,44,.5) 55%,rgba(107,58,20,.55));animation:pb-flash 1s ease-out forwards}
+@keyframes pb-flash{from{opacity:1}to{opacity:0}}
+@media (max-width:899px){.pb-q{font-size:2.5rem}.pb-lock{padding:2rem .9rem 1.4rem}.pb-row{flex-direction:column}.pb-row .btn{width:100%}}
