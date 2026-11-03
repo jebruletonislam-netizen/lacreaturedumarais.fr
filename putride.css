@@ -160,7 +160,7 @@ main{position:relative}
 .eph .stage img,.eph .sheen{position:absolute;inset:0;width:100%;height:100%;display:block}
 .eph .wing{transition:transform 1.5s cubic-bezier(.3,.1,.2,1)}
 .eph .wl{transform-origin:36.5% 33%}.eph .wr{transform-origin:63.5% 33%}
-.eph .sheen{z-index:2;pointer-events:none;opacity:0;transition:opacity 1.8s ease .3s;mix-blend-mode:screen;background:linear-gradient(180deg,rgba(255,40,40,.0) 8%,rgba(200,20,30,.45) 40%,rgba(120,0,10,.15) 90%);-webkit-mask:url(images/putride/ephebus-corps.png) center/100% 100% no-repeat;mask:url(images/putride/ephebus-corps.png) center/100% 100% no-repeat}
+.eph .sheen{z-index:2;pointer-events:none;opacity:0;transition:opacity 1.8s ease .3s;mix-blend-mode:screen;background:linear-gradient(180deg,rgba(255,40,40,.0) 8%,rgba(200,20,30,.45) 40%,rgba(120,0,10,.15) 90%);-webkit-mask:url(images/putride/ephebus-corps.webp) center/100% 100% no-repeat;mask:url(images/putride/ephebus-corps.webp) center/100% 100% no-repeat}
 .eph .eye{position:absolute;z-index:3;width:6%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#ffd0d0 0 12%,#ff2a2a 30%,rgba(255,0,0,.4) 55%,rgba(255,0,0,0) 72%);transform:translate(-50%,-50%) scale(.3);opacity:0;transition:opacity 1s ease .5s,transform 1s ease .5s;mix-blend-mode:screen}
 .eph .e1{left:45.4%;top:17.2%}.eph .e2{left:52%;top:16.5%}
 .eph:hover .halo,.eph.on .halo,.eph:focus-visible .halo,.perso a:hover .eph .halo,.perso a:focus-visible .eph .halo,.perso a:active .eph .halo{opacity:1;animation:breath 4.5s ease-in-out infinite 1.6s}
@@ -259,7 +259,7 @@ main{position:relative}
 }
 
 /* lecteur persistant */
-html.slx{background:#5cb82a}html.slx body{visibility:hidden}
+html.slx{background:#000}html.slx body{visibility:hidden}
 /* gouttes ambiantes */
 #drips{position:fixed;inset:0;z-index:40;pointer-events:none;overflow:hidden}
 #drips i{position:absolute;display:block}

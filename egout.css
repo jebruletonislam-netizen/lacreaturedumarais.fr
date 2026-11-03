@@ -1,32 +1,28 @@
-/* bouton d'entree du mode putride : bouche d'egout, couvercle ouvert, fluide vert qui goutte */
-.egout{display:inline-flex;flex-direction:column;align-items:center;gap:.1rem;margin-top:1.2rem;padding:.4rem 1.4rem .6rem;border:.2rem solid #f00;background:#000;color:#f00;text-decoration:none;font:400 1.6rem/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.06em;transition:color .3s,border-color .3s,box-shadow .3s}
-.egout svg{width:6.4rem;height:6.7rem;overflow:visible;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.egout:hover,.egout:focus-visible{color:#39ff6e;border-color:#39ff6e;box-shadow:0 0 1.2rem rgba(57,255,110,.6);outline:0}
-.egout .eg-f{fill:rgba(127,209,58,.55);stroke:#7fd13a;stroke-width:2}
-.egout .eg-b{transform-box:fill-box;transform-origin:50% 100%;animation:egbulge 3.6s ease-in-out infinite}
-.egout .eg-s{stroke:#7fd13a;stroke-width:3}
-.egout .eg-d{fill:#7fd13a;stroke:#2c7a1c;stroke-width:.8;transform-box:fill-box;transform-origin:50% 0;opacity:0;animation:egdrip 3.6s ease-in infinite}
-@keyframes egdrip{0%{opacity:0;transform:scale(.2)}12%{opacity:1;transform:scale(1)}30%{opacity:1;transform:translateY(0) scale(.85,1.35)}90%{opacity:1;transform:translateY(12px) scale(.8,1.2)}100%{opacity:0;transform:translateY(14px) scale(.7,1.1)}}
-@keyframes egbulge{0%,100%{transform:scale(1,1)}50%{transform:scale(1.03,1.1)}}
-@media (prefers-reduced-motion:reduce){.egout .eg-b{animation:none}.egout .eg-d{animation:none;opacity:1}}
-
-/* écran d'entrée du mode putride */
-#egin{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;background:#000;color:#f00;opacity:0;transition:opacity .45s ease;pointer-events:all;text-align:center}
-#egin.on{opacity:1}
-#egin svg{width:min(48vw,24rem);height:auto;overflow:visible}
-#egin p{margin:0;font:400 clamp(1.8rem,5vw,3.2rem)/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.08em;color:#f00;text-shadow:0 0 .7rem rgba(255,0,0,.55)}
-#egin small{font:400 clamp(1rem,2.4vw,1.5rem)/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.1em;color:#7fd13a;opacity:0;transition:opacity .6s ease .9s}
-#egin.on small{opacity:1}
-#egin.on p{animation:egin-p 1.7s ease forwards}
-#egin .egin-lid{transform-box:fill-box;transform-origin:100% 50%;transition:transform 1s cubic-bezier(.5,0,.2,1) .35s,opacity .4s ease 1.2s}
-#egin.on .egin-lid{transform:translate(52px,-30px) rotate(-62deg) scale(.45,1.02)}
-#egin .egin-f{transform-box:fill-box;transform-origin:50% 100%;transform:scale(.3,.1);opacity:0;transition:transform 1s ease .75s,opacity .5s ease .75s}
-#egin.on .egin-f{transform:scale(1,1);opacity:1;animation:egin-b 1.6s ease-in-out 1.7s infinite}
-#egin .egin-d path{fill:#7fd13a;transform-box:fill-box;transform-origin:50% 0;opacity:0}
-#egin.on .egin-d path{animation:egin-d 1.4s ease-in .9s infinite}
-#egin.on .egin-d path:nth-child(2){animation-delay:1.35s}
-#egin.on .egin-d path:nth-child(3){animation-delay:1.8s}
-@keyframes egin-p{0%{opacity:0;transform:translateY(.6rem)}40%{opacity:1;transform:none}100%{opacity:1}}
-@keyframes egin-b{0%,100%{transform:scale(1,1)}50%{transform:scale(1.04,1.1)}}
-@keyframes egin-d{0%{opacity:0;transform:scale(.2)}15%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(16px) scale(.8,1.3)}}
-@media (prefers-reduced-motion:reduce){#egin{display:none}}
+/* bouton d'entrée du mode putride : une simple bouche d'égout. Au survol, le couvercle s'ouvre et le fluide vert déborde lentement. */
+.egout{display:inline-block;margin-top:1.2rem;padding:.4rem;border:0;background:none;color:#f00;line-height:0;text-decoration:none;transition:color .6s,filter .6s;-webkit-tap-highlight-color:transparent}
+.egout svg{width:14rem;height:auto;overflow:visible;stroke-linecap:round;stroke-linejoin:round}
+.egout .mh-w,.egout .mh-r,.egout .mh-h{fill:#000;stroke:currentColor;stroke-width:3}
+.egout .mh-h{stroke-width:2}
+.egout .mh-lid{transform-box:fill-box;transform-origin:100% 50%;transition:transform 1.3s cubic-bezier(.5,0,.2,1)}
+.egout .mh-lid ellipse{fill:#000;stroke:currentColor;stroke-width:3}
+.egout .mh-lid ellipse+ellipse{fill:none;stroke-width:2.5}
+.egout .mh-lid path{fill:none;stroke:currentColor;stroke-width:2}
+.egout .mh-f path,.egout .mh-s path,.egout .mh-d path{fill:rgba(127,209,58,.78);stroke:#7fd13a;stroke-width:2}
+.egout .mh-d path{fill:#7fd13a;stroke:#2c7a1c;stroke-width:.8}
+.egout .mh-f{transform-box:fill-box;transform-origin:50% 100%;transform:scale(.3,.08);opacity:0;transition:transform 2.4s ease .6s,opacity 1s ease .6s}
+.egout .mh-s path{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);transition:transform 3.2s ease-out}
+.egout .mh-d path{transform-box:fill-box;transform-origin:50% 0;opacity:0}
+.egout:hover,.egout:focus-visible{color:#39ff6e;filter:drop-shadow(0 0 .9rem rgba(57,255,110,.5));outline:0}
+.egout:hover .mh-lid,.egout:focus-visible .mh-lid{transform:translate(52px,-30px) rotate(-62deg) scale(.45,1.02)}
+.egout:hover .mh-f,.egout:focus-visible .mh-f{transform:scale(1,1);opacity:1;animation:mhb 4s ease-in-out 3s infinite}
+.egout:hover .mh-s path,.egout:focus-visible .mh-s path{transform:scaleY(1)}
+.egout:hover .mh-s path:nth-child(1),.egout:focus-visible .mh-s path:nth-child(1){transition-delay:1.4s}
+.egout:hover .mh-s path:nth-child(2),.egout:focus-visible .mh-s path:nth-child(2){transition-delay:1.9s;transition-duration:3.8s}
+.egout:hover .mh-s path:nth-child(3),.egout:focus-visible .mh-s path:nth-child(3){transition-delay:1.6s;transition-duration:3.5s}
+.egout:hover .mh-d path,.egout:focus-visible .mh-d path{animation:mhd 3.6s ease-in infinite}
+.egout:hover .mh-d g:nth-child(1) path,.egout:focus-visible .mh-d g:nth-child(1) path{animation-delay:4.4s}
+.egout:hover .mh-d g:nth-child(2) path,.egout:focus-visible .mh-d g:nth-child(2) path{animation-delay:5.2s}
+.egout:hover .mh-d g:nth-child(3) path,.egout:focus-visible .mh-d g:nth-child(3) path{animation-delay:6s}
+@keyframes mhb{0%,100%{transform:scale(1,1)}50%{transform:scale(1.03,1.09)}}
+@keyframes mhd{0%{opacity:0;transform:scale(.2)}12%{opacity:1;transform:scale(1)}35%{opacity:1;transform:translateY(0) scale(.85,1.35)}85%{opacity:1;transform:translateY(16px) scale(.8,1.2)}100%{opacity:0;transform:translateY(20px) scale(.7,1.1)}}
+@media (prefers-reduced-motion:reduce){.egout .mh-lid,.egout .mh-f,.egout .mh-s path{transition:none;animation:none}.egout .mh-d path{animation:none!important}}
