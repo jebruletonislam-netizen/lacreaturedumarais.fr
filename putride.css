@@ -251,15 +251,20 @@ main{position:relative}
 .vbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.4rem .8rem;font:400 1.3rem "Bebas Neue",sans-serif;color:var(--v)}
 .vx{all:unset;cursor:pointer;color:#fff;font-size:1.5rem;padding:0 .6rem}.vx:hover{color:#fc0}
 .vfr{position:relative;aspect-ratio:16/9;background:#000}.vfr iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.rt-videos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1rem 0 2rem}
+.rt-video{min-width:0;margin:0;padding:.5rem;background:rgba(0,0,0,.42);border:1px solid rgba(204,170,255,.32);box-shadow:0 0 .8rem rgba(104,52,150,.16)}
+.rt-video figcaption{padding:.5rem .2rem .15rem;color:#eee;font-size:.95rem;line-height:1.45}
 @media (max-width:899px){
  .alb{gap:.7rem}
  .alb>img,.alb>.phs{width:5.6rem;height:5.6rem;font-size:1rem}
  .at b{font-size:1.7rem}.at .d{font-size:1rem}
+ .rt-videos{grid-template-columns:1fr}
  .chev{font-size:1.5rem;padding-right:.3rem}
 }
 
 /* lecteur persistant */
 html.slx{background:#000}html.slx body{visibility:hidden}
+html.slv{background:#000}
 /* gouttes ambiantes */
 #drips{position:fixed;inset:0;z-index:40;pointer-events:none;overflow:hidden}
 #drips i{position:absolute;display:block}

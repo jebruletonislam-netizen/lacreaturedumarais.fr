@@ -1,12 +1,15 @@
 /* bouton d'entrée du mode putride : une simple bouche d'égout. Au survol, le couvercle s'ouvre et le fluide vert déborde lentement. */
 .egout{display:inline-block;margin-top:1.2rem;padding:.4rem;border:0;background:none;color:#f00;line-height:0;text-decoration:none;transition:color .6s,filter .6s;-webkit-tap-highlight-color:transparent}
-.egout svg{width:14rem;height:auto;overflow:visible;stroke-linecap:round;stroke-linejoin:round}
-.egout .mh-w,.egout .mh-r,.egout .mh-h{fill:#000;stroke:currentColor;stroke-width:3}
-.egout .mh-h{stroke-width:2}
+.egout svg{width:14rem;height:auto;overflow:visible;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 .55rem .5rem rgba(0,0,0,.75))}
+.egout .mh-w,.egout .mh-r{fill:url(#mh-metal);stroke:#101313;stroke-width:3}
+.egout .mh-h{fill:#070909;stroke:#090b0a;stroke-width:2}
 .egout .mh-lid{transform-box:fill-box;transform-origin:100% 50%;transition:transform 1.3s cubic-bezier(.5,0,.2,1)}
-.egout .mh-lid ellipse{fill:#000;stroke:currentColor;stroke-width:3}
-.egout .mh-lid ellipse+ellipse{fill:none;stroke-width:2.5}
-.egout .mh-lid path{fill:none;stroke:currentColor;stroke-width:2}
+.egout .mh-lid ellipse{fill:url(#mh-cover);stroke:#111514;stroke-width:3}
+.egout .mh-lid ellipse:nth-of-type(3){fill:none;stroke:#9aa19b;stroke-opacity:.55;stroke-width:2.5}
+.egout .mh-lid .mh-texture{fill:url(#mh-texture);stroke:none}
+.egout .mh-lid path{fill:none;stroke:#b0b6af;stroke-opacity:.72;stroke-width:1.5}
+.egout .mh-bolts circle{fill:#9aa19b;stroke:#101313;stroke-width:1}
+.egout .mh-bolts path{fill:none;stroke:#303735;stroke-width:.8}
 .egout .mh-f path,.egout .mh-s path,.egout .mh-d path{fill:rgba(127,209,58,.78);stroke:#7fd13a;stroke-width:2}
 .egout .mh-d path{fill:#7fd13a;stroke:#2c7a1c;stroke-width:.8}
 .egout .mh-f{transform-box:fill-box;transform-origin:50% 100%;transform:scale(.3,.08);opacity:0;transition:transform 2.4s ease .6s,opacity 1s ease .6s}
