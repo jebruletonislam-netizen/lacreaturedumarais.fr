@@ -1,0 +1,63 @@
+/* Mode Fengsel : les cachots. Repose sur putride.css, dont il remplace la palette violet / vert par la pierre, la rouille et la lueur des torches. */
+:root{--g:#a8481f;--v:#ecdcb8;--vd:#5c1d0d;--bg:#080605;--torche:#ff9a2e;--braise:#ff5a1a}
+html,body{background:var(--bg)}
+body.fengsel{text-shadow:0 1px 3px rgba(0,0,0,.95)}
+
+/* lueur de torche et bords sombres, derrière l'en-tête et la navigation */
+body.fengsel::after{content:"";position:fixed;inset:0;z-index:15;pointer-events:none;background:radial-gradient(ellipse at 50% 38%,transparent 38%,rgba(0,0,0,.62) 100%);animation:fg-torche 5.3s ease-in-out infinite}
+@keyframes fg-torche{0%,100%{opacity:.82}18%{opacity:1}31%{opacity:.7}47%{opacity:.95}63%{opacity:.76}82%{opacity:1}}
+
+/* navigation de pierre */
+.fengsel .mid>img{filter:sepia(.85) saturate(2.4) hue-rotate(22deg) brightness(.95)}
+.fengsel .ppp img{filter:hue-rotate(35deg)}
+.fengsel nav{grid-template-rows:repeat(5,minmax(8.5rem,1fr));background:linear-gradient(rgba(10,6,4,.7),rgba(10,6,4,.7)),repeating-linear-gradient(0deg,#1a1411 0 4.6rem,#0c0907 4.6rem 4.8rem),#130e0b}
+.fengsel .nav-icon,.fengsel .nav-txt{color:var(--torche)}
+.fengsel .nav-txt{text-shadow:0 0 .8rem rgba(255,138,30,.55),0 0 .2rem #000}
+.fengsel .nav-icon svg{filter:drop-shadow(0 0 .35rem rgba(255,138,30,.65))}
+.fengsel nav a[aria-current] .nav-txt,.fengsel nav a[aria-current] .nav-icon{color:#fff}
+
+/* dalles et lueur du haut de page */
+.fengsel main{background-color:#0a0706;background-image:
+  linear-gradient(to right,#0a0706,transparent var(--mf),transparent calc(100% - var(--mf)),#0a0706),
+  linear-gradient(to bottom,#0a0706,transparent 5rem,transparent calc(100% - 4rem),#0a0706),
+  radial-gradient(ellipse at 50% 0,rgba(255,120,30,.17),transparent 58%),
+  repeating-linear-gradient(0deg,rgba(0,0,0,.42) 0 .22rem,transparent .22rem 6.4rem),
+  repeating-linear-gradient(90deg,rgba(0,0,0,.34) 0 .2rem,transparent .2rem 11rem),
+  linear-gradient(#1b1511,#0e0a08);
+  background-position:0 0;background-size:auto;background-repeat:no-repeat,no-repeat,no-repeat,repeat,repeat,repeat;background-blend-mode:normal}
+.fengsel .kicker{text-shadow:0 0 .6rem rgba(255,90,26,.55)}
+.fengsel h1{text-shadow:0 0 .35rem rgba(255,90,26,.85),0 0 1.2rem rgba(255,90,26,.45)}
+.fengsel h2{text-shadow:0 0 .35rem rgba(255,90,26,.8),0 0 1rem rgba(255,90,26,.35);border-bottom:.25rem solid var(--g);border-image:repeating-linear-gradient(90deg,var(--g) 0 1.6rem,transparent 1.6rem 1.9rem) 1}
+.fengsel .lead-title{text-shadow:0 0 .35rem rgba(255,90,26,.8),0 0 .9rem rgba(255,90,26,.4)}
+.fengsel .btn{border-color:var(--torche);color:var(--torche)}
+.fengsel .btn:hover{color:#fc0;border-color:#fc0}
+.fengsel .accroche{color:var(--v)}
+.fengsel .sep{box-shadow:0 0 .35rem rgba(255,90,26,.8),0 0 .9rem rgba(255,90,26,.4)}
+.fengsel .rub article{background:rgba(10,6,4,.86);box-shadow:0 0 1rem rgba(255,90,26,.28)}
+.fengsel .rub article:hover{box-shadow:0 0 1.6rem rgba(255,138,30,.6)}
+.fengsel .pf.emb svg{filter:drop-shadow(0 0 .5rem rgba(255,138,30,.65))}
+.fengsel .fiche2 .pf{background:radial-gradient(circle at 50% 42%,#2a170c,#060302 76%)}
+.fengsel .lk:hover{color:var(--torche)}
+.fengsel .pfoot{background:#050302}
+.fengsel .note{color:#cdbd9c}
+
+/* vidéos : vignette légère, lecteur chargé au clic */
+.fv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:.8rem 0 1.6rem;max-width:80rem}
+.fv-grid.wide{grid-template-columns:minmax(0,46rem)}
+.fv-item{min-width:0;margin:0;padding:.5rem;background:rgba(0,0,0,.5);border:.15rem solid rgba(168,72,31,.7);box-shadow:0 0 .8rem rgba(255,90,26,.14)}
+.fv{all:unset;display:block;position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;cursor:pointer;background:#000}
+.fv:focus-visible{outline:.2rem solid #fc0}
+.fv img{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.78);transition:filter .25s,transform .4s}
+.fv:hover img,.fv:focus-visible img{filter:saturate(1) brightness(1);transform:scale(1.03)}
+.fv-play{position:absolute;left:50%;top:50%;width:4.4rem;height:4.4rem;margin:-2.2rem 0 0 -2.2rem;display:grid;place-items:center;border:.2rem solid var(--torche);border-radius:50%;background:rgba(0,0,0,.72);color:var(--torche);font-size:1.5rem;padding-left:.2rem;box-shadow:0 0 1rem rgba(255,138,30,.55);transition:.2s}
+.fv:hover .fv-play,.fv:focus-visible .fv-play{background:var(--torche);color:#000}
+.fv-item figcaption{padding:.5rem .2rem .15rem;color:#eadfc8;font-size:.95rem;line-height:1.4}
+.fv-item .vfr{border:0}
+
+@media (max-width:899px){
+  .fengsel nav{grid-template-rows:none;background:#000}
+  .fv-grid{grid-template-columns:1fr}
+  .fv-play{width:3.6rem;height:3.6rem;margin:-1.8rem 0 0 -1.8rem}
+  body.fengsel::after{background:radial-gradient(ellipse at 50% 38%,transparent 45%,rgba(0,0,0,.5) 100%)}
+}
+@media (prefers-reduced-motion:reduce){body.fengsel::after{animation:none;opacity:.9}.fv img{transition:none}}

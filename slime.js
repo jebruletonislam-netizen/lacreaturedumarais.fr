@@ -2,7 +2,8 @@
    Descente (data-slime="down") : depuis la bouche d'égout, tout l'écran plonge dans le tuyau ; le mode putride apparaît
    au fond, puis le tuyau s'élargit et crache le point de vue.
    Remontée (data-slime="up") : un clystère aspire l'écran par son trou, noir, puis la page est recrachée comme par un canon,
-   floue et secouée. */
+   floue et secouée.
+   Fengsel (data-slime="fengsel" / "fengsel-up") : chute dans le puits des cachots, noir puis lueur de torche ; la remontée va vers une lumière chaude. */
 (function(){
   'use strict';
   var KEY='lcm-slime',busy=false,TAU=6.283185307,Z=99999;
@@ -49,7 +50,7 @@
       var t0=null,last=0;
       (function f(now){
         if(t0===null){t0=now;last=now;}
-        var t=Math.min((now-t0)/1000,dur),dt=Math.min((now-last)/1000,.06);last=now;
+        var t=clamp((now-t0)/1000,0,dur),dt=clamp((now-last)/1000,0,.06);last=now;
         try{draw(t,dt);}catch(error){rej(error);return;}
         if(t<dur)requestAnimationFrame(f);else res();
       })(performance.now());
@@ -297,6 +298,62 @@
     function u0(){return Math.min(W,H)*.1;}
   }
 
+  /* ---------- le puits de Fengsel : on tombe dans les cachots (down) ou on remonte vers la lumière (up) ---------- */
+  var PIERRE_A=[58,46,40],PIERRE_B=[78,62,52],PIERRE_N=[0,0,0],PIERRE_UP=[92,66,44];
+  function puits(c,W,H,cx,cy,sc,up,t){
+    var R=Math.hypot(W,H)*.62,N=16,fr=sc-Math.floor(sc),id0=Math.floor(sc),k,i,a;
+    c.fillStyle=up?'#24150a':'#000';c.fillRect(0,0,W,H);
+    for(k=1;k<=N;k++){
+      var z=Math.max(.2,k-fr),zi=Math.max(.2,k+1-fr),r=R/z,ri=R/zi,f=Math.exp(-(z-1)/5.5),odd=(k+id0)&1,seg=14;
+      c.fillStyle=mix(odd?PIERRE_A:PIERRE_B,up?PIERRE_UP:PIERRE_N,1-f);
+      c.beginPath();c.arc(cx,cy,r,0,TAU);c.arc(cx,cy,ri,TAU,0,true);c.fill('evenodd');
+      c.strokeStyle='rgba(12,8,6,'+(.15+.8*f).toFixed(2)+')';c.lineWidth=Math.max(1,r*.012);
+      c.beginPath();
+      for(i=0;i<seg;i++){a=(i+(odd?.5:0))/seg*TAU;c.moveTo(cx+Math.cos(a)*ri,cy+Math.sin(a)*ri);c.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);}
+      c.stroke();
+      c.lineWidth=Math.max(1.5,r*.03);c.beginPath();c.arc(cx,cy,r,0,TAU);c.stroke();
+      if(((k+id0)&3)===0){
+        a=(k+id0)*2.4;
+        var rm=(r+ri)/2,tx=cx+Math.cos(a)*rm,ty=cy+Math.sin(a)*rm,tr=Math.max(6,(r-ri)*.9),fl=.75+.25*Math.sin(t*23+k*3.1)*Math.sin(t*11+k);
+        var g=c.createRadialGradient(tx,ty,0,tx,ty,tr);
+        g.addColorStop(0,'rgba(255,214,120,'+(.95*f*fl).toFixed(2)+')');g.addColorStop(.35,'rgba(255,120,24,'+(.5*f*fl).toFixed(2)+')');g.addColorStop(1,'rgba(255,60,0,0)');
+        c.fillStyle=g;c.fillRect(tx-tr,ty-tr,tr*2,tr*2);
+      }
+    }
+    var g2=c.createRadialGradient(cx,cy,0,cx,cy,R*.45);
+    if(up){g2.addColorStop(0,'rgba(255,236,190,1)');g2.addColorStop(.5,'rgba(255,190,110,.55)');g2.addColorStop(1,'rgba(255,160,60,0)');}
+    else{g2.addColorStop(0,'rgba(0,0,0,1)');g2.addColorStop(.55,'rgba(0,0,0,.85)');g2.addColorStop(1,'rgba(0,0,0,0)');}
+    c.fillStyle=g2;c.fillRect(0,0,W,H);
+  }
+  var FG=2.1;
+  function coverFengsel(up){
+    var o=mkCanvas(),c=o.c,W=o.W,H=o.H,sc=0;
+    return loop(FG,function(t,dt){
+      var inT=smooth(t/.45),end=smooth((t-(FG-.4))/.4);
+      sc+=dt*(2+14*Math.pow(t/FG,1.6));
+      c.clearRect(0,0,W,H);
+      c.globalAlpha=inT;
+      puits(c,W,H,W/2,H/2,sc,up,t);
+      c.globalAlpha=1;
+      if(end>0){c.fillStyle=up?'rgba(255,236,190,'+end.toFixed(3)+')':'rgba(0,0,0,'+end.toFixed(3)+')';c.fillRect(0,0,W,H);}
+    }).then(function(){return o;});
+  }
+  function revealFengsel(up){
+    var o=mkCanvas(),c=o.c,W=o.W,H=o.H,D=up?1.5:2.3,cx=W/2,cy=H/2,hy=Math.hypot(W,H);
+    document.documentElement.classList.remove('slx');
+    return loop(D,function(t){
+      c.clearRect(0,0,W,H);
+      if(up){
+        c.fillStyle='rgba(255,236,190,'+(1-eOut(clamp(t/1.3,0,1))).toFixed(3)+')';c.fillRect(0,0,W,H);
+        return;
+      }
+      var u=clamp(t/D,0,1),open=eOut(u),vis=1-smooth((u-.55)/.45),fl=.9+.1*Math.sin(t*37)*Math.sin(t*13);
+      var g=c.createRadialGradient(cx,cy,0,cx,cy,hy*(.05+.75*open)*fl);
+      g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(.6,'rgba(0,0,0,'+(.5*vis).toFixed(3)+')');g.addColorStop(1,'rgba(0,0,0,'+vis.toFixed(3)+')');
+      c.fillStyle=g;c.fillRect(0,0,W,H);
+    }).then(function(){o.cv.remove();});
+  }
+
   function clearAll(){
     var el=document.documentElement;
     el.classList.remove('slx');
@@ -309,7 +366,7 @@
   try{arriving=sessionStorage.getItem(KEY);sessionStorage.removeItem(KEY);}catch(e){}
   if(arriving&&!reduce){
     busy=true;
-    (arriving==='up'?revealUp():revealDown()).then(function(){busy=false;}).catch(function(error){console.error('Transition d’arrivée impossible',error);clearAll();busy=false;});
+    (arriving==='up'?revealUp():arriving==='fengsel'?revealFengsel(false):arriving==='fengsel-up'?revealFengsel(true):revealDown()).then(function(){busy=false;}).catch(function(error){console.error('Transition d’arrivée impossible',error);clearAll();busy=false;});
     setTimeout(function(){busy=false;},6000);
   }else{
     document.documentElement.classList.remove('slx');
@@ -325,7 +382,7 @@
     var dir=a.getAttribute('data-slime'),href=a.href;
     if(reduce){location.href=href;return;}
     busy=true;
-    (dir==='up'?coverUp():coverDown(a)).then(function(){
+    (dir==='up'?coverUp():dir==='fengsel'?coverFengsel(false):dir==='fengsel-up'?coverFengsel(true):coverDown(a)).then(function(){
       try{sessionStorage.setItem(KEY,dir);}catch(e){}
       location.href=href;
       setTimeout(function(){clearAll();busy=false;},4500);
