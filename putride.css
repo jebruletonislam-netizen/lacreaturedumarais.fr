@@ -564,3 +564,32 @@ header{overflow:visible}
 .fiche2 .pf.t23{aspect-ratio:2/3;background:#000}
 .rfig.rfig-w{width:min(46%,30rem)}
 @media (max-width:899px){.rfig.rfig-w{width:100%;max-width:30rem}}
+/* carte : épingle de Gricigliano */
+.pin.vamp i{border-color:#ff1736;background:#2a0010;box-shadow:0 0 .8rem rgba(255,23,54,.85)}
+/* archives : accès restreint vers la partie la plus putride du site */
+.gate{--bile:#c6ff3c;--sang:#ff1736;position:relative;display:block;max-width:62rem;margin:1.6rem 0 2rem;text-decoration:none;color:var(--bile);background:#030006;border:.2rem solid #240a2c;isolation:isolate;overflow:hidden;cursor:pointer;box-shadow:0 0 0 .15rem #000,0 0 1.6rem rgba(255,23,54,.25),inset 0 0 2.4rem rgba(0,0,0,.9);animation:gate-pulse 3.4s ease-in-out infinite}
+.gate::before,.gate::after{content:"";position:absolute;left:0;right:0;height:.9rem;z-index:2;background:repeating-linear-gradient(-45deg,#0b0b0b 0 .9rem,var(--bile) .9rem 1.8rem);opacity:.92;animation:gate-tape 6s linear infinite}
+.gate::before{top:0}
+.gate::after{bottom:0;animation-direction:reverse}
+.gate-in{position:relative;z-index:1;display:grid;gap:.4rem;justify-items:center;text-align:center;padding:2.6rem 1rem 2.4rem;background:radial-gradient(ellipse at 50% 125%,rgba(255,23,54,.24),transparent 62%),radial-gradient(ellipse at 50% -25%,rgba(198,255,60,.1),transparent 58%)}
+.gate-in::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px);mix-blend-mode:overlay}
+.gate-k{font:400 1.2rem/1 "Bebas Neue",sans-serif;letter-spacing:.42em;color:var(--sang);text-shadow:0 0 .6rem rgba(255,23,54,.75);animation:gate-blink 4.7s steps(1,end) infinite}
+.gate-t{position:relative;display:block;font:400 4.4rem/1 "Bebas Neue",sans-serif;letter-spacing:.08em;color:var(--bile);text-shadow:0 0 .9rem rgba(198,255,60,.5),0 .15rem 0 #000}
+.gate-t::before,.gate-t::after{content:attr(data-t);position:absolute;inset:0;opacity:.9;pointer-events:none}
+.gate-t::before{color:var(--sang);clip-path:inset(0 0 62% 0);transform:translate(-.18rem,0);animation:gate-g1 3.1s steps(1,end) infinite}
+.gate-t::after{color:#9a4dff;clip-path:inset(60% 0 0 0);transform:translate(.18rem,0);animation:gate-g2 2.7s steps(1,end) infinite}
+.gate-s{font-size:1.15rem;line-height:1.2;letter-spacing:.14em;text-transform:uppercase;color:#e8dcff;opacity:.8}
+.gate:hover,.gate:focus-visible{outline:0;border-color:var(--sang)}
+.gate:hover .gate-t,.gate:focus-visible .gate-t{color:#fff;text-shadow:0 0 1.2rem var(--sang),0 .15rem 0 #000}
+.gate:hover::before,.gate:hover::after,.gate:focus-visible::before,.gate:focus-visible::after{animation-duration:1.5s}
+.gate:hover .gate-t::before,.gate:focus-visible .gate-t::before{animation-duration:.5s}
+.gate:hover .gate-t::after,.gate:focus-visible .gate-t::after{animation-duration:.43s}
+.gate-sealed{cursor:default}
+.gate-sealed:hover{border-color:#240a2c}
+@keyframes gate-tape{to{background-position:2.546rem 0}}
+@keyframes gate-pulse{0%,100%{box-shadow:0 0 0 .15rem #000,0 0 1.2rem rgba(255,23,54,.18),inset 0 0 2.4rem rgba(0,0,0,.9)}50%{box-shadow:0 0 0 .15rem #000,0 0 2.6rem rgba(255,23,54,.5),inset 0 0 2.4rem rgba(0,0,0,.9)}}
+@keyframes gate-blink{0%,100%{opacity:1}9%{opacity:.2}11%{opacity:1}52%{opacity:1}53%{opacity:.3}55%{opacity:1}56%{opacity:.15}58%{opacity:1}}
+@keyframes gate-g1{0%,90%,100%{clip-path:inset(0 0 62% 0);transform:translate(-.18rem,0)}92%{clip-path:inset(18% 0 48% 0);transform:translate(-.55rem,0)}94%{clip-path:inset(54% 0 20% 0);transform:translate(.4rem,0)}96%{clip-path:inset(8% 0 72% 0);transform:translate(-.3rem,0)}}
+@keyframes gate-g2{0%,86%,100%{clip-path:inset(60% 0 0 0);transform:translate(.18rem,0)}88%{clip-path:inset(30% 0 36% 0);transform:translate(.55rem,0)}91%{clip-path:inset(72% 0 4% 0);transform:translate(-.4rem,0)}93%{clip-path:inset(46% 0 30% 0);transform:translate(.3rem,0)}}
+@media (max-width:899px){.gate-in{padding:2.2rem .8rem 2rem}.gate-t{font-size:2.5rem;letter-spacing:.05em;white-space:nowrap}.gate-k{font-size:1rem;letter-spacing:.28em}.gate-s{font-size:1rem}}
+@media (prefers-reduced-motion:reduce){.gate,.gate::before,.gate::after,.gate-k,.gate-t::before,.gate-t::after{animation:none}}

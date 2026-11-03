@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/charte.css?v=1">
-<link rel="stylesheet" href="/putride.css?v=28">
+<link rel="stylesheet" href="/putride.css?v=30">
 <script>try{if(sessionStorage.getItem("lcm-slime")){document.documentElement.className+=" slx";setTimeout(function(){document.documentElement.classList.remove("slx")},3500)}}catch(e){}</script><link href="/images/favicon.png" rel="icon" type="image/png"><link href="/images/favicon.png" rel="apple-touch-icon">
 </head>
 <body>
@@ -49,6 +49,7 @@
     <li id="fromagerie"><b><em class="num">11</em>La fromagerie</b><span>69 rue Armand Barbès, à Sotteville-lès-Rouen. Un <a class="lk" href="/mode-putride/bestiaire/retard-tinables/">Retard-Tinable</a> renégat et rebellé contre son maître y prépare du saint-vergeron à foison pour contrer le réseau tentaculaire d’agents mendiants de <a class="lk" href="/mode-putride/bestiaire/createur/">la Créature</a>.</span><div class="acts"><button class="btn goto" type="button" data-k="fromagerie">SUR LA CARTE</button> <a class="btn" href="/mode-putride/bestiaire/retard-tinables/">LES RETARD-TINABLES</a></div></li>
     <li id="saint-ouen"><b><em class="num">12</em>L’abbatiale Saint-Ouen</b><span><a class="lk" href="/mode-putride/bestiaire/pere-kitz-latouch/">Le père Kitz-Latouch</a> adore y faire du tricycle, en ses murs, comme un singe de cirque.</span><div class="acts"><button class="btn goto" type="button" data-k="saint-ouen">SUR LA CARTE</button> <a class="btn" href="https://fr.wikipedia.org/wiki/Abbatiale_Saint-Ouen_de_Rouen" rel="noopener" target="_blank">EN SAVOIR PLUS</a></div></li>
     <li id="baisodrome"><b><em class="num">13</em>Le Baisodrome</b><span>132 boulevard Courtet, à L’Isle-sur-la-Sorgue. Centre de commandement du sexe : des experts de tous domaines, sophrologues, bestiologues, pédologues, y viennent faire séjour. Fait aussi office de garderie. Lieu d’activité de <a class="lk" href="/mode-putride/bestiaire/jean-marie-gomis/">Jean-Marie Gomis</a>.</span><div class="acts"><button class="btn goto" type="button" data-k="baisodrome">SUR LA CARTE</button> <a class="btn" href="/mode-putride/bestiaire/jean-marie-gomis/">VOIR LA FICHE</a></div></li>
+    <li id="gricigliano"><b><em class="num">14</em>Gricigliano</b><span>Via di Gricigliano 52, 50065 Sieci (Pontassieve), près de Florence, en Toscane : l’adresse de l’Institut du Christ Roi Souverain Prêtre, séminaire « San Filippo Neri ». Dans le lore, c’est le QG de <a class="lk" href="/mode-putride/bestiaire/vampirix/">Vampirix</a>, d’où il dirige le réseau international de la secte des vampires dont <a class="lk" href="/mode-putride/bestiaire/ephebus/">Éphébus</a> fait partie. Un nuage noir le recouvre en permanence : éclairs rouges, chauves-souris aux yeux rouges, fouets et bâillons SM s’en échappent sans fin.</span><div class="acts"><button class="btn goto" type="button" data-k="gricigliano">SUR LA CARTE</button> <a class="btn" href="/mode-putride/bestiaire/vampirix/">VOIR LA FICHE</a></div></li>
   </ol>
   <p class="note">D’autres lieux de l’œuvre viendront s’ajouter à cette carte.</p>
 
@@ -62,19 +63,19 @@
 <script>
 (function(){
   if(!window.L)return;
-  var P=[["vampirium","1. Le Vampirium",49.445755,1.091657],["antre","2. L\'antre du Père Kitz-Latouch",49.4450751,1.0985346],["cathedrale","3. La cathédrale Notre-Dame",49.440288,1.0948212],["saint-maclou","4. Église Saint-Maclou",49.4397819,1.0983808],["aitre","5. L\'Aître Saint-Maclou",49.4402647,1.0998461],["viol","6. Rue du Viol",49.4408263,1.0967638],["fontaine","7. La fontaine Sainte-Marie",49.4471566,1.1005869],["cote","8. La côte Sainte-Catherine",49.4336018,1.1098726],["archeveche","9. L\'archevêché de Rouen",49.4402126,1.0963527],["delycium","10. Le Délycium",49.4400421,1.0976809],["fromagerie","11. La fromagerie",49.423794,1.090938],["saint-ouen","12. L\'abbatiale Saint-Ouen",49.44252,1.09976],["baisodrome","13. Le Baisodrome",43.92319,5.04626]];
+  var P=[["vampirium","1. Le Vampirium",49.445755,1.091657],["antre","2. L\'antre du Père Kitz-Latouch",49.4450751,1.0985346],["cathedrale","3. La cathédrale Notre-Dame",49.440288,1.0948212],["saint-maclou","4. Église Saint-Maclou",49.4397819,1.0983808],["aitre","5. L\'Aître Saint-Maclou",49.4402647,1.0998461],["viol","6. Rue du Viol",49.4408263,1.0967638],["fontaine","7. La fontaine Sainte-Marie",49.4471566,1.1005869],["cote","8. La côte Sainte-Catherine",49.4336018,1.1098726],["archeveche","9. L\'archevêché de Rouen",49.4402126,1.0963527],["delycium","10. Le Délycium",49.4400421,1.0976809],["fromagerie","11. La fromagerie",49.423794,1.090938],["saint-ouen","12. L\'abbatiale Saint-Ouen",49.44252,1.09976],["baisodrome","13. Le Baisodrome",43.92319,5.04626],["gricigliano","14. Gricigliano",43.80337,11.38003]];
   var m=L.map('lmap',{scrollWheelZoom:false}),mk={};
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(m);
   var EGP={cathedrale:1,'saint-maclou':1,'saint-ouen':1};
   var ws='<svg class="ws" viewBox="0 0 24 22" aria-hidden="true"><path d="M12 1.6 23 20.4H1z" fill="#ffd400" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 8v5.5" stroke="#111" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="16.8" r="1.4" fill="#111"/></svg>';
   var VER='<span class="vt">'+ws+'<span>PRENEZ GARDE AU VER DU BAPTISTÈRE</span>'+ws+'</span>';
-  var ic=function(n,eg){return L.divIcon({className:'pin',html:'<i>'+n+'</i>'+(eg?'<b class="eg"></b>':''),iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-14]});};
-  P.forEach(function(p,n){mk[p[0]]=L.marker([p[2],p[3]],{icon:ic(n+1,EGP[p[0]]),title:EGP[p[0]]?'':p[1]}).addTo(m).bindPopup('<b>'+p[1]+'</b>');if(EGP[p[0]])mk[p[0]].bindTooltip(VER,{direction:'top',className:'ver-tip',offset:[0,-14]});});
+  var ic=function(n,eg,vp){return L.divIcon({className:'pin'+(vp?' vamp':''),html:'<i>'+n+'</i>'+(eg?'<b class="eg"></b>':''),iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-14]});};
+  P.forEach(function(p,n){mk[p[0]]=L.marker([p[2],p[3]],{icon:ic(n+1,EGP[p[0]],p[0]==='gricigliano'),title:EGP[p[0]]?'':p[1]}).addTo(m).bindPopup('<b>'+p[1]+'</b>');if(EGP[p[0]])mk[p[0]].bindTooltip(VER,{direction:'top',className:'ver-tip',offset:[0,-14]});});
   /* églises de Rouen (hors Saint-Patrice, masquée par le nuage) : petit point rouge, mise en garde au survol */
   [[49.46147,1.13526],[49.44292,1.08833],[49.45036,1.06265],[49.42576,1.09734],[49.42654,1.07782],[49.4528,1.05946],[49.44962,1.08271],[49.44496,1.09553],[49.44216,1.11718],[49.43683,1.08154],[49.45212,1.12702],[49.4495,1.10408],[49.44292,1.08122],[49.43408,1.10622],[49.44849,1.09539],[49.43037,1.08562],[49.44186,1.10372],[49.44779,1.14071],[49.4459,1.08027]].forEach(function(c){
     L.circleMarker(c,{radius:7,color:'#2a0008',weight:1.5,fillColor:'#e0001b',fillOpacity:1,className:'eg-dot'}).addTo(m).bindTooltip(VER,{direction:'top',className:'ver-tip',offset:[0,-6]});
   });
-  m.fitBounds(P.filter(function(p){return p[0]!=='baisodrome';}).map(function(p){return [p[2],p[3]];}),{padding:[30,30]});
+  m.fitBounds(P.filter(function(p){return p[0]!=='baisodrome'&&p[0]!=='gricigliano';}).map(function(p){return [p[2],p[3]];}),{padding:[30,30]});
   /* nuage noir et chauves-souris sur l'église Saint-Patrice : ancré aux coordonnées, il suit tous les niveaux de zoom */
   (function(){
     var C=[49.44593,1.09155],A=.00052,B=.00075,NS='http://www.w3.org/2000/svg';
@@ -99,8 +100,147 @@
     });
     L.svgOverlay(svg,[[C[0]-A,C[1]-B],[C[0]+A,C[1]+B]],{interactive:false,className:'nuage'}).addTo(m);
   })();
+  /* Gricigliano : nuage vampirique ancré aux coordonnées (suit tous les niveaux de zoom).
+     Éclairs rouges, chauves-souris aux yeux rouges, fouets qui claquent, bâillons SM qui s'échappent sans fin. */
+  (function(){
+    var C=[43.80337,11.38003],A=.001707,B=.002364,NS='http://www.w3.org/2000/svg',XL='http://www.w3.org/1999/xlink',TAU=6.283185;
+    var sd=1031;
+    var rnd=function(){sd=(sd+0x6D2B79F5)|0;var t=Math.imul(sd^(sd>>>15),1|sd);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};
+    var rr=function(a,b){return a+(b-a)*rnd();};
+    var f=function(x){return Math.round(x*10)/10;};
+    var el=function(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+    var low=(navigator.hardwareConcurrency||4)<=4,calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var an=function(p,a){return calm?null:el('animate',a,p);};
+    var at=function(p,a){return calm?null:el('animateTransform',a,p);};
+    var svg=el('svg',{viewBox:'0 0 400 400',preserveAspectRatio:'none','aria-hidden':'true',focusable:'false'}),defs=el('defs',{},svg);
+    var grad=function(id,stops,extra){var g=el('radialGradient',{id:id},defs),k;for(k in (extra||{}))g.setAttribute(k,extra[k]);stops.forEach(function(s){el('stop',{offset:s[0],'stop-color':s[1],'stop-opacity':s[2]},g);});};
+    grad('gvc',[[0,'#1a000e',1],[.6,'#08000b',1],[.86,'#000',.95],[1,'#000',0]]);
+    grad('gvr',[[0,'#ff1232',.8],[.5,'#b00020',.34],[1,'#6a0012',0]]);
+    grad('gvb',[[0,'#ff7a8c',1],[.42,'#d1001f',1],[1,'#55000e',1]],{cx:'.35',cy:'.3',r:'.8'});
+    var i,a,d;
+
+    /* corps du nuage : deux couches de masses noires qui tournent en sens inverse, cœur rouge qui bat */
+    var sky=el('g',{},svg);
+    el('circle',{cx:200,cy:200,r:180,fill:'url(#gvr)',opacity:.42},sky);
+    var b1=el('g',{},sky),b2=el('g',{},sky);
+    var masses=function(g,n,dmax,rmin,rmax){for(var j=0;j<n;j++){var q=rnd()*TAU,dd=Math.sqrt(rnd())*dmax;el('circle',{cx:f(200+Math.cos(q)*dd),cy:f(200+Math.sin(q)*dd),r:f(rr(rmin,rmax)),fill:'url(#gvc)'},g);}};
+    masses(b1,16,86,52,78);masses(b2,14,92,48,72);
+    el('circle',{cx:200,cy:200,r:112,fill:'url(#gvc)'},sky);
+    at(b1,{attributeName:'transform',type:'rotate',from:'0 200 200',to:'360 200 200',dur:'110s',repeatCount:'indefinite'});
+    at(b2,{attributeName:'transform',type:'rotate',from:'360 200 200',to:'0 200 200',dur:'150s',repeatCount:'indefinite'});
+    var core=el('circle',{cx:200,cy:200,r:118,fill:'url(#gvr)',opacity:.5},sky);
+    an(core,{attributeName:'opacity',values:'.28;.78;.34;.72;.28',keyTimes:'0;.12;.26;.38;1',dur:'2.8s',repeatCount:'indefinite'});
+
+    /* regards rouges qui s'ouvrent dans la masse */
+    if(!calm){
+      var eyes=el('g',{opacity:0},svg);
+      [[-1,-16],[1,16]].forEach(function(e){
+        var cx=200+e[0]*26,cy=168;
+        el('circle',{cx:cx,cy:cy,r:22,fill:'url(#gvr)'},eyes);
+        el('ellipse',{cx:cx,cy:cy,rx:15,ry:4.6,fill:'#ff0a2e',transform:'rotate('+e[1]+' '+cx+' '+cy+')'},eyes);
+        el('ellipse',{cx:cx,cy:cy,rx:2.1,ry:4.6,fill:'#000',transform:'rotate('+e[1]+' '+cx+' '+cy+')'},eyes);
+      });
+      an(eyes,{attributeName:'opacity',values:'0;0;.95;.95;.15;.95;0;0',keyTimes:'0;.48;.52;.68;.7;.74;.82;1',dur:'11s',begin:'-3s',repeatCount:'indefinite'});
+    }
+
+    /* braises qui montent du nuage */
+    if(!low&&!calm){
+      for(i=0;i<10;i++){
+        a=rnd()*TAU;d=rr(20,110);var ex=f(200+Math.cos(a)*d),ey=f(200+Math.sin(a)*d),dr=rr(3,6);
+        var em=el('circle',{cx:ex,cy:ey,r:f(rr(.8,1.6)),fill:'#ff2a4a',opacity:0},svg);
+        an(em,{attributeName:'cy',values:ey+';'+f(ey-rr(40,90)),dur:dr+'s',begin:'-'+f(rr(0,dr))+'s',repeatCount:'indefinite'});
+        an(em,{attributeName:'opacity',values:'0;.9;0',dur:dr+'s',begin:'-'+f(rr(0,dr))+'s',repeatCount:'indefinite'});
+      }
+    }
+
+    /* éclairs rouges : trois traits (halo, corps, cœur blanc) qui s'allument avec un flash sur le nuage */
+    var bolts=el('g',{fill:'none','stroke-linecap':'round','stroke-linejoin':'round'},svg),NB=low?4:7;
+    for(i=0;i<NB;i++){
+      var a0=rnd()*TAU,r0=rr(30,70),r1=rr(135,178),n=6+((rnd()*3)|0),pts=[],j;
+      for(j=0;j<=n;j++){
+        var t=j/n,rad=r0+(r1-r0)*t,ang=a0+t*rr(-.35,.35),off=(j&&j<n)?rr(-14,14):0;
+        pts.push([200+Math.cos(ang)*rad-Math.sin(ang)*off,200+Math.sin(ang)*rad+Math.cos(ang)*off]);
+      }
+      var pl=function(p){return p.map(function(q){return f(q[0])+','+f(q[1]);}).join(' ');};
+      var mid=pts[(n/2)|0],fa=a0+(rnd()<.5?-.8:.8),fork=[mid,[mid[0]+Math.cos(fa)*18+rr(-5,5),mid[1]+Math.sin(fa)*18+rr(-5,5)],[mid[0]+Math.cos(fa)*38,mid[1]+Math.sin(fa)*38+rr(-6,6)]];
+      var bg=el('g',{opacity:calm?(i<3?.85:0):0},bolts);
+      [[11,'#ff1a40',.22],[4.6,'#ff1a40',.7],[1.7,'#ffe3e8',1]].forEach(function(w){
+        el('polyline',{points:pl(pts),'stroke-width':w[0],stroke:w[1],'stroke-opacity':w[2]},bg);
+        el('polyline',{points:pl(fork),'stroke-width':w[0]*.7,stroke:w[1],'stroke-opacity':w[2]},bg);
+      });
+      var fl=el('circle',{cx:f(mid[0]),cy:f(mid[1]),r:92,fill:'url(#gvr)',opacity:0},bolts);
+      var dur=f(rr(2.4,5.2)),bgn='-'+f(rr(0,7))+'s';
+      an(bg,{attributeName:'opacity',values:'0;0;1;.2;.95;.1;0;0',keyTimes:'0;.4;.41;.45;.48;.54;.6;1',dur:dur+'s',begin:bgn,repeatCount:'indefinite'});
+      an(fl,{attributeName:'opacity',values:'0;0;.9;.25;.8;.1;0;0',keyTimes:'0;.4;.41;.45;.48;.54;.6;1',dur:dur+'s',begin:bgn,repeatCount:'indefinite'});
+    }
+
+    /* fouets : ils jaillissent du nuage, claquent au bout, puis se retirent */
+    var whips=el('g',{fill:'none','stroke-linecap':'round'},svg),NW=low?5:9,base=rnd()*TAU;
+    for(i=0;i<NW;i++){
+      a=base+i*TAU/NW+rr(-.14,.14);
+      var sg=i%2?1:-1,ux=Math.cos(a),uy=Math.sin(a),vx=-uy,vy=ux;
+      var P=function(dd,oo){return f(200+ux*dd+vx*oo)+','+f(200+uy*dd+vy*oo);};
+      var dpath='M'+P(62,0)+' C'+P(96,sg*34)+' '+P(128,-sg*38)+' '+P(176,sg*14);
+      var wg=el('g',{},whips),off0=calm?0:100;
+      var w0=el('path',{d:dpath,pathLength:100,stroke:'#ff1736','stroke-width':7,'stroke-opacity':.28,'stroke-dasharray':'100 100','stroke-dashoffset':off0},wg);
+      var w1=el('path',{d:dpath,pathLength:100,stroke:'#050505','stroke-width':4.2,'stroke-dasharray':'100 100','stroke-dashoffset':off0},wg);
+      var w2=el('path',{d:dpath,pathLength:100,stroke:'#ff2a4a','stroke-width':1.3,'stroke-opacity':.9,'stroke-dasharray':'100 100','stroke-dashoffset':off0},wg);
+      var tx=f(200+ux*176+vx*sg*14),ty=f(200+uy*176+vy*sg*14);
+      var cr=el('circle',{cx:tx,cy:ty,r:9,fill:'#ffe3e8',opacity:calm?0:0},wg),ring=el('circle',{cx:tx,cy:ty,r:13,fill:'none',stroke:'#ff2a4a','stroke-width':1.4,opacity:0},wg);
+      var wd=f(rr(3.2,5.4)),wb='-'+f(rr(0,wd))+'s';
+      [w0,w1,w2].forEach(function(w){an(w,{attributeName:'stroke-dashoffset',values:'100;0;0;-100;-100',keyTimes:'0;.14;.52;.68;1',dur:wd+'s',begin:wb,repeatCount:'indefinite'});});
+      an(cr,{attributeName:'opacity',values:'0;0;1;0;0',keyTimes:'0;.13;.16;.28;1',dur:wd+'s',begin:wb,repeatCount:'indefinite'});
+      an(ring,{attributeName:'opacity',values:'0;0;.9;0;0',keyTimes:'0;.13;.18;.36;1',dur:wd+'s',begin:wb,repeatCount:'indefinite'});
+      at(wg,{attributeName:'transform',type:'rotate',values:'-4 200 200;4 200 200;-4 200 200',dur:f(rr(4,7))+'s',repeatCount:'indefinite'});
+    }
+
+    /* chauves-souris aux yeux rouges */
+    var BAT='M0-3C2-6 4-5 5-2C9-6 15-8 20-4C17-3 16 0 15 3C13 1 11 1 9 3C8 1 6 2 5 4L3 3C2 6 1 8 0 10C-1 8-2 6-3 3L-5 4C-6 2-8 1-9 3C-11 1-13 1-15 3C-16 0-17-3-20-4C-15-8-9-6-5-2C-4-5-2-6 0-3Z';
+    var batsG=el('g',{},svg),NBT=low?8:14;
+    for(i=0;i<NBT;i++){
+      var rx=rr(60,170),ry=rr(40,120),cy=200+rr(-24,24),sw=i%2,sc=f(rr(.95,1.7)),bd=f(rr(8,18));
+      var g=el('g',{transform:calm?'translate('+f(200+(rnd()-.5)*220)+' '+f(200+(rnd()-.5)*220)+')':''},batsG);
+      var sgp=el('g',{transform:'scale('+sc+')'},g),w=el('g',{},sgp);
+      el('path',{d:BAT,fill:'#000',stroke:'#ff2a4a','stroke-width':.7,'stroke-opacity':.7,'stroke-linejoin':'round'},w);
+      [-1.7,1.7].forEach(function(x){el('circle',{cx:x,cy:-.6,r:3,fill:'#ff0a2e',opacity:.35},sgp);el('circle',{cx:x,cy:-.6,r:1.15,fill:'#ff1236'},sgp);});
+      if(!calm){
+        el('animateMotion',{path:'M'+f(200-rx)+','+f(cy)+' a'+f(rx)+','+f(ry)+' 0 1,'+sw+' '+f(2*rx)+',0 a'+f(rx)+','+f(ry)+' 0 1,'+sw+' '+f(-2*rx)+',0',dur:bd+'s',repeatCount:'indefinite',begin:'-'+f(rr(0,bd))+'s'},g);
+        at(w,{attributeName:'transform',type:'scale',values:'1 1;1 .35;1 1',dur:f(.36+(i%3)*.07)+'s',repeatCount:'indefinite',begin:'-'+f(i*.13)+'s'});
+      }
+    }
+
+    /* bâillons SM qui s'échappent du nuage en continu */
+    var gg=el('g',{id:'gvgag'},defs);
+    el('rect',{x:-15,y:-2.4,width:30,height:4.8,rx:1.6,fill:'#0c0c0c',stroke:'#4a0014','stroke-width':.8},gg);
+    [-11,-8].forEach(function(x){el('circle',{cx:x,cy:0,r:.55,fill:'#6a6a6a'},gg);});
+    el('circle',{cx:0,cy:0,r:7.4,fill:'url(#gvb)',stroke:'#2a0008','stroke-width':.8},gg);
+    el('ellipse',{cx:-2.4,cy:-2.6,rx:2.4,ry:1.5,fill:'#fff','fill-opacity':.55,transform:'rotate(-30 -2.4 -2.6)'},gg);
+    el('rect',{x:9.6,y:-3.2,width:4,height:6.4,rx:.8,fill:'none',stroke:'#c8c8c8','stroke-width':1},gg);
+    el('circle',{cx:11.6,cy:0,r:.8,fill:'#c8c8c8'},gg);
+    var gagsG=el('g',{},svg),NG=low?7:12;
+    for(i=0;i<NG;i++){
+      a=rnd()*TAU;d=rr(150,192);
+      var gx=f(200+Math.cos(a)*d),gy=f(200+Math.sin(a)*d),qx=f(200+Math.cos(a+.5)*d*.55),qy=f(200+Math.sin(a+.5)*d*.55),gd=f(rr(5.5,9.5));
+      var o=el('g',{opacity:calm?.9:0,transform:calm?'translate('+f(200+Math.cos(a)*d*.8)+' '+f(200+Math.sin(a)*d*.8)+')':''},gagsG);
+      var rot=el('g',{},o),us=el('use',{},rot);
+      us.setAttribute('href','#gvgag');us.setAttributeNS(XL,'xlink:href','#gvgag');
+      if(calm){us.setAttribute('transform','scale(1.5)');continue;}
+      el('animateMotion',{path:'M200,200 Q'+qx+','+qy+' '+gx+','+gy,dur:gd+'s',repeatCount:'indefinite',begin:'-'+f(rr(0,gd))+'s',calcMode:'linear'},o);
+      an(o,{attributeName:'opacity',values:'0;1;1;0',keyTimes:'0;.15;.75;1',dur:gd+'s',repeatCount:'indefinite',begin:'-'+f(rr(0,gd))+'s'});
+      at(rot,{attributeName:'transform',type:'rotate',from:f(rr(-40,40))+' 0 0',to:f(rr(160,340))+' 0 0',dur:gd+'s',repeatCount:'indefinite'});
+      at(us,{attributeName:'transform',type:'scale',values:'.5;2.3',dur:gd+'s',repeatCount:'indefinite'});
+    }
+
+    L.svgOverlay(svg,[[C[0]-A,C[1]-B],[C[0]+A,C[1]+B]],{interactive:false,className:'nuage nuage-vamp'}).addTo(m);
+    /* hors de l'écran, les animations sont suspendues */
+    if(window.IntersectionObserver&&svg.pauseAnimations){
+      var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)svg.unpauseAnimations();else svg.pauseAnimations();});});
+      io.observe(svg);
+      document.addEventListener('putride:page',function(){io.disconnect();},{once:true});
+    }
+  })();
   Array.prototype.forEach.call(document.querySelectorAll('.goto'),function(b){
-    b.addEventListener('click',function(){var k=b.dataset.k;document.querySelector('.map').scrollIntoView({behavior:'smooth',block:'center'});m.setView(mk[k].getLatLng(),17);mk[k].openPopup();});
+    b.addEventListener('click',function(){var k=b.dataset.k;document.querySelector('.map').scrollIntoView({behavior:'smooth',block:'center'});m.setView(mk[k].getLatLng(),17);if(k!=='gricigliano')mk[k].openPopup();});
   });
   m.on('click',function(){m.scrollWheelZoom.enable();});
 })();
