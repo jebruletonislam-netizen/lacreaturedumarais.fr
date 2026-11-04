@@ -478,3 +478,5 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
   .mol{width:4.6rem}.mol b{font-size:2.3rem}
 }
 @media (prefers-reduced-motion:reduce){.cr-fumee i,.cr-disco,.cr-disco i,.cr-chauve,.cr-chauve svg,.paillette,.cr-conf,.cr-araignee .fil,.cr-araignee .corps-a,.vt-svg .nb,.vt-arc::after,.tb-scene .sc-led,.tb-scene .sac.tremble{animation:none!important}.cr-fumee,.cr-disco{display:none}}
+.cachot .rfig.rfig-l{float:none;width:min(100%,76rem);max-width:none;margin:1rem 0 1.4rem}
+.cachot .rfig.rfig-l img{filter:contrast(1.04)}

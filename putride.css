@@ -672,3 +672,35 @@ header{overflow:visible}
 .leaflet-tooltip-top.sacre-tip::before{border-top-color:#ffd76a}
 .nuage-sacre{pointer-events:none}
 @media (prefers-reduced-motion:reduce){.pin.sacre i{animation:none}}
+
+/* ---------- la porte à mot de passe : le vitrail de la Créature, vivant ----------
+   Au repos, les rayons tournent ; quand on écrit, ils s'emballent ; une mauvaise réponse fait craqueler le verre ;
+   la bonne le fend en deux, et la lumière passe entre les deux moitiés. */
+.pb-scene{display:grid;grid-template-columns:14rem 1fr;gap:2.4rem;align-items:center;padding:.4rem .6rem 0}
+.pb-vit{position:relative;width:14rem;aspect-ratio:3/5;justify-self:center;filter:drop-shadow(0 0 1.4rem rgba(255,204,0,.28));transition:filter .4s}
+.pb-half{position:absolute;inset:0;display:block;transition:transform 1s cubic-bezier(.6,0,.3,1),opacity 1s}
+.pb-half.l{clip-path:inset(0 50% 0 0)}.pb-half.r{clip-path:inset(0 0 0 50%)}
+.pb-half .cgate-cr{transition:none}
+.pb-half .ry{transform-origin:36.7px 39px;animation:pb-tourne 70s linear infinite}
+.pb-typing .pb-half .ry{animation-duration:5s}
+.pb-typing .pb-vit{filter:drop-shadow(0 0 2.2rem rgba(255,204,0,.75)) brightness(1.18)}
+.pb-lueur{position:absolute;left:50%;top:0;bottom:0;width:0;margin-left:0;background:linear-gradient(90deg,transparent,#fff 50%,transparent);opacity:0;box-shadow:0 0 2.6rem 1.2rem rgba(255,255,255,.7)}
+.pb-reflet{position:absolute;left:33.7%;top:25.3%;width:1.4rem;height:1.4rem;margin:-.7rem 0 0 -.7rem;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:0;animation:pb-regard 7s ease-in-out infinite}
+.pb-cracks{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;filter:drop-shadow(0 0 3px #e10019)}
+.pb-cracks path{stroke:#fff;stroke-width:1.5;vector-effect:non-scaling-stroke}
+.pb-no .pb-cracks{animation:pb-fendre 2.6s forwards}
+.pb-no .pb-cracks path{stroke-dasharray:240;animation:pb-trace .45s ease-out both}
+.pb-no .pb-vit{animation:pb-rouge 2.6s forwards}
+.pb-ok .pb-half.l{transform:translateX(-130%);opacity:0}.pb-ok .pb-half.r{transform:translateX(130%);opacity:0}
+.pb-ok .pb-lueur{animation:pb-fente 1.3s ease-out forwards}
+.pb-lock.pb-ok{animation:pb-ok .6s .8s forwards}
+.pb-open:not([hidden]){animation:cg-entree 1s cubic-bezier(.2,.9,.3,1)}
+@keyframes pb-tourne{to{transform:rotate(360deg)}}
+@keyframes pb-regard{0%,62%,100%{opacity:0;transform:scale(.3)}70%{opacity:1;transform:scale(1.15) rotate(25deg)}80%{opacity:0;transform:scale(.4)}}
+@keyframes pb-fendre{0%{opacity:0}12%{opacity:1}72%{opacity:1}100%{opacity:0}}
+@keyframes pb-trace{from{stroke-dashoffset:240}to{stroke-dashoffset:0}}
+@keyframes pb-rouge{0%{filter:drop-shadow(0 0 1.4rem rgba(255,204,0,.28))}14%,60%{filter:drop-shadow(0 0 2.6rem #e10019) contrast(1.3) saturate(1.5)}100%{filter:drop-shadow(0 0 1.4rem rgba(255,204,0,.28))}}
+@keyframes pb-fente{0%{width:0;opacity:0}25%{width:.5rem;opacity:1}100%{width:5rem;margin-left:-2.5rem;opacity:0}}
+@keyframes cg-entree{from{opacity:0;transform:scale(.96);filter:brightness(2.4)}to{opacity:1;transform:none;filter:none}}
+@media (max-width:899px){.pb-scene{grid-template-columns:1fr;gap:1.2rem}.pb-vit{width:11rem}}
+@media (prefers-reduced-motion:reduce){.pb-half .ry,.pb-reflet,.pb-open:not([hidden]){animation:none}.pb-half{transition:none}}

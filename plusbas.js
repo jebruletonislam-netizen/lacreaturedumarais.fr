@@ -96,13 +96,14 @@
     var lock=box.querySelector('.pb-lock'),open=box.querySelector('.pb-open'),form=box.querySelector('form'),inp=box.querySelector('input'),msg=box.querySelector('.pb-msg');
     function show(){lock.hidden=true;open.hidden=false;}
     try{if(sessionStorage.getItem(KEY)==='1'){show();return;}}catch(e){}
-    var n=0;
+    var n=0,tp=0;
+    inp.addEventListener('input',function(){lock.classList.add('pb-typing');clearTimeout(tp);tp=setTimeout(function(){lock.classList.remove('pb-typing');},900);});
     form.addEventListener('submit',function(ev){
       ev.preventDefault();
       var v=norm(inp.value);if(!v){inp.focus();return;}
       if(empreinte(v)===EMPREINTE){
         try{sessionStorage.setItem(KEY,'1');}catch(e){}
-        msg.textContent='';lock.classList.add('pb-ok');setTimeout(show,650);return;
+        msg.textContent='';lock.classList.remove('pb-typing');lock.classList.add('pb-ok');setTimeout(show,1500);return;
       }
       msg.textContent=MSG[n++%MSG.length];lock.classList.remove('pb-no');void lock.offsetWidth;lock.classList.add('pb-no');
       inp.value='';inp.disabled=true;form.querySelector('button').disabled=true;
