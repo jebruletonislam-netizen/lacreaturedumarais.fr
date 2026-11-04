@@ -77,9 +77,72 @@
     setTimeout(bat,7000);
   }
 
-  /* ---------- l'araignée ---------- */
-  var ar=document.querySelector('.cr-araignee .corps-a');
-  if(ar)ar.addEventListener('click',function(){dire('Elle tisse l’histoire des cachots. Ne lui demandez pas de qui elle tient son fil.');});
+  /* ---------- l'araignée : elle dit les tweets et les phrases de cachot-paroles.js, dans des bulles vampiriques ---------- */
+  var arc=document.querySelector('.cr-araignee'),ar=arc&&arc.querySelector('.corps-a'),hd=document.querySelector('header');
+  if(arc&&hd){
+    var setHH=function(){arc.style.setProperty('--hh',hd.offsetHeight+'px');};
+    setHH();addEventListener('resize',setHH);
+  }
+  if(ar){
+    var PA=window.CR_PAROLES||{},pool=[],sac=[],bulle=null,traine=[],tb=0,tc=0,last=-1,PROFIL='https://x.com/TancredeCharon';
+    (PA.tweets||[]).forEach(function(x){if(x&&(x.t||typeof x==='string'))pool.push({t:x.t||x,u:x.u||PROFIL,d:x.d||'',k:'tweet'});});
+    (PA.phrases||[]).forEach(function(x){if(x)pool.push({t:x,u:'',d:'',k:'phrase'});});
+    var tire=function(){
+      if(!pool.length)return {t:'Elle a tout entendu, mais personne ne lui a encore soufflé ce qu’il faut dire.',u:'',d:'',k:'vide'};
+      if(!sac.length){for(var i=0;i<pool.length;i++)if(i!==last||pool.length===1)sac.push(i);for(i=sac.length-1;i>0;i--){var r=(Math.random()*(i+1))|0,tmp=sac[i];sac[i]=sac[r];sac[r]=tmp;}}
+      last=sac.pop();return pool[last];
+    };
+    var vb=function(x,y,s,dx,dy,d,cls,dl){
+      var e=document.createElement('i');e.className='cr-vb'+(cls?' '+cls:'');
+      e.style.setProperty('--x',x.toFixed(0)+'px');e.style.setProperty('--y',y.toFixed(0)+'px');e.style.setProperty('--s',s.toFixed(0)+'px');
+      e.style.setProperty('--dx',dx.toFixed(0)+'px');e.style.setProperty('--dy',dy.toFixed(0)+'px');e.style.setProperty('--d',d.toFixed(1)+'s');
+      if(dl)e.style.setProperty('--dl',dl+'s');
+      if(!cls)e.addEventListener('animationend',function(){e.remove();});
+      body.appendChild(e);return e;
+    };
+    var ferme=function(){
+      clearInterval(tb);clearTimeout(tc);
+      traine.forEach(function(e){e.remove();});traine=[];
+      if(bulle){var b=bulle;bulle=null;b.classList.remove('on');setTimeout(function(){b.remove();},320);}
+      arc.classList.remove('parle');
+    };
+    ar.addEventListener('click',function(e){
+      e.stopPropagation();
+      var p=tire();ferme();
+      arc.classList.add('parle');
+      var r=ar.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+      /* une gerbe de petites bulles vampiriques s'échappe de l'araignée */
+      if(!calm)for(var i=0;i<12;i++)vb(cx+rnd(-6,6),cy+rnd(-4,8),rnd(7,24),rnd(-70,70),rnd(-120,-30),rnd(1.8,3.2),Math.random()<.4?'croc':'');
+      /* et trois bulles de plus en plus grosses mènent à la parole */
+      traine=[vb(cx,r.bottom+10,7,0,0,0,'fixe',0),vb(cx+5,r.bottom+23,11,0,0,0,'fixe',.12),vb(cx-3,r.bottom+40,17,0,0,0,'fixe',.24)];
+      var b=document.createElement('div');b.className='cr-bulle';b.setAttribute('role','status');b.setAttribute('aria-live','polite');
+      var q=document.createElement('q');b.appendChild(q);
+      body.appendChild(b);bulle=b;
+      var w=b.offsetWidth,x=Math.max(8,Math.min(innerWidth-w-8,cx-w/2));
+      b.style.left=x+'px';b.style.top=(r.bottom+62)+'px';
+      setTimeout(function(){if(bulle===b)b.classList.add('on');},calm?0:380);
+      var texte=String(p.t),fin=function(){
+        if(p.k==='tweet'){
+          var s=document.createElement('small'),a=document.createElement('a');
+          a.href=p.u;a.target='_blank';a.rel='noopener';a.textContent='@TancredeCharon'+(p.d?' · '+p.d:'');s.appendChild(a);b.appendChild(s);
+        }
+        tc=setTimeout(ferme,Math.max(7000,texte.length*75));
+      };
+      if(calm){q.textContent=texte;fin();}
+      else{var n=0;setTimeout(function(){if(bulle!==b)return;tb=setInterval(function(){n+=2;q.textContent=texte.slice(0,n);if(n>=texte.length){clearInterval(tb);fin();}},24);},420);}
+      b.addEventListener('click',function(ev){if(ev.target.closest('a'))return;ferme();});
+    });
+    addEventListener('keydown',function(e){if(e.key==='Escape'&&bulle)ferme();});
+  }
+
+  /* ---------- lettrines : la première lettre des longs paragraphes ---------- */
+  [].forEach.call(document.querySelectorAll('.cachot .rsec'),function(s){
+    [].forEach.call(s.children,function(p,i){
+      if(p.tagName!=='P'||p.classList.contains('note')||p.textContent.length<230||/^[«"“(]/.test(p.textContent.trim()))return;
+      var pr=p.previousElementSibling;
+      if(!pr||pr.tagName==='H2'||(i<3&&pr.tagName==='FIGURE'&&!s.querySelector('p.lettrine')))p.classList.add('lettrine');
+    });
+  });
 
   /* ---------- les reliques cachées ---------- */
   var trouvees=[];

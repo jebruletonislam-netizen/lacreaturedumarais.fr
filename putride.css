@@ -638,7 +638,7 @@ header{overflow:visible}
 .cgate-vit::before{left:-2.6rem}.cgate-vit::after{right:-2.6rem;animation-duration:.12s}
 .cgate-in{position:relative;z-index:1;display:grid;gap:.7rem;align-self:center;padding-bottom:3.4rem;text-align:left}
 .cgate-k{font:400 1.25rem/1 "Bebas Neue",sans-serif;letter-spacing:.42em;color:#ff1736;text-shadow:0 0 .6rem rgba(255,23,54,.7);animation:cg-blink 4.7s steps(1,end) infinite}
-.cgate-t{display:block;font:400 5.2rem/.95 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.04em;text-transform:uppercase;color:#f2f2f2;text-shadow:0 .2rem 0 #000,0 0 1.2rem rgba(255,255,255,.25),.18rem .18rem 0 #8a0012;transition:color .3s,text-shadow .3s}
+.cgate-t{display:block;font:400 6.4rem/.9 "Bebas Neue",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#f2f2f2;text-shadow:0 .2rem 0 #000,0 0 1.2rem rgba(255,255,255,.25),.18rem .18rem 0 #8a0012;transition:color .3s,text-shadow .3s}
 .cgate-t::after{content:"";display:block;height:1.8rem;margin-top:1rem;background:var(--fleuron-g) left center/20rem 1.8rem no-repeat}
 .cgate-s{font:500 1.1rem/1.35 "Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#d8d8d8;text-shadow:0 .1rem .3rem #000}
 .cgate-marches{position:absolute;left:0;right:0;bottom:0;height:3.4rem;z-index:2;background:repeating-linear-gradient(180deg,#0b0b0b 0 .5rem,#4a4a4a .5rem .62rem,#0b0b0b .62rem 1.1rem,#767676 1.1rem 1.22rem)}
@@ -658,7 +658,7 @@ header{overflow:visible}
 @media (max-width:899px){
   .cgate-pan{grid-template-columns:1fr;justify-items:center;gap:1.2rem;padding:2rem 1.2rem 0;min-height:0}
   .cgate-in{order:-1;text-align:center;justify-items:center;padding-bottom:0}
-  .cgate-t{font-size:2.9rem;letter-spacing:.02em}.cgate-t::after{background-position:center;margin-left:auto;margin-right:auto;width:20rem}
+  .cgate-t{font-size:3.9rem;letter-spacing:.04em}.cgate-t::after{background-position:center;margin-left:auto;margin-right:auto;width:20rem}
   .cgate-s{font-size:.95rem}
   .cgate-vit{width:9rem;margin-bottom:0}
   .cgate-vit::before{left:-2.2rem}.cgate-vit::after{right:-2.2rem}
@@ -704,3 +704,7 @@ header{overflow:visible}
 @keyframes cg-entree{from{opacity:0;transform:scale(.96);filter:brightness(2.4)}to{opacity:1;transform:none;filter:none}}
 @media (max-width:899px){.pb-scene{grid-template-columns:1fr;gap:1.2rem}.pb-vit{width:11rem}}
 @media (prefers-reduced-motion:reduce){.pb-half .ry,.pb-reflet,.pb-open:not([hidden]){animation:none}.pb-half{transition:none}}
+.rgal.dos{grid-template-columns:repeat(auto-fill,minmax(min(24rem,100%),1fr));align-items:start}
+.rgal.dos a{aspect-ratio:auto;display:block}
+.rgal.dos img{height:auto;object-fit:initial}
+.rgal.dos figcaption{font-size:.9rem}

@@ -43,14 +43,14 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
   repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 .12rem,transparent .12rem .9rem),
   linear-gradient(#232323,#0d0d0d 55%,#181818)}
 .cachot nav a::before{content:"";position:absolute;left:50%;top:1.3rem;width:6.2rem;height:3.1rem;margin-left:-3.1rem;border:.3rem solid #0a0a0a;border-radius:.3rem;box-shadow:0 0 0 .14rem #7c7c7c,inset 0 0 1rem #000;background:repeating-linear-gradient(90deg,#0a0a0a 0 .36rem,transparent .36rem 1.2rem),radial-gradient(ellipse at 50% 130%,rgba(255,255,255,.42),transparent 70%),#020202;transition:background .25s,box-shadow .25s}
-.cachot nav a::after{content:attr(data-n);position:absolute;left:1.2rem;bottom:.8rem;font:700 1.1rem "Cinzel",Georgia,serif;letter-spacing:.2em;color:rgba(255,255,255,.55)}
+.cachot nav a::after{content:attr(data-n);position:absolute;left:1.2rem;bottom:.8rem;font:700 1.1rem "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.2em;color:rgba(255,255,255,.55)}
 .cachot nav a:hover::before,.cachot nav a:focus-visible::before{box-shadow:0 0 0 .14rem #fff,0 0 1.6rem rgba(255,255,255,.55),inset 0 0 .6rem #000;background:repeating-linear-gradient(90deg,#0a0a0a 0 .36rem,transparent .36rem 1.2rem),radial-gradient(ellipse at 50% 90%,#fff,rgba(255,255,255,.35) 70%),#111}
 .cachot nav a:hover{filter:brightness(1.18)}
 .cachot nav a[aria-current]{background:repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0 .12rem,transparent .12rem .9rem),linear-gradient(#fafafa,#cfcfcf)}
 .cachot nav a[aria-current]::before{border-color:#000;box-shadow:0 0 0 .14rem #000;background:repeating-linear-gradient(90deg,#000 0 .36rem,transparent .36rem 1.2rem),radial-gradient(ellipse at 50% 90%,#fff,#999 80%),#ccc}
 .cachot nav a[aria-current]::after{color:var(--rouge)}
 .cachot nav a[aria-current] .nav-txt,.cachot nav a[aria-current] .nav-icon{color:#000;text-shadow:none}
-.cachot .nav-txt{position:relative;top:1.1rem;font-family:"Cinzel",Georgia,serif;font-weight:700;font-size:2.5rem;letter-spacing:.14em;text-shadow:0 .1rem 0 #000}
+.cachot .nav-txt{position:relative;top:1.1rem;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:700;font-size:2.5rem;letter-spacing:.14em;text-shadow:0 .1rem 0 #000}
 .cachot .nav-icon svg{filter:none}
 .cachot .cr-grille{position:relative;border-bottom:0;overflow:hidden;background:radial-gradient(ellipse 70% 50% at 50% 0,rgba(255,255,255,.16),transparent 70%),repeating-linear-gradient(90deg,transparent 0 2.2rem,#303030 2.2rem 2.9rem,transparent 2.9rem 5.1rem),#030303}
 .cr-grille .goutte{position:absolute;left:30%;top:-1rem;width:.5rem;height:.9rem;border-radius:50% 50% 50% 50%/70% 70% 30% 30%;background:#fff;opacity:0;animation:cr-goutte 5.2s cubic-bezier(.5,0,1,1) infinite}
@@ -95,11 +95,11 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 @keyframes cr-balance{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
 
 .cachot .kicker{display:inline-block;margin:0 0 1.1rem;padding:.2rem 1.1rem .1rem;background:var(--rouge);color:#fff;font-size:1.25rem;letter-spacing:.34em;text-shadow:none;box-shadow:.3rem .3rem 0 #000}
-.cachot h1{font-family:"Cinzel",Georgia,serif;font-weight:700;font-size:4.2rem;line-height:1.08;letter-spacing:.1em;margin:0 0 1.6rem;color:#f4f4f4;text-shadow:0 -.08rem 0 #000,0 .1rem 0 rgba(255,255,255,.28),0 .4rem 1rem #000;animation:cr-glitch 5.2s steps(1,end) infinite}
+.cachot h1{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:700;font-size:4.2rem;line-height:1.08;letter-spacing:.1em;margin:0 0 1.6rem;color:#f4f4f4;text-shadow:0 -.08rem 0 #000,0 .1rem 0 rgba(255,255,255,.28),0 .4rem 1rem #000;animation:cr-glitch 5.2s steps(1,end) infinite}
 @keyframes cr-glitch{0%,89%,100%{text-shadow:0 -.08rem 0 #000,0 .1rem 0 rgba(255,255,255,.28),0 .4rem 1rem #000}90%{text-shadow:-.05em 0 var(--rouge),.05em 0 var(--jaune)}92%{text-shadow:.07em 0 var(--rouge),-.06em 0 var(--jaune)}94%{text-shadow:-.03em 0 var(--rouge),.03em 0 var(--jaune)}96%{text-shadow:0 -.08rem 0 #000,0 .1rem 0 rgba(255,255,255,.28),0 .4rem 1rem #000}}
-.cachot h2{position:relative;font-family:"Cinzel",Georgia,serif;font-weight:700;font-size:2.1rem;letter-spacing:.1em;margin:3rem 0 1.5rem;padding-bottom:.9rem;border-bottom:.18rem solid #fff;text-shadow:0 .1rem .5rem #000}
+.cachot h2{position:relative;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:700;font-size:2.1rem;letter-spacing:.1em;margin:3rem 0 1.5rem;padding-bottom:.9rem;border-bottom:.18rem solid #fff;text-shadow:0 .1rem .5rem #000}
 .cachot h2::after{content:"";position:absolute;left:0;bottom:-.5rem;width:7rem;height:.5rem;background:var(--rouge)}
-.cachot h3{font-family:"Cinzel",Georgia,serif;font-weight:700;letter-spacing:.08em}
+.cachot h3{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:700;letter-spacing:.08em}
 .cachot .lead-title{display:block;margin:0 0 1.6rem;font-size:2.1rem;letter-spacing:.14em;text-shadow:0 .1rem .5rem #000}
 .cachot .role{color:var(--jaune);letter-spacing:.22em}
 .cachot .accroche{color:#f1f1f1;border-left:.3rem solid var(--rouge);padding-left:1rem}
@@ -112,14 +112,14 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 .cachot .rlist li::marker{color:var(--rouge)}
 .cachot .lk{color:var(--jaune)}
 .cachot .lk:hover{color:#fff}
-.cachot .btn{font-family:"Cinzel",Georgia,serif;font-weight:700;letter-spacing:.12em;font-size:1.3rem}
+.cachot .btn{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:700;letter-spacing:.12em;font-size:1.3rem}
 .cachot .btn:hover{background:var(--jaune);color:#000;border-color:var(--jaune)}
 .cachot .btn.rouge{border-color:var(--rouge);color:#fff;background:var(--rouge)}
 .cachot .btn.rouge:hover{background:#fff;color:var(--rouge);border-color:#fff}
 
 /* ---------- pied de page : le sol, deux échappées ---------- */
 .cachot .pfoot{position:relative;border-top:.5rem solid #fff;box-shadow:0 -.18rem 0 var(--rouge);padding-bottom:1.4rem;background:linear-gradient(#000,#070707)}
-.cachot .pfoot p.sf-c{font-family:"Cinzel",Georgia,serif;font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:1.3rem;margin-top:1.6rem}
+.cachot .pfoot p.sf-c{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:1.3rem;margin-top:1.6rem}
 .cachot .pfoot .pup{margin:1rem .5rem 0}
 .cachot .pfoot .pup.chateau{border-style:solid}
 
@@ -144,13 +144,13 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 .aff:nth-child(odd){transform:rotate(-.8deg)}.aff:nth-child(even){transform:rotate(.7deg)}
 .aff::before{content:"";position:absolute;left:50%;top:-.7rem;width:1.4rem;height:1.4rem;margin-left:-.7rem;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a8a,var(--rouge) 55%,#600);box-shadow:.15rem .25rem .2rem rgba(0,0,0,.6);z-index:2}
 .aff img{display:block;width:100%;height:auto}
-.aff figcaption{padding:.6rem .2rem .1rem;font:500 .8em/1.4 "Cinzel",Georgia,serif;letter-spacing:.04em;color:#e8e8e8}
+.aff figcaption{padding:.6rem .2rem .1rem;font:500 .8em/1.4 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.04em;color:#e8e8e8}
 .armes{display:grid;grid-template-columns:repeat(2,minmax(0,18rem));gap:1.6rem;margin:1.2rem 0 2rem}
 .armes figure{margin:0;padding:.6rem;background:#050505;border:.15rem solid #fff;box-shadow:.4rem .6rem 1rem rgba(0,0,0,.9)}
 .armes img{display:block;width:100%;height:auto}
-.armes figcaption{padding:.5rem .2rem .1rem;font:500 .8em/1.4 "Cinzel",Georgia,serif;color:#e8e8e8}
+.armes figcaption{padding:.5rem .2rem .1rem;font:500 .8em/1.4 "Religath","Religath Ligatures","Cinzel",Georgia,serif;color:#e8e8e8}
 .cachot .rfig{padding:.6rem;background:#050505;border:.15rem solid #fff;box-shadow:.4rem .6rem 1rem rgba(0,0,0,.9)}
-.cachot .rfig figcaption{font:500 .8em/1.4 "Cinzel",Georgia,serif;color:#e8e8e8}
+.cachot .rfig figcaption{font:500 .8em/1.4 "Religath","Religath Ligatures","Cinzel",Georgia,serif;color:#e8e8e8}
 
 /* ---------- vidéos : vignette en niveaux de gris, lecteur chargé au clic ---------- */
 .fv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem;margin:.9rem 0 1.8rem;max-width:84rem}
@@ -164,7 +164,7 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 .fv-play{position:absolute;left:50%;top:50%;width:4.4rem;height:4.4rem;margin:-2.2rem 0 0 -2.2rem;display:grid;place-items:center;border:.2rem solid #fff;border-radius:50%;background:rgba(0,0,0,.78);color:#fff;font-size:1.5rem;padding-left:.2rem;transition:.2s}
 .fv:hover .fv-play,.fv:focus-visible .fv-play{background:var(--rouge);border-color:var(--rouge)}
 .fv-item figcaption{padding:.5rem .2rem .15rem;color:#ececec;font-size:.95rem;line-height:1.4}
-.fv-item figcaption small{display:block;margin-top:.2rem;font:500 .82em/1.2 "Cinzel",Georgia,serif;letter-spacing:.12em;text-transform:uppercase;color:var(--jaune)}
+.fv-item figcaption small{display:block;margin-top:.2rem;font:500 .82em/1.2 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.12em;text-transform:uppercase;color:var(--jaune)}
 .fv-item .vfr{border:0}
 
 /* ---------- Noo-Noo : noir et blanc ---------- */
@@ -177,7 +177,7 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 .comptes{margin:1.4rem 0 2rem;max-width:62rem;padding:1.4rem 1.6rem 1rem;background:rgba(0,0,0,.55);border:.12rem solid rgba(255,255,255,.35);box-shadow:inset 0 0 2.4rem #000}
 .comptes svg{display:block;width:100%;height:auto}
 .comptes path{fill:none;stroke:#f2f2f2;stroke-width:1.7;stroke-linecap:round;filter:drop-shadow(.5px .8px 0 #000)}
-.comptes figcaption{margin-top:.9rem;font:500 .85em/1.5 "Cinzel",Georgia,serif;letter-spacing:.06em;color:#dcdcdc}
+.comptes figcaption{margin-top:.9rem;font:500 .85em/1.5 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.06em;color:#dcdcdc}
 .comptes figcaption b{color:var(--jaune)}
 
 /* ---------- la page 13 : dossier scellé ---------- */
@@ -222,7 +222,7 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 .tb-scene .mousse{fill:#2f6a3e;opacity:.85}
 .tb-scene .lierre{fill:none;stroke:#2f6a3e;stroke-width:3;stroke-linecap:round}
 .tb-scene .lierre.f{fill:#3b8a4d;stroke:none}
-.tb-scene .gravure text{font-family:"Cinzel",Georgia,serif;font-weight:700;text-anchor:middle}
+.tb-scene .gravure text{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:700;text-anchor:middle}
 .tb-scene .gravure .ep{font-style:italic;font-weight:500}
 .tb-scene .gravure .lum{fill:#d2c8e6;opacity:.5}
 .tb-scene .gravure .ombre{fill:#0d0914}
@@ -264,8 +264,8 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 .cierge-btn:hover,.cierge-btn:focus-visible{background:linear-gradient(#fff4b0,#ffc83a);transform:translate(-.12rem,-.12rem);box-shadow:.55rem .55rem 0 #000,0 0 3rem rgba(255,210,70,.6);outline:0}
 .cierge-btn:focus-visible{outline:.2rem solid #fff;outline-offset:.3rem}
 @keyframes tb-bouton{0%,100%{box-shadow:.4rem .4rem 0 #000,0 0 1.4rem rgba(255,200,60,.25)}50%{box-shadow:.4rem .4rem 0 #000,0 0 2.6rem rgba(255,200,60,.5)}}
-.tb-compteur{margin:0;min-height:1.4em;font:500 1rem/1.4 "Cinzel",Georgia,serif;letter-spacing:.12em;text-transform:uppercase;color:var(--jaune)}
-.tb-etat{min-height:1.5em;text-align:center;font-family:"Cinzel",Georgia,serif;letter-spacing:.08em;color:#e4e4e4}
+.tb-compteur{margin:0;min-height:1.4em;font:500 1rem/1.4 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.12em;text-transform:uppercase;color:var(--jaune)}
+.tb-etat{min-height:1.5em;text-align:center;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.08em;color:#e4e4e4}
 
 /* ---------- fenêtres communes (lecteur, visionneuse) ---------- */
 body.cachot #lcmp.pu{--lc:#fff;--hv:#fc0;--bg:rgba(0,0,0,.95);border-color:#fff;box-shadow:0 .5rem 1.6rem rgba(0,0,0,.85)}
@@ -399,9 +399,9 @@ body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
 .cachot main>.cr-toile{width:11rem;height:11rem;opacity:.5;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23fff' stroke-width='.8'%3E%3Cpath d='M0 0L100 0M0 0L92 38M0 0L70 70M0 0L38 92M0 0L0 100'/%3E%3Cpath d='M30 0Q26 22 0 30M55 0Q48 40 0 55M80 0Q70 56 0 80M100 0Q88 70 0 98'/%3E%3C/svg%3E") 0 0/contain no-repeat}
 .cr-toile.h{left:0;top:2.6rem}
 .cr-toile.b{right:0;bottom:2.6rem;transform:scale(-1,-1)}
-.cachot main>.cr-araignee{left:27%;top:2.6rem;width:2.4rem;height:0;z-index:2}
+.cachot main>.cr-araignee{position:fixed;left:58%;top:var(--hh,15rem);width:2.4rem;height:0;z-index:28}
 .cr-araignee .fil{position:absolute;left:50%;top:0;width:.1rem;height:12rem;background:rgba(255,255,255,.6);transform-origin:50% 0;animation:cr-fil 17s ease-in-out infinite}
-.cr-araignee .corps-a{all:unset;position:absolute;left:0;top:0;width:2.4rem;height:2.4rem;cursor:pointer;pointer-events:auto;animation:cr-descend 17s ease-in-out infinite;
+.cr-araignee .corps-a{all:unset;outline-offset:.3rem;position:absolute;left:0;top:0;width:2.4rem;height:2.4rem;cursor:pointer;pointer-events:auto;animation:cr-descend 17s ease-in-out infinite;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%23fff' fill='none' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M12 11L4 5M12 11L3 10M12 12L3 15M12 13L5 20M12 11L20 5M12 11L21 10M12 12L21 15M12 13L19 20'/%3E%3C/g%3E%3Cellipse cx='12' cy='13' rx='4' ry='5' fill='%23000' stroke='%23fff'/%3E%3Ccircle cx='10.8' cy='11.6' r='.8' fill='%23e10019'/%3E%3Ccircle cx='13.2' cy='11.6' r='.8' fill='%23e10019'/%3E%3C/svg%3E") center/contain no-repeat}
 @keyframes cr-fil{0%,100%{transform:scaleY(.1)}38%,58%{transform:scaleY(1)}}
 @keyframes cr-descend{0%,100%{transform:translateY(1rem)}38%,58%{transform:translateY(12rem)}}
@@ -412,7 +412,7 @@ body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
 .cachot main>.rel:hover,.cachot main>.rel:focus-visible{opacity:.95;transform:scale(1.25) rotate(-6deg);filter:drop-shadow(0 0 .6rem #fff);outline:0}
 .cachot main>.rel.trouve{opacity:.55;color:var(--jaune)}
 @media (hover:none){.cachot main>.rel{opacity:.17}}
-.cachot .pfoot p.rel-cpt{margin-top:.9rem;font:500 1.05rem/1.3 "Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#bcbcbc}
+.cachot .pfoot p.rel-cpt{margin-top:.9rem;font:500 1.05rem/1.3 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#bcbcbc}
 .rel-cpt b{color:var(--jaune)}
 body.icone .cr-logo img{filter:drop-shadow(0 0 1.1rem rgba(255,204,0,.95)) drop-shadow(0 0 .4rem #fff)}
 body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaune)}
@@ -427,7 +427,7 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 .vt-arc::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.34) 50%,transparent 62%) -140% 0/260% 100% no-repeat;animation:cr-reflet 8s ease-in-out infinite;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160' preserveAspectRatio='none'%3E%3Cpath d='M0 160V62Q0 24 50 0Q100 24 100 62V160Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160' preserveAspectRatio='none'%3E%3Cpath d='M0 160V62Q0 24 50 0Q100 24 100 62V160Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
 @keyframes cr-reflet{0%,55%{background-position:-140% 0}100%{background-position:140% 0}}
-.vitrail figcaption{margin-top:.7rem;text-align:center;font:500 .9rem/1.3 "Cinzel",Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:#e0e0e0}
+.vitrail figcaption{margin-top:.7rem;text-align:center;font:500 .9rem/1.3 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:#e0e0e0}
 
 /* le sac à main de la tombe et son cadenas */
 .tb-scene .sac{cursor:pointer;outline:0;transform-box:fill-box;transform-origin:50% 100%}
@@ -454,12 +454,12 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 .cad h2{margin-top:0;font-size:2.4rem}
 .cad-m{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.2rem 0}
 .mol{position:relative;width:5.6rem;display:grid;justify-items:center;border:.14rem solid #c8a638;background:linear-gradient(90deg,#1a1405,#3d2f08 50%,#1a1405);color:#ffe58a;cursor:ns-resize;user-select:none;-webkit-user-select:none;touch-action:manipulation}
-.mol b{font:700 2.8rem/1.3 "Cinzel",Georgia,serif;letter-spacing:.04em;text-shadow:0 0 .5rem rgba(255,204,0,.6)}
+.mol b{font:700 2.8rem/1.3 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.04em;text-shadow:0 0 .5rem rgba(255,204,0,.6)}
 .mol span{width:100%;text-align:center;font-size:1rem;line-height:1.8;color:#c8a638;cursor:pointer}
 .mol span:hover{background:rgba(255,204,0,.22);color:#fff}
 .mol:focus-visible{outline:.2rem solid #fff;outline-offset:.2rem}
 .cad.ouvert .mol{border-color:#fff;background:linear-gradient(90deg,#111,#2b2b2b 50%,#111);color:#fff}
-.cad-etat{min-height:1.6em;margin:.2rem 0 0;font-family:"Cinzel",Georgia,serif;letter-spacing:.05em;color:#ececec}
+.cad-etat{min-height:1.6em;margin:.2rem 0 0;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.05em;color:#ececec}
 
 @media (max-width:899px){
   .cachot main{padding-top:4.4rem;padding-bottom:5rem;background-size:3rem 1.9rem,3rem 1.9rem,100% 100%,100% 100%,100% 100%,26rem 26rem}
@@ -469,7 +469,8 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
   .cachot h2{font-size:2.1rem;padding-left:2.8rem;background-size:2rem 2rem}
   .cachot h2::after{left:2.8rem}
   .cr-fumee{opacity:.35;height:48vh}
-  .cachot main>.cr-araignee,.cachot main>.cr-toile.b{display:none}
+  .cachot main>.cr-toile.b{display:none}
+  .cachot main>.cr-araignee{left:74%}
   .cachot main>.cr-toile.h{width:8rem;height:8rem;top:1.8rem}
   .vitrail{float:none;width:min(22rem,86%);margin:1.2rem auto 1.6rem}
   .cr-toast{bottom:1.2rem;font-size:1.3rem}
@@ -480,3 +481,81 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 @media (prefers-reduced-motion:reduce){.cr-fumee i,.cr-disco,.cr-disco i,.cr-chauve,.cr-chauve svg,.paillette,.cr-conf,.cr-araignee .fil,.cr-araignee .corps-a,.vt-svg .nb,.vt-arc::after,.tb-scene .sc-led,.tb-scene .sac.tremble{animation:none!important}.cr-fumee,.cr-disco{display:none}}
 .cachot .rfig.rfig-l{float:none;width:min(100%,76rem);max-width:none;margin:1rem 0 1.4rem}
 .cachot .rfig.rfig-l img{filter:contrast(1.04)}
+.cr-araignee .corps-a:focus-visible{outline:.2rem solid var(--jaune)}
+.cr-araignee.parle .fil{animation:none;transform:scaleY(1)}
+.cr-araignee.parle .corps-a{animation:none;transform:translateY(12rem)}
+.cr-bulle{position:fixed;z-index:9002;width:min(36rem,calc(100vw - 2rem));padding:1.3rem 1.7rem 1.1rem;color:#fff;background:linear-gradient(#0e0e0e,#040404);border:.15rem solid #fff;
+  box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(255,204,0,.75),0 1rem 2.4rem rgba(0,0,0,.9);opacity:0;transform:translateY(-.6rem);transition:opacity .3s,transform .3s;cursor:pointer;text-align:left;
+  font:400 1.7rem/1.4 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.03em;text-shadow:none}
+.cr-bulle.on{opacity:1;transform:none}
+.cr-bulle q{display:block;quotes:"« " " »";white-space:pre-line}
+.cr-bulle small{display:block;margin-top:.7rem;font:500 .95rem/1.3 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:var(--jaune)}
+.cr-bulle a{color:var(--jaune)}
+@media (max-width:899px){.cr-bulle{font-size:1.4rem;padding:1.1rem 1.2rem .9rem}}
+@media (prefers-reduced-motion:reduce){.cr-bulle{transition:none}}
+
+/* ================= refonte v3 : polices des deux autres modes, feuillets, arcades, vitraux, lettrines ================= */
+.cachot :is(h1,h2,h3,.kicker,.sub,.btn,.nav-txt,.rub>a article h3){font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;font-weight:400}
+.cachot h1{font-size:6.6rem;line-height:.95;letter-spacing:.035em;margin-bottom:1.4rem}
+.cachot h2{font-size:3.9rem;line-height:1.02;letter-spacing:.045em}
+.cachot h3{letter-spacing:.05em}
+.cachot h3.sub,.cachot .sub{font-size:1.7em;letter-spacing:.06em}
+.cachot .kicker{font-size:1.5rem;letter-spacing:.3em}
+.cachot .btn{font-size:1.9rem;letter-spacing:.07em}
+.cachot .nav-txt{font-size:3.3rem;letter-spacing:.09em;font-weight:400}
+.cachot .rub>a article h3{font-size:2.7rem;letter-spacing:.04em}
+.cachot .lead-title{font-size:2.5rem}
+
+/* feuillets : un texte, un cadre à double filet, quatre cornières dorées */
+.cachot .rsec,.cachot .fiche2{position:relative;max-width:86rem;margin:1.4rem 0 2.4rem;padding:2.6rem 3rem 2.2rem;
+  background:linear-gradient(rgba(8,8,8,.82),rgba(2,2,2,.9)),radial-gradient(ellipse at 50% 0,rgba(255,255,255,.08),transparent 60%);
+  border:.14rem solid rgba(255,255,255,.62);box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(255,255,255,.2),inset 0 0 3.4rem #000,0 1.4rem 2.6rem rgba(0,0,0,.75)}
+.cachot .fiche2{padding-bottom:1.6rem}
+.cachot .rsec>h2:first-child,.cachot .rsec>.vitrail+h2{margin-top:0}
+.cachot .rsec::before,.cachot .rsec::after,.cachot .fiche2::before,.cachot .fiche2::after{content:"";position:absolute;left:-.55rem;right:-.55rem;height:3.6rem;pointer-events:none;z-index:2}
+.cachot .rsec::before,.cachot .fiche2::before{top:-.55rem;background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2034%2034'%3E%3Cg%20transform='translate(0%200)%20scale(1%201)'%20fill='none'%3E%3Cpath%20d='M2%2033V9Q2%202%209%202H33'%20stroke='%23ffcc00'%20stroke-width='1.6'/%3E%3Cpath%20d='M7%2033V12Q7%207%2012%207H33'%20stroke='%23fff'%20stroke-opacity='.45'/%3E%3Cpath%20d='M2%202L9%205%205%209Z'%20fill='%23e10019'%20stroke='none'/%3E%3Ccircle%20cx='2'%20cy='33'%20r='1.6'%20fill='%23ffcc00'%20stroke='none'/%3E%3Ccircle%20cx='33'%20cy='2'%20r='1.6'%20fill='%23ffcc00'%20stroke='none'/%3E%3C/g%3E%3C/svg%3E") left top/3.6rem no-repeat,url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2034%2034'%3E%3Cg%20transform='translate(34%200)%20scale(-1%201)'%20fill='none'%3E%3Cpath%20d='M2%2033V9Q2%202%209%202H33'%20stroke='%23ffcc00'%20stroke-width='1.6'/%3E%3Cpath%20d='M7%2033V12Q7%207%2012%207H33'%20stroke='%23fff'%20stroke-opacity='.45'/%3E%3Cpath%20d='M2%202L9%205%205%209Z'%20fill='%23e10019'%20stroke='none'/%3E%3Ccircle%20cx='2'%20cy='33'%20r='1.6'%20fill='%23ffcc00'%20stroke='none'/%3E%3Ccircle%20cx='33'%20cy='2'%20r='1.6'%20fill='%23ffcc00'%20stroke='none'/%3E%3C/g%3E%3C/svg%3E") right top/3.6rem no-repeat}
+.cachot .rsec::after,.cachot .fiche2::after{bottom:-.55rem;background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2034%2034'%3E%3Cg%20transform='translate(0%2034)%20scale(1%20-1)'%20fill='none'%3E%3Cpath%20d='M2%2033V9Q2%202%209%202H33'%20stroke='%23ffcc00'%20stroke-width='1.6'/%3E%3Cpath%20d='M7%2033V12Q7%207%2012%207H33'%20stroke='%23fff'%20stroke-opacity='.45'/%3E%3Cpath%20d='M2%202L9%205%205%209Z'%20fill='%23e10019'%20stroke='none'/%3E%3Ccircle%20cx='2'%20cy='33'%20r='1.6'%20fill='%23ffcc00'%20stroke='none'/%3E%3Ccircle%20cx='33'%20cy='2'%20r='1.6'%20fill='%23ffcc00'%20stroke='none'/%3E%3C/g%3E%3C/svg%3E") left bottom/3.6rem no-repeat,url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2034%2034'%3E%3Cg%20transform='translate(34%2034)%20scale(-1%20-1)'%20fill='none'%3E%3Cpath%20d='M2%2033V9Q2%202%209%202H33'%20stroke='%23ffcc00'%20stroke-width='1.6'/%3E%3Cpath%20d='M7%2033V12Q7%207%2012%207H33'%20stroke='%23fff'%20stroke-opacity='.45'/%3E%3Cpath%20d='M2%202L9%205%205%209Z'%20fill='%23e10019'%20stroke='none'/%3E%3Ccircle%20cx='2'%20cy='33'%20r='1.6'%20fill='%23ffcc00'%20stroke='none'/%3E%3Ccircle%20cx='33'%20cy='2'%20r='1.6'%20fill='%23ffcc00'%20stroke='none'/%3E%3C/g%3E%3C/svg%3E") right bottom/3.6rem no-repeat}
+.cachot .rsec p,.cachot .rsec li,.cachot .fiche2 p{line-height:1.62}
+.cachot p.lettrine::first-letter{float:left;font:400 6.6rem/.78 "Bebas Neue","Arial Narrow",Impact,sans-serif;color:var(--rouge);padding:.45rem .8rem 0 0;text-shadow:.16rem .16rem 0 #000,0 0 1rem rgba(225,0,25,.55)}
+
+/* colonnes de pierre sur les flancs de la salle */
+.cachot main::before,.cachot main::after{display:block;content:"";position:absolute;top:3.4rem;bottom:3.4rem;width:1.7rem;z-index:0;pointer-events:none;opacity:.6;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.28) 0 .14rem,transparent .14rem .42rem),linear-gradient(90deg,#050505,#3a3a3a 48%,#050505);border-top:.9rem solid #cfcfcf;border-bottom:.9rem solid #cfcfcf}
+.cachot main::before{left:.5rem}.cachot main::after{right:.5rem}
+
+/* vitraux : blason de la maison, la Créature, Kavod */
+.triptyque{display:flex;justify-content:center;align-items:flex-end;gap:2.4rem;margin:1.2rem 0 2.2rem;clear:both}
+.triptyque .vitrail{float:none;margin:0;width:min(19rem,28%)}
+.triptyque .vitrail.centre{width:min(25rem,36%)}
+.vitrail.vt-lat{width:min(21rem,38%);margin:.4rem 0 1.4rem 2.8rem}
+.vt-arc.pp img{left:20%;top:21.25%;bottom:auto;width:60%;filter:drop-shadow(0 0 .4rem rgba(0,0,0,.9))}
+.vt-arc.kavod::after,.vt-arc.pp::after{animation-delay:-3s}
+.vitrail figcaption{font-size:1.15rem;letter-spacing:.16em}
+@media (max-width:899px){
+  .cachot .rsec,.cachot .fiche2{padding:1.8rem 1.3rem 1.5rem}
+  .cachot main::before,.cachot main::after{display:none}
+  .cachot h1{font-size:4.2rem}
+  .cachot h2{font-size:2.8rem}
+  .cachot .btn{font-size:1.5rem}
+  .cachot .nav-txt{font-size:1.6rem}
+  .cachot .rub>a article h3{font-size:2.2rem}
+  .cachot p.lettrine::first-letter{font-size:5rem}
+  .triptyque{gap:.8rem}
+  .triptyque .vitrail{width:30%}.triptyque .vitrail.centre{width:38%}
+  .vitrail.vt-lat{float:none;width:min(16rem,70%);margin:1rem auto 1.4rem}
+  .vitrail figcaption{font-size:.8rem;letter-spacing:.08em}
+}
+
+/* bulles vampiriques de l'araignée */
+.cr-vb{position:fixed;z-index:9003;left:0;top:0;width:var(--s,14px);height:var(--s,14px);margin:calc(var(--s,14px)/-2) 0 0 calc(var(--s,14px)/-2);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.95) 0 9%,transparent 11%),radial-gradient(circle at 50% 58%,#6a0012 0,#1d0007 60%,#000 100%);
+  border:.1rem solid rgba(255,70,95,.85);box-shadow:0 0 .8rem rgba(225,0,25,.85),inset 0 0 .5rem rgba(225,0,25,.75);
+  transform:translate(var(--x),var(--y));animation:cr-vb var(--d,2.4s) ease-out forwards}
+.cr-vb.croc::after{content:"";position:absolute;left:24%;right:24%;bottom:14%;height:34%;background:#fff;clip-path:polygon(0 0,100% 0,82% 100%,62% 10%,38% 10%,18% 100%)}
+.cr-vb.fixe{animation:cr-vbp .45s cubic-bezier(.2,1.6,.4,1) var(--dl,0s) both}
+@keyframes cr-vb{0%{transform:translate(var(--x),var(--y)) scale(.2);opacity:0}14%{opacity:1;transform:translate(calc(var(--x) + var(--dx)*.15),calc(var(--y) + var(--dy)*.15)) scale(1)}55%{transform:translate(calc(var(--x) + var(--dx)*.7 + 10px),calc(var(--y) + var(--dy)*.6)) scale(1.05)}100%{transform:translate(calc(var(--x) + var(--dx)),calc(var(--y) + var(--dy))) scale(.55);opacity:0}}
+@keyframes cr-vbp{from{transform:translate(var(--x),var(--y)) scale(0)}to{transform:translate(var(--x),var(--y)) scale(1)}}
+.cr-bulle{border-radius:2.2rem 2.2rem 2.2rem .6rem;border-color:#ff1736;box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(225,0,25,.65),0 0 2.2rem rgba(225,0,25,.45),0 1rem 2.4rem rgba(0,0,0,.9);background:radial-gradient(ellipse at 50% 0,rgba(225,0,25,.2),transparent 70%),linear-gradient(#120408,#040203)}
+@media (prefers-reduced-motion:reduce){.cr-vb{animation:none!important;opacity:0}.cr-vb.fixe{opacity:1}}
+.cachot .nav-txt{top:2.2rem}
+@media (max-width:899px){.cachot .nav-txt{top:0}.cachot main>.cr-araignee{left:88%;top:calc(var(--hh,6.8rem) + 6.2rem)}}
