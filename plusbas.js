@@ -96,17 +96,28 @@
     var lock=box.querySelector('.pb-lock'),open=box.querySelector('.pb-open'),form=box.querySelector('form'),inp=box.querySelector('input'),msg=box.querySelector('.pb-msg');
     function show(){lock.hidden=true;open.hidden=false;}
     try{if(sessionStorage.getItem(KEY)==='1'){show();return;}}catch(e){}
-    var n=0,tp=0;
-    inp.addEventListener('input',function(){lock.classList.add('pb-typing');clearTimeout(tp);tp=setTimeout(function(){lock.classList.remove('pb-typing');},900);});
+    var n=0,tp=0,cases=lock.querySelectorAll('.vt2-l b'),mot=['É','P','H','É','B','A','A','L'];
+    /* chaque lettre tapée s'inscrit dans un quadrilobe du vitrail (huit, comme ÉPHÉBAAL) */
+    function lettres(arr,pop){
+      for(var i=0;i<cases.length;i++){
+        var c=arr[i]||'';
+        if(cases[i].textContent!==c){
+          cases[i].textContent=c;cases[i].classList.remove('on');
+          if(c&&pop){void cases[i].offsetWidth;cases[i].classList.add('on');}
+        }
+      }
+    }
+    function saisie(){var m=inp.value.match(/[A-Za-z\u00C0-\u00FF]/g)||[];return m.slice(0,cases.length).map(function(x){return x.toUpperCase();});}
+    inp.addEventListener('input',function(){lock.classList.add('pb-typing');clearTimeout(tp);tp=setTimeout(function(){lock.classList.remove('pb-typing');},900);lettres(saisie(),true);});
     form.addEventListener('submit',function(ev){
       ev.preventDefault();
       var v=norm(inp.value);if(!v){inp.focus();return;}
       if(empreinte(v)===EMPREINTE){
         try{sessionStorage.setItem(KEY,'1');}catch(e){}
-        msg.textContent='';lock.classList.remove('pb-typing');lock.classList.add('pb-ok');setTimeout(show,1500);return;
+        msg.textContent='';lock.classList.remove('pb-typing');lettres(mot,false);lock.classList.add('pb-ok');setTimeout(show,1700);return;
       }
       msg.textContent=MSG[n++%MSG.length];lock.classList.remove('pb-no');void lock.offsetWidth;lock.classList.add('pb-no');
-      inp.value='';inp.disabled=true;form.querySelector('button').disabled=true;
+      inp.value='';setTimeout(function(){lettres([],false);},900);inp.disabled=true;form.querySelector('button').disabled=true;
       giclee(function(){inp.disabled=false;form.querySelector('button').disabled=false;inp.focus();});
     });
   };

@@ -16,7 +16,7 @@ a{color:inherit}
 .bebas,h1,h2,h3,.btn,.nav-txt,.kicker{font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;font-weight:400;letter-spacing:.01em}
 
 /* ---------- en-tÃªte ---------- */
-header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bottom:.5rem solid var(--g);background:#000;overflow:hidden}
+header{position:sticky;top:0;z-index:38;display:flex;height:14.8125rem;border-bottom:.5rem solid var(--g);background:#000;overflow:hidden}
 .cre{flex:1 1 0;min-width:0;height:14.3125rem;background:#000;display:flex;justify-content:flex-start;overflow:hidden}
 .cre a,.cre picture{display:block;height:100%}
 .cre a{flex:none;width:calc(14.3125rem*16/9)}
@@ -112,7 +112,7 @@ main{position:relative}
   .cre picture{width:100%;height:100%}
   .cre img{width:100%;height:100%;object-fit:cover;object-position:left center}
   .wrap{display:flex;flex-direction:column;min-height:0}
-  nav{position:sticky;top:var(--mh);z-index:20;width:100%;height:4.2rem;display:flex;flex-direction:row;justify-content:space-around;align-items:center;border:0;border-bottom:.25rem solid var(--g);background:#000;overflow:visible}
+  nav{position:sticky;top:var(--mh);z-index:38;width:100%;height:4.2rem;display:flex;flex-direction:row;justify-content:space-around;align-items:center;border:0;border-bottom:.25rem solid var(--g);background:#000;overflow:visible}
   nav a{flex:1 1 20%;height:4.2rem;border:0}
   .nav-txt{display:none}
   .nav-icon{display:flex}
@@ -451,7 +451,7 @@ header{overflow:visible}
  .mppp img{height:6rem;width:auto;display:block;pointer-events:auto}
 }
 
-#mpool{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:38;pointer-events:none}
+#mpool{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:36;pointer-events:none}
 .dpool{display:none}
 
 .fiche2 h3.sub{color:var(--g);font-size:1.45em;margin:1rem 0 .1rem;text-shadow:none}.fiche2 h3.sub+p{margin-top:.1rem}
@@ -621,13 +621,6 @@ header{overflow:visible}
 @keyframes pb-flash{from{opacity:1}to{opacity:0}}
 @media (max-width:899px){.pb-q{font-size:2.5rem}.pb-lock{padding:2rem .9rem 1.4rem}.pb-row{flex-direction:column}.pb-row .btn{width:100%}}
 
-.cgate-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.cgate-svg .nb{animation:cg-nimbe 4.4s ease-in-out infinite}
-.cgate-cr{position:absolute;left:13%;bottom:0;width:74%;height:auto;filter:drop-shadow(0 0 .45rem rgba(255,255,255,.5)) drop-shadow(0 .4rem .8rem #000);transition:transform .35s;-webkit-user-drag:none;user-select:none}
-@keyframes cg-nimbe{0%,100%{opacity:.7}50%{opacity:1}}
-@keyframes cg-feu{from{transform:scale(1,1) skewX(-4deg)}to{transform:scale(.84,1.16) skewX(4deg)}}
-@keyframes cg-lueur{0%,100%{opacity:.55}50%{opacity:.95}}
-@keyframes cg-fumee{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
 @keyframes cg-blink{0%,100%{opacity:1}9%{opacity:.2}11%{opacity:1}52%{opacity:1}53%{opacity:.3}55%{opacity:1}}
 :root{--fleuron-g:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 22'%3E%3Cpath d='M0 11H92M148 11H240' stroke='%23fff' stroke-opacity='.85' stroke-width='1.4' fill='none'/%3E%3Cpath d='M120 1L131 11L120 21L109 11Z' fill='%23e10019' stroke='%23fff' stroke-width='1.2'/%3E%3Ccircle cx='99' cy='11' r='2.4' fill='%23fff'/%3E%3Ccircle cx='141' cy='11' r='2.4' fill='%23fff'/%3E%3Cpath d='M92 11l-7-5v10zM148 11l7-5v10z' fill='%23fff'/%3E%3C/svg%3E")}
 
@@ -642,34 +635,10 @@ header{overflow:visible}
 /* ---------- la porte à mot de passe : le vitrail de la Créature, vivant ----------
    Au repos, les rayons tournent ; quand on écrit, ils s'emballent ; une mauvaise réponse fait craqueler le verre ;
    la bonne le fend en deux, et la lumière passe entre les deux moitiés. */
-.pb-scene{display:grid;grid-template-columns:14rem 1fr;gap:2.4rem;align-items:center;padding:.4rem .6rem 0}
-.pb-vit{position:relative;width:14rem;aspect-ratio:3/5;justify-self:center;filter:drop-shadow(0 0 1.4rem rgba(255,204,0,.28));transition:filter .4s}
-.pb-half{position:absolute;inset:0;display:block;transition:transform 1s cubic-bezier(.6,0,.3,1),opacity 1s}
-.pb-half.l{clip-path:inset(0 50% 0 0)}.pb-half.r{clip-path:inset(0 0 0 50%)}
-.pb-half .cgate-cr{transition:none}
-.pb-half .ry{transform-origin:36.7px 39px;animation:pb-tourne 70s linear infinite}
-.pb-typing .pb-half .ry{animation-duration:5s}
-.pb-typing .pb-vit{filter:drop-shadow(0 0 2.2rem rgba(255,204,0,.75)) brightness(1.18)}
-.pb-lueur{position:absolute;left:50%;top:0;bottom:0;width:0;margin-left:0;background:linear-gradient(90deg,transparent,#fff 50%,transparent);opacity:0;box-shadow:0 0 2.6rem 1.2rem rgba(255,255,255,.7)}
-.pb-reflet{position:absolute;left:33.7%;top:25.3%;width:1.4rem;height:1.4rem;margin:-.7rem 0 0 -.7rem;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:0;animation:pb-regard 7s ease-in-out infinite}
-.pb-cracks{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;filter:drop-shadow(0 0 3px #e10019)}
-.pb-cracks path{stroke:#fff;stroke-width:1.5;vector-effect:non-scaling-stroke}
-.pb-no .pb-cracks{animation:pb-fendre 2.6s forwards}
-.pb-no .pb-cracks path{stroke-dasharray:240;animation:pb-trace .45s ease-out both}
-.pb-no .pb-vit{animation:pb-rouge 2.6s forwards}
-.pb-ok .pb-half.l{transform:translateX(-130%);opacity:0}.pb-ok .pb-half.r{transform:translateX(130%);opacity:0}
-.pb-ok .pb-lueur{animation:pb-fente 1.3s ease-out forwards}
+.pb-scene{display:block;padding:.4rem 0 0}
 .pb-lock.pb-ok{animation:pb-ok .6s .8s forwards}
 .pb-open:not([hidden]){animation:cg-entree 1s cubic-bezier(.2,.9,.3,1)}
-@keyframes pb-tourne{to{transform:rotate(360deg)}}
-@keyframes pb-regard{0%,62%,100%{opacity:0;transform:scale(.3)}70%{opacity:1;transform:scale(1.15) rotate(25deg)}80%{opacity:0;transform:scale(.4)}}
-@keyframes pb-fendre{0%{opacity:0}12%{opacity:1}72%{opacity:1}100%{opacity:0}}
-@keyframes pb-trace{from{stroke-dashoffset:240}to{stroke-dashoffset:0}}
-@keyframes pb-rouge{0%{filter:drop-shadow(0 0 1.4rem rgba(255,204,0,.28))}14%,60%{filter:drop-shadow(0 0 2.6rem #e10019) contrast(1.3) saturate(1.5)}100%{filter:drop-shadow(0 0 1.4rem rgba(255,204,0,.28))}}
-@keyframes pb-fente{0%{width:0;opacity:0}25%{width:.5rem;opacity:1}100%{width:5rem;margin-left:-2.5rem;opacity:0}}
 @keyframes cg-entree{from{opacity:0;transform:scale(.96);filter:brightness(2.4)}to{opacity:1;transform:none;filter:none}}
-@media (max-width:899px){.pb-scene{grid-template-columns:1fr;gap:1.2rem}.pb-vit{width:11rem}}
-@media (prefers-reduced-motion:reduce){.pb-half .ry,.pb-reflet,.pb-open:not([hidden]){animation:none}.pb-half{transition:none}}
 .rgal.dos{grid-template-columns:repeat(auto-fill,minmax(min(24rem,100%),1fr));align-items:start}
 .rgal.dos a{aspect-ratio:auto;display:block}
 .rgal.dos img{height:auto;object-fit:initial}
@@ -705,35 +674,52 @@ header{overflow:visible}
 .dos-art figcaption{margin:.5rem .1rem .1rem;font-size:.9rem;line-height:1.35;color:#e8dcff}
 @media (max-width:899px){.dcard{grid-template-columns:6.5rem 1fr}.dcard h3{font-size:1.6rem}}
 .dos-list{margin-bottom:1.4rem}
-/* Le fluide passe sous le texte (z 38), le texte au-dessus (39), puis les objets : dame-jeanne, crottes, clystères (40). */
+/* Empilement : le fluide passe sous le texte (36), le texte (37) reste sous l'en-tête et la navigation (38), puis viennent les objets (40). */
 #mobj{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:40;pointer-events:none}
-main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position:relative;z-index:39}
+main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position:relative;z-index:37}
 /* ---------- le portail des cachots : un vitrail gothique, la Créature en verre devant un soleil de rayons bleus, argentés, jaunes et rouges ---------- */
 .cgate{position:relative;display:block;max-width:72rem;margin:1.8rem 0 2.4rem;padding:0;text-decoration:none;color:#fff;cursor:pointer;isolation:isolate;background:#030308;border:.2rem solid #d9d9d9;box-shadow:0 0 0 .2rem #000,0 0 2.6rem rgba(255,204,0,.2),0 1.4rem 3rem rgba(0,0,0,.8);transition:border-color .3s,box-shadow .3s}
-.cv-pan{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;background:#030308}
-.cv-rays{position:absolute;left:50%;top:50%;width:230%;aspect-ratio:1;transform:translate(-50%,-50%);will-change:transform;animation:cv-tourne 150s linear infinite;
-  background:repeating-conic-gradient(from 0deg at 50% 50%,#1c55e6 0 7deg,#030308 7deg 11.25deg,#d4dce3 11.25deg 18.25deg,#030308 18.25deg 22.5deg,#ffcc00 22.5deg 29.5deg,#030308 29.5deg 33.75deg,#e10019 33.75deg 40.75deg,#030308 40.75deg 45deg);
-  -webkit-mask-image:radial-gradient(circle,#000 6%,rgba(0,0,0,.72) 24%,rgba(0,0,0,.5) 50%);mask-image:radial-gradient(circle,#000 6%,rgba(0,0,0,.72) 24%,rgba(0,0,0,.5) 50%)}
-.cv-lux{position:absolute;inset:0;background:radial-gradient(ellipse 30% 46% at 48% 50%,rgba(255,250,224,.95) 0,rgba(255,214,90,.6) 28%,rgba(255,150,30,.18) 58%,transparent 80%);mix-blend-mode:screen;animation:cv-pouls 5.2s ease-in-out infinite}
-.cv-bl{position:absolute;top:64%;width:6.4%;aspect-ratio:1;transform:translate(-50%,-50%);filter:drop-shadow(0 0 .5rem rgba(255,204,0,.8))}
-.cv-bl img{display:block;width:100%;height:100%}
-.cv-fig{position:absolute;left:50%;bottom:1.5%;height:70%;aspect-ratio:568/1151;transform:translateX(-42%)}
-.cv-cr{position:absolute;inset:0;width:100%;height:100%;display:block;filter:drop-shadow(0 0 1.2rem rgba(255,232,150,.85)) drop-shadow(0 0 .3rem rgba(255,255,255,.55));transition:filter .35s;-webkit-user-drag:none;user-select:none}
-.cv-nim{position:absolute;left:31%;top:17%;width:46%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
-  background:radial-gradient(circle,transparent 56%,#ffcc00 57% 66%,#050505 67% 70%,transparent 71%),repeating-conic-gradient(from 0deg,rgba(255,204,0,.55) 0 8deg,transparent 8deg 15deg);
-  -webkit-mask-image:radial-gradient(circle,transparent 40%,#000 41%);mask-image:radial-gradient(circle,transparent 40%,#000 41%);filter:drop-shadow(0 0 .6rem rgba(255,204,0,.9));animation:cv-pouls 4.4s ease-in-out infinite}
-.cv-arc{position:absolute;inset:0;background:url(/images/cachot/arcades.webp) 0 0/100% 100% no-repeat;filter:drop-shadow(0 0 .35rem rgba(255,204,0,.35))}
 .cv-txt{position:relative;display:grid;gap:.7rem;justify-items:center;padding:1.6rem 1.4rem 2rem;text-align:center;background:linear-gradient(#050505,#000)}
 .cv-k{font:400 1.25rem/1 "Bebas Neue",sans-serif;letter-spacing:.42em;color:#ff1736;text-shadow:0 0 .6rem rgba(255,23,54,.7);animation:cg-blink 4.7s infinite}
 .cv-t{display:block;font:400 5.4rem/.9 "Bebas Neue",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#f2f2f2;text-shadow:0 .2rem 0 #000,.14rem .14rem 0 #e10019;transition:color .3s,text-shadow .3s}
 .cv-t::after{content:"";display:block;height:1.8rem;margin:.8rem auto 0;background:var(--fleuron-g) center/20rem 1.8rem no-repeat}
 .cv-s{font:500 1.1rem/1.35 "Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#d8d8d8;text-shadow:0 .1rem .3rem #000}
 .cgate:hover,.cgate:focus-visible{outline:0;border-color:#ffd84a;box-shadow:0 0 0 .2rem #000,0 0 3.6rem rgba(255,204,0,.55),0 1.4rem 3rem rgba(0,0,0,.8)}
-.cgate:hover .cv-rays,.cgate:focus-visible .cv-rays{animation-duration:30s}
-.cgate:hover .cv-lux,.cgate:focus-visible .cv-lux{animation-duration:1.6s}
-.cgate:hover .cv-cr,.cgate:focus-visible .cv-cr{filter:drop-shadow(0 0 1.8rem rgba(255,240,170,1)) drop-shadow(0 0 .4rem #fff) brightness(1.18)}
 .cgate:hover .cv-t,.cgate:focus-visible .cv-t{color:#fff;text-shadow:0 .2rem 0 #000,0 0 1.6rem #ffcc00,.18rem .18rem 0 #e10019}
-@keyframes cv-tourne{to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes cv-pouls{0%,100%{opacity:.78}50%{opacity:1}}
 @media (max-width:899px){.cv-t{font-size:3.5rem;letter-spacing:.04em}.cv-s{font-size:.95rem}.cv-txt{padding:1.2rem 1rem 1.5rem}}
-@media (prefers-reduced-motion:reduce){.cv-rays,.cv-lux,.cv-nim,.cv-k{animation:none!important}}
+/* ---------- le vitrail des cachots (porte à mot de passe et portail) : deux états entre lesquels il pulse lentement ;
+   les lettres du mot de passe s'inscrivent dans les huit quadrilobes d'en haut : ÉPHÉBAAL ---------- */
+.vt2{position:relative;display:block;aspect-ratio:16/9;width:100%;max-width:64rem;margin:0 auto 1.4rem;overflow:hidden;background:#030308;container-type:inline-size;border:.2rem solid #d9d9d9;box-shadow:0 0 0 .2rem #000,0 0 2.4rem rgba(225,40,50,.32);animation:vt-lueur 8s ease-in-out infinite}
+.vt2>img{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-user-drag:none;user-select:none}
+.vt2 .v2{opacity:0;animation:vt-pulse 8s ease-in-out infinite}
+.vt2-l{position:absolute;inset:0;pointer-events:none}
+.vt2-l b{position:absolute;top:20.8%;width:10%;transform:translate(-50%,-50%);text-align:center;font:400 4.6rem/1 "Bebas Neue",Impact,sans-serif;font:400 8.6cqw/1 "Bebas Neue",Impact,sans-serif;color:#fff;-webkit-text-stroke:.09em #05050a;paint-order:stroke fill;text-shadow:0 0 .35em rgba(255,236,170,.95),0 0 .9em rgba(255,200,80,.6);animation:vt-lettre 8s ease-in-out infinite}
+.vt2-l b:empty{display:none}
+.vt2-l b.on{animation:vt-pop .45s cubic-bezier(.2,1.6,.4,1),vt-lettre 8s ease-in-out .45s infinite}
+.vt2-l b:nth-child(1){left:5.6%}.vt2-l b:nth-child(2){left:18.3%}.vt2-l b:nth-child(3){left:31%}.vt2-l b:nth-child(4){left:43.7%}
+.vt2-l b:nth-child(5){left:56.2%}.vt2-l b:nth-child(6){left:68.7%}.vt2-l b:nth-child(7){left:81.3%}.vt2-l b:nth-child(8){left:94%}
+.pb-typing .vt2,.pb-typing .vt2 .v2{animation-duration:3.4s}
+.pb-no .vt2{animation:vt-rouge 2.4s ease-out}
+.pb-ok .vt2{animation:vt-ok 1.5s ease-in forwards}
+.pb-ok .vt2-l b{animation:vt-allume .8s ease-out both}
+.pb-ok .vt2-l b:nth-child(2){animation-delay:.1s}.pb-ok .vt2-l b:nth-child(3){animation-delay:.2s}.pb-ok .vt2-l b:nth-child(4){animation-delay:.3s}
+.pb-ok .vt2-l b:nth-child(5){animation-delay:.4s}.pb-ok .vt2-l b:nth-child(6){animation-delay:.5s}.pb-ok .vt2-l b:nth-child(7){animation-delay:.6s}.pb-ok .vt2-l b:nth-child(8){animation-delay:.7s}
+.cgate .vt2{margin:0;max-width:none;border:0;box-shadow:none}
+.cgate:hover .vt2,.cgate:focus-visible .vt2{animation-duration:3s}.cgate:hover .vt2 .v2,.cgate:focus-visible .vt2 .v2{animation-duration:3s}
+@keyframes vt-pulse{0%,100%{opacity:0}50%{opacity:1}}
+@keyframes vt-lueur{0%,100%{filter:brightness(1) saturate(1);box-shadow:0 0 0 .2rem #000,0 0 2rem rgba(225,40,50,.28)}50%{filter:brightness(1.13) saturate(1.1);box-shadow:0 0 0 .2rem #000,0 0 3.6rem rgba(255,90,70,.55)}}
+@keyframes vt-lettre{0%,100%{text-shadow:0 0 .3em rgba(255,236,170,.8),0 0 .8em rgba(255,200,80,.4)}50%{text-shadow:0 0 .45em rgba(255,246,200,1),0 0 1.1em rgba(255,210,90,.85)}}
+@keyframes vt-pop{from{transform:translate(-50%,-50%) scale(.2);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@keyframes vt-rouge{0%{filter:none}12%,55%{filter:saturate(2.2) contrast(1.3) brightness(.85);box-shadow:0 0 0 .2rem #000,0 0 3.4rem #e10019}100%{filter:none}}
+@keyframes vt-ok{0%{filter:brightness(1)}60%{filter:brightness(1.7) saturate(1.2);box-shadow:0 0 0 .2rem #000,0 0 5rem #ffcc00}100%{filter:brightness(2.2);box-shadow:0 0 0 .2rem #000,0 0 7rem #fff}}
+@keyframes vt-allume{from{transform:translate(-50%,-50%) scale(1);filter:brightness(1)}40%{transform:translate(-50%,-50%) scale(1.35);filter:brightness(2.6)}to{transform:translate(-50%,-50%) scale(1);filter:brightness(1.3)}}
+@media (max-width:899px){.vt2-l b{-webkit-text-stroke-width:.07em}}
+@media (prefers-reduced-motion:reduce){.vt2,.vt2 .v2,.vt2-l b,.vt2-l b.on{animation:none!important}.vt2 .v2{opacity:.5}}
+
+/* photos : jamais plus hautes que l'écran, les pièces des dossiers s'ouvrent en grand dans la liseuse */
+.dos-art{grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));align-items:start;max-width:80rem}
+.dos-art a{display:flex;justify-content:center;background:#000}
+.dos-art img{width:auto;max-width:100%;max-height:min(72vh,46rem);object-fit:contain}
+@media (min-width:900px){.fiche2.solo .rtfig{width:min(36%,34rem)}}
+@media (max-width:899px){.fiche2.solo .rtfig{max-width:20rem;margin:0 auto 1.2rem}.rtfig img{max-height:62vh;object-fit:cover;object-position:top}}
+@media (max-width:899px){.fiche2>div>.pf{max-width:19rem;margin-inline:auto}}
