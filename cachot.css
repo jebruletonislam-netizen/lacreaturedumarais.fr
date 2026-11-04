@@ -399,11 +399,6 @@ body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
 .cachot main>.cr-toile{width:11rem;height:11rem;opacity:.5;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23fff' stroke-width='.8'%3E%3Cpath d='M0 0L100 0M0 0L92 38M0 0L70 70M0 0L38 92M0 0L0 100'/%3E%3Cpath d='M30 0Q26 22 0 30M55 0Q48 40 0 55M80 0Q70 56 0 80M100 0Q88 70 0 98'/%3E%3C/svg%3E") 0 0/contain no-repeat}
 .cr-toile.h{left:0;top:2.6rem}
 .cr-toile.b{right:0;bottom:2.6rem;transform:scale(-1,-1)}
-.cachot main>.cr-araignee{position:fixed;left:58%;top:var(--hh,15rem);width:2.4rem;height:0;z-index:28}
-.cr-araignee .fil{position:absolute;left:50%;top:0;width:.1rem;height:12rem;background:rgba(255,255,255,.6);transform-origin:50% 0;animation:cr-fil 17s ease-in-out infinite}
-.cr-araignee .corps-a{all:unset;outline-offset:.3rem;position:absolute;left:0;top:0;width:2.4rem;height:2.4rem;cursor:pointer;pointer-events:auto;animation:cr-descend 17s ease-in-out infinite;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%23fff' fill='none' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M12 11L4 5M12 11L3 10M12 12L3 15M12 13L5 20M12 11L20 5M12 11L21 10M12 12L21 15M12 13L19 20'/%3E%3C/g%3E%3Cellipse cx='12' cy='13' rx='4' ry='5' fill='%23000' stroke='%23fff'/%3E%3Ccircle cx='10.8' cy='11.6' r='.8' fill='%23e10019'/%3E%3Ccircle cx='13.2' cy='11.6' r='.8' fill='%23e10019'/%3E%3C/svg%3E") center/contain no-repeat}
-@keyframes cr-fil{0%,100%{transform:scaleY(.1)}38%,58%{transform:scaleY(1)}}
 @keyframes cr-descend{0%,100%{transform:translateY(1rem)}38%,58%{transform:translateY(12rem)}}
 
 /* reliques cachées */
@@ -470,7 +465,6 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
   .cachot h2::after{left:2.8rem}
   .cr-fumee{opacity:.35;height:48vh}
   .cachot main>.cr-toile.b{display:none}
-  .cachot main>.cr-araignee{left:74%}
   .cachot main>.cr-toile.h{width:8rem;height:8rem;top:1.8rem}
   .vitrail{float:none;width:min(22rem,86%);margin:1.2rem auto 1.6rem}
   .cr-toast{bottom:1.2rem;font-size:1.3rem}
@@ -481,9 +475,6 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 @media (prefers-reduced-motion:reduce){.cr-fumee i,.cr-disco,.cr-disco i,.cr-chauve,.cr-chauve svg,.paillette,.cr-conf,.cr-araignee .fil,.cr-araignee .corps-a,.vt-svg .nb,.vt-arc::after,.tb-scene .sc-led,.tb-scene .sac.tremble{animation:none!important}.cr-fumee,.cr-disco{display:none}}
 .cachot .rfig.rfig-l{float:none;width:min(100%,76rem);max-width:none;margin:1rem 0 1.4rem}
 .cachot .rfig.rfig-l img{filter:contrast(1.04)}
-.cr-araignee .corps-a:focus-visible{outline:.2rem solid var(--jaune)}
-.cr-araignee.parle .fil{animation:none;transform:scaleY(1)}
-.cr-araignee.parle .corps-a{animation:none;transform:translateY(12rem)}
 .cr-bulle{position:fixed;z-index:9002;width:min(36rem,calc(100vw - 2rem));padding:1.3rem 1.7rem 1.1rem;color:#fff;background:linear-gradient(#0e0e0e,#040404);border:.15rem solid #fff;
   box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(255,204,0,.75),0 1rem 2.4rem rgba(0,0,0,.9);opacity:0;transform:translateY(-.6rem);transition:opacity .3s,transform .3s;cursor:pointer;text-align:left;
   font:400 1.7rem/1.4 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.03em;text-shadow:none}
@@ -558,7 +549,7 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 .cr-bulle{border-radius:2.2rem 2.2rem 2.2rem .6rem;border-color:#ff1736;box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(225,0,25,.65),0 0 2.2rem rgba(225,0,25,.45),0 1rem 2.4rem rgba(0,0,0,.9);background:radial-gradient(ellipse at 50% 0,rgba(225,0,25,.2),transparent 70%),linear-gradient(#120408,#040203)}
 @media (prefers-reduced-motion:reduce){.cr-vb{animation:none!important;opacity:0}.cr-vb.fixe{opacity:1}}
 .cachot .nav-txt{top:2.2rem}
-@media (max-width:899px){.cachot .nav-txt{top:0}.cachot main>.cr-araignee{left:88%;top:calc(var(--hh,6.8rem) + 6.2rem)}}
+@media (max-width:899px){.cachot .nav-txt{top:0}}
 
 /* =====================================================================================================
    LE CACHOT D'ÉPHÉBAAL : pierre, verre rouge, dentelle gothique, sceau. Noir et blanc, touches de rouge et de jaune.
@@ -609,3 +600,90 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 
 /* les décors qui débordent à droite ne doivent jamais élargir la page */
 .cachot main{overflow-x:clip}
+/* ---------- le vitrail des cachots (porte à mot de passe et portail) : deux états entre lesquels il pulse lentement ;
+   les lettres du mot de passe s'inscrivent dans les huit quadrilobes d'en haut : ÉPHÉBAAL ---------- */
+.vt2{position:relative;display:block;aspect-ratio:16/9;width:100%;max-width:64rem;margin:0 auto 1.4rem;overflow:hidden;background:#030308;container-type:inline-size;border:.2rem solid #d9d9d9;box-shadow:0 0 0 .2rem #000,0 0 2.4rem rgba(225,40,50,.32);animation:vt-lueur 8s ease-in-out infinite}
+.vt2>img{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-user-drag:none;user-select:none}
+.vt2 .v2{opacity:0;animation:vt-pulse 8s ease-in-out infinite}
+.vt2-l{position:absolute;inset:0;pointer-events:none}
+.vt2-l b{position:absolute;top:20.8%;width:10%;transform:translate(-50%,-50%);text-align:center;font:400 4.6rem/1 "Bebas Neue",Impact,sans-serif;font:400 8.6cqw/1 "Bebas Neue",Impact,sans-serif;color:#fff;-webkit-text-stroke:.09em #05050a;paint-order:stroke fill;text-shadow:0 0 .35em rgba(255,236,170,.95),0 0 .9em rgba(255,200,80,.6);animation:vt-lettre 8s ease-in-out infinite}
+.vt2-l b:empty{display:none}
+.vt2-l b.on{animation:vt-pop .45s cubic-bezier(.2,1.6,.4,1),vt-lettre 8s ease-in-out .45s infinite}
+.vt2-l b:nth-child(1){left:5.6%}.vt2-l b:nth-child(2){left:18.3%}.vt2-l b:nth-child(3){left:31%}.vt2-l b:nth-child(4){left:43.7%}
+.vt2-l b:nth-child(5){left:56.2%}.vt2-l b:nth-child(6){left:68.7%}.vt2-l b:nth-child(7){left:81.3%}.vt2-l b:nth-child(8){left:94%}
+.pb-typing .vt2,.pb-typing .vt2 .v2{animation-duration:3.4s}
+.pb-no .vt2{animation:vt-rouge 2.4s ease-out}
+.pb-ok .vt2{animation:vt-ok 1.5s ease-in forwards}
+.pb-ok .vt2-l b{animation:vt-allume .8s ease-out both}
+.pb-ok .vt2-l b:nth-child(2){animation-delay:.1s}.pb-ok .vt2-l b:nth-child(3){animation-delay:.2s}.pb-ok .vt2-l b:nth-child(4){animation-delay:.3s}
+.pb-ok .vt2-l b:nth-child(5){animation-delay:.4s}.pb-ok .vt2-l b:nth-child(6){animation-delay:.5s}.pb-ok .vt2-l b:nth-child(7){animation-delay:.6s}.pb-ok .vt2-l b:nth-child(8){animation-delay:.7s}
+.cgate .vt2{margin:0;max-width:none;border:0;box-shadow:none}
+.cgate:hover .vt2,.cgate:focus-visible .vt2{animation-duration:3s}.cgate:hover .vt2 .v2,.cgate:focus-visible .vt2 .v2{animation-duration:3s}
+@keyframes vt-pulse{0%,100%{opacity:0}50%{opacity:1}}
+@keyframes vt-lueur{0%,100%{filter:brightness(1) saturate(1);box-shadow:0 0 0 .2rem #000,0 0 2rem rgba(225,40,50,.28)}50%{filter:brightness(1.13) saturate(1.1);box-shadow:0 0 0 .2rem #000,0 0 3.6rem rgba(255,90,70,.55)}}
+@keyframes vt-lettre{0%,100%{text-shadow:0 0 .3em rgba(255,236,170,.8),0 0 .8em rgba(255,200,80,.4)}50%{text-shadow:0 0 .45em rgba(255,246,200,1),0 0 1.1em rgba(255,210,90,.85)}}
+@keyframes vt-pop{from{transform:translate(-50%,-50%) scale(.2);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@keyframes vt-rouge{0%{filter:none}12%,55%{filter:saturate(2.2) contrast(1.3) brightness(.85);box-shadow:0 0 0 .2rem #000,0 0 3.4rem #e10019}100%{filter:none}}
+@keyframes vt-ok{0%{filter:brightness(1)}60%{filter:brightness(1.7) saturate(1.2);box-shadow:0 0 0 .2rem #000,0 0 5rem #ffcc00}100%{filter:brightness(2.2);box-shadow:0 0 0 .2rem #000,0 0 7rem #fff}}
+@keyframes vt-allume{from{transform:translate(-50%,-50%) scale(1);filter:brightness(1)}40%{transform:translate(-50%,-50%) scale(1.35);filter:brightness(2.6)}to{transform:translate(-50%,-50%) scale(1);filter:brightness(1.3)}}
+@media (max-width:899px){.vt2-l b{-webkit-text-stroke-width:.07em}}
+@media (prefers-reduced-motion:reduce){.vt2,.vt2 .v2,.vt2-l b,.vt2-l b.on{animation:none!important}.vt2 .v2{opacity:.5}}
+
+
+/* ---------- l'araignée refaite : sa toile se saisit et se tire n'importe où, elle y pend et se balance ---------- */
+.ar-couche{position:fixed;inset:0;z-index:40;pointer-events:none}
+.ar-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ar-fil{fill:none;stroke:rgba(255,255,255,.72);stroke-width:1.2px;filter:drop-shadow(0 0 2px rgba(255,255,255,.5))}
+.ar-couche .ar-toile{all:unset;position:absolute;left:0;top:0;width:5.4rem;height:5.4rem;border-radius:50%;cursor:grab;pointer-events:auto;touch-action:none;-webkit-tap-highlight-color:transparent;will-change:transform}
+.ar-couche .ar-toile svg{display:block;width:100%;height:100%;opacity:.85;filter:drop-shadow(0 0 .5rem rgba(255,255,255,.45));transition:opacity .25s,filter .25s}
+.ar-couche .ar-toile:hover svg,.ar-couche .ar-toile:focus-visible svg{opacity:1;filter:drop-shadow(0 0 .9rem rgba(255,255,255,.9))}
+.ar-couche .ar-toile:focus-visible{outline:.2rem solid var(--jaune);outline-offset:.2rem}
+.ar-couche .corps-a{all:unset;position:absolute;left:0;top:0;width:3.8rem;height:4.2rem;cursor:pointer;pointer-events:auto;touch-action:none;-webkit-tap-highlight-color:transparent;will-change:transform;filter:drop-shadow(0 0 .5rem rgba(225,0,25,.55))}
+.ar-couche .corps-a svg{display:block;width:100%;height:100%;overflow:visible}
+.ar-couche .corps-a:focus-visible{outline:.2rem solid var(--jaune);outline-offset:.2rem}
+.ar-couche .ar-p path{transform-box:fill-box;transform-origin:50% 0;animation:ar-patte 1.7s ease-in-out infinite alternate}
+.ar-couche .ar-p path:nth-child(2n){animation-delay:-.4s}.ar-couche .ar-p path:nth-child(3n){animation-delay:-.9s}
+@keyframes ar-patte{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+body.ar-prise,body.ar-prise *{cursor:grabbing!important}
+@media (max-width:899px){.ar-couche .ar-toile{width:4.4rem;height:4.4rem}.ar-couche .corps-a{width:3.2rem;height:3.6rem}}
+@media (prefers-reduced-motion:reduce){.ar-couche .ar-p path{animation:none}}
+
+/* ---------- vitrail de présentation, et vignette dans l'en-tête ---------- */
+.vt2-hero{margin:1.6rem 0 1.2rem}
+.vt2-hero .vt2{max-width:none;margin:0}
+.cachot .cr-cote{display:flex;align-items:center;justify-content:flex-end;padding-right:calc(2.6rem + 4.6rem)}
+.cr-vitm{display:block;width:min(19rem,100%);flex:none;text-decoration:none}
+.cr-vitm .vt2{margin:0;max-width:none;border-width:.15rem;box-shadow:0 0 0 .15rem #000,0 0 1.6rem rgba(225,40,50,.4)}
+.cr-vitm:hover .vt2,.cr-vitm:focus-visible .vt2{animation-duration:3s}.cr-vitm:hover .vt2 .v2,.cr-vitm:focus-visible .vt2 .v2{animation-duration:3s}
+@media (max-width:899px){.cachot header .cr-cote{padding:0 .9rem 0 0}.cr-vitm{width:6.4rem}.cr-vitm .vt2{border-width:.1rem}}
+
+/* ---------- les boutons de gauche : des lancettes de vitrail, la pierre ajourée en arrière-plan ---------- */
+.cachot nav{
+  grid-template-rows:repeat(3,13rem) minmax(10rem,1fr);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 120' fill='none' stroke='%23fff' stroke-width='.7' stroke-opacity='.16'%3E%3Cpath d='M8 120V56Q8 24 40 4Q72 24 72 56V120'/%3E%3Cpath d='M16 120V58Q16 32 40 14Q64 32 64 58V120'/%3E%3Cpath d='M40 40a8 8 0 1 0 .01 0M32 40h16M40 32v16'/%3E%3Cpath d='M0 0v120M80 0v120' stroke-opacity='.1'/%3E%3C/svg%3E") 0 0/12rem 18rem,
+    radial-gradient(ellipse 110% 38% at 50% 100%,rgba(225,0,25,.42),transparent 72%),
+    linear-gradient(rgba(4,4,8,.8),rgba(4,4,8,.93)),
+    url(/images/cachot/vitrail-2.webp) 58% 40%/auto 100% no-repeat,
+    #050508;
+  border-right:.9rem solid #14141a;box-shadow:inset -.14rem 0 0 rgba(255,255,255,.3),inset -.5rem 0 0 rgba(225,0,25,.25),.6rem 0 1.6rem rgba(0,0,0,.8)}
+.cachot nav a{overflow:hidden;border-bottom:0;color:#fff;transition:filter .25s;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23e10019' stop-opacity='.55'/%3E%3Cstop offset='1' stop-color='%23200006' stop-opacity='.35'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M10 136V62Q10 26 50 6Q90 26 90 62V136Z' fill='url(%23g)' stroke='%23f2f2f2' stroke-width='2.4'/%3E%3Cpath d='M18 136V64Q18 34 50 16Q82 34 82 64V136' fill='none' stroke='%23ffcc00' stroke-opacity='.55' stroke-width='1'/%3E%3Cpath d='M50 16V136' stroke='%23f2f2f2' stroke-opacity='.35' stroke-width='1'/%3E%3Cpath d='M50 34a9 9 0 1 0 .01 0M41 43h18M50 25v18' fill='none' stroke='%23f2f2f2' stroke-opacity='.55' stroke-width='1.1'/%3E%3C/svg%3E") 50% 55%/auto 94% no-repeat,
+    linear-gradient(90deg,transparent 0 7%,rgba(255,255,255,.07) 7% 8%,transparent 8% 92%,rgba(255,255,255,.07) 92% 93%,transparent 93%);
+  filter:drop-shadow(0 .5rem .8rem #000)}
+.cachot nav a::before{display:none}
+.cachot nav a::after{left:50%;bottom:.9rem;transform:translateX(-50%);font-size:1.15rem;color:rgba(255,230,160,.8)}
+.cachot nav a:hover{filter:brightness(1.3) drop-shadow(0 0 1.2rem rgba(255,204,0,.45))}
+.cachot nav a[aria-current]{
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Cpath d='M10 136V62Q10 26 50 6Q90 26 90 62V136Z' fill='%23fff1b8' stroke='%23fff' stroke-width='2.4'/%3E%3Cpath d='M18 136V64Q18 34 50 16Q82 34 82 64V136' fill='none' stroke='%23e10019' stroke-opacity='.7' stroke-width='1.2'/%3E%3Cpath d='M50 16V136' stroke='%23000' stroke-opacity='.3' stroke-width='1'/%3E%3Cpath d='M50 34a9 9 0 1 0 .01 0M41 43h18M50 25v18' fill='none' stroke='%23000' stroke-opacity='.5' stroke-width='1.1'/%3E%3C/svg%3E") 50% 55%/auto 94% no-repeat;
+  filter:drop-shadow(0 0 1.4rem rgba(255,214,90,.55)) drop-shadow(0 .5rem .8rem #000)}
+.cachot nav a[aria-current]::after{color:#8a0014}
+.cachot .nav-txt{top:1.6rem}
+@media (max-width:899px){
+  .cachot nav{grid-template-rows:none;background:linear-gradient(#040408,#0a0a10);border-right:0;box-shadow:inset 0 -.15rem 0 rgba(225,0,25,.5)}
+  .cachot nav a{background:none;filter:none;border-radius:1.3rem 1.3rem 0 0/1.9rem 1.9rem 0 0;border:.12rem solid rgba(255,255,255,.35);border-bottom:0}
+  .cachot nav a[aria-current]{background:#fff1b8;filter:none}
+  .cachot .nav-txt{top:0}
+}

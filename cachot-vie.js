@@ -77,13 +77,20 @@
     setTimeout(bat,7000);
   }
 
-  /* ---------- l'araignée : elle dit les tweets et les phrases de cachot-paroles.js, dans des bulles vampiriques ---------- */
-  var arc=document.querySelector('.cr-araignee'),ar=arc&&arc.querySelector('.corps-a'),hd=document.querySelector('header');
-  if(arc&&hd){
-    var setHH=function(){arc.style.setProperty('--hh',hd.offsetHeight+'px');};
-    setHH();addEventListener('resize',setHH);
+  /* ---------- l'araignée : suspendue à sa toile, qu'on peut saisir pour la tirer n'importe où ; elle dit les tweets et les phrases de cachot-paroles.js, dans des bulles vampiriques ---------- */
+  var arc0=document.querySelector('.cr-araignee'),hd=document.querySelector('header');
+  var ar=null,arc=null;
+  if(arc0){
+    arc0.remove();
+    var TOILE='<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><g fill="none" stroke="#fff" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M50 50L50 2M50 50L84 16M50 50L98 50M50 50L84 84M50 50L50 98M50 50L16 84M50 50L2 50M50 50L16 16"/><path d="M50 36L61 39L64 50L61 61L50 64L39 61L36 50L39 39Z"/><path d="M50 22L69 28L78 50L69 72L50 78L31 72L22 50L31 28Z" opacity=".85"/><path d="M50 9L77 17L91 50L77 83L50 91L23 83L9 50L23 17Z" opacity=".65"/></g><circle cx="50" cy="50" r="3.2" fill="#e10019" stroke="#fff" stroke-width=".8"/></svg>';
+    var ARAIGNEE='<svg viewBox="0 0 40 44" aria-hidden="true" focusable="false"><g class="ar-p" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 25Q9 15 3 23"/><path d="M20 26Q8 24 2 32"/><path d="M20 27Q9 33 6 42"/><path d="M20 28Q13 35 12 43"/><path d="M20 25Q31 15 37 23"/><path d="M20 26Q32 24 38 32"/><path d="M20 27Q31 33 34 42"/><path d="M20 28Q27 35 28 43"/></g><ellipse cx="20" cy="13" rx="8" ry="10.5" fill="#050505" stroke="#fff" stroke-width="1"/><path d="M20 6L25 13L20 20L15 13Z" fill="#e10019"/><path d="M17 9.5L23 9.5L20 13L23 16.5L17 16.5L20 13Z" fill="#050505"/><circle cx="20" cy="27" r="5.4" fill="#0b0b0b" stroke="#fff" stroke-width="1"/><circle cx="17.6" cy="25.8" r="1" fill="#e10019"/><circle cx="22.4" cy="25.8" r="1" fill="#e10019"/><circle cx="19" cy="23.6" r=".6" fill="#ff5a6e"/><circle cx="21" cy="23.6" r=".6" fill="#ff5a6e"/><path d="M18.3 30.4L19 33.6L19.7 30.4M20.3 30.4L21 33.6L21.7 30.4" fill="#fff" stroke="#fff" stroke-width=".6" stroke-linejoin="round"/></svg>';
+    arc=document.createElement('div');arc.className='ar-couche';
+    arc.innerHTML='<svg class="ar-svg" aria-hidden="true"><path class="ar-fil" d="M0 0"/></svg><button class="ar-toile" type="button" aria-label="La toile : saisissez-la pour déplacer l’araignée n’importe où sur l’écran">'+TOILE+'</button><button class="corps-a" type="button" aria-label="Toucher l’araignée : elle parle">'+ARAIGNEE+'</button>';
+    body.appendChild(arc);
+    ar=arc.querySelector('.corps-a');
   }
   if(ar){
+    var tl=arc.querySelector('.ar-toile'),fil=arc.querySelector('.ar-fil');
     var PA=window.CR_PAROLES||{},pool=[],sac=[],bulle=null,traine=[],tb=0,tc=0,last=-1,PROFIL='https://x.com/TancredeCharon';
     (PA.tweets||[]).forEach(function(x){if(x&&(x.t||typeof x==='string'))pool.push({t:x.t||x,u:x.u||PROFIL,d:x.d||'',k:'tweet'});});
     (PA.phrases||[]).forEach(function(x){if(x)pool.push({t:x,u:'',d:'',k:'phrase'});});
@@ -106,6 +113,69 @@
       if(bulle){var b=bulle;bulle=null;b.classList.remove('on');setTimeout(function(){b.remove();},320);}
       arc.classList.remove('parle');
     };
+
+    /* ----- la toile (point d'attache), le fil et le pendule ----- */
+    var A={x:0,y:0},libre=false,drag=null,th=0,om=0,L=60,tt=0,gvx=0,gvy=0,pAx=null,vx=0,pvx=0,axl=0,grimpe=0,tlast=performance.now();
+    var maison=function(){
+      var m=innerWidth<900,hb=hd?hd.getBoundingClientRect().bottom:0,nv=m&&document.querySelector('nav');
+      if(nv){var q=nv.getBoundingClientRect();if(q.top<innerHeight/3)hb=Math.max(hb,q.bottom);}
+      A.x=innerWidth*(m?.88:.58);A.y=hb+10;
+    };
+    maison();
+    var bord=function(){A.x=Math.max(14,Math.min(innerWidth-14,A.x));A.y=Math.max(14,Math.min(innerHeight-60,A.y));};
+    addEventListener('resize',function(){if(libre)bord();else maison();});
+    tl.addEventListener('pointerdown',function(e){
+      if(e.button)return;
+      e.preventDefault();try{tl.setPointerCapture(e.pointerId);}catch(_){}
+      drag={id:e.pointerId,ox:A.x-e.clientX,oy:A.y-e.clientY,sx:e.clientX,sy:e.clientY,moved:false};gvx=gvy=0;
+    });
+    tl.addEventListener('pointermove',function(e){
+      if(!drag||e.pointerId!==drag.id)return;
+      if(!drag.moved&&Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)>5){drag.moved=true;libre=true;ferme();body.classList.add('ar-prise');}
+      if(!drag.moved)return;
+      A.x=e.clientX+drag.ox;A.y=e.clientY+drag.oy;bord();
+    });
+    var lache=function(e,annule){
+      if(!drag||e.pointerId!==drag.id)return;
+      var d=drag;drag=null;body.classList.remove('ar-prise');try{tl.releasePointerCapture(d.id);}catch(_){}
+      if(d.moved){gvx=Math.max(-1500,Math.min(1500,vx));gvy=0;}
+      else if(!annule)grimpe=4;
+    };
+    tl.addEventListener('pointerup',function(e){lache(e,false);});
+    tl.addEventListener('pointercancel',function(e){lache(e,true);});
+    tl.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();grimpe=4;}});
+    var sw=0,sh=0;
+    (function boucle(now){
+      var dt=Math.min(.04,(now-tlast)/1000)||.016;tlast=now;
+      if(!document.hidden){
+        tt+=dt;if(grimpe>0)grimpe-=dt;
+        if(!drag||!drag.moved){
+          if(gvx){A.x+=gvx*dt;gvx*=Math.exp(-5*dt);if(Math.abs(gvx)<10)gvx=0;bord();}
+        }
+        var rv=pAx===null?0:(A.x-pAx)/dt;pAx=A.x;
+        vx+=(rv-vx)*.25;axl+=(((vx-pvx)/dt)-axl)*.3;pvx=vx;
+        /* longueur du fil : elle monte et descend à son rythme, descend en parlant, remonte quand on touche la toile */
+        var Lmax=Math.max(60,Math.min(230,innerHeight-A.y-34)),cible=arc.classList.contains('parle')?Lmax:grimpe>0?Lmax*.12:calm?Lmax*.7:Lmax*(.3+.7*(.5-.5*Math.cos(tt/17*6.2832)));
+        L+=(cible-L)*Math.min(1,dt*1.6);
+        om+=(-(1500/L)*Math.sin(th)+Math.max(-12000,Math.min(12000,axl))/L*Math.cos(th)-1.8*om)*dt;
+        th+=om*dt;if(th>1.5){th=1.5;om*=-.3;}else if(th<-1.5){th=-1.5;om*=-.3;}
+        if(!calm)om+=Math.sin(tt*1.3)*.05*dt*60*.02;
+        sw=sw||ar.offsetWidth;sh=sh||ar.offsetHeight;
+        var s=Math.sin(th),c=Math.cos(th),sx=A.x+s*L,sy=A.y+c*L;/* l'araignée ne quitte jamais l'écran : le fil se raccourcit ou elle rebondit */ var mn=sw/2+6,mx=innerWidth-sw/2-6;if(sx<mn){sx=mn;if(om<0)om*=-.4;}else if(sx>mx){sx=mx;if(om>0)om*=-.4;}sy=Math.min(sy,innerHeight-sh/2-6);var ex=sx-s*sh*.42,ey=sy-c*sh*.42;
+        ar.style.transform='translate('+(sx-sw/2).toFixed(1)+'px,'+(sy-sh/2).toFixed(1)+'px) rotate('+(-th).toFixed(3)+'rad)';
+        tl.style.transform='translate('+(A.x-tl.offsetWidth/2).toFixed(1)+'px,'+(A.y-tl.offsetHeight/2).toFixed(1)+'px)';
+        fil.setAttribute('d','M'+A.x.toFixed(1)+' '+A.y.toFixed(1)+'L'+ex.toFixed(1)+' '+ey.toFixed(1));
+        if(bulle){
+          var w=bulle.offsetWidth,hb2=bulle.offsetHeight,dessous=sy+sh/2+62+hb2<innerHeight-8;
+          bulle.style.left=Math.max(8,Math.min(innerWidth-w-8,sx-w/2))+'px';
+          bulle.style.top=(dessous?sy+sh/2+62:Math.max(8,sy-sh/2-hb2-22))+'px';
+          var sg=dessous?1:-1;
+          traine.forEach(function(e,k){e.style.setProperty('--x',(sx+[0,5,-3][k]).toFixed(0)+'px');e.style.setProperty('--y',(sy+sg*(sh/2+[10,23,40][k])).toFixed(0)+'px');});
+        }
+      }
+      requestAnimationFrame(boucle);
+    })(performance.now());
+
     ar.addEventListener('click',function(e){
       e.stopPropagation();
       var p=tire();ferme();
@@ -118,8 +188,6 @@
       var b=document.createElement('div');b.className='cr-bulle';b.setAttribute('role','status');b.setAttribute('aria-live','polite');
       var q=document.createElement('q');b.appendChild(q);
       body.appendChild(b);bulle=b;
-      var w=b.offsetWidth,x=Math.max(8,Math.min(innerWidth-w-8,cx-w/2));
-      b.style.left=x+'px';b.style.top=(r.bottom+62)+'px';
       setTimeout(function(){if(bulle===b)b.classList.add('on');},calm?0:380);
       var texte=String(p.t),fin=function(){
         if(p.k==='tweet'){
