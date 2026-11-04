@@ -20,8 +20,8 @@
   var OUT='#101516';
 
   /* Crotte de dessin animé : trois étages et une pointe. Origine au milieu de la base ; s = largeur de la base. */
-  function crotte(c,x,y,s,rot){
-    c.save();c.translate(x,y);c.rotate(rot||0);c.scale(s/28,s/28);
+  function crotte(c,x,y,s,rot,sq,face){
+    c.save();c.translate(x,y);c.rotate(rot||0);if(sq)c.scale(1+sq*.8,1-sq);c.scale(s/28,s/28);
     c.lineJoin='round';c.lineCap='round';c.lineWidth=2.2;c.strokeStyle=BRUN_TRAIT;
     var pointe=new Path2D();
     pointe.moveTo(-5,-26);pointe.bezierCurveTo(-4,-33,3,-32,7,-37);pointe.bezierCurveTo(7,-31,5,-27,4,-25);pointe.closePath();
@@ -34,6 +34,73 @@
       c.fillStyle=BRUN_CLAIR;c.beginPath();c.ellipse(e[0]-e[2]*.45,e[1]-e[3]*.4,e[2]*.34,e[3]*.26,-.35,0,TAU);c.fill();
       c.restore();c.stroke(p);
     });
+    if(face){
+      /* un visage de dessin animé sur l'étage du milieu : yeux qui suivent, paupières, bouche qui s'ouvre quand elle parle */
+      var bl=face.blink?.12:1,lx=(face.lx||0)*1.3,ly=(face.ly||0)*1.1,mo=face.mouth||0;
+      c.lineWidth=1.3;c.strokeStyle=BRUN_TRAIT;
+      [-4.7,4.7].forEach(function(px){
+        c.beginPath();c.ellipse(px,-16.6,3.3,3.6*bl,0,0,TAU);c.fillStyle='#fff';c.fill();c.stroke();
+        if(bl>.5){c.beginPath();c.arc(px+lx,-16.6+ly,1.5,0,TAU);c.fillStyle='#1a0d03';c.fill();}
+      });
+      c.beginPath();
+      if(mo>.08){
+        c.ellipse(0,-11.2,2.7+mo*1.5,.9+mo*2.6,0,0,TAU);c.fillStyle='#3a0d0d';c.fill();c.stroke();
+        c.beginPath();c.ellipse(0,-10.2+mo*.4,1.7,.8*mo+.3,0,0,TAU);c.fillStyle='#d8566b';c.fill();
+      }else{c.moveTo(-3.2,-11.6);c.quadraticCurveTo(0,-9.4,3.2,-11.6);c.stroke();}
+    }
+    c.restore();
+  }
+
+  /* Lignes d'odeur : trois volutes vertes qui montent d'une crotte. t en secondes. */
+  function odeur(c,x,y,s,t){
+    c.save();c.strokeStyle=VERT_CLAIR;c.lineWidth=Math.max(1.4,s*.05);c.lineCap='round';
+    for(var i=0;i<3;i++){
+      var ph=(t*.45+i/3)%1,px=x+(i-1)*s*.3+Math.sin(t*2+i*2.1)*s*.07,py=y-s*.95-ph*s*.85;
+      c.globalAlpha=Math.sin(ph*Math.PI)*.75;
+      c.beginPath();c.moveTo(px,py);c.bezierCurveTo(px+s*.13,py-s*.12,px-s*.13,py-s*.24,px,py-s*.38);c.stroke();
+    }
+    c.restore();
+  }
+
+  /* Clystère ancien en étain, vu de profil : anneau du piston à gauche, tige, collerette à ailettes, long corps cylindrique
+     gravé de bagues, épaulement, canule et olive. Étain gris bleuté, bosselé, patiné. Origine au centre ; s = longueur totale. */
+  function clystereEtain(c,x,y,s,rot){
+    c.save();c.translate(x,y);c.rotate(rot||0);c.scale(s,s);
+    var L='#14171a',D='#3f464c',M='#8e979d',H='#d8dde0',W='#6f6a5f';
+    c.lineJoin='round';c.lineCap='round';c.lineWidth=.013;c.strokeStyle=L;
+    function vg(h,stops){var g=c.createLinearGradient(0,-h/2,0,h/2);stops.forEach(function(q){g.addColorStop(q[0],q[1]);});return g;}
+    function rr(x0,y0,w,h,r){c.beginPath();c.moveTo(x0+r,y0);c.lineTo(x0+w-r,y0);c.quadraticCurveTo(x0+w,y0,x0+w,y0+r);c.lineTo(x0+w,y0+h-r);c.quadraticCurveTo(x0+w,y0+h,x0+w-r,y0+h);c.lineTo(x0+r,y0+h);c.quadraticCurveTo(x0,y0+h,x0,y0+h-r);c.lineTo(x0,y0+r);c.quadraticCurveTo(x0,y0,x0+r,y0);c.closePath();}
+    var PW=[[0,D],[.22,M],[.46,H],[.62,M],[1,D]];
+    /* anneau du piston */
+    c.beginPath();c.ellipse(-.462,0,.045,.07,0,0,TAU);c.lineWidth=.05;c.strokeStyle=L;c.stroke();
+    c.lineWidth=.03;c.strokeStyle=M;c.stroke();c.lineWidth=.008;c.strokeStyle=H;c.beginPath();c.ellipse(-.462,-.004,.045,.07,0,Math.PI*1.1,Math.PI*1.7);c.stroke();
+    c.lineWidth=.013;c.strokeStyle=L;
+    /* tige */
+    rr(-.41,-.016,.215,.032,.01);c.fillStyle=vg(.032,PW);c.fill();c.stroke();
+    /* corps */
+    rr(-.2,-.1,.4,.2,.02);c.fillStyle=vg(.2,PW);c.fill();c.stroke();
+    /* bagues gravées aux deux bouts, deux filets entre */
+    [[-.19,.016],[-.16,.008],[.15,.008],[.174,.016]].forEach(function(q){rr(q[0],-.1,q[1],.2,.003);c.fillStyle=vg(.2,[[0,'#2e353a'],[.5,'#6c757b'],[1,'#2e353a']]);c.fill();c.lineWidth=.006;c.stroke();});
+    c.lineWidth=.005;c.strokeStyle='rgba(20,23,26,.55)';
+    for(var i=0;i<9;i++){var gx=-.1+i*.025;c.beginPath();c.moveTo(gx,-.035);c.lineTo(gx+.012,-.055);c.moveTo(gx,.035);c.lineTo(gx+.012,.055);c.stroke();}
+    /* patine et bosses */
+    c.fillStyle='rgba(111,106,95,.38)';c.beginPath();c.ellipse(.07,.045,.045,.02,.2,0,TAU);c.fill();c.beginPath();c.ellipse(-.07,-.03,.03,.014,-.3,0,TAU);c.fill();
+    c.fillStyle='rgba(15,18,20,.28)';c.beginPath();c.ellipse(.11,-.04,.016,.02,0,0,TAU);c.fill();
+    /* reflet long, et éraflures */
+    rr(-.185,-.075,.37,.016,.008);c.fillStyle='rgba(235,240,242,.62)';c.fill();
+    c.strokeStyle='rgba(235,240,242,.5)';c.lineWidth=.004;c.beginPath();c.moveTo(.03,.07);c.lineTo(.075,.062);c.moveTo(-.05,.078);c.lineTo(-.02,.072);c.stroke();
+    c.strokeStyle=L;c.lineWidth=.013;
+    /* collerette à ailettes, vue de profil */
+    rr(-.222,-.172,.032,.344,.014);c.fillStyle=vg(.344,PW);c.fill();c.stroke();
+    c.strokeStyle='rgba(15,18,20,.45)';c.lineWidth=.005;c.beginPath();c.moveTo(-.206,-.15);c.lineTo(-.206,-.11);c.moveTo(-.206,.11);c.lineTo(-.206,.15);c.stroke();c.strokeStyle=L;c.lineWidth=.013;
+    /* épaulement vers la canule */
+    c.beginPath();c.moveTo(.2,-.1);c.bezierCurveTo(.24,-.1,.255,-.06,.275,-.036);c.lineTo(.275,.036);c.bezierCurveTo(.255,.06,.24,.1,.2,.1);c.closePath();c.fillStyle=vg(.2,PW);c.fill();c.stroke();
+    /* bague de la canule, puis la canule qui s'affine */
+    rr(.275,-.04,.03,.08,.006);c.fillStyle=vg(.08,[[0,D],[.5,H],[1,D]]);c.fill();c.stroke();
+    c.beginPath();c.moveTo(.305,-.026);c.lineTo(.455,-.016);c.lineTo(.455,.016);c.lineTo(.305,.026);c.closePath();c.fillStyle=vg(.052,PW);c.fill();c.stroke();
+    /* olive */
+    c.beginPath();c.ellipse(.472,0,.03,.024,0,0,TAU);c.fillStyle=vg(.048,PW);c.fill();c.stroke();
+    c.fillStyle='rgba(235,240,242,.8)';c.beginPath();c.ellipse(.466,-.008,.01,.005,-.3,0,TAU);c.fill();
     c.restore();
   }
 
@@ -436,4 +503,5 @@
       setTimeout(function(){clearAll();busy=false;},4500);
     }).catch(function(error){console.error('Transition impossible',error);clearAll();busy=false;});
   });
+  window.Slime={couleurs:{vert:VERT,ombre:VERT_OMBRE,clair:VERT_CLAIR,trait:VERT_TRAIT,reflet:REFLET},crotte:crotte,clystere:clystereEtain,odeur:odeur};
 })();
