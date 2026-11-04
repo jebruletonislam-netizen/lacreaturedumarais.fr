@@ -719,3 +719,7 @@ header{overflow:visible}
 .cb-k a{color:inherit;text-decoration:none}.cb-k a:hover{text-decoration:underline}
 .cb-t{display:block;quotes:"« " " »";white-space:pre-line;color:#e6e6e6}
 @media (prefers-reduced-motion:reduce){.cro-bulle,.cro-bulle.on{transition:none;transform:none}}
+/* Éphébito et Éphénégro (ephebito.js) : zones de saisie découpées à la forme du corps, et objets que l'on attrape */
+.eph-btn,.fx-it{position:fixed;left:0;top:0;z-index:42;padding:0;margin:0;border:0;background:transparent;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;transform-origin:0 0}
+.fx-it{z-index:43;border-radius:.6rem}
+.eph-btn:focus-visible,.fx-it:focus-visible{outline:.2rem dashed #c6ff3c;outline-offset:.2rem}
