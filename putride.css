@@ -736,3 +736,6 @@ header{overflow:visible}
 .dos-art figcaption{margin:.5rem .1rem .1rem;font-size:.9rem;line-height:1.35;color:#e8dcff}
 @media (max-width:899px){.dcard{grid-template-columns:6.5rem 1fr}.dcard h3{font-size:1.6rem}}
 .dos-list{margin-bottom:1.4rem}
+/* Le fluide passe sous le texte (z 38), le texte au-dessus (39), puis les objets : dame-jeanne, crottes, clystères (40). */
+#mobj{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:40;pointer-events:none}
+main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position:relative;z-index:39}
