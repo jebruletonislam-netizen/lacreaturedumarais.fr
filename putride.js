@@ -347,7 +347,7 @@
       document.body.appendChild(btn);
       var H0=S0*1.9;
       cro={x:CW*(isM()?.8:.86),y:CH*(isM()?.42:.5),px:0,vx:0,vy:0,rot:0,vr:0,s:S0,h:H0,r:H0*.33,sq:0,sc:0,held:false,fly:0,gone:false,wet:false,
-           sl:0,slv:0,en:0,pev:0,ck:0,ckv:0,ph:rnd(0,6),mix:0,boom:false};
+           sl:0,slv:0,en:0,pev:0,ck:0,ckv:0,ph:rnd(0,6),mix:0,boom:false,ret:false,plong:0,pvx:0,pt:0,cool:0};
       cro.px=cro.x;
       var own={nom:'La dame-jeanne',gone:function(){return cro.gone;},
         ouvre:function(){cro.slv+=rnd(2.4,3.6)*(Math.random()<.5?-1:1);},
@@ -364,7 +364,7 @@
         if(e.button)return;
         e.preventDefault();try{btn.setPointerCapture(e.pointerId);}catch(_){}
         dr={id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:cro.x-e.clientX,oy:cro.y-e.clientY,moved:false};
-        hist=[{x:cro.x,y:cro.y,t:performance.now()}];cro.held=true;cro.vx=cro.vy=0;cro.fly=0;shx.d=shy.d=0;shx.e=shx.a=cro.x;shy.e=shy.a=cro.y;
+        hist=[{x:cro.x,y:cro.y,t:performance.now()}];cro.held=true;cro.ret=false;cro.plong=0;cro.vx=cro.vy=0;cro.fly=0;shx.d=shy.d=0;shx.e=shx.a=cro.x;shy.e=shy.a=cro.y;
       });
       btn.addEventListener('pointermove',function(e){
         if(!dr||e.pointerId!==dr.id)return;
@@ -395,9 +395,23 @@
         var h=cro.h,r=cro.r,sy,inW,dz;
         if(!cro.held){
           if(cro.fly>0)cro.fly-=dt;
+          if(cro.cool>0)cro.cool-=dt;
           cro.vy+=(cro.fly>0?1500:0)*dt;
           sy=surfAt(clamp(cro.x,ext.x0,ext.x1));inW=lvlD>2&&cro.x>ext.x0&&cro.x<ext.x1&&cro.y>sy-h*.12;
-          if(inW&&cro.fly<=0){
+          /* lancée dans le fluide : elle s'y enfonce en freinant, puis en ressort avec la force avec laquelle on l'y a envoyée */
+          if(cro.fly>0&&inW&&cro.cool<=0&&!cro.plong&&cro.y>sy+h*.1&&Math.hypot(cro.vx,cro.vy)>300){
+            cro.plong=Math.min(2600,Math.hypot(cro.vx,cro.vy));cro.pvx=cro.vx;cro.pt=0;
+            wave(cro.x,clamp(cro.plong*.006,2,14));spray(cro.x,sy,10,1,CO.vert);cro.slv+=rnd(-4,4);
+            for(var qb=0;qb<5;qb++)bubs.push({x:cro.x+rnd(-14,14),y:sy+rnd(4,22),r:rnd(1.8,4),vy:rnd(25,60),ph:rnd(0,6)});
+          }
+          if(cro.plong){
+            cro.pt+=dt;cro.vx*=1-Math.min(1,dt*8);cro.vy*=1-Math.min(1,dt*8);cro.rot+=cro.vr*dt*.3;
+            if(cro.pt>.2){
+              var dir=cro.pvx<0?-1:1;cro.vy=-cro.plong;cro.vx=cro.pvx*.5+dir*40;cro.vr=cro.vx*.004;cro.fly=2.4;cro.cool=.6;cro.plong=0;
+              wave(cro.x,-clamp(cro.vy*-.004,1,9));spray(cro.x,sy,12,1.25,CO.vert);
+            }
+          }
+          if(inW&&cro.fly<=0&&!cro.plong){
             /* elle ne coule pas : elle flotte, le col hors du fluide */
             if(!cro.wet){cro.wet=true;wave(cro.x,clamp(Math.abs(cro.vy)*.012,0,13));spray(cro.x,sy,6,.7);cro.slv+=rnd(-2,2);}
             dz=(surfAt(clamp(cro.x+9,ext.x0,ext.x1))-surfAt(clamp(cro.x-9,ext.x0,ext.x1)))/18;
@@ -406,12 +420,19 @@
             cro.rot+=((Math.atan(dz)*.9+Math.sin(tnow/700)*.07)-cro.rot)*Math.min(1,dt*5);
           }else{
             cro.wet=false;
-            if(cro.fly<=0){cro.vx*=1-Math.min(1,dt*5);cro.vy*=1-Math.min(1,dt*5);cro.rot+=(Math.sin(tnow/900)*.03+clamp(cro.vx/2000,-.3,.3)-cro.rot)*Math.min(1,dt*4);}
+            if(cro.fly<=0&&!cro.ret){cro.vx*=1-Math.min(1,dt*5);cro.vy*=1-Math.min(1,dt*5);cro.rot+=(Math.sin(tnow/900)*.03+clamp(cro.vx/2000,-.3,.3)-cro.rot)*Math.min(1,dt*4);}
+          }
+          if(cro.ret){
+            /* envoyée hors de l'écran : elle revient lentement et reste au bord, le temps qu'on la reprenne */
+            var tx=clamp(cro.x,r,CW-r),ty=clamp(cro.y,h*.5,CH-h*.5),ddx=tx-cro.x,ddy=ty-cro.y,dd=Math.hypot(ddx,ddy);
+            if(dd<3){cro.ret=false;cro.vx=cro.vy=0;}
+            else{var spd=clamp(dd*.5,24,95);cro.vx+=(ddx/dd*spd-cro.vx)*Math.min(1,dt*3);cro.vy+=(ddy/dd*spd-cro.vy)*Math.min(1,dt*3);}
+            cro.rot+=(Math.sin(tnow/700)*.12-cro.rot)*Math.min(1,dt*2);
           }
           cro.x+=cro.vx*dt;cro.y+=cro.vy*dt;cro.rot+=cro.vr*dt;if(cro.fly<=0)cro.vr*=1-Math.min(1,dt*5);
           if(cro.fly>0){
-            if(cro.x<-h||cro.x>CW+h||cro.y<-h*1.5||cro.y>CH+h){gone();return;}
-          }else{
+            if(!cro.plong&&(cro.x<-h*1.6||cro.x>CW+h*1.6||cro.y<-h*2||cro.y>CH+h*1.6)){cro.fly=0;cro.ret=true;cro.vr=0;cro.vx*=.25;cro.vy*=.25;}
+          }else if(!cro.ret){
             if(cro.x<r){cro.x=r;cro.vx*=-.5;}else if(cro.x>CW-r){cro.x=CW-r;cro.vx*=-.5;}
             if(cro.y<h*.5){cro.y=h*.5;cro.vy*=-.5;}else if(cro.y>ext.fl-h*.47&&!inW){cro.y=ext.fl-h*.47;cro.vy*=-.3;}
           }
@@ -513,15 +534,19 @@
       /* couche du fond, plus sombre, légèrement décalée */
       cx.beginPath();cx.moveTo(pts[0],pts[1]-5);
       for(i=2;i<n;i+=2)cx.lineTo(pts[i],pts[i+1]-5-Math.sin(pts[i]*.03-tnow/700)*2);
-      cx.lineTo(x1,fl+4);cx.lineTo(x0,fl+4);cx.closePath();cx.fillStyle='rgba(79,154,23,.5)';cx.fill();
+      cx.lineTo(x1,fl+4);cx.lineTo(x0,fl+4);cx.closePath();cx.fillStyle='rgba(64,196,92,.42)';cx.fill();
       /* le corps du fluide : citron en surface, vert profond au fond, assez translucide pour lire le texte au travers */
       var g=cx.createLinearGradient(0,mn,0,fl);
-      g.addColorStop(0,'rgba(160,228,52,.6)');g.addColorStop(.28,'rgba(106,186,36,.66)');g.addColorStop(.7,'rgba(52,128,34,.72)');g.addColorStop(1,'rgba(20,76,28,.8)');
+      /* vert de canalisation, comme le bocal de l'autel : émeraude vif et lumineux, translucide, qui ne s'assombrit pas au fond */
+      g.addColorStop(0,'rgba(196,255,128,.58)');g.addColorStop(.25,'rgba(120,240,112,.58)');g.addColorStop(.65,'rgba(48,206,118,.6)');g.addColorStop(1,'rgba(20,160,104,.66)');
       cx.beginPath();cx.moveTo(pts[0],pts[1]);
       for(i=2;i<n;i+=2)cx.lineTo(pts[i],pts[i+1]);
       cx.lineTo(x1,fl+4);cx.lineTo(x0,fl+4);cx.closePath();cx.fillStyle=g;cx.fill();
-      /* deux filets de lumière qui ondulent sous la surface */
-      cx.save();cx.clip();cx.lineWidth=2;cx.strokeStyle='rgba(214,255,134,.2)';
+      /* deux filets de lumière qui ondulent sous la surface, et un halo : la lumière traverse le fluide */
+      cx.save();cx.clip();
+      var hg=cx.createRadialGradient((x0+x1)/2,mn,0,(x0+x1)/2,mn,(x1-x0)*.55);hg.addColorStop(0,'rgba(236,255,190,.30)');hg.addColorStop(1,'rgba(236,255,190,0)');
+      cx.fillStyle=hg;cx.fillRect(x0,mn,x1-x0,fl-mn+4);
+      cx.lineWidth=2;cx.strokeStyle='rgba(226,255,170,.34)';
       for(var b=0;b<2;b++){
         var dy=24+b*46;cx.beginPath();
         for(x=x0;x<=x1;x+=DX*2){y=surfAt(x)+dy+Math.sin(x*.017+tnow/(900+b*300)+b*2)*5;if(x===x0)cx.moveTo(x,y);else cx.lineTo(x,y);}
@@ -819,7 +844,7 @@
   })();
 
   /* Recherche : uniquement dans les pages du mode putride */
-  var PAGES=['/mode-putride/accueil/','/mode-putride/territoire/','/mode-putride/bestiaire/','/mode-putride/discographie/','/mode-putride/ustensiles/','/mode-putride/mefaits/','/mode-putride/univers/','/mode-putride/archives/','/mode-putride/archives/dossiers-compromettants/','/mode-putride/in-odium-fidei/','/mode-putride/discographie/ces-beau-cela/','/mode-putride/discographie/chyren/','/mode-putride/discographie/confiteor/','/mode-putride/discographie/connasse/','/mode-putride/discographie/jarrive-en-tesla/','/mode-putride/discographie/le-retour-de-la-couche/','/mode-putride/discographie/les-gamins-jleur-mets-la-puree/','/mode-putride/discographie/lincontinence/','/mode-putride/discographie/machines/','/mode-putride/discographie/mais-si-quest-vrai/','/mode-putride/discographie/mauvaises-nouvelles-des-enfers-1/','/mode-putride/discographie/mauvaises-nouvelles-des-enfers-2/','/mode-putride/discographie/mets-la-cam/','/mode-putride/discographie/oh-non-herve/','/mode-putride/discographie/oh-non-je-fais-appel/','/mode-putride/discographie/omerta434/','/mode-putride/discographie/palestine-gratuit/','/mode-putride/discographie/peter-sur-la-friture/','/mode-putride/discographie/putain-de-sa-race/','/mode-putride/discographie/rien-a-declarer/','/mode-putride/bestiaire/createur/','/mode-putride/bestiaire/edwarda/','/mode-putride/bestiaire/rouen/','/mode-putride/bestiaire/ephebus/','/mode-putride/bestiaire/ephebelle/','/mode-putride/bestiaire/ephebito/','/mode-putride/bestiaire/ver/','/mode-putride/bestiaire/gargouille/','/mode-putride/bestiaire/saints-de-rouen/','/mode-putride/bestiaire/la-fourolle/','/mode-putride/bestiaire/pere-kitz-latouch/','/mode-putride/bestiaire/vampirix/','/mode-putride/bestiaire/retard-tinables/','/mode-putride/bestiaire/christophe-chevanne/','/mode-putride/bestiaire/herve-martin/','/mode-putride/bestiaire/jean-marie-gomis/','/mode-putride/bestiaire/thierry-haye/','/mode-putride/bestiaire/patrice-strilli/','/mode-putride/bestiaire/patrick-servanin/','/mode-putride/bestiaire/jean-pierre-herlant/','/mode-putride/bestiaire/gilbert-chabrolles/','/mode-putride/bestiaire/pacificsound3003/'];
+  var PAGES=['/mode-putride/accueil/','/mode-putride/territoire/','/mode-putride/bestiaire/','/mode-putride/discographie/','/mode-putride/ustensiles/','/mode-putride/mefaits/','/mode-putride/univers/','/mode-putride/archives/','/mode-putride/archives/dossiers-compromettants/','/mode-putride/archives/dossiers-compromettants/deguise-en-nazi/','/mode-putride/archives/dossiers-compromettants/montages-sataniques/','/mode-putride/in-odium-fidei/','/mode-putride/discographie/ces-beau-cela/','/mode-putride/discographie/chyren/','/mode-putride/discographie/confiteor/','/mode-putride/discographie/connasse/','/mode-putride/discographie/jarrive-en-tesla/','/mode-putride/discographie/le-retour-de-la-couche/','/mode-putride/discographie/les-gamins-jleur-mets-la-puree/','/mode-putride/discographie/lincontinence/','/mode-putride/discographie/machines/','/mode-putride/discographie/mais-si-quest-vrai/','/mode-putride/discographie/mauvaises-nouvelles-des-enfers-1/','/mode-putride/discographie/mauvaises-nouvelles-des-enfers-2/','/mode-putride/discographie/mets-la-cam/','/mode-putride/discographie/oh-non-herve/','/mode-putride/discographie/oh-non-je-fais-appel/','/mode-putride/discographie/omerta434/','/mode-putride/discographie/palestine-gratuit/','/mode-putride/discographie/peter-sur-la-friture/','/mode-putride/discographie/putain-de-sa-race/','/mode-putride/discographie/rien-a-declarer/','/mode-putride/bestiaire/createur/','/mode-putride/bestiaire/edwarda/','/mode-putride/bestiaire/rouen/','/mode-putride/bestiaire/ephebus/','/mode-putride/bestiaire/ephebelle/','/mode-putride/bestiaire/ephebito/','/mode-putride/bestiaire/ver/','/mode-putride/bestiaire/gargouille/','/mode-putride/bestiaire/saints-de-rouen/','/mode-putride/bestiaire/la-fourolle/','/mode-putride/bestiaire/pere-kitz-latouch/','/mode-putride/bestiaire/vampirix/','/mode-putride/bestiaire/retard-tinables/','/mode-putride/bestiaire/christophe-chevanne/','/mode-putride/bestiaire/herve-martin/','/mode-putride/bestiaire/jean-marie-gomis/','/mode-putride/bestiaire/thierry-haye/','/mode-putride/bestiaire/patrice-strilli/','/mode-putride/bestiaire/patrick-servanin/','/mode-putride/bestiaire/jean-pierre-herlant/','/mode-putride/bestiaire/gilbert-chabrolles/','/mode-putride/bestiaire/pacificsound3003/'];
   var IX=null,IXP=null;
   function norm(s){return s.toLowerCase().replace(/œ/g,'oe').replace(/æ/g,'ae').replace(/[’‘]/g,"'").normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
   function build(){

@@ -723,3 +723,16 @@ header{overflow:visible}
 .eph-btn,.fx-it{position:fixed;left:0;top:0;z-index:42;padding:0;margin:0;border:0;background:transparent;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;transform-origin:0 0}
 .fx-it{z-index:43;border-radius:.6rem}
 .eph-btn:focus-visible,.fx-it:focus-visible{outline:.2rem dashed #c6ff3c;outline-offset:.2rem}
+/* Dossiers compromettants : une page par article */
+.dos-list{grid-template-columns:repeat(auto-fit,minmax(min(34rem,100%),1fr))}
+.dcard{display:grid;grid-template-columns:9rem 1fr;gap:1rem;align-items:start}
+.dcard img{width:100%;aspect-ratio:3/4;height:auto;object-fit:cover;object-position:top;border:.15rem solid var(--g);background:#000;display:block}
+.dcard .kicker{margin:0 0 .35rem}
+.dcard h3{font-size:1.9rem;line-height:1.1}
+.dos-art{display:grid;gap:1.2rem;max-width:58rem;margin:1.2rem 0}
+.dos-art figure{margin:0;border:.15rem solid var(--g);background:#000;padding:.35rem}
+.dos-art a{display:block}
+.dos-art img{width:100%;height:auto;display:block}
+.dos-art figcaption{margin:.5rem .1rem .1rem;font-size:.9rem;line-height:1.35;color:#e8dcff}
+@media (max-width:899px){.dcard{grid-template-columns:6.5rem 1fr}.dcard h3{font-size:1.6rem}}
+.dos-list{margin-bottom:1.4rem}

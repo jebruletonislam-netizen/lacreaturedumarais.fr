@@ -559,3 +559,50 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 @media (prefers-reduced-motion:reduce){.cr-vb{animation:none!important;opacity:0}.cr-vb.fixe{opacity:1}}
 .cachot .nav-txt{top:2.2rem}
 @media (max-width:899px){.cachot .nav-txt{top:0}.cachot main>.cr-araignee{left:88%;top:calc(var(--hh,6.8rem) + 6.2rem)}}
+
+/* =====================================================================================================
+   LE CACHOT D'ÉPHÉBAAL : pierre, verre rouge, dentelle gothique, sceau. Noir et blanc, touches de rouge et de jaune.
+   ===================================================================================================== */
+
+/* ---------- en-tête : verrière derrière le blason, frise de lancettes, deux sceaux et deux torches ---------- */
+.cr-sprite{position:absolute;width:0;height:0;overflow:hidden}
+.cachot header{--tour:7.4rem;background:radial-gradient(ellipse 55% 120% at 50% 100%,rgba(120,0,16,.32),transparent 70%),linear-gradient(#070707,#000)}
+.cachot header::before{left:0;right:0;bottom:.5rem;height:1.7rem;opacity:.85;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16' fill='none' stroke='%23fff' stroke-width='.9' stroke-linejoin='round'%3E%3Cpath d='M0 16V9Q0 3 12 0Q24 3 24 9V16M5.500 16V10.500Q5.500 7 12 4.500Q18.500 7 18.500 10.500V16M12 4.500V16' opacity='.9'/%3E%3Cpath d='M12 8Q9 10 9 13M12 8Q15 10 15 13' stroke='%23e10019'/%3E%3C/svg%3E") 0 100%/2.4rem 1.6rem repeat-x;filter:drop-shadow(0 0 .25rem rgba(225,0,25,.5))}
+.cachot .cre{position:relative;padding-left:calc(2.6rem + 4.6rem);justify-content:flex-start}
+.cachot .cr-cote{display:flex;align-items:center;justify-content:flex-end;padding-right:calc(2.6rem + 4.6rem)}
+.cachot .cre .torche{left:2.6rem;right:auto}
+.cachot .cr-cote .torche{right:2.6rem}
+.cachot .cr-mid{position:relative}
+.cachot .cr-mid::before{content:"";position:absolute;z-index:0;left:-5rem;right:-5rem;top:0;bottom:1.7rem;background:url(/images/cachot/fenetres.webp) 50% 38%/cover;opacity:.34;filter:brightness(.78) contrast(1.15);-webkit-mask-image:radial-gradient(ellipse 50% 62% at 50% 44%,#000 38%,transparent 100%);mask-image:radial-gradient(ellipse 50% 62% at 50% 44%,#000 38%,transparent 100%);pointer-events:none}
+.cachot .cr-mid>*{position:relative;z-index:1}
+.cr-sceau{position:relative;flex:none;display:block;width:6.6rem;height:6.6rem;border-radius:50%;border:.2rem solid #fff;color:#fff;background:radial-gradient(circle at 50% 36%,#2b0409,#050505 72%);box-shadow:0 0 1.1rem rgba(225,0,25,.6),0 0 2.8rem rgba(225,0,25,.25),inset 0 0 1rem rgba(225,0,25,.32)}
+.cr-sceau svg,.cr-sceau-fond svg{display:block;width:100%;height:100%;overflow:visible}
+.cr-sceau .an,.cr-sceau-fond .an{transform-origin:50px 50px;animation:cr-tourne 90s linear infinite}
+.cr-sceau .pe,.cr-sceau-fond .pe{color:#e10019;animation:cr-pouls 4.6s ease-in-out infinite}
+@keyframes cr-tourne{to{transform:rotate(360deg)}}
+
+/* ---------- papier peint damassé et grand sceau en filigrane, derrière le texte ---------- */
+.cachot main>.cr-damas{inset:0;opacity:.05;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 80' fill='none' stroke='%23fff' stroke-width='.9' stroke-linecap='round'%3E%3Cpath d='M30 6C23 17 23 28 30 36C37 28 37 17 30 6ZM30 36C17 30 9 36 14 47C18 41 24 41 30 45C36 41 42 41 46 47C51 36 43 30 30 36Z'/%3E%3Cpath d='M30 45V70M21 60Q30 55 39 60M30 70L23 77M30 70L37 77M24 18Q30 22 36 18'/%3E%3C/svg%3E") 0 0/9rem 12rem,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 80' fill='none' stroke='%23fff' stroke-width='.9' stroke-linecap='round'%3E%3Cpath d='M30 6C23 17 23 28 30 36C37 28 37 17 30 6ZM30 36C17 30 9 36 14 47C18 41 24 41 30 45C36 41 42 41 46 47C51 36 43 30 30 36Z'/%3E%3Cpath d='M30 45V70M21 60Q30 55 39 60M30 70L23 77M30 70L37 77M24 18Q30 22 36 18'/%3E%3C/svg%3E") 4.5rem 6rem/9rem 12rem;-webkit-mask-image:linear-gradient(90deg,#000,transparent 24%,transparent 76%,#000);mask-image:linear-gradient(90deg,#000,transparent 24%,transparent 76%,#000)}
+.cachot main>.cr-sceau-fond{right:-14rem;top:46rem;width:46rem;height:46rem;color:#fff;opacity:.07}
+
+/* ---------- le grand escalier : quatre verrières en arc brisé ---------- */
+.cachot .escalier{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.4rem;margin:1.6rem 0 1.8rem;align-items:start}
+.escalier figure{margin:0;position:relative}
+.escalier a{display:block;overflow:hidden;aspect-ratio:3/4;border:.16rem solid rgba(255,255,255,.85);border-radius:50% 50% 0 0/17% 17% 0 0;background:#000;box-shadow:0 0 0 .4rem #070707,0 0 0 .55rem rgba(255,255,255,.22),0 .9rem 1.8rem rgba(0,0,0,.85);transition:box-shadow .3s,transform .3s}
+.escalier a:hover,.escalier a:focus-visible{outline:0;transform:translateY(-.3rem);box-shadow:0 0 0 .4rem #070707,0 0 0 .55rem rgba(225,0,25,.8),0 0 2.2rem rgba(225,0,25,.45)}
+.escalier img{display:block;width:100%;height:100%;object-fit:cover}
+.escalier figcaption{margin:.8rem .2rem 0;font-size:.78em;line-height:1.35;color:#d9d9d9;text-align:center}
+
+@media (max-width:899px){
+  .cachot header::before{height:1rem;background-size:1.5rem 1rem}
+  .cachot header .cr-cote{display:flex;flex:0 0 auto;padding:0 .9rem 0 0}
+  .cachot header .cr-cote .torche,.cachot header .cre .torche{display:none}
+  .cachot .cre{padding:0 0 0 .9rem}
+  .cr-sceau{width:3.3rem;height:3.3rem;border-width:.14rem}
+  .cachot header .mid.cr-mid{justify-content:center;gap:.9rem;padding:0 .2rem}
+  .cachot .cr-mid>img.cr-pil{height:calc(100% - .8rem);align-self:flex-end}
+  .cachot .cr-mid::before{left:-2rem;right:-2rem;bottom:0;opacity:.3}
+  .cachot .escalier{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem}
+  .cachot main>.cr-sceau-fond{right:-12rem;top:36rem;width:32rem;height:32rem}
+}
+@media (prefers-reduced-motion:reduce){.cr-sceau .an,.cr-sceau-fond .an,.cr-sceau .pe,.cr-sceau-fond .pe{animation:none!important}}
