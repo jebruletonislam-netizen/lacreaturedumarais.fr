@@ -106,7 +106,7 @@
     S.sh.push({x:o.x,y:o.y-h*.55,vx:rnd(-120,120),vy:-640,r:0,vr:9,s:h*.14,p:[1,1,1],l:3,cork:true});
     S.fx={x:o.x,y:o.y,t:0,r:h};
     FX.spray(o.x,o.y,FX.LOW?30:44,1.5,['#4a2d12','#9a6a1c','#e3cf2e','#efe6c0','#fbfbf3']);
-    var sy=FX.vsurf(o.x);if(FX.niv>2&&o.y>sy-40)FX.wave(o.x,9);
+    if(FX.dep(o.x,o.y)>-40)FX.wave(o.x,9,o.y);
     FX.lvlAdd(14);
     for(i=0;i<3;i++)FX.mk(0,o.x+rnd(-20,20),o.y,rnd(-260,260),rnd(-520,-180));
     FX.mk(1,o.x+rnd(-20,20),o.y-20,rnd(-160,160),rnd(-460,-240));
@@ -198,8 +198,8 @@
     /* éclats : pesanteur, puis ils plongent dans le fluide */
     for(i=S.sh.length-1;i>=0;i--){
       s=S.sh[i];s.vy+=1700*dt;s.x+=s.vx*dt;s.y+=s.vy*dt;s.r+=s.vr*dt;s.l-=dt;
-      var sy=FX.niv>2?FX.vsurf(s.x):FX.ext.fl;
-      if(s.y>sy||s.l<=0||s.y>FX.CH+40){if(s.y>sy&&FX.niv>2)FX.wave(s.x,s.cork?2.4:1.4);S.sh.splice(i,1);}
+      var dsh=FX.dep(s.x,s.y);
+      if(dsh>0||s.l<=0||s.y>FX.CH+40){if(dsh>0)FX.wave(s.x,s.cork?2.4:1.4,s.y);S.sh.splice(i,1);}
     }
     if(S.fx){S.fx.t+=dt;if(S.fx.t>.5)S.fx=null;}
     if(S.fl>0)S.fl=Math.max(0,S.fl-dt*3);
@@ -212,8 +212,8 @@
       if(S.th>1.45){S.th=1.45;S.om*=-.35;}else if(S.th<-1.45){S.th=-1.45;S.om*=-.35;}
     }
     S.dyv+=(-140*S.dy-8*S.dyv)*dt;S.dy+=S.dyv*dt;
-    var hp=toW(-g.mx+g.dw*.5,S.ext+g.dh*.97),sf=FX.niv>2?FX.vsurf(hp[0]):1e9;
-    S.sub=hp[1]>sf+6;
+    var hp=toW(-g.mx+g.dw*.5,S.ext+g.dh*.97),dh=FX.dep(hp[0],hp[1]);
+    S.sub=dh>6;
     /* le sang coule des clystères plantés ; le fluide vert, lui, lave et guérit tout ce qu'il touche */
     S.bl+=dt;
     if(S.bl>.35){
@@ -221,7 +221,7 @@
       for(i=0;i<S.pl.length;i++){
         if(!S.pl[i].k)continue;
         var wp=toW(-g.mx+S.pl[i].u*g.dw,S.ext+S.pl[i].v*g.dh);
-        if(FX.niv>2&&wp[1]>FX.vsurf(wp[0]))continue;
+        if(FX.dep(wp[0],wp[1])>0)continue;
         if(FX.drops.length<60)FX.drops.push({x:wp[0]+rnd(-4,4),y:wp[1],vx:rnd(-20,20),vy:rnd(40,160),r:rnd(1.4,2.6),l:rnd(.6,1.1),c:Math.random()<.5?'#9a0c1c':'#e0283a'});
         if(Math.random()<.18&&S.st.length<40)tache('r',S.pl[i].u+rnd(-.02,.02),S.pl[i].v+rnd(0,.05),9+Math.random()*8);
       }
@@ -231,18 +231,18 @@
       S.cl=0;var lav=0,k2,q2,w2,pol=[];
       for(k2=S.st.length-1;k2>=0;k2--){
         q2=S.st[k2];w2=toW(-g.mx+q2.u*g.dw,S.ext+q2.v*g.dh);
-        if(w2[1]>FX.vsurf(w2[0])){S.st.splice(k2,1);lav++;}
+        if(FX.dep(w2[0],w2[1])>0){S.st.splice(k2,1);lav++;}
       }
       for(k2=S.pl.length-1;k2>=0;k2--){
         q2=S.pl[k2];w2=toW(-g.mx+q2.u*g.dw,S.ext+q2.v*g.dh);
-        if(w2[1]>FX.vsurf(w2[0])){
+        if(FX.dep(w2[0],w2[1])>0){
           var it2=FX.mk(q2.k,w2[0],w2[1],rnd(-80,80),rnd(-60,40));it2.rot=q2.a+S.th;it2.usr=false;S.pl.splice(k2,1);lav++;
           FX.spray(w2[0],w2[1],4,.4,['#d6ff86','#8fd61f']);
         }
       }
-      if(lav){rebake(S.k);S.ab=Math.max(0,S.ab-lav*.8);FX.spray(hp[0],sf,3,.4,['#d6ff86','#f4ffd9']);}
+      if(lav){rebake(S.k);S.ab=Math.max(0,S.ab-lav*.8);FX.spray(hp[0],hp[1],3,.4,['#d6ff86','#f4ffd9']);}
     }
-    if(S.sub&&!S.wet){S.wet=true;FX.wave(hp[0],clamp(Math.abs(S.om)*g.dh*.012,1,10));FX.spray(hp[0],sf,5,.6);}
+    if(S.sub&&!S.wet){S.wet=true;FX.wave(hp[0],clamp(Math.abs(S.om)*g.dh*.012,1,10),hp[1]);FX.spray(hp[0],hp[1],5,.6);}
     else if(!S.sub)S.wet=false;
     if(S.born){
       S.alv+=(-60*S.al-5*S.alv-((S.om-om0)/dt)*.14)*dt;S.al=clamp(S.al+S.alv*dt,-.2,.2);

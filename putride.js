@@ -165,7 +165,8 @@
     var clamp=function(v,a,b){return v<a?a:v>b?b:v;};
     var inc=function(w){return w*w*.085*(isM()?1.8:1);};
     var mainBox=function(){var m=document.querySelector('main');return m&&m.getBoundingClientRect();};
-    var cap=function(){var m=document.querySelector('main');return Math.min(innerHeight/3,m?m.offsetHeight*.5:1e9);};
+    /* au plus un tiers de la zone de texte visible, quelle que soit la façon dont il est réparti */
+    var cap=function(){var m=document.querySelector('main');return Math.min(Math.max(40,innerHeight-hdrBottom())/3,m?m.offsetHeight*.5:1e9);};
     /* ---------- le fluide : une surface d'ondes (champ de hauteurs) dessinée sur un seul canvas, la même sur ordinateur et téléphone ----------
        Il monte avec les gouttes, jusqu'au tiers de l'écran au maximum. Chaque goutte, chaque objet qui tombe y fait des vagues ;
        sur téléphone, l'inclinaison et les secousses le font glisser et déborder. Les crottes flottent, les clystères en étain coulent. */
@@ -176,40 +177,103 @@
     var cxO=cv2.getContext('2d');
     var LOW=(navigator.hardwareConcurrency||4)<=4||(navigator.deviceMemory||4)<=4||innerWidth*(window.devicePixelRatio||1)<700;
     var dpr=LOW?1:Math.min(window.devicePixelRatio||1,1.5);
-    var CW=0,CH=0,DX=LOW?10:7,NC=0,HH=null,VV=null,ext={x0:0,x1:0,fl:0,off:0,hm:1e4};
-    var sv=0,tint=0,tintT=0,FP=null,pours=[],scr=[],scrDirty=true,scrT=0;
-    var gx=0,gy=1,gm=1,tgx=0,tgy=1,tgm=1,slope=0,sens=false,lvlD=0,tnow=0,pendX=0,wasWork=false;
+    var CW=0,CH=0,DX=LOW?10:7,NC=0,OFF=0,HH=null,VV=null,ext={x0:0,x1:0,fl:0,tp:0};
+    var SF={c:0,nx:0,ny:1,tx:1,ty:0,t0:0,t1:0},ang=0,angv=0,tdown=0,rm0=0;
+    var tint=0,tintT=0,FP=null,pours=[],scr=[],scrDirty=true,scrT=0;
+    var gx=0,gy=1,gm=1,tgx=0,tgy=1,tgm=1,sens=false,lvlD=0,tnow=0,pendX=0,wasWork=false;
     var drops=[],items=[],bubs=[],cro=null,FX={};
-    function upd(){var m=mainBox();ext.x0=Math.max(0,m?m.left:0);ext.x1=Math.min(CW,m?m.right:CW);ext.fl=Math.min(CH,m?m.bottom:CH)-3;ext.hm=Math.max(8,ext.fl-(CH*.667-10));}
+    /* hauteur des barres collées en haut (en-tête, et navigation sur téléphone) */
+    function hdrBottom(){
+      var b=0,hd=document.querySelector('header'),nv=document.querySelector('nav');
+      if(hd)b=hd.getBoundingClientRect().bottom;
+      if(nv&&isM()){var r=nv.getBoundingClientRect();if(r.top<innerHeight/3)b=Math.max(b,r.bottom);}
+      return Math.max(0,Math.round(b));
+    }
+    /* la cuve du fluide : la zone de texte visible, du bas des barres du haut jusqu'à la barre verte du pied de page (ou le bas de l'écran) */
+    function upd(){
+      var m=mainBox(),ft=document.querySelector('.pfoot'),fb=ft?ft.getBoundingClientRect().top:CH;
+      ext.x0=Math.max(0,m?m.left:0);ext.x1=Math.min(CW,m?m.right:CW);
+      ext.fl=Math.min(CH,fb,m?Math.max(m.bottom,60):CH);
+      ext.tp=Math.min(ext.fl-40,Math.max(hdrBottom(),m?m.top:0));
+    }
     function sizeCv(){
       CW=innerWidth;CH=innerHeight;cv.width=cv2.width=Math.round(CW*dpr);cv.height=cv2.height=Math.round(CH*dpr);cxF.setTransform(dpr,0,0,dpr,0,0);cxO.setTransform(dpr,0,0,dpr,0,0);scrDirty=true;
-      NC=Math.ceil(CW/DX)+3;HH=new Float32Array(NC);VV=new Float32Array(NC);upd();
+      OFF=CW+CH;NC=Math.ceil(2*OFF/DX)+4;HH=new Float32Array(NC);VV=new Float32Array(NC);upd();
     }
     sizeCv();pendX=CW/2;
     addEventListener('resize',sizeCv);
-    /* hauteur de la surface en x : niveau, vagues, houle ambiante, inclinaison ; jamais plus haut qu'un tiers de l'écran */
+    /* ---------- le fluide : une cuve dont le volume est conservé ----------
+       La surface est une droite perpendiculaire à la pesanteur du fluide (n, vers le « bas » du fluide), placée de sorte que l'aire en dessous
+       vaille le volume ; un champ de hauteurs d'ondes court le long de cette droite. Quand on incline le téléphone, la pesanteur du fluide
+       suit avec un ressort (il déborde, clapote) : il peut grimper sur les côtés ou au plafond, mais le total reste le même. */
+    function hAt(t){
+      var c=(t+OFF)/DX;if(c<0)c=0;if(c>NC-2)c=NC-2;var i=c|0,f=c-i;return HH[i]*(1-f)+HH[i+1]*f;
+    }
+    function amb(t){return (Math.sin(t*.021+tnow/620)*1.5+Math.sin(t*.049-tnow/430)*.9)*Math.min(1,lvlD/14);}
+    function areaBelow(c){
+      var R=[[ext.x0,ext.tp],[ext.x1,ext.tp],[ext.x1,ext.fl],[ext.x0,ext.fl]],o=[],i,a,b,da,db,k,sa=0;
+      for(i=0;i<4;i++){
+        a=R[i];b=R[(i+1)&3];da=SF.nx*a[0]+SF.ny*a[1]-c;db=SF.nx*b[0]+SF.ny*b[1]-c;
+        if(da>=0)o.push(a);
+        if((da>=0)!==(db>=0)){k=da/(da-db);o.push([a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k]);}
+      }
+      for(i=0;i<o.length;i++){a=o[i];b=o[(i+1)%o.length];sa+=a[0]*b[1]-b[0]*a[1];}
+      return Math.abs(sa)/2;
+    }
+    function solve(){
+      var s=Math.sin(ang),c=Math.cos(ang),W=ext.x1-ext.x0,H=ext.fl-ext.tp,i,lo=1e9,hi=-1e9,d,V,tmn=1e9,tmx=-1e9,t;
+      SF.nx=s;SF.ny=c;SF.tx=c;SF.ty=-s;
+      var K=[[ext.x0,ext.tp],[ext.x1,ext.tp],[ext.x1,ext.fl],[ext.x0,ext.fl]];
+      for(i=0;i<4;i++){d=s*K[i][0]+c*K[i][1];if(d<lo)lo=d;if(d>hi)hi=d;t=c*K[i][0]-s*K[i][1];if(t<tmn)tmn=t;if(t>tmx)tmx=t;}
+      SF.t0=tmn-DX;SF.t1=tmx+DX;
+      V=Math.min(lvlD*W,W*H*.985);
+      var a=lo,b=hi;
+      for(i=0;i<18;i++){d=(a+b)/2;if(areaBelow(d)>V)a=d;else b=d;}
+      SF.c=(a+b)/2;
+    }
+    /* profondeur d'un point dans le fluide, mesurée le long de la pesanteur du fluide (positive dedans) */
+    function dep(x,y){
+      if(lvlD<.5||x<ext.x0||x>ext.x1||y<ext.tp-40||y>ext.fl+10)return -1e4;
+      var t=x*SF.tx+y*SF.ty;
+      return SF.nx*x+SF.ny*y-(SF.c-hAt(t)-amb(t));
+    }
+    /* un point de la surface, juste « au-dessus » de (x,y) */
+    function surfPt(x,y,d){return [x-SF.nx*d,y-SF.ny*d];}
+    /* ordonnée de la surface en x (utile tant que le téléphone est plutôt droit) */
     function surfAt(x){
-      var c=x/DX;if(c<0)c=0;if(c>NC-2)c=NC-2;var i=c|0,f=c-i,h=HH[i]*(1-f)+HH[i+1]*f,am=Math.min(1,lvlD/14);
-      var d=lvlD+ext.off+slope*(x-(ext.x0+ext.x1)/2);d=d<0?0:d>ext.hm?ext.hm:d;
-      var y=ext.fl-d-h+(Math.sin(x*.021+tnow/620)*1.5+Math.sin(x*.049-tnow/430)*.9)*am*(d>10?1:d/10);
-      return y<CH*.667-10?CH*.667-10:y>ext.fl?ext.fl:y;
+      if(lvlD<.5||SF.ny<.2)return ext.fl;
+      var y=ext.fl,k,t;
+      for(k=0;k<2;k++){t=x*SF.tx+y*SF.ty;y=clamp((SF.c-hAt(t)-amb(t)-SF.nx*x)/SF.ny,ext.tp,ext.fl);}
+      return y;
     }
     var vsurf=function(x){return lvlD>.5?surfAt(clamp(x,ext.x0,ext.x1)):ext.fl;};
-    function wave(x,amt){
-      var c=Math.round(x/DX),d,k;
+    /* tangente locale de la surface (vecteur unitaire), pente des ondes comprise */
+    function slopeT(x,y){
+      var t=x*SF.tx+y*SF.ty,i=clamp(((t+OFF)/DX)|0,1,NC-3),sl=-(HH[i+1]-HH[i-1])/(2*DX),vx=SF.tx+sl*SF.nx,vy=SF.ty+sl*SF.ny,l=Math.hypot(vx,vy)||1;
+      return [vx/l,vy/l];
+    }
+    function waveT(t,amt){
+      var c=Math.round((t+OFF)/DX),d,k;
       for(d=-4;d<=4;d++){k=c+d;if(k>0&&k<NC-1)VV[k]-=amt*(1-Math.abs(d)/5);}
     }
+    function wave(x,amt,y){
+      if(y===undefined)y=surfAt(x);
+      waveT(x*SF.tx+y*SF.ty,amt);
+    }
     /* un objet qui se déplace dans le fluide le pousse devant lui et le creuse derrière */
-    function stir(x,vx,w,vy){
-      var a=clamp(Math.abs(vx)*.0024,0,4.5)*w,sg=vx>0?1:-1;
-      if(a>.15){wave(x+sg*14,-a);wave(x-sg*14,a*.6);if(a>1.6&&bubs.length<18&&Math.random()<.25)bubs.push({x:x+rnd(-10,10),y:surfAt(clamp(x,ext.x0,ext.x1))+rnd(6,22),r:rnd(1.6,3.2),vy:rnd(25,55),ph:rnd(0,6)});}
-      if(vy){var b=clamp(vy*.0013,-3,3)*w;if(Math.abs(b)>.2)wave(x,-b);}
+    function stir(x,y,vx,vy,w){
+      var t=x*SF.tx+y*SF.ty,vt=vx*SF.tx+vy*SF.ty,vn=vx*SF.nx+vy*SF.ny,a=clamp(Math.abs(vt)*.0024,0,4.5)*w,sg=vt>0?1:-1;
+      if(a>.15){
+        waveT(t+sg*14,-a);waveT(t-sg*14,a*.6);
+        if(a>1.6&&bubs.length<18&&Math.random()<.25)bubs.push({x:x+rnd(-10,10),y:y+rnd(-6,10),r:rnd(1.6,3.2),vy:rnd(25,55),ph:rnd(0,6)});
+      }
+      var b=clamp(vn*.0013,-3,3)*w;if(Math.abs(b)>.2)waveT(t,-b);
     }
     function spray(x,y,n,pw,col){
       for(var i=0;i<n&&drops.length<(col?90:50);i++)drops.push({x:x+rnd(-8,8),y:y,vx:rnd(-190,190)*pw,vy:-rnd(160,520)*pw,r:rnd(1.4,3.6),l:rnd(.5,1),c:col&&(col.pop?col[(Math.random()*col.length)|0]:col)});
     }
     function stepW(dt){
-      var i0=Math.max(1,Math.floor(ext.x0/DX)),i1=Math.min(NC-2,Math.ceil(ext.x1/DX)),i,l,r;
+      var i0=Math.max(1,Math.floor((SF.t0+OFF)/DX)),i1=Math.min(NC-2,Math.ceil((SF.t1+OFF)/DX)),i,l,r;
       for(i=i0;i<=i1;i++){
         l=i>i0?HH[i-1]:HH[i];r=i<i1?HH[i+1]:HH[i];
         VV[i]=(VV[i]+(l+r-2*HH[i])*.3-HH[i]*.004)*.988;
@@ -225,7 +289,7 @@
       var m=Math.sqrt(x*x+y*y);
       if(m<.12){tgx=0;tgy=1;tgm=.3;return;}
       tgx=x/m;tgy=y/m;tgm=clamp(m,.18,3.4);
-      if(m>1.5&&lvlD>2){for(var k=0;k<6;k++){var c=1+((Math.random()*(NC-3))|0);VV[c]+=rnd(-9,9)*(m-1);}spray(rnd(ext.x0,ext.x1),vsurf(CW/2),3,.6);}
+      if(m>1.5&&lvlD>2){for(var k=0;k<6;k++)waveT(rnd(SF.t0,SF.t1),rnd(-9,9)*(m-1));spray(rnd(ext.x0,ext.x1),vsurf(CW/2),3,.6);}
     };
     var ios=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
     if(window.DeviceMotionEvent){
@@ -246,7 +310,7 @@
       if(!t){fing=null;return;}
       if(!fing||ev.type==='touchstart'){fing={x:t.clientX,y:t.clientY,t:n};return;}
       var dt=Math.max(8,n-fing.t)/1000,vx=(t.clientX-fing.x)/dt;
-      if(lvlD>2&&t.clientY>vsurf(t.clientX)-30&&t.clientX>ext.x0&&t.clientX<ext.x1)wave(t.clientX,clamp(vx*.006,-5,5));
+      if(lvlD>2&&dep(t.clientX,t.clientY)>-30)wave(t.clientX,clamp(vx*.006,-5,5),t.clientY);
       fing.x=t.clientX;fing.y=t.clientY;fing.t=n;
     };
     document.addEventListener('touchstart',tmv,{passive:true});
@@ -261,7 +325,7 @@
     }
     function spawnItem(){
       var E=FX.eph&&FX.eph.on;
-      if(items.length>=(E?10:6)||(lvl<7&&!E)||document.hidden||vidFin)return;
+      if(items.length>=(E?10:6)||(lvl<7&&!E)||document.hidden||vidFin||gy<.3)return;
       var nc=0,nk=0,mx=E?5:3;items.forEach(function(it){if(it.k)nk++;else nc++;});
       var k=Math.random()<.5?0:1;if(k&&nk>=mx)k=0;else if(!k&&nc>=mx)k=1;
       var sz=k?(isM()?78:106):(isM()?30:36),w=Math.max(10,ext.x1-ext.x0-60);
@@ -269,32 +333,45 @@
     }
     (function loopSpawn(){spawnItem();setTimeout(loopSpawn,(FX.eph&&FX.eph.on)?rnd(2400,4600):rnd(4500,10000));})();
     function stepItem(it,dt){
-      var A=1700*Math.max(.6,gm),sy,inW,dz;
+      var A=1700*Math.max(.6,gm),dp,inW,T,a,k1,vn,vt,push,tg,df;
       if(it.out){it.sc-=dt*1.2;if(it.sc<=0){it.dead=true;return;}}
       if(it.held){
         it.wet=false;
-        if(lvlD>2&&it.x>ext.x0&&it.x<ext.x1&&it.y>surfAt(it.x)-it.s*.15)stir(it.x,it.hvx||0,it.k?1.3:.9,it.hvy||0);
+        if(lvlD>2&&dep(it.x,it.y)>-it.s*.15)stir(it.x,it.y,it.hvx||0,it.hvy||0,it.k?1.3:.9);
         it.hvx=(it.hvx||0)*.86;it.hvy=(it.hvy||0)*.86;return;
       }
       it.vx+=gx*A*dt;it.vy+=gy*A*dt;
-      sy=surfAt(clamp(it.x,ext.x0,ext.x1));inW=lvlD>2&&it.y>sy-(it.k?it.s*.04:it.s*.15);
+      dp=dep(it.x,it.y);inW=lvlD>2&&dp>-(it.k?it.s*.04:it.s*.15);
       if(inW){
-        if(!it.wet){it.wet=true;wave(it.x,clamp(it.vy*.011*(it.k?1.6:1),0,14));spray(it.x,sy,it.k?8:5,.7);for(var q=0;q<4;q++)bubs.push({x:it.x+rnd(-12,12),y:sy+rnd(4,16),r:rnd(1.6,3.4),vy:rnd(25,60),ph:rnd(0,6)});}
+        T=slopeT(it.x,it.y);vn=it.vx*SF.nx+it.vy*SF.ny;
+        if(!it.wet){
+          it.wet=true;var sp=surfPt(it.x,it.y,dp);
+          wave(it.x,clamp(vn*.011*(it.k?1.6:1),0,14),it.y);spray(sp[0],sp[1],it.k?8:5,.7);
+          for(var q=0;q<4;q++)bubs.push({x:it.x+rnd(-12,12),y:it.y+rnd(-4,10),r:rnd(1.6,3.4),vy:rnd(25,60),ph:rnd(0,6)});
+        }
         if(it.k===0){
-          dz=(surfAt(clamp(it.x+9,ext.x0,ext.x1))-surfAt(clamp(it.x-9,ext.x0,ext.x1)))/18;
-          it.vy+=(sy+it.s*.1-it.y)*55*dt;it.vy*=1-Math.min(1,dt*3.5);
-          it.vx+=dz*900*dt;it.vx*=1-Math.min(1,dt*1.6);
-          it.rot+=((Math.atan(dz)*.9+Math.sin(tnow/700+it.dz)*.12)-it.rot)*Math.min(1,dt*5);it.vr*=1-Math.min(1,dt*4);
+          /* la crotte flotte : poussée vers la surface, entraînée vers le bas de la pente, couchée sur la houle */
+          a=-(dp-it.s*.1)*55;it.vx+=SF.nx*a*dt;it.vy+=SF.ny*a*dt;
+          k1=Math.min(1,dt*3.5);vn=it.vx*SF.nx+it.vy*SF.ny;it.vx-=SF.nx*vn*k1;it.vy-=SF.ny*vn*k1;
+          push=(SF.nx*T[0]+SF.ny*T[1])*900*dt;it.vx+=T[0]*push;it.vy+=T[1]*push;
+          k1=Math.min(1,dt*1.6);vt=it.vx*SF.tx+it.vy*SF.ty;it.vx-=SF.tx*vt*k1;it.vy-=SF.ty*vt*k1;
+          tg=Math.atan2(T[1],T[0]);if(tg>1.5708)tg-=3.1416;else if(tg<-1.5708)tg+=3.1416;
+          df=tg*.9+Math.sin(tnow/700+it.dz)*.12-it.rot;it.rot+=df*Math.min(1,dt*5);it.vr*=1-Math.min(1,dt*4);
         }else{
-          it.vy+=(78-it.vy)*Math.min(1,dt*3);it.vx*=1-Math.min(1,dt*2.2);
+          /* le clystère en étain coule doucement */
+          k1=Math.min(1,dt*3);vn=it.vx*SF.nx+it.vy*SF.ny;it.vx+=SF.nx*(78-vn)*k1;it.vy+=SF.ny*(78-vn)*k1;
+          k1=Math.min(1,dt*2.2);vt=it.vx*SF.tx+it.vy*SF.ty;it.vx-=SF.tx*vt*k1;it.vy-=SF.ty*vt*k1;
           it.vr+=Math.sin(tnow/520+it.dz)*.5*dt;it.vr*=1-Math.min(1,dt*1.2);
         }
-        stir(it.x,it.vx,it.k?1.1:.7);
+        stir(it.x,it.y,it.vx,it.vy,it.k?1.1:.7);
       }else it.wet=false;
       it.x+=it.vx*dt;it.y+=it.vy*dt;it.rot+=it.vr*dt;
       if(it.x<ext.x0+10){it.x=ext.x0+10;it.vx*=-.4;}else if(it.x>ext.x1-10){it.x=ext.x1-10;it.vx*=-.4;}
       var fl=ext.fl-it.s*(it.k?.1:.45);
       if(it.y>fl){it.y=fl;if(it.vy>260)it.sq=.2;it.vy=it.k?0:-it.vy*.25;it.vx*=.8;if(it.k)it.rot+=((it.z>1?.1:-.1)-it.rot)*Math.min(1,dt*3);}
+      /* au plafond quand le téléphone est à l'envers */
+      if(it.y>ext.tp+40)it.in=true;
+      if(it.in&&it.y<ext.tp+it.s*.4){it.y=ext.tp+it.s*.4;it.vy*=-.3;}
       var sqv=clamp(-Math.abs(it.vy)/1600,-.16,0);it.sq+=(sqv-it.sq)*Math.min(1,dt*9);
     }
     var bts=[];
@@ -458,12 +535,19 @@
       cro.step=function(dt){
         if(cro.gone){stepDeb(dt);return;}
         cro.sc+=(1-cro.sc)*Math.min(1,dt*5);
-        var h=cro.h,r=cro.r,sy,inW,dz,pi;
-        /* dans le fluide : elle se lave, et brasse ce qu'elle déplace */
-        var sub0=lvlD>2&&cro.x>ext.x0&&cro.x<ext.x1&&cro.y>surfAt(clamp(cro.x,ext.x0,ext.x1))+h*.08;
+        var h=cro.h,r=cro.r,sy,sx,inW,pi,dpc=dep(cro.x,cro.y),Tv,vn0,vt0,k1;
+        sx=cro.x-SF.nx*Math.max(dpc,0);sy=cro.y-SF.ny*Math.max(dpc,0);
+        /* dans le fluide : elle se lave, perd ses clystères, et brasse ce qu'elle déplace */
+        var sub0=lvlD>2&&dpc>h*.08;
         if(sub0){
+          rm0=0;
+          if(cro.pier.length&&(cro.rm=(cro.rm||0)-dt)<=0){
+            cro.rm=.28;var pr0=cro.pier.pop(),wq=wpt(pr0.x,pr0.y),qi=mkItem(1,wq[0],wq[1],rnd(-70,70),rnd(-40,30));
+            qi.rot=pr0.a+cro.rot;qi.usr=false;spray(wq[0],wq[1],5,.5,['#e8fff4','#d6ff86']);
+            for(var qz=0;qz<3;qz++)bubs.push({x:wq[0]+rnd(-8,8),y:wq[1]+rnd(-6,6),r:rnd(1.6,3),vy:rnd(25,50),ph:rnd(0,6)});
+          }
           if(cro.dirt>0){cro.dirt=Math.max(0,cro.dirt-dt*.9);if(bubs.length<18&&Math.random()<dt*10)bubs.push({x:cro.x+rnd(-12,12),y:cro.y+rnd(-10,20),r:rnd(1.6,3),vy:rnd(25,50),ph:rnd(0,6)});}
-          stir(cro.x,(cro.x-cro.px)/dt,1.5,(cro.y-(cro.py||cro.y))/dt);
+          stir(cro.x,cro.y,(cro.x-cro.px)/dt,(cro.y-(cro.py||cro.y))/dt,1.5);
         }
         cro.py=cro.y;
         /* chaque trou laisse couler un peu de ce qu'il y a dedans */
@@ -475,27 +559,30 @@
           if(cro.fly>0)cro.fly-=dt;
           if(cro.cool>0)cro.cool-=dt;
           cro.vy+=(cro.fly>0?1500:0)*dt;
-          sy=surfAt(clamp(cro.x,ext.x0,ext.x1));inW=lvlD>2&&cro.x>ext.x0&&cro.x<ext.x1&&cro.y>sy-h*.12;
+          inW=lvlD>2&&dpc>-h*.12;
           /* lancée dans le fluide : elle s'y enfonce en freinant, puis en ressort avec la force avec laquelle on l'y a envoyée */
-          if(cro.fly>0&&inW&&cro.cool<=0&&!cro.plong&&cro.y>sy+h*.1&&Math.hypot(cro.vx,cro.vy)>300){
+          if(cro.fly>0&&inW&&cro.cool<=0&&!cro.plong&&dpc>h*.1&&Math.hypot(cro.vx,cro.vy)>300){
             cro.plong=Math.min(2600,Math.hypot(cro.vx,cro.vy));cro.pvx=cro.vx;cro.pt=0;
-            wave(cro.x,clamp(cro.plong*.006,2,14));spray(cro.x,sy,10,1,CO.vert);cro.slv+=rnd(-4,4);
+            wave(cro.x,clamp(cro.plong*.006,2,14),cro.y);spray(sx,sy,10,1,CO.vert);cro.slv+=rnd(-4,4);
             for(var qb=0;qb<5;qb++)bubs.push({x:cro.x+rnd(-14,14),y:sy+rnd(4,22),r:rnd(1.8,4),vy:rnd(25,60),ph:rnd(0,6)});
           }
           if(cro.plong){
             cro.pt+=dt;cro.vx*=1-Math.min(1,dt*8);cro.vy*=1-Math.min(1,dt*8);cro.rot+=cro.vr*dt*.3;
             if(cro.pt>.2){
               var dir=cro.pvx<0?-1:1;cro.vy=-cro.plong;cro.vx=cro.pvx*.5+dir*40;cro.vr=cro.vx*.004;cro.fly=2.4;cro.cool=.6;cro.plong=0;
-              wave(cro.x,-clamp(cro.vy*-.004,1,9));spray(cro.x,sy,12,1.25,CO.vert);
+              wave(cro.x,-clamp(cro.vy*-.004,1,9),cro.y);spray(sx,sy,12,1.25,CO.vert);
             }
           }
           if(inW&&cro.fly<=0&&!cro.plong){
             /* elle ne coule pas : elle flotte, le col hors du fluide */
-            if(!cro.wet){cro.wet=true;wave(cro.x,clamp(Math.abs(cro.vy)*.012,0,13));spray(cro.x,sy,6,.7);cro.slv+=rnd(-2,2);}
-            dz=(surfAt(clamp(cro.x+9,ext.x0,ext.x1))-surfAt(clamp(cro.x-9,ext.x0,ext.x1)))/18;
-            cro.vy+=(sy+h*.1-cro.y)*55*dt;cro.vy*=1-Math.min(1,dt*3.5);
-            cro.vx+=dz*900*dt;cro.vx*=1-Math.min(1,dt*1.6);
-            cro.rot+=((Math.atan(dz)*.9+Math.sin(tnow/700)*.07)-cro.rot)*Math.min(1,dt*5);
+            if(!cro.wet){cro.wet=true;wave(cro.x,clamp(Math.abs(cro.vy)*.012,0,13),cro.y);spray(sx,sy,6,.7);cro.slv+=rnd(-2,2);}
+            Tv=slopeT(cro.x,cro.y);
+            var ab=-(dpc-h*.1)*55;cro.vx+=SF.nx*ab*dt;cro.vy+=SF.ny*ab*dt;
+            k1=Math.min(1,dt*3.5);vn0=cro.vx*SF.nx+cro.vy*SF.ny;cro.vx-=SF.nx*vn0*k1;cro.vy-=SF.ny*vn0*k1;
+            var pu=(SF.nx*Tv[0]+SF.ny*Tv[1])*900*dt;cro.vx+=Tv[0]*pu;cro.vy+=Tv[1]*pu;
+            k1=Math.min(1,dt*1.6);vt0=cro.vx*SF.tx+cro.vy*SF.ty;cro.vx-=SF.tx*vt0*k1;cro.vy-=SF.ty*vt0*k1;
+            var tg0=Math.atan2(Tv[1],Tv[0]);if(tg0>1.5708)tg0-=3.1416;else if(tg0<-1.5708)tg0+=3.1416;
+            cro.rot+=((tg0*.9+Math.sin(tnow/700)*.07)-cro.rot)*Math.min(1,dt*5);
           }else{
             cro.wet=false;
             if(cro.fly<=0&&!cro.ret){cro.vx*=1-Math.min(1,dt*5);cro.vy*=1-Math.min(1,dt*5);cro.rot+=(Math.sin(tnow/900)*.03+clamp(cro.vx/2000,-.3,.3)-cro.rot)*Math.min(1,dt*4);}
@@ -543,8 +630,8 @@
       function stepDeb(dt){
         var d=cro.deb;if(!d)return;
         d.t+=dt;d.vy+=1500*dt;d.x+=d.vx*dt;d.y+=d.vy*dt;d.rot+=d.vr*dt;
-        var sy=lvlD>2?surfAt(clamp(d.x,ext.x0,ext.x1)):ext.fl;
-        if(d.y>sy+8&&!d.w){d.w=1;wave(d.x,7);spray(d.x,sy,8,.8,['#e8fff4','#bfe6d3']);}
+        var dd2=dep(d.x,d.y);
+        if(dd2>8&&!d.w){d.w=1;wave(d.x,7,d.y);spray(d.x,d.y-SF.ny*dd2,8,.8,['#e8fff4','#bfe6d3']);}
         if(d.t>3.2||d.y>CH+120||d.y>ext.fl+90)cro.deb=null;
       }
       function drawDeb(){
@@ -589,7 +676,7 @@
         pours.push({x:x,y:y+h*.4,t:0,d:2.8,c:col});
         spray(x,y+h*.35,28,1.2,['#e8fff4','#bfe6d3','#ffffff']);
         for(i=0;i<4;i++){var q=mkItem(0,x+rnd(-18,18),y+h*.3,rnd(-90,90),rnd(-40,110));q.rot=rnd(-1,1);}
-        lvl=Math.min(cap(),lvl+16);wave(x,10);
+        lvl=Math.min(cap(),lvl+16);wave(x,10,y+h*.4);
         cro.deb={x:x,y:y-h*.16,vx:cro.vx*.5+rnd(-50,50),vy:-140,rot:cro.rot,vr:rnd(-2.4,2.4),t:0,w:0};
         gone();
       }
@@ -697,27 +784,33 @@
     }
     addEventListener('scroll',function(){scrDirty=true;},{passive:true});
     function drawFluid(){
-      var x0=ext.x0,x1=ext.x1,fl=ext.fl,x,y,mn=1e9,pts=[],i;
+      var x0=ext.x0,x1=ext.x1,fl=ext.fl,tp=ext.tp,nx=SF.nx,ny=SF.ny,tx=SF.tx,ty=SF.ty,c=SF.c,t,s,st=DX,pts=[],mn=1e9,i,L=CW+CH;
       FP=null;
       if(lvlD<.5)return;
-      for(x=x0;x<x1;x+=DX){y=surfAt(x);pts.push(x,y);if(y<mn)mn=y;}
-      y=surfAt(x1);pts.push(x1,y);if(y<mn)mn=y;
-      var n=pts.length;FP={pts:pts,mn:mn};
+      for(t=SF.t0;t<=SF.t1+st;t+=st){
+        s=c-hAt(t)-amb(t);pts.push(t*tx+s*nx,t*ty+s*ny);
+        if(t*ty+s*ny<mn)mn=t*ty+s*ny;
+      }
+      var n=pts.length,lx=pts[n-2]+L*nx,ly=pts[n-1]+L*ny,fx=pts[0]+L*nx,fy=pts[1]+L*ny;
+      FP={pts:pts,mn:clamp(mn,tp,fl),L:L};
+      cx.save();cx.beginPath();cx.rect(x0,tp,x1-x0,fl-tp);cx.clip();
+      function trace(off,wob){
+        cx.beginPath();cx.moveTo(pts[0]-nx*off,pts[1]-ny*off);
+        for(i=2;i<n;i+=2)cx.lineTo(pts[i]-nx*(off+(wob?Math.sin(pts[i]*.03+pts[i+1]*.02-tnow/700)*2:0)),pts[i+1]-ny*(off+(wob?Math.sin(pts[i]*.03+pts[i+1]*.02-tnow/700)*2:0)));
+        cx.lineTo(lx,ly);cx.lineTo(fx,fy);cx.closePath();
+      }
       /* couche du fond, plus sombre, légèrement décalée */
-      cx.beginPath();cx.moveTo(pts[0],pts[1]-5);
-      for(i=2;i<n;i+=2)cx.lineTo(pts[i],pts[i+1]-5-Math.sin(pts[i]*.03-tnow/700)*2);
-      cx.lineTo(x1,fl+4);cx.lineTo(x0,fl+4);cx.closePath();cx.fillStyle=cc('back');cx.fill();
-      /* le corps du fluide : citron en surface, vert profond au fond, assez translucide pour lire le texte au travers */
-      var g=cx.createLinearGradient(0,mn,0,fl);
-      /* vert de canalisation, comme le bocal de l'autel : émeraude vif et lumineux, translucide, qui ne s'assombrit pas au fond */
+      trace(5,true);cx.fillStyle=cc('back');cx.fill();
+      /* le corps du fluide : vert de canalisation, comme le bocal de l'autel, translucide, lumineux, qui ne s'assombrit pas au fond */
+      var Dm=Math.max(60,Math.max(nx*x0+ny*tp,nx*x1+ny*tp,nx*x0+ny*fl,nx*x1+ny*fl)-c);
+      var g=cx.createLinearGradient(nx*c,ny*c,nx*(c+Dm),ny*(c+Dm));
       g.addColorStop(0,cc('s0'));g.addColorStop(.25,cc('s1'));g.addColorStop(.65,cc('s2'));g.addColorStop(1,cc('s3'));
-      cx.beginPath();cx.moveTo(pts[0],pts[1]);
-      for(i=2;i<n;i+=2)cx.lineTo(pts[i],pts[i+1]);
-      cx.lineTo(x1,fl+4);cx.lineTo(x0,fl+4);cx.closePath();cx.fillStyle=g;cx.fill();
+      trace(0,false);cx.fillStyle=g;cx.fill();
       /* deux filets de lumière qui ondulent sous la surface, et un halo : la lumière traverse le fluide */
       cx.save();cx.clip();
-      var hg=cx.createRadialGradient((x0+x1)/2,mn,0,(x0+x1)/2,mn,(x1-x0)*.55);hg.addColorStop(0,cc('halo'));hg.addColorStop(1,cc('halo',0));
-      cx.fillStyle=hg;cx.fillRect(x0,mn,x1-x0,fl-mn+4);
+      var cxm=(x0+x1)/2,cym=(tp+fl)/2,tm=cxm*tx+cym*ty,sm=c-hAt(tm),hx=tm*tx+sm*nx,hy=tm*ty+sm*ny;
+      var hg=cx.createRadialGradient(hx,hy,0,hx,hy,(x1-x0)*.55);hg.addColorStop(0,cc('halo'));hg.addColorStop(1,cc('halo',0));
+      cx.fillStyle=hg;cx.fillRect(x0,tp,x1-x0,fl-tp);
       /* le voile de contraste sous le texte */
       var si,sp,sr,pd=[[18,.045],[12,.055],[7,.07],[3,.095]];
       for(si=0;si<scr.length;si++){
@@ -726,8 +819,8 @@
       }
       cx.lineWidth=2;cx.strokeStyle=cc('lite');
       for(var b=0;b<2;b++){
-        var dy=24+b*46;cx.beginPath();
-        for(x=x0;x<=x1;x+=DX*2){y=surfAt(x)+dy+Math.sin(x*.017+tnow/(900+b*300)+b*2)*5;if(x===x0)cx.moveTo(x,y);else cx.lineTo(x,y);}
+        var dy=24+b*46,k=0;cx.beginPath();
+        for(i=0;i<n;i+=4){var w=dy+Math.sin(pts[i]*.017+pts[i+1]*.011+tnow/(900+b*300)+b*2)*5;if(!k){cx.moveTo(pts[i]+nx*w,pts[i+1]+ny*w);k=1;}else cx.lineTo(pts[i]+nx*w,pts[i+1]+ny*w);}
         cx.stroke();
       }
       cx.restore();
@@ -735,16 +828,22 @@
       cx.lineJoin='round';cx.lineCap='round';
       cx.beginPath();cx.moveTo(pts[0],pts[1]);for(i=2;i<n;i+=2)cx.lineTo(pts[i],pts[i+1]);
       cx.lineWidth=3;cx.strokeStyle=cc('trait');cx.stroke();
-      cx.beginPath();cx.moveTo(pts[0],pts[1]+6);for(i=2;i<n;i+=2)cx.lineTo(pts[i],pts[i+1]+6);
+      cx.beginPath();cx.moveTo(pts[0]+nx*6,pts[1]+ny*6);for(i=2;i<n;i+=2)cx.lineTo(pts[i]+nx*6,pts[i+1]+ny*6);
       cx.save();cx.strokeStyle=cc('reflet');cx.globalAlpha=.8;cx.lineWidth=2.4;cx.setLineDash([30,16,9,34,20,28]);cx.lineDashOffset=-tnow/80;cx.stroke();cx.restore();
+      cx.restore();
     }
     function drawBubs(dt){
-      var i,b,sy;
-      if(lvlD>12&&bubs.length<(LOW?7:14)&&Math.random()<dt*3)bubs.push({x:rnd(ext.x0+10,ext.x1-10),y:ext.fl-rnd(2,Math.max(4,lvlD*.8)),r:rnd(1.6,4.6),vy:rnd(18,48),ph:rnd(0,6)});
+      var i,b,d,x,y,mx=LOW?7:14;
+      if(lvlD>10&&bubs.length<mx&&Math.random()<dt*3){
+        for(i=0;i<5;i++){x=rnd(ext.x0+10,ext.x1-10);y=rnd(ext.tp,ext.fl-4);if(dep(x,y)>12){bubs.push({x:x,y:y,r:rnd(1.6,4.6),vy:rnd(18,48),ph:rnd(0,6)});break;}}
+      }
       cx.lineWidth=1.3;
       for(i=bubs.length-1;i>=0;i--){
-        b=bubs[i];b.y-=b.vy*dt;b.x+=Math.sin(tnow/380+b.ph)*10*dt;sy=surfAt(clamp(b.x,ext.x0,ext.x1));
-        if(b.y<sy+3||lvlD<2||b.x<ext.x0||b.x>ext.x1){if(b.y<sy+3&&lvlD>2)wave(b.x,-.7);bubs.splice(i,1);continue;}
+        b=bubs[i];
+        /* elles remontent à contre-pesanteur */
+        b.x-=SF.nx*b.vy*dt-SF.tx*Math.sin(tnow/380+b.ph)*10*dt;b.y-=SF.ny*b.vy*dt-SF.ty*Math.sin(tnow/380+b.ph)*10*dt;
+        d=dep(b.x,b.y);
+        if(d<3||lvlD<2){if(d<3&&d>-30&&lvlD>2)wave(b.x,-.7,b.y);bubs.splice(i,1);continue;}
         cx.beginPath();cx.arc(b.x,b.y,b.r,0,6.3);cx.fillStyle='rgba(214,255,134,.14)';cx.fill();cx.strokeStyle='rgba(235,255,200,.75)';cx.stroke();
         cx.fillStyle='rgba(255,255,255,.85)';cx.fillRect(b.x-b.r*.45,b.y-b.r*.5,Math.max(1,b.r*.3),Math.max(1,b.r*.3));
       }
@@ -754,27 +853,22 @@
       cx.lineWidth=1.2;
       for(i=drops.length-1;i>=0;i--){
         d=drops[i];cx.fillStyle=d.c||cc('vert');cx.strokeStyle=d.c?'#1a0f05':cc('trait');d.vx+=gx*A*dt*.8;d.vy+=gy*A*dt;d.x+=d.vx*dt;d.y+=d.vy*dt;d.l-=dt;
-        if(d.pour&&lvlD>2&&d.x>ext.x0&&d.x<ext.x1&&d.y>surfAt(d.x)){wave(d.x,.9);tintT=Math.min(1,tintT+.011);drops.splice(i,1);continue;}
+        if(lvlD>2&&dep(d.x,d.y)>0){wave(d.x,d.pour?.9:.25,d.y);if(d.pour)tintT=Math.min(1,tintT+.011);drops.splice(i,1);continue;}
         if(d.l<=0||d.y>ext.fl||d.x<0||d.x>CW){drops.splice(i,1);continue;}
         cx.beginPath();cx.ellipse(d.x,d.y,d.r*(1+Math.min(1,Math.hypot(d.vx,d.vy)/1500)),d.r,Math.atan2(d.vy,d.vx),0,6.3);cx.fill();cx.stroke();
       }
     }
     /* ---------- passerelle vers Éphébito (ephebito.js, chargé quand on secoue la dame-jeanne) ---------- */
-    Object.defineProperties(FX,{CW:{get:function(){return CW;}},CH:{get:function(){return CH;}},t:{get:function(){return tnow;}},niv:{get:function(){return lvlD;}},tilt:{get:function(){return tilt;}},slope:{get:function(){return slope;}},off:{get:function(){return ext.off;}}});
+    Object.defineProperties(FX,{CW:{get:function(){return CW;}},CH:{get:function(){return CH;}},t:{get:function(){return tnow;}},niv:{get:function(){return lvlD;}},tilt:{get:function(){return tilt;}},slope:{get:function(){return ang;}},cro:{get:function(){return cro;}},off:{get:function(){return 0;}}});
     FX.rnd=rnd;FX.clamp=clamp;FX.isM=isM;FX.SL=SL;FX.CO=CO;FX.cx=cxO;FX.ext=ext;FX.items=items;FX.drops=drops;FX.bubs=bubs;FX.LOW=LOW;
-    FX.surfAt=surfAt;FX.vsurf=vsurf;FX.wave=wave;FX.spray=spray;FX.mk=mkItem;FX.drawItem=drawItem;FX.parle=parle;FX.ferme=ferme;
+    FX.surfAt=surfAt;FX.vsurf=vsurf;FX.dep=dep;FX.wave=wave;FX.spray=spray;FX.mk=mkItem;FX.drawItem=drawItem;FX.parle=parle;FX.ferme=ferme;
     FX.bulle=function(){return bulle;};FX.lvlAdd=function(n){lvl=Math.min(cap(),lvl+n);};
-    FX.bord=function(){
-      var b=0,hd=document.querySelector('header'),nv=document.querySelector('nav');
-      if(hd)b=hd.getBoundingClientRect().bottom;
-      if(nv&&isM()){var r=nv.getBoundingClientRect();if(r.top<innerHeight/3)b=Math.max(b,r.bottom);}
-      return Math.max(0,Math.round(b));
-    };
+    FX.bord=hdrBottom;
     var plugT=0;
     FX.pret=function(){return !!(window.Ephebito&&window.Ephebito.ok());};
     FX.pre=function(){
       if(plugT)return;plugT=1;
-      var sc=document.createElement('script');sc.src='/ephebito.js?v=3';
+      var sc=document.createElement('script');sc.src='/ephebito.js?v=4';
       sc.onload=function(){if(window.Ephebito)window.Ephebito.pre();else FX.echec=true;};sc.onerror=function(){FX.echec=true;};
       document.head.appendChild(sc);
     };
@@ -788,20 +882,17 @@
         if(LOW&&wasWork&&(skip^=1)){requestAnimationFrame(frame);return;}
         if(innerWidth!==CW||innerHeight!==CH)sizeCv();else upd();
         gx+=(tgx-gx)*.35;gy+=(tgy-gy)*.35;gm+=(tgm-gm)*.35;tilt+=(gx-tilt)*.1;
-        /* la surface reste perpendiculaire à la pesanteur du téléphone (ressort : elle déborde un peu avant de se caler), et le volume se conserve : le fluide s'entasse du côté bas */
-        var tg=sens?clamp(gx/Math.max(.3,gy),-1.2,1.2)*clamp(gm*1.5,0,1):0;
-        sv+=((tg-slope)*34-sv*3.6)*dt;slope=clamp(slope+sv*dt,-1.4,1.4);
-        if(lvlD>2&&Math.abs(sv)>.5&&Math.random()<dt*14)wave(rnd(ext.x0,ext.x1),clamp(sv*2.5,-6,6));
+        /* la pesanteur du fluide suit celle du téléphone avec un ressort : il déborde, clapote, puis se cale */
+        var tgA=sens?Math.atan2(gx,gy)*clamp(gm*1.6,0,1):0,dA=tgA-ang;
+        while(dA>Math.PI)dA-=6.2832;while(dA<-Math.PI)dA+=6.2832;
+        angv+=(dA*30-angv*3.2)*dt;ang+=angv*dt;if(ang>Math.PI)ang-=6.2832;else if(ang<-Math.PI)ang+=6.2832;
         /* vidange : au changement de page, le niveau baisse, les objets s'en vont */
         if(vidFin){var reste=clamp((vidFin-last)/1000,0,VIDANGE);lvl=lvlVid*reste/VIDANGE;if(!reste){vidFin=0;lvl=0;items.length=0;tintT=0;}}
+        lvl=Math.min(lvl,cap());
         lvlD+=(lvl-lvlD)*Math.min(1,dt*2.6);if(lvlD<.05&&lvl===0)lvlD=0;
         tint+=(tintT-tint)*Math.min(1,dt*.7);
-        ext.off=0;
-        if(lvlD>.5&&Math.abs(slope)>.004){
-          var W=ext.x1-ext.x0,lo=-ext.hm-Math.abs(slope)*W,hi=ext.hm+Math.abs(slope)*W,m,j,q,dd,s2;
-          for(q=0;q<14;q++){m=(lo+hi)/2;s2=0;for(j=0;j<12;j++){dd=lvlD+m+slope*((j+.5)/12-.5)*W;s2+=dd<0?0:dd>ext.hm?ext.hm:dd;}if(s2/12<lvlD)lo=m;else hi=m;}
-          ext.off=(lo+hi)/2;
-        }
+        solve();
+        if(lvlD>2&&Math.abs(angv)>.7&&Math.random()<dt*16)waveT(rnd(SF.t0,SF.t1),clamp(angv*2.2,-6,6));
         var ns=clamp(Math.round(dt*60),1,3),k,i;
         for(k=0;k<ns;k++){
           stepW(1/60);
@@ -831,9 +922,11 @@
           if(FX.eph)FX.eph.top();
           /* ce qui est sous la surface se teinte de la couleur du fluide */
           if(FP){
-            var pt=FP.pts,pn=pt.length,pj;
-            cx.save();cx.beginPath();cx.moveTo(pt[0],pt[1]);for(pj=2;pj<pn;pj+=2)cx.lineTo(pt[pj],pt[pj+1]);cx.lineTo(ext.x1,ext.fl+4);cx.lineTo(ext.x0,ext.fl+4);cx.closePath();cx.clip();
-            cx.globalCompositeOperation='source-atop';cx.fillStyle=cc('s2',.44);cx.fillRect(ext.x0,FP.mn-4,ext.x1-ext.x0,ext.fl-FP.mn+8);cx.restore();
+            var pt=FP.pts,pn=pt.length,pj,L2=FP.L;
+            cx.save();cx.beginPath();cx.rect(ext.x0,ext.tp,ext.x1-ext.x0,ext.fl-ext.tp);cx.clip();
+            cx.beginPath();cx.moveTo(pt[0],pt[1]);for(pj=2;pj<pn;pj+=2)cx.lineTo(pt[pj],pt[pj+1]);
+            cx.lineTo(pt[pn-2]+L2*SF.nx,pt[pn-1]+L2*SF.ny);cx.lineTo(pt[0]+L2*SF.nx,pt[1]+L2*SF.ny);cx.closePath();cx.clip();
+            cx.globalCompositeOperation='source-atop';cx.fillStyle=cc('s2',.44);cx.fillRect(ext.x0,ext.tp,ext.x1-ext.x0,ext.fl-ext.tp);cx.restore();
           }
           placeItems();
           if(FX.eph)FX.eph.place();

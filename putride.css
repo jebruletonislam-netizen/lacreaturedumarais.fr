@@ -32,7 +32,7 @@ header{position:sticky;top:0;z-index:30;display:flex;height:14.8125rem;border-bo
 
 /* ---------- mise en page ---------- */
 .wrap{display:grid;grid-template-columns:27.5625rem 1fr;min-height:max(calc(100vh - 14.8125rem),52.7rem)}
-nav{position:sticky;top:min(14.8125rem,calc(100vh - 49.5625rem));align-self:start;height:max(calc(100vh - 14.8125rem),49.5625rem);min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;grid-auto-rows:min-content;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem minmax(11rem,1fr);border-right:.5625rem solid var(--g);background:linear-gradient(rgba(14,0,28,.78),rgba(14,0,28,.78)),url(images/fond-vitrail.webp) center/cover}
+nav{position:sticky;top:14.8125rem;align-self:start;height:calc(100vh - 14.8125rem);min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--g) transparent;grid-auto-rows:min-content;display:grid;grid-template-rows:9.5rem 10.6875rem 9.25rem 9.125rem minmax(11rem,1fr);border-right:.5625rem solid var(--g);background:linear-gradient(rgba(14,0,28,.78),rgba(14,0,28,.78)),url(images/fond-vitrail.webp) center/cover}
 nav a{display:flex;align-items:center;justify-content:center;text-decoration:none;border-bottom:.5rem solid var(--g)}
 nav a:last-child{border-bottom:0}
 .nav-icon{display:none;align-items:center;justify-content:center;width:100%;height:100%;color:#9608f8}
@@ -621,46 +621,15 @@ header{overflow:visible}
 @keyframes pb-flash{from{opacity:1}to{opacity:0}}
 @media (max-width:899px){.pb-q{font-size:2.5rem}.pb-lock{padding:2rem .9rem 1.4rem}.pb-row{flex-direction:column}.pb-row .btn{width:100%}}
 
-/* ---------- le portail des cachots : un vitrail où la Créature attend en haut des marches ---------- */
-.cgate{position:relative;display:block;max-width:64rem;margin:1.8rem 0 2.2rem;padding:.2rem;text-decoration:none;color:#fff;cursor:pointer;isolation:isolate;background:linear-gradient(160deg,#fff,#6f6f6f 38%,#fff 72%,#555);transition:background .3s;
-  clip-path:polygon(0 2rem,2rem 0,calc(100% - 2rem) 0,100% 2rem,100% calc(100% - 2rem),calc(100% - 2rem) 100%,2rem 100%,0 calc(100% - 2rem))}
-.cgate-pan{position:relative;display:grid;grid-template-columns:12.4rem 1fr;align-items:end;gap:2rem;padding:2.4rem 2.6rem 0 2.4rem;min-height:23rem;overflow:hidden;
-  background:radial-gradient(ellipse 60% 55% at 50% 135%,rgba(225,0,25,.5),transparent 70%),linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.92)),url(/images/cachot/mur.webp) 0 0/26rem 26rem;
-  clip-path:polygon(0 1.8rem,1.8rem 0,calc(100% - 1.8rem) 0,100% 1.8rem,100% calc(100% - 1.8rem),calc(100% - 1.8rem) 100%,1.8rem 100%,0 calc(100% - 1.8rem))}
-.cgate-vit{position:relative;display:block;width:12.4rem;aspect-ratio:3/5;filter:drop-shadow(0 0 1.4rem rgba(255,204,0,.28));transition:filter .3s}
 .cgate-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .cgate-svg .nb{animation:cg-nimbe 4.4s ease-in-out infinite}
 .cgate-cr{position:absolute;left:13%;bottom:0;width:74%;height:auto;filter:drop-shadow(0 0 .45rem rgba(255,255,255,.5)) drop-shadow(0 .4rem .8rem #000);transition:transform .35s;-webkit-user-drag:none;user-select:none}
-.cgate-vit::before,.cgate-vit::after{content:"";position:absolute;bottom:4.4rem;width:1.5rem;height:2.7rem;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 80%,#fff6b8 0,#ffd23a 30%,#e10019 64%,transparent 74%);animation:cg-feu .16s ease-in-out infinite alternate}
-.cgate-vit::before{left:-2.6rem}.cgate-vit::after{right:-2.6rem;animation-duration:.12s}
-.cgate-in{position:relative;z-index:1;display:grid;gap:.7rem;align-self:center;padding-bottom:3.4rem;text-align:left}
-.cgate-k{font:400 1.25rem/1 "Bebas Neue",sans-serif;letter-spacing:.42em;color:#ff1736;text-shadow:0 0 .6rem rgba(255,23,54,.7);animation:cg-blink 4.7s steps(1,end) infinite}
-.cgate-t{display:block;font:400 6.4rem/.9 "Bebas Neue",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#f2f2f2;text-shadow:0 .2rem 0 #000,0 0 1.2rem rgba(255,255,255,.25),.18rem .18rem 0 #8a0012;transition:color .3s,text-shadow .3s}
-.cgate-t::after{content:"";display:block;height:1.8rem;margin-top:1rem;background:var(--fleuron-g) left center/20rem 1.8rem no-repeat}
-.cgate-s{font:500 1.1rem/1.35 "Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#d8d8d8;text-shadow:0 .1rem .3rem #000}
-.cgate-marches{position:absolute;left:0;right:0;bottom:0;height:3.4rem;z-index:2;background:repeating-linear-gradient(180deg,#0b0b0b 0 .5rem,#4a4a4a .5rem .62rem,#0b0b0b .62rem 1.1rem,#767676 1.1rem 1.22rem)}
-.cgate-marches::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:5rem;background:radial-gradient(ellipse 50% 100% at 50% 100%,rgba(225,0,25,.55),transparent 72%);opacity:.7;animation:cg-lueur 3.4s ease-in-out infinite}
-.cgate-pan::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-1rem;height:9rem;z-index:3;pointer-events:none;background:radial-gradient(ellipse 36% 100% at 20% 100%,rgba(255,255,255,.2),transparent 70%),radial-gradient(ellipse 36% 100% at 72% 100%,rgba(255,255,255,.15),transparent 70%);animation:cg-fumee 9s ease-in-out infinite alternate}
-.cgate:hover,.cgate:focus-visible{outline:0;background:linear-gradient(160deg,#fff1b0,#c98f00 45%,#fff1b0 75%,#8a6200)}
-.cgate:hover .cgate-vit,.cgate:focus-visible .cgate-vit{filter:brightness(1.25) drop-shadow(0 0 1.6rem rgba(255,204,0,.7))}
-.cgate:hover .cgate-cr,.cgate:focus-visible .cgate-cr{transform:translateY(.5rem) scale(1.03)}
-.cgate:hover .cgate-t,.cgate:focus-visible .cgate-t{color:#fff;text-shadow:0 .2rem 0 #000,0 0 1.6rem #ffcc00,.18rem .18rem 0 #e10019}
-.cgate:hover .cgate-marches::before,.cgate:focus-visible .cgate-marches::before{opacity:1}
 @keyframes cg-nimbe{0%,100%{opacity:.7}50%{opacity:1}}
 @keyframes cg-feu{from{transform:scale(1,1) skewX(-4deg)}to{transform:scale(.84,1.16) skewX(4deg)}}
 @keyframes cg-lueur{0%,100%{opacity:.55}50%{opacity:.95}}
 @keyframes cg-fumee{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
 @keyframes cg-blink{0%,100%{opacity:1}9%{opacity:.2}11%{opacity:1}52%{opacity:1}53%{opacity:.3}55%{opacity:1}}
 :root{--fleuron-g:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 22'%3E%3Cpath d='M0 11H92M148 11H240' stroke='%23fff' stroke-opacity='.85' stroke-width='1.4' fill='none'/%3E%3Cpath d='M120 1L131 11L120 21L109 11Z' fill='%23e10019' stroke='%23fff' stroke-width='1.2'/%3E%3Ccircle cx='99' cy='11' r='2.4' fill='%23fff'/%3E%3Ccircle cx='141' cy='11' r='2.4' fill='%23fff'/%3E%3Cpath d='M92 11l-7-5v10zM148 11l7-5v10z' fill='%23fff'/%3E%3C/svg%3E")}
-@media (max-width:899px){
-  .cgate-pan{grid-template-columns:1fr;justify-items:center;gap:1.2rem;padding:2rem 1.2rem 0;min-height:0}
-  .cgate-in{order:-1;text-align:center;justify-items:center;padding-bottom:0}
-  .cgate-t{font-size:3.9rem;letter-spacing:.04em}.cgate-t::after{background-position:center;margin-left:auto;margin-right:auto;width:20rem}
-  .cgate-s{font-size:.95rem}
-  .cgate-vit{width:9rem;margin-bottom:0}
-  .cgate-vit::before{left:-2.2rem}.cgate-vit::after{right:-2.2rem}
-}
-@media (prefers-reduced-motion:reduce){.cgate-svg .nb,.cgate-vit::before,.cgate-vit::after,.cgate-k,.cgate-marches::before,.cgate-pan::after{animation:none}}
 
 /* ---------- le point sacré du territoire : le deuil, le sacré, l'amitié et le temps volé ensemble ---------- */
 .pin.sacre i{width:32px;height:32px;border:3px solid #ffd76a;background:#050308;color:#fff;font:400 20px "Bebas Neue",sans-serif;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.55),0 0 1.4rem rgba(255,215,106,.95);animation:sacre-pouls 3.6s ease-in-out infinite}
@@ -739,3 +708,32 @@ header{overflow:visible}
 /* Le fluide passe sous le texte (z 38), le texte au-dessus (39), puis les objets : dame-jeanne, crottes, clystères (40). */
 #mobj{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:40;pointer-events:none}
 main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position:relative;z-index:39}
+/* ---------- le portail des cachots : un vitrail gothique, la Créature en verre devant un soleil de rayons bleus, argentés, jaunes et rouges ---------- */
+.cgate{position:relative;display:block;max-width:72rem;margin:1.8rem 0 2.4rem;padding:0;text-decoration:none;color:#fff;cursor:pointer;isolation:isolate;background:#030308;border:.2rem solid #d9d9d9;box-shadow:0 0 0 .2rem #000,0 0 2.6rem rgba(255,204,0,.2),0 1.4rem 3rem rgba(0,0,0,.8);transition:border-color .3s,box-shadow .3s}
+.cv-pan{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;background:#030308}
+.cv-rays{position:absolute;left:50%;top:50%;width:230%;aspect-ratio:1;transform:translate(-50%,-50%);will-change:transform;animation:cv-tourne 150s linear infinite;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,#1c55e6 0 7deg,#030308 7deg 11.25deg,#d4dce3 11.25deg 18.25deg,#030308 18.25deg 22.5deg,#ffcc00 22.5deg 29.5deg,#030308 29.5deg 33.75deg,#e10019 33.75deg 40.75deg,#030308 40.75deg 45deg);
+  -webkit-mask-image:radial-gradient(circle,#000 6%,rgba(0,0,0,.72) 24%,rgba(0,0,0,.5) 50%);mask-image:radial-gradient(circle,#000 6%,rgba(0,0,0,.72) 24%,rgba(0,0,0,.5) 50%)}
+.cv-lux{position:absolute;inset:0;background:radial-gradient(ellipse 30% 46% at 48% 50%,rgba(255,250,224,.95) 0,rgba(255,214,90,.6) 28%,rgba(255,150,30,.18) 58%,transparent 80%);mix-blend-mode:screen;animation:cv-pouls 5.2s ease-in-out infinite}
+.cv-bl{position:absolute;top:64%;width:6.4%;aspect-ratio:1;transform:translate(-50%,-50%);filter:drop-shadow(0 0 .5rem rgba(255,204,0,.8))}
+.cv-bl img{display:block;width:100%;height:100%}
+.cv-fig{position:absolute;left:50%;bottom:1.5%;height:70%;aspect-ratio:568/1151;transform:translateX(-42%)}
+.cv-cr{position:absolute;inset:0;width:100%;height:100%;display:block;filter:drop-shadow(0 0 1.2rem rgba(255,232,150,.85)) drop-shadow(0 0 .3rem rgba(255,255,255,.55));transition:filter .35s;-webkit-user-drag:none;user-select:none}
+.cv-nim{position:absolute;left:31%;top:17%;width:46%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,transparent 56%,#ffcc00 57% 66%,#050505 67% 70%,transparent 71%),repeating-conic-gradient(from 0deg,rgba(255,204,0,.55) 0 8deg,transparent 8deg 15deg);
+  -webkit-mask-image:radial-gradient(circle,transparent 40%,#000 41%);mask-image:radial-gradient(circle,transparent 40%,#000 41%);filter:drop-shadow(0 0 .6rem rgba(255,204,0,.9));animation:cv-pouls 4.4s ease-in-out infinite}
+.cv-arc{position:absolute;inset:0;background:url(/images/cachot/arcades.webp) 0 0/100% 100% no-repeat;filter:drop-shadow(0 0 .35rem rgba(255,204,0,.35))}
+.cv-txt{position:relative;display:grid;gap:.7rem;justify-items:center;padding:1.6rem 1.4rem 2rem;text-align:center;background:linear-gradient(#050505,#000)}
+.cv-k{font:400 1.25rem/1 "Bebas Neue",sans-serif;letter-spacing:.42em;color:#ff1736;text-shadow:0 0 .6rem rgba(255,23,54,.7);animation:cg-blink 4.7s infinite}
+.cv-t{display:block;font:400 5.4rem/.9 "Bebas Neue",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#f2f2f2;text-shadow:0 .2rem 0 #000,.14rem .14rem 0 #e10019;transition:color .3s,text-shadow .3s}
+.cv-t::after{content:"";display:block;height:1.8rem;margin:.8rem auto 0;background:var(--fleuron-g) center/20rem 1.8rem no-repeat}
+.cv-s{font:500 1.1rem/1.35 "Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#d8d8d8;text-shadow:0 .1rem .3rem #000}
+.cgate:hover,.cgate:focus-visible{outline:0;border-color:#ffd84a;box-shadow:0 0 0 .2rem #000,0 0 3.6rem rgba(255,204,0,.55),0 1.4rem 3rem rgba(0,0,0,.8)}
+.cgate:hover .cv-rays,.cgate:focus-visible .cv-rays{animation-duration:30s}
+.cgate:hover .cv-lux,.cgate:focus-visible .cv-lux{animation-duration:1.6s}
+.cgate:hover .cv-cr,.cgate:focus-visible .cv-cr{filter:drop-shadow(0 0 1.8rem rgba(255,240,170,1)) drop-shadow(0 0 .4rem #fff) brightness(1.18)}
+.cgate:hover .cv-t,.cgate:focus-visible .cv-t{color:#fff;text-shadow:0 .2rem 0 #000,0 0 1.6rem #ffcc00,.18rem .18rem 0 #e10019}
+@keyframes cv-tourne{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes cv-pouls{0%,100%{opacity:.78}50%{opacity:1}}
+@media (max-width:899px){.cv-t{font-size:3.5rem;letter-spacing:.04em}.cv-s{font-size:.95rem}.cv-txt{padding:1.2rem 1rem 1.5rem}}
+@media (prefers-reduced-motion:reduce){.cv-rays,.cv-lux,.cv-nim,.cv-k{animation:none!important}}
