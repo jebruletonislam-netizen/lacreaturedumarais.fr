@@ -3,7 +3,8 @@
    au fond, puis le tuyau s'élargit et crache le point de vue.
    Remontée (data-slime="up") : un clystère aspire l'écran par son trou, noir, puis la page est recrachée comme par un canon,
    floue et secouée.
-   Cachot (data-slime="cachot" / "cachot-up") : chute dans le puits du cachot, noir puis lueur de torche ; la remontée va vers une lumière blanche. */
+   Cachots (data-slime="cachot") : plongée dans le visage de PUANTEUR PUTRIDE, noir et blanc, puis ses yeux s'ouvrent sur les cachots.
+   Remontée (data-slime="cachot-up") : chute vers le haut dans le puits, jusqu'à une lumière blanche. */
 (function(){
   'use strict';
   var KEY='lcm-slime',busy=false,TAU=6.283185307,Z=99999;
@@ -354,6 +355,53 @@
     }).then(function(){o.cv.remove();});
   }
 
+  /* ---------- le visage de PUANTEUR PUTRIDE : on plonge entre ses deux yeux, et ce sont eux qui s'ouvrent sur les cachots ---------- */
+  var VISAGE=null;
+  function visage(){
+    if(!VISAGE)VISAGE=new Promise(function(res){var im=new Image();im.onload=function(){res(im);};im.onerror=function(){res(null);};im.src='/images/cachot/logo-pp-disque.webp';});
+    return VISAGE;
+  }
+  function coverVisage(){
+    return visage().then(function(img){
+      var o=mkCanvas(),c=o.c,W=o.W,H=o.H,D=2.4,cx=W/2,cy=H/2,base=Math.min(W,H)*.62,TX=.476,TY=.69,Z=9;
+      c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+      return loop(D,function(t){
+        var u=t/D,inT=smooth(t/.4),w=smooth((u-.36)/.5),s=Math.exp(Math.log(Z)*Math.pow(w,1.6)),size=base*s,
+            ax=lerp(.5,TX,smooth((u-.36)/.42)),ay=lerp(.5,TY,smooth((u-.36)/.42)),
+            sh=(u>.14&&u<.4)?(Math.random()-.5)*7:0,fin=smooth((u-.86)/.14);
+        c.clearRect(0,0,W,H);
+        c.globalAlpha=inT;c.fillStyle='#000';c.fillRect(0,0,W,H);
+        var g=c.createRadialGradient(cx,cy,0,cx,cy,Math.hypot(W,H)*.5*Math.min(s,2));
+        g.addColorStop(0,'rgba(255,255,255,.22)');g.addColorStop(1,'rgba(255,255,255,0)');
+        c.fillStyle=g;c.fillRect(0,0,W,H);
+        if(img)c.drawImage(img,cx-ax*size+sh,cy-ay*size+sh*.5,size,size);
+        else{c.fillStyle='#fff';c.beginPath();c.arc(cx,cy,size*.45,0,TAU);c.fill();}
+        c.globalAlpha=1;
+        if(u>.08&&Math.random()<.07){c.fillStyle='rgba(255,255,255,'+rnd(.08,.3).toFixed(2)+')';c.fillRect(0,0,W,H);}
+        c.fillStyle='rgba(0,0,0,.2)';for(var y=0;y<H;y+=4)c.fillRect(0,y,W,1);
+        if(fin>0){c.fillStyle='rgba(0,0,0,'+fin.toFixed(3)+')';c.fillRect(0,0,W,H);}
+      }).then(function(){return o;});
+    });
+  }
+  function revealVisage(){
+    var o=mkCanvas(),c=o.c,W=o.W,H=o.H,D=2.5,cx=W/2,cy=H*.56,sp=Math.min(W,H)*.2,hy=Math.hypot(W,H);
+    document.documentElement.classList.remove('slx');
+    return loop(D,function(t){
+      var k;
+      if(t<.5)k=0;                                          /* noir complet */
+      else if(t<.95)k=.2*Math.sin((t-.5)/.45*Math.PI);      /* une paupière qui s'entrouvre, puis retombe */
+      else{var u=clamp((t-.95)/(D-.95),0,1);k=.04+Math.pow(eIO(u),2.4);}
+      c.globalCompositeOperation='source-over';c.clearRect(0,0,W,H);
+      c.fillStyle='#000';c.fillRect(0,0,W,H);
+      if(k<=0)return;
+      var rx=Math.max(1,sp*.3+hy*k*.9),ry=rx*1.12;
+      c.globalCompositeOperation='destination-out';
+      c.shadowColor='#fff';c.shadowBlur=Math.min(40,rx*.25);
+      [cx-sp,cx+sp].forEach(function(x,i){c.beginPath();c.ellipse(x,cy,rx,ry,(i?-1:1)*.06,0,TAU);c.fill();});
+      c.shadowBlur=0;c.globalCompositeOperation='source-over';
+    }).then(function(){o.cv.remove();});
+  }
+
   function clearAll(){
     var el=document.documentElement;
     el.classList.remove('slx');
@@ -366,7 +414,7 @@
   try{arriving=sessionStorage.getItem(KEY);sessionStorage.removeItem(KEY);}catch(e){}
   if(arriving&&!reduce){
     busy=true;
-    (arriving==='up'?revealUp():arriving==='cachot'?revealCachot(false):arriving==='cachot-up'?revealCachot(true):revealDown()).then(function(){busy=false;}).catch(function(error){console.error('Transition d’arrivée impossible',error);clearAll();busy=false;});
+    (arriving==='up'?revealUp():arriving==='cachot'?revealVisage():arriving==='cachot-up'?revealCachot(true):revealDown()).then(function(){busy=false;}).catch(function(error){console.error('Transition d’arrivée impossible',error);clearAll();busy=false;});
     setTimeout(function(){busy=false;},6000);
   }else{
     document.documentElement.classList.remove('slx');
@@ -382,7 +430,7 @@
     var dir=a.getAttribute('data-slime'),href=a.href;
     if(reduce){location.href=href;return;}
     busy=true;
-    (dir==='up'?coverUp():dir==='cachot'?coverCachot(false):dir==='cachot-up'?coverCachot(true):coverDown(a)).then(function(){
+    (dir==='up'?coverUp():dir==='cachot'?coverVisage():dir==='cachot-up'?coverCachot(true):coverDown(a)).then(function(){
       try{sessionStorage.setItem(KEY,dir);}catch(e){}
       location.href=href;
       setTimeout(function(){clearAll();busy=false;},4500);

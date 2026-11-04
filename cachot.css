@@ -315,3 +315,166 @@ body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
   .cierge-btn{width:100%;justify-content:center;font-size:1.7rem;padding:.9rem 1.2rem}
 }
 @media (prefers-reduced-motion:reduce){body.cachot::after,.cachot h1,.cr-croix svg,.torche .feu,.torche .lueur,.cr-rayon,.cr-poussiere i,.cr-chaine,.cr-grille *,.tb-scene *,.tb-brume,.cierge-btn{animation:none!important}.fv img,.fv-item,.cachot .rub article{transition:none}}
+
+/* ================= gothique, glam, fumées, reliques ================= */
+:root{
+--fleuron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 22'%3E%3Cpath d='M0 11H92M148 11H240' stroke='%23fff' stroke-opacity='.85' stroke-width='1.4' fill='none'/%3E%3Cpath d='M120 1L131 11L120 21L109 11Z' fill='%23e10019' stroke='%23fff' stroke-width='1.2'/%3E%3Ccircle cx='99' cy='11' r='2.4' fill='%23fff'/%3E%3Ccircle cx='141' cy='11' r='2.4' fill='%23fff'/%3E%3Cpath d='M92 11l-7-5v10zM148 11l7-5v10z' fill='%23fff'/%3E%3C/svg%3E");
+--croix:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2V22M5 9H19' stroke='%23fff' stroke-width='2' fill='none'/%3E%3Ccircle cx='12' cy='2.5' r='2' fill='%23e10019'/%3E%3Ccircle cx='12' cy='21.5' r='2' fill='%23fff'/%3E%3Ccircle cx='4' cy='9' r='1.8' fill='%23fff'/%3E%3Ccircle cx='20' cy='9' r='1.8' fill='%23fff'/%3E%3C/svg%3E");
+--cusp-h:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='26' viewBox='0 0 42 26'%3E%3Cpath d='M0 0H42V8Q42 17 21 25Q0 17 0 8Z' fill='%23060606' stroke='%23d9d9d9' stroke-width='1.4'/%3E%3Cpath d='M7 0V7Q7 13 21 19Q35 13 35 7V0' fill='none' stroke='%23d9d9d9' stroke-opacity='.4'/%3E%3Ccircle cx='21' cy='7' r='2.2' fill='%23e10019'/%3E%3C/svg%3E");
+--cusp-b:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='26' viewBox='0 0 42 26'%3E%3Cg transform='translate(0 26) scale(1 -1)'%3E%3Cpath d='M0 0H42V8Q42 17 21 25Q0 17 0 8Z' fill='%23060606' stroke='%23d9d9d9' stroke-width='1.4'/%3E%3Cpath d='M7 0V7Q7 13 21 19Q35 13 35 7V0' fill='none' stroke='%23d9d9d9' stroke-opacity='.4'/%3E%3Ccircle cx='21' cy='7' r='2.2' fill='%23e10019'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* arcades en cul-de-lampe en haut et en bas de la salle */
+.cachot main{padding-top:5.8rem;padding-bottom:6.8rem;background-image:var(--cusp-h),var(--cusp-b),
+  linear-gradient(to right,rgba(0,0,0,.92),transparent 6rem,transparent calc(100% - 6rem),rgba(0,0,0,.92)),
+  linear-gradient(to bottom,rgba(0,0,0,.8),transparent 6rem,transparent calc(100% - 6rem),rgba(0,0,0,.92)),
+  linear-gradient(rgba(0,0,0,.52),rgba(0,0,0,.52)),var(--pierre);
+  background-size:4.2rem 2.6rem,4.2rem 2.6rem,100% 100%,100% 100%,100% 100%,38rem 38rem;
+  background-position:0 0,0 100%,0 0,0 0,0 0,0 0;background-repeat:repeat-x,repeat-x,no-repeat,no-repeat,no-repeat,repeat}
+.cr-soupirail{top:4.8rem}
+.cr-rayon{top:5.6rem}
+.cr-poussiere{top:6.6rem}
+
+/* titres en Religath, fleuron sous le titre, croix pattée devant les sous-titres */
+.cachot h1{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:400;text-transform:uppercase;font-size:5.6rem;letter-spacing:.05em;line-height:1;margin-bottom:1.2rem}
+.cachot h1::after{content:"";display:block;height:2.2rem;margin-top:1.1rem;background:var(--fleuron) left center/24rem 2.2rem no-repeat}
+.cachot h2{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:400;font-size:3rem;letter-spacing:.05em;padding-left:3.6rem;background:var(--croix) 0 .08em/2.6rem 2.6rem no-repeat}
+.cachot h2::after{left:3.6rem}
+.cachot .lead-title{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:400}
+.cachot .kicker{padding:.3rem 2rem .2rem;background:linear-gradient(var(--rouge),#9c0013);box-shadow:none;clip-path:polygon(0 0,100% 0,calc(100% - .9rem) 50%,100% 100%,0 100%,.9rem 50%)}
+.cachot :is(.rfig,.aff,.armes figure){box-shadow:0 0 0 .28rem #000,0 0 0 .4rem rgba(255,204,0,.75),.5rem .9rem 1.4rem rgba(0,0,0,.9)}
+
+/* portes en ogive */
+@media (min-width:900px){
+  .cachot nav a{clip-path:polygon(0 100%,0 32%,3% 20%,12% 9%,28% 2.5%,50% 0,72% 2.5%,88% 9%,97% 20%,100% 32%,100% 100%)}
+  .cachot nav a::before{top:2.3rem}
+}
+
+/* fiches : cartes de tarot aux coins taillés, filet d'argent qui vire à l'or */
+.cachot .rub{gap:2.2rem}
+.cachot .rub>a{--c:1.7rem;display:flex;padding:.16rem;background:linear-gradient(160deg,#fff,#6f6f6f 40%,#fff 75%,#555);transition:background .3s;
+  clip-path:polygon(0 var(--c),var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)))}
+.cachot .rub>a:hover,.cachot .rub>a:focus-visible{background:linear-gradient(160deg,#fff1b0,#c98f00 45%,#fff1b0 75%,#8a6200);outline:0}
+.cachot .rub>a article{--c:1.55rem;flex:1;transform:none;overflow:visible;padding:1.9rem 1.4rem 1.4rem;color:#fff;border:0;
+  background:radial-gradient(ellipse at 50% 0,rgba(255,255,255,.1),transparent 62%),linear-gradient(#0c0c0c,#030303);box-shadow:none;
+  clip-path:polygon(0 var(--c),var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)))}
+.cachot .rub>a article::before{top:.7rem;width:.85rem;height:.85rem;margin-left:-.42rem;border-radius:0;transform:rotate(45deg);background:var(--rouge);box-shadow:0 0 .7rem var(--rouge)}
+.cachot .rub>a article::after{top:1.5rem;right:1rem;mix-blend-mode:normal;opacity:.95}
+.cachot .rub>a:hover article,.cachot .rub>a:focus-visible article{transform:none;box-shadow:none;border:0;background:radial-gradient(ellipse at 50% 0,rgba(255,204,0,.2),transparent 62%),linear-gradient(#111,#050505)}
+.cachot .rub>a article svg{stroke:#fff;filter:drop-shadow(0 0 .35rem rgba(255,255,255,.5))}
+.cachot .rub>a:hover article svg{stroke:var(--jaune);filter:drop-shadow(0 0 .5rem rgba(255,204,0,.8))}
+.cachot .rub>a article h3{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:400;font-size:2.2rem;letter-spacing:.05em;color:#fff;text-shadow:0 .1rem .4rem #000}
+.cachot .rub>a article p{color:#d0d0d0;text-shadow:0 .1rem .3rem #000}
+.cachot .rub>a:hover article :is(h3,p){color:#fff}
+
+/* fumées, reflets de boule à facettes, chauves-souris, paillettes */
+.cr-fumee{position:fixed;left:0;right:0;bottom:0;height:72vh;z-index:21;pointer-events:none;overflow:hidden;mix-blend-mode:screen;opacity:.55}
+.cr-fumee i{position:absolute;bottom:-22vh;width:62vw;height:62vh;border-radius:50%;background:radial-gradient(ellipse at 50% 50%,rgba(255,255,255,.2),rgba(255,255,255,.07) 46%,transparent 70%);animation:cr-fumee 40s linear infinite}
+.cr-fumee i:nth-child(1){left:-16vw}
+.cr-fumee i:nth-child(2){left:30vw;animation-duration:54s;animation-delay:-16s}
+.cr-fumee i:nth-child(3){left:66vw;animation-duration:46s;animation-delay:-28s;background:radial-gradient(ellipse at 50% 50%,rgba(225,0,25,.16),rgba(225,0,25,.05) 46%,transparent 70%)}
+@keyframes cr-fumee{0%{transform:translate(0,10vh) scale(.9);opacity:0}14%{opacity:1}62%{opacity:.75}100%{transform:translate(12vw,-34vh) scale(1.5);opacity:0}}
+.cr-disco{position:fixed;inset:-30vmax;z-index:22;pointer-events:none;mix-blend-mode:screen;animation:cr-tourne 140s linear infinite}
+.cr-disco i{position:absolute;width:var(--s,5rem);height:var(--s,5rem);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 68%);animation:cr-scint2 var(--d,6s) ease-in-out infinite}
+@keyframes cr-tourne{to{transform:rotate(360deg)}}
+@keyframes cr-scint2{0%,100%{opacity:.15}50%{opacity:1}}
+.cr-chauve{position:fixed;top:var(--y,20vh);left:-8rem;z-index:24;width:6.4rem;height:3.2rem;pointer-events:none;animation:cr-vol var(--d,10s) linear forwards}
+.cr-chauve.g{left:auto;right:-8rem;animation-name:cr-vol-g}
+.cr-chauve .v{display:block;width:100%;height:100%}
+.cr-chauve.g .v{transform:scaleX(-1)}
+.cr-chauve svg{display:block;width:100%;height:100%;overflow:visible;animation:cr-aile .3s ease-in-out infinite alternate}
+@keyframes cr-aile{to{transform:scaleY(.38)}}
+@keyframes cr-vol{0%{transform:translate(0,0)}25%{transform:translate(28vw,-7vh)}50%{transform:translate(58vw,5vh)}75%{transform:translate(86vw,-6vh)}100%{transform:translate(calc(100vw + 14rem),2vh)}}
+@keyframes cr-vol-g{0%{transform:translate(0,0)}25%{transform:translate(-28vw,-7vh)}50%{transform:translate(-58vw,5vh)}75%{transform:translate(-86vw,-6vh)}100%{transform:translate(calc(-100vw - 14rem),2vh)}}
+.paillette{position:fixed;z-index:26;left:0;top:0;width:var(--s,10px);height:var(--s,10px);margin:calc(var(--s,10px)/-2) 0 0 calc(var(--s,10px)/-2);pointer-events:none;background:var(--c,#fff);
+  clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);animation:cr-pail .95s ease-out forwards}
+@keyframes cr-pail{0%{transform:translate(var(--x),var(--y)) scale(.2) rotate(0);opacity:1}30%{transform:translate(var(--x),var(--y)) scale(1) rotate(40deg)}100%{transform:translate(calc(var(--x) + var(--dx,0px)),calc(var(--y) + var(--dy,22px))) scale(0) rotate(130deg);opacity:0}}
+.cr-conf{position:fixed;top:-1.4rem;z-index:9001;width:.7rem;height:1.2rem;pointer-events:none;background:var(--c,#fff);animation:cr-conf var(--d,3.2s) linear forwards}
+@keyframes cr-conf{to{transform:translate(var(--dx,0),108vh) rotate(var(--r,720deg));opacity:.85}}
+.cr-toast{position:fixed;left:50%;bottom:2.4rem;z-index:9000;max-width:min(54rem,92vw);padding:1rem 1.7rem;background:#050505;color:#fff;border:.15rem solid var(--jaune);box-shadow:0 0 0 .3rem #000,0 0 2rem rgba(255,204,0,.35);
+  font:400 1.6rem/1.35 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.04em;text-align:center;text-shadow:none;transform:translate(-50%,2rem);opacity:0;pointer-events:none;transition:transform .35s,opacity .35s}
+.cr-toast.on{transform:translate(-50%,0);opacity:1}
+
+/* toiles d'araignée, araignée qui descend de son fil */
+.cachot main>.cr-toile{width:11rem;height:11rem;opacity:.5;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23fff' stroke-width='.8'%3E%3Cpath d='M0 0L100 0M0 0L92 38M0 0L70 70M0 0L38 92M0 0L0 100'/%3E%3Cpath d='M30 0Q26 22 0 30M55 0Q48 40 0 55M80 0Q70 56 0 80M100 0Q88 70 0 98'/%3E%3C/svg%3E") 0 0/contain no-repeat}
+.cr-toile.h{left:0;top:2.6rem}
+.cr-toile.b{right:0;bottom:2.6rem;transform:scale(-1,-1)}
+.cachot main>.cr-araignee{left:27%;top:2.6rem;width:2.4rem;height:0;z-index:2}
+.cr-araignee .fil{position:absolute;left:50%;top:0;width:.1rem;height:12rem;background:rgba(255,255,255,.6);transform-origin:50% 0;animation:cr-fil 17s ease-in-out infinite}
+.cr-araignee .corps-a{all:unset;position:absolute;left:0;top:0;width:2.4rem;height:2.4rem;cursor:pointer;pointer-events:auto;animation:cr-descend 17s ease-in-out infinite;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%23fff' fill='none' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M12 11L4 5M12 11L3 10M12 12L3 15M12 13L5 20M12 11L20 5M12 11L21 10M12 12L21 15M12 13L19 20'/%3E%3C/g%3E%3Cellipse cx='12' cy='13' rx='4' ry='5' fill='%23000' stroke='%23fff'/%3E%3Ccircle cx='10.8' cy='11.6' r='.8' fill='%23e10019'/%3E%3Ccircle cx='13.2' cy='11.6' r='.8' fill='%23e10019'/%3E%3C/svg%3E") center/contain no-repeat}
+@keyframes cr-fil{0%,100%{transform:scaleY(.1)}38%,58%{transform:scaleY(1)}}
+@keyframes cr-descend{0%,100%{transform:translateY(1rem)}38%,58%{transform:translateY(12rem)}}
+
+/* reliques cachées */
+.cachot main>.rel{position:absolute;z-index:3;width:3.6rem;height:3.6rem;padding:.3rem;margin:0;background:none;border:0;border-radius:50%;cursor:pointer;color:#fff;opacity:.07;transition:opacity .3s,filter .3s,transform .3s}
+.rel svg{display:block;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cachot main>.rel:hover,.cachot main>.rel:focus-visible{opacity:.95;transform:scale(1.25) rotate(-6deg);filter:drop-shadow(0 0 .6rem #fff);outline:0}
+.cachot main>.rel.trouve{opacity:.55;color:var(--jaune)}
+@media (hover:none){.cachot main>.rel{opacity:.17}}
+.cachot .pfoot p.rel-cpt{margin-top:.9rem;font:500 1.05rem/1.3 "Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#bcbcbc}
+.rel-cpt b{color:var(--jaune)}
+body.icone .cr-logo img{filter:drop-shadow(0 0 1.1rem rgba(255,204,0,.95)) drop-shadow(0 0 .4rem #fff)}
+body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaune)}
+
+/* vitrail de la nef : la Créature en vitrail, nimbe doré */
+.vitrail{float:right;width:min(26rem,42%);margin:.4rem 0 1.4rem 2.6rem}
+.vt-arc{position:relative;aspect-ratio:3/5;filter:drop-shadow(0 0 1.8rem rgba(255,204,0,.3))}
+.vt-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vt-svg .nb{animation:cr-nimbe 4.4s ease-in-out infinite}
+@keyframes cr-nimbe{0%,100%{opacity:.7}50%{opacity:1}}
+.vt-arc img{position:absolute;left:13%;bottom:0;width:74%;height:auto;filter:drop-shadow(0 0 .45rem rgba(255,255,255,.45)) drop-shadow(0 .4rem .8rem #000);-webkit-user-drag:none;user-select:none}
+.vt-arc::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.34) 50%,transparent 62%) -140% 0/260% 100% no-repeat;animation:cr-reflet 8s ease-in-out infinite;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160' preserveAspectRatio='none'%3E%3Cpath d='M0 160V62Q0 24 50 0Q100 24 100 62V160Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160' preserveAspectRatio='none'%3E%3Cpath d='M0 160V62Q0 24 50 0Q100 24 100 62V160Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+@keyframes cr-reflet{0%,55%{background-position:-140% 0}100%{background-position:140% 0}}
+.vitrail figcaption{margin-top:.7rem;text-align:center;font:500 .9rem/1.3 "Cinzel",Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:#e0e0e0}
+
+/* le sac à main de la tombe et son cadenas */
+.tb-scene .sac{cursor:pointer;outline:0;transform-box:fill-box;transform-origin:50% 100%}
+.tb-scene .sc-corps{fill:#17121f;stroke:#b8a9d6;stroke-width:2.2;stroke-linejoin:round}
+.tb-scene .sc-anse{fill:none;stroke:#b8a9d6;stroke-width:4;stroke-linecap:round}
+.tb-scene .sc-rabat{fill:none;stroke:#b8a9d6;stroke-width:2}
+.tb-scene .sc-cad{fill:#d9b94a;stroke:#5a4300;stroke-width:1.4}
+.tb-scene .sc-anse2{fill:none;stroke:#d9b94a;stroke-width:2.6}
+.tb-scene .sc-fil{fill:none;stroke:#e10019;stroke-width:1.6;stroke-linecap:round}
+.tb-scene .sc-led{fill:#e10019;animation:cr-led 1.1s steps(1,end) infinite}
+@keyframes cr-led{0%{opacity:1}50%{opacity:.12}}
+.tb-scene .sac:hover .sc-corps,.tb-scene .sac:focus-visible .sc-corps{stroke:#fff;filter:drop-shadow(0 0 6px #fff)}
+.tb-scene .sac.tremble{animation:cr-tremble .5s}
+@keyframes cr-tremble{0%,100%{transform:rotate(0)}20%{transform:rotate(-6deg)}45%{transform:rotate(5deg)}70%{transform:rotate(-3deg)}}
+.tb-scene .sac.desamorce .sc-led{fill:#fff;animation:none}
+.tb-scene .sac.desamorce .sc-fil{stroke:#fff;stroke-opacity:.5}
+.tb-scene .bg.feu{cursor:pointer}
+.tb-scene .bg.feu.eteint .flamme,.tb-scene .bg.feu.eteint .halo{opacity:0}
+.tb-scene .blanche .petale{fill:#f2f2f2;stroke:#777;stroke-width:1}
+.tb-scene .blanche .coeur-b{fill:#ffcc00}
+.tb-scene .blanche .tige-b{fill:none;stroke:#2d4a35;stroke-width:2.2;stroke-linecap:round}
+.cad{max-width:62rem;margin:1.4rem 0;padding:1.4rem 1.7rem 1.2rem;background:linear-gradient(#0d0d0d,#030303);border:.15rem solid #fff;box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(255,204,0,.7),0 1rem 2rem rgba(0,0,0,.9)}
+.cad[hidden]{display:none}
+.cad h2{margin-top:0;font-size:2.4rem}
+.cad-m{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.2rem 0}
+.mol{position:relative;width:5.6rem;display:grid;justify-items:center;border:.14rem solid #c8a638;background:linear-gradient(90deg,#1a1405,#3d2f08 50%,#1a1405);color:#ffe58a;cursor:ns-resize;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.mol b{font:700 2.8rem/1.3 "Cinzel",Georgia,serif;letter-spacing:.04em;text-shadow:0 0 .5rem rgba(255,204,0,.6)}
+.mol span{width:100%;text-align:center;font-size:1rem;line-height:1.8;color:#c8a638;cursor:pointer}
+.mol span:hover{background:rgba(255,204,0,.22);color:#fff}
+.mol:focus-visible{outline:.2rem solid #fff;outline-offset:.2rem}
+.cad.ouvert .mol{border-color:#fff;background:linear-gradient(90deg,#111,#2b2b2b 50%,#111);color:#fff}
+.cad-etat{min-height:1.6em;margin:.2rem 0 0;font-family:"Cinzel",Georgia,serif;letter-spacing:.05em;color:#ececec}
+
+@media (max-width:899px){
+  .cachot main{padding-top:4.4rem;padding-bottom:5rem;background-size:3rem 1.9rem,3rem 1.9rem,100% 100%,100% 100%,100% 100%,26rem 26rem}
+  .cr-soupirail{top:3.6rem}
+  .cachot h1{font-size:3.3rem}
+  .cachot h1::after{height:1.6rem;background-size:17rem 1.6rem}
+  .cachot h2{font-size:2.1rem;padding-left:2.8rem;background-size:2rem 2rem}
+  .cachot h2::after{left:2.8rem}
+  .cr-fumee{opacity:.35;height:48vh}
+  .cachot main>.cr-araignee,.cachot main>.cr-toile.b{display:none}
+  .cachot main>.cr-toile.h{width:8rem;height:8rem;top:1.8rem}
+  .vitrail{float:none;width:min(22rem,86%);margin:1.2rem auto 1.6rem}
+  .cr-toast{bottom:1.2rem;font-size:1.3rem}
+  .cachot main>.rel{width:3rem;height:3rem}
+  .cachot .rub>a{--c:1.2rem}
+  .mol{width:4.6rem}.mol b{font-size:2.3rem}
+}
+@media (prefers-reduced-motion:reduce){.cr-fumee i,.cr-disco,.cr-disco i,.cr-chauve,.cr-chauve svg,.paillette,.cr-conf,.cr-araignee .fil,.cr-araignee .corps-a,.vt-svg .nb,.vt-arc::after,.tb-scene .sc-led,.tb-scene .sac.tremble{animation:none!important}.cr-fumee,.cr-disco{display:none}}

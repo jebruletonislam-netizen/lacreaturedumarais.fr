@@ -623,3 +623,52 @@ header{overflow:visible}
 .pb-flash{position:fixed;inset:0;z-index:100000;pointer-events:none;background:radial-gradient(circle at 50% 60%,rgba(124,255,28,.75),rgba(224,16,44,.5) 55%,rgba(107,58,20,.55));animation:pb-flash 1s ease-out forwards}
 @keyframes pb-flash{from{opacity:1}to{opacity:0}}
 @media (max-width:899px){.pb-q{font-size:2.5rem}.pb-lock{padding:2rem .9rem 1.4rem}.pb-row{flex-direction:column}.pb-row .btn{width:100%}}
+
+/* ---------- le portail des cachots : un vitrail où la Créature attend en haut des marches ---------- */
+.cgate{position:relative;display:block;max-width:64rem;margin:1.8rem 0 2.2rem;padding:.2rem;text-decoration:none;color:#fff;cursor:pointer;isolation:isolate;background:linear-gradient(160deg,#fff,#6f6f6f 38%,#fff 72%,#555);transition:background .3s;
+  clip-path:polygon(0 2rem,2rem 0,calc(100% - 2rem) 0,100% 2rem,100% calc(100% - 2rem),calc(100% - 2rem) 100%,2rem 100%,0 calc(100% - 2rem))}
+.cgate-pan{position:relative;display:grid;grid-template-columns:12.4rem 1fr;align-items:end;gap:2rem;padding:2.4rem 2.6rem 0 2.4rem;min-height:23rem;overflow:hidden;
+  background:radial-gradient(ellipse 60% 55% at 50% 135%,rgba(225,0,25,.5),transparent 70%),linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.92)),url(/images/cachot/mur.webp) 0 0/26rem 26rem;
+  clip-path:polygon(0 1.8rem,1.8rem 0,calc(100% - 1.8rem) 0,100% 1.8rem,100% calc(100% - 1.8rem),calc(100% - 1.8rem) 100%,1.8rem 100%,0 calc(100% - 1.8rem))}
+.cgate-vit{position:relative;display:block;width:12.4rem;aspect-ratio:3/5;filter:drop-shadow(0 0 1.4rem rgba(255,204,0,.28));transition:filter .3s}
+.cgate-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cgate-svg .nb{animation:cg-nimbe 4.4s ease-in-out infinite}
+.cgate-cr{position:absolute;left:13%;bottom:0;width:74%;height:auto;filter:drop-shadow(0 0 .45rem rgba(255,255,255,.5)) drop-shadow(0 .4rem .8rem #000);transition:transform .35s;-webkit-user-drag:none;user-select:none}
+.cgate-vit::before,.cgate-vit::after{content:"";position:absolute;bottom:4.4rem;width:1.5rem;height:2.7rem;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 80%,#fff6b8 0,#ffd23a 30%,#e10019 64%,transparent 74%);animation:cg-feu .16s ease-in-out infinite alternate}
+.cgate-vit::before{left:-2.6rem}.cgate-vit::after{right:-2.6rem;animation-duration:.12s}
+.cgate-in{position:relative;z-index:1;display:grid;gap:.7rem;align-self:center;padding-bottom:3.4rem;text-align:left}
+.cgate-k{font:400 1.25rem/1 "Bebas Neue",sans-serif;letter-spacing:.42em;color:#ff1736;text-shadow:0 0 .6rem rgba(255,23,54,.7);animation:cg-blink 4.7s steps(1,end) infinite}
+.cgate-t{display:block;font:400 5.2rem/.95 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.04em;text-transform:uppercase;color:#f2f2f2;text-shadow:0 .2rem 0 #000,0 0 1.2rem rgba(255,255,255,.25),.18rem .18rem 0 #8a0012;transition:color .3s,text-shadow .3s}
+.cgate-t::after{content:"";display:block;height:1.8rem;margin-top:1rem;background:var(--fleuron-g) left center/20rem 1.8rem no-repeat}
+.cgate-s{font:500 1.1rem/1.35 "Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#d8d8d8;text-shadow:0 .1rem .3rem #000}
+.cgate-marches{position:absolute;left:0;right:0;bottom:0;height:3.4rem;z-index:2;background:repeating-linear-gradient(180deg,#0b0b0b 0 .5rem,#4a4a4a .5rem .62rem,#0b0b0b .62rem 1.1rem,#767676 1.1rem 1.22rem)}
+.cgate-marches::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:5rem;background:radial-gradient(ellipse 50% 100% at 50% 100%,rgba(225,0,25,.55),transparent 72%);opacity:.7;animation:cg-lueur 3.4s ease-in-out infinite}
+.cgate-pan::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-1rem;height:9rem;z-index:3;pointer-events:none;background:radial-gradient(ellipse 36% 100% at 20% 100%,rgba(255,255,255,.2),transparent 70%),radial-gradient(ellipse 36% 100% at 72% 100%,rgba(255,255,255,.15),transparent 70%);animation:cg-fumee 9s ease-in-out infinite alternate}
+.cgate:hover,.cgate:focus-visible{outline:0;background:linear-gradient(160deg,#fff1b0,#c98f00 45%,#fff1b0 75%,#8a6200)}
+.cgate:hover .cgate-vit,.cgate:focus-visible .cgate-vit{filter:brightness(1.25) drop-shadow(0 0 1.6rem rgba(255,204,0,.7))}
+.cgate:hover .cgate-cr,.cgate:focus-visible .cgate-cr{transform:translateY(.5rem) scale(1.03)}
+.cgate:hover .cgate-t,.cgate:focus-visible .cgate-t{color:#fff;text-shadow:0 .2rem 0 #000,0 0 1.6rem #ffcc00,.18rem .18rem 0 #e10019}
+.cgate:hover .cgate-marches::before,.cgate:focus-visible .cgate-marches::before{opacity:1}
+@keyframes cg-nimbe{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes cg-feu{from{transform:scale(1,1) skewX(-4deg)}to{transform:scale(.84,1.16) skewX(4deg)}}
+@keyframes cg-lueur{0%,100%{opacity:.55}50%{opacity:.95}}
+@keyframes cg-fumee{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
+@keyframes cg-blink{0%,100%{opacity:1}9%{opacity:.2}11%{opacity:1}52%{opacity:1}53%{opacity:.3}55%{opacity:1}}
+:root{--fleuron-g:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 22'%3E%3Cpath d='M0 11H92M148 11H240' stroke='%23fff' stroke-opacity='.85' stroke-width='1.4' fill='none'/%3E%3Cpath d='M120 1L131 11L120 21L109 11Z' fill='%23e10019' stroke='%23fff' stroke-width='1.2'/%3E%3Ccircle cx='99' cy='11' r='2.4' fill='%23fff'/%3E%3Ccircle cx='141' cy='11' r='2.4' fill='%23fff'/%3E%3Cpath d='M92 11l-7-5v10zM148 11l7-5v10z' fill='%23fff'/%3E%3C/svg%3E")}
+@media (max-width:899px){
+  .cgate-pan{grid-template-columns:1fr;justify-items:center;gap:1.2rem;padding:2rem 1.2rem 0;min-height:0}
+  .cgate-in{order:-1;text-align:center;justify-items:center;padding-bottom:0}
+  .cgate-t{font-size:2.9rem;letter-spacing:.02em}.cgate-t::after{background-position:center;margin-left:auto;margin-right:auto;width:20rem}
+  .cgate-s{font-size:.95rem}
+  .cgate-vit{width:9rem;margin-bottom:0}
+  .cgate-vit::before{left:-2.2rem}.cgate-vit::after{right:-2.2rem}
+}
+@media (prefers-reduced-motion:reduce){.cgate-svg .nb,.cgate-vit::before,.cgate-vit::after,.cgate-k,.cgate-marches::before,.cgate-pan::after{animation:none}}
+
+/* ---------- le point sacré du territoire : le deuil, le sacré, l'amitié et le temps volé ensemble ---------- */
+.pin.sacre i{width:32px;height:32px;border:3px solid #ffd76a;background:#050308;color:#fff;font:400 20px "Bebas Neue",sans-serif;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.55),0 0 1.4rem rgba(255,215,106,.95);animation:sacre-pouls 3.6s ease-in-out infinite}
+@keyframes sacre-pouls{0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.45),0 0 .9rem rgba(255,215,106,.7)}50%{box-shadow:0 0 0 6px rgba(255,255,255,.2),0 0 2rem rgba(255,215,106,1)}}
+.leaflet-tooltip.sacre-tip{background:#050308;border:.15rem solid #ffd76a;border-radius:0;color:#fff;font:400 1.8rem "Bebas Neue",sans-serif;letter-spacing:.3em;padding:.25rem .8rem .15rem 1.2rem;box-shadow:0 0 1.2rem rgba(255,215,106,.55)}
+.leaflet-tooltip-top.sacre-tip::before{border-top-color:#ffd76a}
+.nuage-sacre{pointer-events:none}
+@media (prefers-reduced-motion:reduce){.pin.sacre i{animation:none}}

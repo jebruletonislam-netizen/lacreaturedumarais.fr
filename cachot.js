@@ -125,4 +125,81 @@
       dire('Ce retour n’a pas été reconnu : aucun cierge n’a été ajouté.');
     }
   }
+  /* ---------- le sac à main : le jeu de la tombe ----------
+     Un cadenas à six molettes. Les nombres sont ceux du document « Tchernobyl 2.0 » (fiche de Kavod).
+     Une fois entrés, la bombe est tenue en respect 65 heures ; passé ce délai, elle saute, et il ne reste que des confettis. */
+  var sac=document.getElementById('tb-sac'),cad=document.getElementById('tb-cad'),ce=document.getElementById('cad-etat');
+  if(sac&&cad){
+    var CODE=[4,8,15,16,23,42],DELAI=65*3600*1000,SK='lcm-sac',mols=[].slice.call(cad.querySelectorAll('.mol')),val=[0,0,0,0,0,0],blanches=document.getElementById('tb-blanches'),ouvert=false,bomb=null;
+    var st={t:0,n:0};
+    try{var q0=JSON.parse(localStorage.getItem(SK)||'{}');st.t=+q0.t||0;st.n=Math.min(+q0.n||0,99);}catch(e){}
+    function sauve(){try{localStorage.setItem(SK,JSON.stringify(st));}catch(e){}}
+    function ecrit(i){mols[i].querySelector('b').textContent=('0'+val[i]).slice(-2);mols[i].setAttribute('aria-valuenow',val[i]);}
+    function rose(k){
+      var x=360+k*17,y=640+(k%2)*5,g=document.createElementNS(NS,'g');g.setAttribute('class','blanche');g.setAttribute('transform','translate('+x+' '+y+') rotate('+((k%3)*9-9)+')');
+      g.innerHTML='<path class="tige-b" d="M0 0C-2 -10 2 -20 0 -30"/>'+[0,72,144,216,288].map(function(a){return '<ellipse class="petale" cx="0" cy="-39" rx="5" ry="8.5" transform="rotate('+a+' 0 -32)"/>';}).join('')+'<circle class="coeur-b" cx="0" cy="-32" r="3.4"/>';
+      blanches.appendChild(g);
+    }
+    function reste(){return st.t?DELAI-(Date.now()-st.t):0;}
+    function duree(ms){var h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);return h+' h '+('0'+m).slice(-2);}
+    function etatSac(){
+      var r=reste();
+      sac.classList.toggle('desamorce',r>0);
+      if(r>0){
+        cad.classList.add('ouvert');CODE.forEach(function(c,i){val[i]=c;ecrit(i);});
+        ce.textContent='La bombe est tenue en respect. Elle reprendra son compte à rebours dans '+duree(r)+'. Veille n° '+st.n+'.';
+      }else{cad.classList.remove('ouvert');}
+    }
+    function essai(){
+      if(reste()>0)return;
+      if(val.some(function(v,i){return v!==CODE[i];}))return;
+      st.t=Date.now();st.n++;sauve();
+      sac.classList.add('desamorce');cad.classList.add('ouvert');
+      if(st.n<=6)rose(st.n-1);
+      var b=sac.getBoundingClientRect(),m=new Date(),noel=m.getMonth()===11&&m.getDate()>=24&&m.getDate()<=26;
+      window.crGerbe&&window.crGerbe(b.left+b.width/2,b.top+b.height/2,14);
+      ce.textContent=noel?'Clic. Sous le rabat, un mot : « C’est bientôt Noël, je vais donc vous faire un cadeau, mais c’est une surprise. » K.'
+        :'Clic. Le compte à rebours repart pour soixante-cinq heures. Une rose blanche est posée sur la stèle. Veille n° '+st.n+'.';
+      if(noel&&window.crConfettis)window.crConfettis(60);
+    }
+    function pas(i,d){
+      if(reste()>0){dire('Le cadenas est ouvert : la bombe est tenue en respect.');return;}
+      val[i]=(val[i]+d+100)%100;ecrit(i);essai();
+      if(val.every(function(v){return v===0;})===false&&!ouvert){ouvert=true;}
+    }
+    mols.forEach(function(m,i){
+      m.addEventListener('click',function(e){var r=m.getBoundingClientRect();pas(i,e.clientY<r.top+r.height/2?1:-1);});
+      m.addEventListener('wheel',function(e){e.preventDefault();pas(i,e.deltaY<0?1:-1);},{passive:false});
+      m.addEventListener('keydown',function(e){
+        if(e.key==='ArrowUp'||e.key==='ArrowRight'){e.preventDefault();pas(i,1);}
+        else if(e.key==='ArrowDown'||e.key==='ArrowLeft'){e.preventDefault();pas(i,-1);}
+        else if(e.key==='PageUp'){e.preventDefault();pas(i,10);}
+        else if(e.key==='PageDown'){e.preventDefault();pas(i,-10);}
+      });
+    });
+    function ouvre(){
+      cad.hidden=false;
+      if(!sac.classList.contains('desamorce'))sac.classList.add('tremble');
+      setTimeout(function(){sac.classList.remove('tremble');},520);
+      cad.scrollIntoView({behavior:calm?'auto':'smooth',block:'nearest'});
+      if(reste()<=0)ce.textContent='Six molettes, et le tic-tac d’un minuteur. Sur la fiche de Kavod, un document donne les nombres.';
+    }
+    sac.addEventListener('click',ouvre);
+    sac.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();ouvre();}});
+    /* le délai est passé : la bombe a sauté en l'absence du visiteur */
+    if(st.t&&reste()<=0){
+      var n0=st.n;st.t=0;st.n=0;sauve();
+      cad.hidden=false;ce.textContent='Pendant votre absence, la bombe a sauté : il ne reste du sac que des confettis. La vieille dame en a racheté un autre. (Veilles accomplies : '+n0+'.)';
+      setTimeout(function(){window.crConfettis&&window.crConfettis(70);},600);
+    }
+    for(var k=0;k<Math.min(st.n,6)&&reste()>0;k++)rose(k);
+    if(reste()>0){cad.hidden=false;etatSac();}
+  }
+  /* les deux grands cierges : un souffle les éteint */
+  [].forEach.call(tombe.querySelectorAll('.bg.feu'),function(c){
+    c.addEventListener('click',function(){
+      c.classList.toggle('eteint');
+      dire(c.classList.contains('eteint')?'Un courant d’air. Quelqu’un a soufflé.':'Quelqu’un a rallumé.');
+    });
+  });
 })();

@@ -5,7 +5,9 @@
   +'#lb .lb-track{display:flex;height:100%;will-change:transform}'
   +'#lb .lb-track.anim{transition:transform .28s ease}'
   +'#lb .lb-slide{flex:0 0 100%;width:100%;height:100%;display:flex;align-items:center;justify-content:center}'
-  +'#lb img{max-width:94vw;max-height:90%;object-fit:contain;pointer-events:none;-webkit-user-drag:none}'
+  +'#lb img{max-width:94vw;max-height:90%;object-fit:contain;pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}'
+  +'#lb .lb-slide{position:relative}#lb .lb-slide::after{content:"";position:absolute;inset:0;z-index:1}'
+  +'#lb .lb-mark{position:absolute;right:3vw;bottom:5vh;z-index:2;color:rgba(255,255,255,.32);font:400 1.5rem/1 "Bebas Neue",Arial,sans-serif;letter-spacing:.14em;text-shadow:0 0 .4rem #000;pointer-events:none}'
   +'#lb button{background:#000;color:#f00;border:.2rem solid #f00;font:400 3.4rem/1 "Bebas Neue",Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}'
   +'#lb button:hover,#lb button:focus-visible{background:#f00;color:#000;outline:0}'
   +'#lb .lb-x{position:absolute;top:1rem;right:1rem;width:5rem;height:5rem;font-size:2.8rem;z-index:2}'
@@ -34,8 +36,8 @@
     var stage=document.createElement('div');stage.className='lb-stage';
     var track=document.createElement('div');track.className='lb-track';
     var imgs=list.map(function(it){
-      var s=document.createElement('div');s.className='lb-slide';
-      var im=document.createElement('img');im.draggable=false;im.alt=it.alt||'';s.appendChild(im);track.appendChild(s);return im;
+      var s=document.createElement('div');s.className='lb-slide';var mk=document.createElement('span');mk.className='lb-mark';mk.textContent='© LA CRÉATURE DU MARAIS';
+      var im=document.createElement('img');im.draggable=false;im.alt=it.alt||'';s.appendChild(im);s.appendChild(mk);track.appendChild(s);return im;
     });
     stage.appendChild(track);box.appendChild(stage);
     var bar=document.createElement('div');bar.className='lb-bar';
@@ -97,6 +99,26 @@
     box.querySelector('.lb-x').focus();
   }
   window.openLB=openLB;window.closeLB=closeLB;
+
+  /* lbProtege : les photos ne se glissent pas, ne s'ouvrent pas dans un onglet, n'ont pas de menu « enregistrer l'image ». */
+  var pst=document.createElement('style');
+  pst.textContent='main img,.rfig img,.aff img,.vt-arc img,.gal img,.ph img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}';
+  document.head.appendChild(pst);
+  var isImg=function(t){return t&&t.closest&&t.closest('main img,.rfig,.aff,.armes,.gal,.rgal,.ph,a[data-lb],.vt-arc,#lb');};
+  document.addEventListener('contextmenu',function(e){if(isImg(e.target))e.preventDefault();});
+  document.addEventListener('dragstart',function(e){if(e.target&&e.target.tagName==='IMG')e.preventDefault();});
+  document.addEventListener('auxclick',function(e){var a=e.target.closest&&e.target.closest('a[data-lb]');if(a)e.preventDefault();});
+  /* sur les pages qui ne chargent pas putride.js (les cachots), les liens à photo s'ouvrent aussi dans la liseuse */
+  if(!document.querySelector('script[src*="putride.js"]')){
+    document.addEventListener('click',function(ev){
+      if(ev.defaultPrevented||ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+      var a=ev.target.closest&&ev.target.closest('a[data-lb]');
+      if(!a)return;
+      ev.preventDefault();
+      var g=a.closest('.gal,.rt,.rgal,.affiches,.armes'),L=g?[].slice.call(g.querySelectorAll('a[data-lb]')):[a];
+      openLB(L.map(function(l){return {src:l.getAttribute('href'),alt:l.dataset.lb};}),Math.max(0,L.indexOf(a)));
+    });
+  }
   window.addEventListener('hashchange',closeLB);
 
   /* pages SEO (Jekyll) : galeries de tournage */

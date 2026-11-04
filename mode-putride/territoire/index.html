@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/charte.css?v=1">
-<link rel="stylesheet" href="/putride.css?v=35">
+<link rel="stylesheet" href="/putride.css?v=36">
 <script>try{if(sessionStorage.getItem("lcm-slime")){document.documentElement.className+=" slx";setTimeout(function(){document.documentElement.classList.remove("slx")},3500)}}catch(e){}</script><link href="/images/favicon.png" rel="icon" type="image/png"><link href="/images/favicon.png" rel="apple-touch-icon">
 </head>
 <body>
@@ -56,7 +56,7 @@
 </main>
 <footer class="pfoot"><a class="mppp" aria-label="Archives PUANTEUR PUTRIDE Productions" href="/mode-putride/archives/"><img decoding="async" loading="lazy" width="1283" height="614" alt="PUANTEUR PUTRIDE Productions" src="/images/putride/logo-ppp-entete.webp?v=7"></a><img decoding="async" loading="lazy" width="1400" height="283" alt="La Créature du Marais — Cul-Pointu" class="sf-t" src="/images/pied-titre.webp"><p class="sf-c">© MMXXVI</p><a class="pup" href="/" data-slime="up" aria-label="Remonter à la surface : retour au site normal"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44"/><path d="M8 32h48M32 10v44"/><circle cx="26" cy="32" r="2"/><circle cx="38" cy="32" r="2"/></svg><span>↑ REMONTER À LA SURFACE</span></a></footer>
 </div>
-<script src="/lightbox.js?v=2"></script>
+<script src="/lightbox.js?v=3"></script>
 <script src="/navdrag.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -75,7 +75,7 @@
   [[49.46147,1.13526],[49.44292,1.08833],[49.45036,1.06265],[49.42576,1.09734],[49.42654,1.07782],[49.4528,1.05946],[49.44962,1.08271],[49.44496,1.09553],[49.44216,1.11718],[49.43683,1.08154],[49.45212,1.12702],[49.4495,1.10408],[49.44292,1.08122],[49.43408,1.10622],[49.44849,1.09539],[49.43037,1.08562],[49.44186,1.10372],[49.44779,1.14071],[49.4459,1.08027]].forEach(function(c){
     L.circleMarker(c,{radius:7,color:'#2a0008',weight:1.5,fillColor:'#e0001b',fillOpacity:1,className:'eg-dot'}).addTo(m).bindTooltip(VER,{direction:'top',className:'ver-tip',offset:[0,-6]});
   });
-  m.fitBounds(P.filter(function(p){return p[0]!=='baisodrome'&&p[0]!=='panvampirium';}).map(function(p){return [p[2],p[3]];}),{padding:[30,30]});
+  m.fitBounds(P.filter(function(p){return p[0]!=='baisodrome'&&p[0]!=='panvampirium';}).map(function(p){return [p[2],p[3]];}).concat([[49.4543,1.0675]]),{padding:[30,30]});
   /* nuage noir et chauves-souris sur l'église Saint-Patrice : ancré aux coordonnées, il suit tous les niveaux de zoom */
   (function(){
     var C=[49.44593,1.09155],A=.00052,B=.00075,NS='http://www.w3.org/2000/svg';
@@ -329,12 +329,94 @@
       document.addEventListener('putride:page',function(){io.disconnect();},{once:true});
     }
   })();
+  /* Point sacré (cimetière de l'Ouest) : ni fiche, ni légende. Voile de deuil, lumière dorée, cercles entrelacés,
+     horloge dont les deux aiguilles se rejoignent, sable qui tombe, pétales blancs et bougies. */
+  (function(){
+    var C=[49.4543,1.0675],A=.0016,B=.0033,NS='http://www.w3.org/2000/svg',TAU=6.283185;
+    var sd=4417;
+    var rnd=function(){sd=(sd+0x6D2B79F5)|0;var t=Math.imul(sd^(sd>>>15),1|sd);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};
+    var rr=function(a,b){return a+(b-a)*rnd();};
+    var f=function(x){return Math.round(x*10)/10;};
+    var el=function(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+    var low=(navigator.hardwareConcurrency||4)<=4,calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var an=function(p,a){return calm?null:el('animate',a,p);};
+    var at=function(p,a){return calm?null:el('animateTransform',a,p);};
+    var svg=el('svg',{viewBox:'0 0 400 300',preserveAspectRatio:'none','aria-hidden':'true',focusable:'false'}),defs=el('defs',{},svg);
+    var grad=function(id,stops){var g=el('radialGradient',{id:id},defs);stops.forEach(function(s){el('stop',{offset:s[0],'stop-color':s[1],'stop-opacity':s[2]},g);});};
+    grad('sav',[[0,'#0a0610',.05],[.55,'#0a0610',.42],[.9,'#030206',.8],[1,'#000',.92]]);
+    grad('sao',[[0,'#fff6cf',.7],[.35,'#ffd76a',.34],[1,'#ffd76a',0]]);
+    el('ellipse',{cx:200,cy:150,rx:199,ry:149,fill:'url(#sav)'},svg);
+    var halo=el('circle',{cx:200,cy:150,r:150,fill:'url(#sao)'},svg);
+    an(halo,{attributeName:'opacity',values:'.55;1;.55',dur:'6s',repeatCount:'indefinite'});
+
+    /* les tombes : de petites croix blanches dispersées dans le voile */
+    var d='',i,x,y;
+    for(i=0;i<(low?26:40);i++){
+      do{x=rr(24,376);y=rr(24,276);}while(Math.pow((x-200)/150,2)+Math.pow((y-150)/110,2)<.5);
+      d+='M'+f(x)+','+f(y-5)+'v10M'+f(x-3.4)+','+f(y-2)+'h6.8';
+    }
+    el('path',{d:d,fill:'none',stroke:'#fff','stroke-opacity':.5,'stroke-width':1.2,'stroke-linecap':'round'},svg);
+
+    /* l'horloge : soixante graduations qui tournent très lentement, douze plus marquées */
+    var cl=el('g',{},svg);
+    el('circle',{cx:200,cy:150,r:96,fill:'none',stroke:'#fff','stroke-opacity':.55,'stroke-width':1.2,'stroke-dasharray':'1.4 8.6'},cl);
+    el('circle',{cx:200,cy:150,r:100,fill:'none',stroke:'#ffd76a','stroke-opacity':.9,'stroke-width':3,'stroke-dasharray':'3 49.3'},cl);
+    el('circle',{cx:200,cy:150,r:88,fill:'none',stroke:'#fff','stroke-opacity':.3,'stroke-width':.8},cl);
+    at(cl,{attributeName:'transform',type:'rotate',from:'0 200 150',to:'360 200 150',dur:'240s',repeatCount:'indefinite'});
+
+    /* deux cercles entrelacés : deux vies qui se recouvrent en partie */
+    var rg=el('g',{style:'filter:drop-shadow(0 0 5px rgba(255,215,106,.9))'},svg);
+    el('circle',{cx:178,cy:150,r:34,fill:'none',stroke:'#ffd76a','stroke-width':2.4},rg);
+    el('circle',{cx:222,cy:150,r:34,fill:'none',stroke:'#fff','stroke-width':2.4},rg);
+    var ves=el('path',{d:'M200,119.6A34,34 0 0 1 200,180.4A34,34 0 0 1 200,119.6Z',fill:'#ffd76a','fill-opacity':.22},rg);
+    an(ves,{attributeName:'fill-opacity',values:'.12;.4;.12',dur:'5s',repeatCount:'indefinite'});
+
+    /* les deux aiguilles, jointes à minuit : elles tremblent à peine */
+    var ai=el('g',{},svg);
+    el('path',{d:'M200,150V108',stroke:'#fff','stroke-width':3,'stroke-linecap':'round'},ai);
+    el('path',{d:'M200,150V84',stroke:'#ffd76a','stroke-width':2,'stroke-linecap':'round'},ai);
+    el('circle',{cx:200,cy:150,r:3.2,fill:'#fff'},ai);
+    at(ai,{attributeName:'transform',type:'rotate',values:'-1.2 200 150;1.2 200 150;-1.2 200 150',dur:'5s',repeatCount:'indefinite'});
+
+    /* le sable : des grains d'or tombent sans fin du centre, c'est le temps qu'on leur a volé */
+    for(i=0;i<(low?7:12);i++){
+      var gx=f(rr(193,207)),gd=f(rr(3.4,6)),gb='-'+f(rr(0,gd))+'s',gr=el('circle',{cx:gx,cy:150,r:f(rr(.9,1.7)),fill:'#ffd76a',opacity:calm?.7:0},svg);
+      if(calm)continue;
+      el('animateMotion',{path:'M0,0 L'+f(rr(-10,10))+','+f(rr(70,112)),dur:gd+'s',repeatCount:'indefinite',begin:gb},gr);
+      an(gr,{attributeName:'opacity',values:'0;1;1;0',keyTimes:'0;.15;.7;1',dur:gd+'s',repeatCount:'indefinite',begin:gb});
+    }
+
+    /* pétales blancs : ils tombent en tournoyant sur tout le cimetière */
+    for(i=0;i<(low?10:18);i++){
+      var px=f(rr(20,380)),pd=f(rr(9,16)),pb='-'+f(rr(0,pd))+'s',pg=el('g',{opacity:calm?.7:0},svg),pr=el('g',{},pg);
+      el('path',{d:'M0,0C3,-4 7,-3 6,1C5,5 1,6 0,0Z',fill:'#fff','fill-opacity':.9},pr);
+      if(calm){pg.setAttribute('transform','translate('+px+' '+f(rr(30,270))+')');continue;}
+      el('animateMotion',{path:'M'+px+',-8 C'+f(px+rr(10,40))+',60 '+f(px-rr(10,40))+',130 '+f(px+rr(-20,20))+',190 S'+f(px+rr(-30,30))+',270 '+f(px+rr(-20,20))+',312',dur:pd+'s',repeatCount:'indefinite',begin:pb},pg);
+      an(pg,{attributeName:'opacity',values:'0;.9;.9;0',keyTimes:'0;.1;.8;1',dur:pd+'s',repeatCount:'indefinite',begin:pb});
+      at(pr,{attributeName:'transform',type:'rotate',from:'0 0 0',to:f(rr(240,520)*(rnd()<.5?-1:1))+' 0 0',dur:f(rr(3,6))+'s',repeatCount:'indefinite'});
+    }
+
+    /* bougies : des flammes dorées qui vacillent au pied des tombes */
+    for(i=0;i<(low?9:14);i++){
+      do{x=rr(30,370);y=rr(34,268);}while(Math.pow((x-200)/150,2)+Math.pow((y-150)/110,2)<.45);
+      var cg=el('g',{transform:'translate('+f(x)+' '+f(y)+')'},svg),hl=el('circle',{cx:0,cy:-4,r:14,fill:'url(#sao)'},cg);
+      el('rect',{x:-1.4,y:-2,width:2.8,height:6,fill:'#fff','fill-opacity':.9},cg);
+      var fl=el('ellipse',{cx:0,cy:-5,rx:1.7,ry:3.4,fill:'#ffd76a'},cg);
+      var fd=f(rr(.14,.3));
+      an(fl,{attributeName:'ry',values:'3.4;2.4;3.8;3.4',dur:fd*3+'s',repeatCount:'indefinite'});
+      an(hl,{attributeName:'opacity',values:'.55;1;.7;.55',dur:f(rr(1.4,3))+'s',repeatCount:'indefinite',begin:'-'+f(rr(0,2))+'s'});
+    }
+    L.svgOverlay(svg,[[C[0]-A,C[1]-B],[C[0]+A,C[1]+B]],{interactive:false,className:'nuage nuage-sacre'}).addTo(m);
+    /* le repère : un point d'interrogation, et six points d'interrogation au survol */
+    L.marker(C,{icon:L.divIcon({className:'pin sacre',html:'<i>?</i>',iconSize:[32,32],iconAnchor:[16,16]}),title:'',keyboard:false})
+      .addTo(m).bindTooltip('??????',{direction:'top',className:'sacre-tip',offset:[0,-16]});
+  })();
   Array.prototype.forEach.call(document.querySelectorAll('.goto'),function(b){
     b.addEventListener('click',function(){var k=b.dataset.k;document.querySelector('.map').scrollIntoView({behavior:'smooth',block:'center'});m.setView(mk[k].getLatLng(),17);if(k!=='panvampirium')mk[k].openPopup();});
   });
   m.on('click',function(){m.scrollWheelZoom.enable();});
 })();
-</script><script src="/slime.js?v=10"></script><script src="/lecteur.js?v=5"></script><script src="/putride.js?v=17"></script>
+</script><script src="/slime.js?v=11"></script><script src="/lecteur.js?v=5"></script><script src="/putride.js?v=17"></script>
 <script src="/apercu.js?v=2" defer></script>
 </body>
 </html>
