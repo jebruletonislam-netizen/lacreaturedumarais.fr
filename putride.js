@@ -174,7 +174,7 @@
     var LOW=(navigator.hardwareConcurrency||4)<=4||(navigator.deviceMemory||4)<=4||innerWidth*(window.devicePixelRatio||1)<700;
     var dpr=LOW?1:Math.min(window.devicePixelRatio||1,1.5);
     var CW=0,CH=0,DX=LOW?10:7,NC=0,HH=null,VV=null,ext={x0:0,x1:0,fl:0};
-    var gx=0,gy=1,gm=1,tgx=0,tgy=1,tgm=1,slope=0,lvlD=0,tnow=0,pendX=0,wasWork=false;
+    var gx=0,gy=1,gm=1,tgx=0,tgy=1,tgm=1,slope=0,sens=false,lvlD=0,tnow=0,pendX=0,wasWork=false;
     var drops=[],items=[],bubs=[],cro=null,FX={};
     function upd(){var m=mainBox();ext.x0=Math.max(0,m?m.left:0);ext.x1=Math.min(CW,m?m.right:CW);ext.fl=Math.min(CH,m?m.bottom:CH)-3;}
     function sizeCv(){
@@ -210,7 +210,7 @@
       var a=ev.accelerationIncludingGravity;if(!a||a.x==null||a.y==null)return;
       var sg=ios?-1:1,ax=a.x*sg,ay=a.y*sg,an=(screen.orientation&&screen.orientation.angle)||0,x,y;
       if(an===90){x=ay;y=ax;}else if(an===270||an===-90){x=-ay;y=-ax;}else if(an===180){x=ax;y=-ay;}else{x=-ax;y=ay;}
-      x/=9.8;y/=9.8;
+      x/=9.8;y/=9.8;sens=true;
       var m=Math.sqrt(x*x+y*y);
       if(m<.12){tgx=0;tgy=1;tgm=.3;return;}
       tgx=x/m;tgy=y/m;tgm=clamp(m,.18,3.4);
@@ -219,7 +219,12 @@
     var ios=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
     if(window.DeviceMotionEvent){
       if(typeof DeviceMotionEvent.requestPermission==='function'){
-        document.addEventListener('touchend',function(){DeviceMotionEvent.requestPermission().then(function(r){if(r==='granted')addEventListener('devicemotion',onMot);}).catch(function(){});},{once:true});
+        /* iOS demande l'autorisation, et seulement depuis un geste : on la réclame au premier toucher ou clic */
+        var demande=false,ask=function(){
+          if(demande)return;demande=true;
+          DeviceMotionEvent.requestPermission().then(function(r){if(r==='granted')addEventListener('devicemotion',onMot);}).catch(function(){demande=false;});
+        };
+        ['touchend','click'].forEach(function(n){document.addEventListener(n,ask,{passive:true});});
       }else addEventListener('devicemotion',onMot);
     }
     /* un doigt (ou le curseur appuyé) dans le fluide le brasse */
@@ -595,7 +600,7 @@
     FX.pret=function(){return !!(window.Ephebito&&window.Ephebito.ok());};
     FX.pre=function(){
       if(plugT)return;plugT=1;
-      var sc=document.createElement('script');sc.src='/ephebito.js?v=1';
+      var sc=document.createElement('script');sc.src='/ephebito.js?v=2';
       sc.onload=function(){if(window.Ephebito)window.Ephebito.pre();else FX.echec=true;};sc.onerror=function(){FX.echec=true;};
       document.head.appendChild(sc);
     };
@@ -609,7 +614,8 @@
         if(LOW&&wasWork&&(skip^=1)){requestAnimationFrame(frame);return;}
         if(innerWidth!==CW||innerHeight!==CH)sizeCv();else upd();
         gx+=(tgx-gx)*.35;gy+=(tgy-gy)*.35;gm+=(tgm-gm)*.35;tilt+=(gx-tilt)*.1;
-        slope+=(clamp(isM()?tilt*.32:0,-.4,.4)-slope)*.12;
+        /* la surface reste perpendiculaire à la pesanteur du téléphone : pente = tan(inclinaison), nulle quand il est à plat */
+        slope+=((sens?clamp(gx/Math.max(.3,gy),-1.7,1.7)*clamp(gm*1.5,0,1):0)-slope)*.18;
         /* vidange : au changement de page, le niveau baisse, les objets s'en vont */
         if(vidFin){var reste=clamp((vidFin-last)/1000,0,VIDANGE);lvl=lvlVid*reste/VIDANGE;if(!reste){vidFin=0;lvl=0;items.length=0;}}
         lvlD+=(lvl-lvlD)*Math.min(1,dt*2.6);if(lvlD<.05&&lvl===0)lvlD=0;

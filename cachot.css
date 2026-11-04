@@ -606,3 +606,6 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
   .cachot main>.cr-sceau-fond{right:-12rem;top:36rem;width:32rem;height:32rem}
 }
 @media (prefers-reduced-motion:reduce){.cr-sceau .an,.cr-sceau-fond .an,.cr-sceau .pe,.cr-sceau-fond .pe{animation:none!important}}
+
+/* les décors qui débordent à droite ne doivent jamais élargir la page */
+.cachot main{overflow-x:clip}

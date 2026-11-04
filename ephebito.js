@@ -33,7 +33,7 @@
     var n=parseInt(hex.slice(1),16);
     return 'rgb('+Math.min(255,((n>>16)&255)*f|0)+','+Math.min(255,((n>>8)&255)*f|0)+','+Math.min(255,(n&255)*f|0)+')';
   }
-  var CBR=['#4b2a0e','#6b3d17','#9a6a2c'],CVE=['#3f8d12','#8fd61f','#d6ff86'];
+  var CBR=['#4b2a0e','#6b3d17','#9a6a2c'],CVE=['#3f8d12','#8fd61f','#d6ff86'],CSA=['#5c0710','#9a0c1c','#e0283a'];
 
   /* ---------- géométrie : tout est dans le repère du crochet, le corps pend de la longueur des collants ---------- */
   function lay(){
@@ -58,7 +58,7 @@
 
   /* ---------- salissures : cuites dans le sprite, donc elles suivent le corps ---------- */
   function bake(cv,st,k){
-    var m=M[k],g=cv.getContext('2d'),sc=m.w/(m.crop[2]-m.crop[0]),x=st.u*m.w,y=st.v*m.h,r=st.r*sc,R=rng(st.s),col=st.c==='c'?CBR:CVE,i,a,d;
+    var m=M[k],g=cv.getContext('2d'),sc=m.w/(m.crop[2]-m.crop[0]),x=st.u*m.w,y=st.v*m.h,r=st.r*sc,R=rng(st.s),col=st.c==='c'?CBR:st.c==='r'?CSA:CVE,i,a,d;
     g.save();g.globalCompositeOperation='source-atop';
     for(i=0;i<7;i++){a=R()*TAU;d=r*R()*.7;g.beginPath();g.ellipse(x+Math.cos(a)*d,y+Math.sin(a)*d,r*(.38+R()*.4),r*(.34+R()*.4),R()*3,0,TAU);g.fillStyle=col[i%2];g.fill();}
     for(i=0;i<3;i++){a=R()*TAU;d=r*R()*.45;g.beginPath();g.ellipse(x+Math.cos(a)*d-r*.1,y+Math.sin(a)*d-r*.12,r*.22,r*.16,R()*3,0,TAU);g.fillStyle=col[2];g.globalAlpha=.7;g.fill();g.globalAlpha=1;}
@@ -91,7 +91,7 @@
   function boum(fx,o){
     if(S)return;
     FX=fx;cx=fx.cx;pre();
-    S={vis:false,k:'a',th:0,om:0,omP:0,al:0,alv:0,dy:0,dyv:0,t:0,drag:null,tt:0,st:[],pl:[],bts:[],born:false,nais:0,sw:false,bs:0,bsv:0,fl:0,sh:[],sub:false,wet:false,lt:-1,
+    S={ab:0,zc:0,bl:0,cl:0,vis:false,k:'a',th:0,om:0,omP:0,al:0,alv:0,dy:0,dyv:0,t:0,drag:null,tt:0,st:[],pl:[],bts:[],born:false,nais:0,sw:false,bs:0,bsv:0,fl:0,sh:[],sub:false,wet:false,lt:-1,
        hs:300,f:.3,ext:60,hx:0,hy:0,g:{dw:1,dh:1,mx:0},cv:{},mk:{},bE:null,bN:null,hk:'',fx:null};
     ['a','b'].forEach(function(k){var c=document.createElement('canvas');c.width=IM[k].width;c.height=IM[k].height;c.getContext('2d').drawImage(IM[k],0,0);S.cv[k]=c;S.mk[k]=maskOf(IM[k]);});
     S.mk.n=maskOf(IM.n);
@@ -114,18 +114,26 @@
 
   /* ---------- plantés, salis ---------- */
   function plant(it,px,py){
-    var uv=toUV(px,py),p={k:it.k,u:uv[0],v:uv[1],a:it.k?it.rot-S.th:rnd(-.5,.5),s:it.s/S.f};
+    var uv=toUV(px,py),p={k:it.k,u:uv[0],v:uv[1],a:it.k?it.rot-S.th:rnd(-.5,.5),s:it.s/S.f},dedans=inZone(p);
     if(it.held){it.held=false;document.documentElement.classList.remove('cro-prise');}
     it.dead=true;
-    if(S.pl.length>=16)S.pl.shift();
-    S.pl.push(p);
-    tache(it.k?'v':'c',p.u,p.v,(it.k?38:52)*(.8+Math.random()*.5));
     S.om+=clamp(-it.vx/Math.max(120,S.ext+S.g.dh*.45)*.9,-3.2,3.2)+(Math.random()<.5?-.5:.5);
-    FX.spray(px,py,it.k?6:5,.55,it.k?['#8fd61f','#d6ff86','#4f9a17']:['#6b3d17','#4b2a0e','#9a6a2c']);
-    var n1=0,n2=0,dedans=inZone(p);
-    S.pl.forEach(function(q){if(inZone(q)){if(q.k)n1++;else n2++;}});
+    S.ab+=dedans?2:1;
+    if(it.k){
+      /* le clystère reste planté, et la plaie saigne */
+      if(S.pl.length>=16)S.pl.shift();
+      S.pl.push(p);
+      tache('r',p.u,p.v,26+Math.random()*14);
+      FX.spray(px,py,8,.7,['#9a0c1c','#e0283a','#5c0710']);
+    }else{
+      /* la crotte s'écrase et disparaît, ne laissant que sa tache */
+      tache('c',p.u,p.v,(46+Math.random()*24));
+      FX.spray(px,py,5,.5,['#6b3d17','#4b2a0e','#9a6a2c']);
+      if(dedans)S.zc++;
+    }
+    var n1=0;S.pl.forEach(function(q){if(q.k&&inZone(q))n1++;});
     if(dedans){S.om+=(Math.random()<.5?-1:1)*1.4;FX.spray(px,py,5,.7,['#8fd61f','#efe6c0']);}
-    if(!S.born&&n1>=2&&n2>=2)naissance();
+    if(!S.born&&((n1>=2&&S.zc>=2)||S.ab>=10))naissance();
   }
   function naissance(){
     S.born=true;S.nais=.001;S.fl=1;S.om+=(Math.random()<.5?-1:1)*4.5;S.dyv-=140;
@@ -179,7 +187,7 @@
       if(!pointIn(px,py))continue;
       if(it.usr)plant(it,px,py);
       else if(!it.k&&!it.wet&&it.vy>120){
-        var uv=toUV(px,py);tache('c',uv[0],uv[1],40+Math.random()*24);it.out=true;
+        var uv=toUV(px,py);tache('c',uv[0],uv[1],40+Math.random()*24);it.out=true;S.ab+=.5;
         S.om+=clamp(-it.vx/300,-1,1)+(Math.random()<.5?-.3:.3);
         FX.spray(px,py,3,.4,['#6b3d17','#4b2a0e']);
       }
@@ -240,6 +248,34 @@
     S.dyv+=(-140*S.dy-8*S.dyv)*dt;S.dy+=S.dyv*dt;
     var hp=toW(-g.mx+g.dw*.5,S.ext+g.dh*.97),sf=FX.niv>2?FX.vsurf(hp[0]):1e9;
     S.sub=hp[1]>sf+6;
+    /* le sang coule des clystères plantés ; le fluide vert, lui, lave et guérit tout ce qu'il touche */
+    S.bl+=dt;
+    if(S.bl>.35){
+      S.bl=0;
+      for(i=0;i<S.pl.length;i++){
+        if(!S.pl[i].k)continue;
+        var wp=toW(-g.mx+S.pl[i].u*g.dw,S.ext+S.pl[i].v*g.dh);
+        if(FX.niv>2&&wp[1]>FX.vsurf(wp[0]))continue;
+        if(FX.drops.length<60)FX.drops.push({x:wp[0]+rnd(-4,4),y:wp[1],vx:rnd(-20,20),vy:rnd(40,160),r:rnd(1.4,2.6),l:rnd(.6,1.1),c:Math.random()<.5?'#9a0c1c':'#e0283a'});
+        if(Math.random()<.18&&S.st.length<40)tache('r',S.pl[i].u+rnd(-.02,.02),S.pl[i].v+rnd(0,.05),9+Math.random()*8);
+      }
+    }
+    S.cl+=dt;
+    if(S.cl>.15&&FX.niv>2){
+      S.cl=0;var lav=0,k2,q2,w2,pol=[];
+      for(k2=S.st.length-1;k2>=0;k2--){
+        q2=S.st[k2];w2=toW(-g.mx+q2.u*g.dw,S.ext+q2.v*g.dh);
+        if(w2[1]>FX.vsurf(w2[0])){S.st.splice(k2,1);lav++;}
+      }
+      for(k2=S.pl.length-1;k2>=0;k2--){
+        q2=S.pl[k2];w2=toW(-g.mx+q2.u*g.dw,S.ext+q2.v*g.dh);
+        if(w2[1]>FX.vsurf(w2[0])){
+          var it2=FX.mk(q2.k,w2[0],w2[1],rnd(-80,80),rnd(-60,40));it2.rot=q2.a+S.th;it2.usr=false;S.pl.splice(k2,1);lav++;
+          FX.spray(w2[0],w2[1],4,.4,['#d6ff86','#8fd61f']);
+        }
+      }
+      if(lav){rebake(S.k);S.ab=Math.max(0,S.ab-lav*.8);FX.spray(hp[0],sf,3,.4,['#d6ff86','#f4ffd9']);}
+    }
     if(S.sub&&!S.wet){S.wet=true;FX.wave(hp[0],clamp(Math.abs(S.om)*g.dh*.012,1,10));FX.spray(hp[0],sf,5,.6);}
     else if(!S.sub)S.wet=false;
     if(S.born){
