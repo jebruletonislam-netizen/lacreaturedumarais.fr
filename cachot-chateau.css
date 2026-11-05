@@ -1,17 +1,17 @@
 /* ====================================================================================================
-   LE CHÂTEAU DE FENGSEL : gothique flamboyant normand.
-   Façade et frise d'accolades en haut, plan en croix latine à gauche, nef à voûte d'ogives et piliers
-   fasciculés pour le texte, niches à crochets pour les fiches, gravures sous la voûte.
-   Les décors sont des SVG autonomes (images/cachot/*.svg), générés à partir de la géométrie gothique.
+   LE CHÃ‚TEAU DE FENGSEL : gothique flamboyant normand.
+   FaÃ§ade et frise d'accolades en haut, plan en trident (Saint-Patrice de Rouen) Ã  gauche, nef Ã  voÃ»te d'ogives et piliers
+   fasciculÃ©s pour le texte, niches Ã  crochets pour les fiches, gravures sous la voÃ»te.
+   Les dÃ©cors sont des SVG autonomes (images/cachot/*.svg), gÃ©nÃ©rÃ©s Ã  partir de la gÃ©omÃ©trie gothique.
    ==================================================================================================== */
 :root{--or:#e8b923;--pi:#c4c4c8;--vh:10.4rem}
 
-/* ---------- la façade, la nuit : tours, pinacles, arcs-boutants, rose rouge derrière le logo ---------- */
+/* ---------- la faÃ§ade, la nuit : tours, pinacles, arcs-boutants, rose rouge derriÃ¨re le logo ---------- */
 .cachot header{background:radial-gradient(ellipse 34% 100% at 50% 78%,rgba(190,0,22,.4),transparent 72%),url(/images/cachot/facade.svg) 50% 100%/cover no-repeat,linear-gradient(#010103,#0c0a10 70%,#150709);border-bottom:.45rem solid #8d8d94}
 .cachot header::before{left:0;right:0;bottom:.45rem;height:2.55rem;opacity:.95;background:url(/images/cachot/frise.svg) 50% 100%/6rem 2.55rem repeat-x;filter:drop-shadow(0 0 .3rem rgba(225,0,25,.45))}
 .cachot .cr-mid::before{display:none}
 
-/* ---------- le plan du château, en croix latine : on s'y déplace comme dans l'édifice ---------- */
+/* ---------- le plan du chÃ¢teau, en trident (Saint-Patrice de Rouen) : on s'y dÃ©place comme dans l'Ã©difice ---------- */
 .cachot nav{display:block;grid-template-rows:none;padding:1.6rem 3.4rem 2.4rem 1.6rem;border:0;box-shadow:.6rem 0 1.6rem rgba(0,0,0,.8);
   background:url(/images/cachot/chapiteau.svg) right top/2.6rem auto no-repeat,url(/images/cachot/base.svg) right bottom/2.6rem auto no-repeat,url(/images/cachot/pilier.svg) right 3.6rem/2.6rem 24rem repeat-y,
     radial-gradient(ellipse 120% 40% at 50% 100%,rgba(225,0,25,.3),transparent 74%),linear-gradient(rgba(4,4,8,.88),rgba(4,4,8,.95)),url(/images/cachot/vitrail-2.webp) 58% 30%/auto 100% no-repeat,#050508}
@@ -31,6 +31,12 @@
 .plan .pl-z text{fill:#e6e6ea;font:700 8.5px "Cinzel",Georgia,serif;pointer-events:none;paint-order:stroke;stroke:#000;stroke-width:2.2px;stroke-linejoin:round}
 .plan .pl-z:hover path,.plan .pl-z:focus-visible path{fill:rgba(225,0,25,.42);stroke:#fc0;filter:drop-shadow(0 0 3px rgba(255,200,0,.75))}
 .plan .pl-z.on path{fill:rgba(232,185,35,.5);stroke:#fff1b8;animation:pl-pouls 3.4s ease-in-out infinite}
+.plan .pl-s{fill:#3b3b41;stroke:#9a9aa0;stroke-width:.5}
+.plan.plan-mini{width:100%;height:100%;margin:0;filter:none}
+.plan-mini .pl-m{fill:rgba(8,8,11,.8);stroke:#c4c4c8;stroke-width:8;stroke-linejoin:round}
+.plan-mini .pl-on{fill:#fff1b8;stroke:#e8b923;stroke-width:5;stroke-linejoin:round;animation:pl-pouls 3.4s ease-in-out infinite}
+.pl-src{margin:.8rem 0 0;text-align:center;font:italic 400 1rem/1.35 "Cinzel",Georgia,serif;letter-spacing:.03em;color:#8e8e94}
+.pl-mob,.pl-feuille{display:none}
 @keyframes pl-pouls{0%,100%{filter:drop-shadow(0 0 1px rgba(255,214,90,.4))}50%{filter:drop-shadow(0 0 5px rgba(255,214,90,.95))}}
 .pl-l{list-style:none;margin:1.2rem 0 0;padding:0;display:grid;gap:.15rem}
 .pl-l a{display:grid;grid-template-columns:2.8rem 1fr;gap:.6rem;align-items:baseline;padding:.5rem .8rem .45rem;border:.1rem solid transparent;border-radius:.2rem;color:#d4d4d8;font:500 1.3rem/1.22 "Cinzel",Georgia,serif;letter-spacing:.02em;text-decoration:none;text-shadow:0 .1rem .3rem #000;transition:color .2s,background .2s,border-color .2s}
@@ -40,7 +46,7 @@
 .pl-l a[aria-current]{color:#fff;border-color:rgba(232,185,35,.6);background:linear-gradient(90deg,rgba(232,185,35,.24),transparent);box-shadow:0 0 1.2rem rgba(232,185,35,.18)}
 .pl-l a[aria-current] b{color:#fff1b8}
 
-/* ---------- la nef : voûte d'ogives, piliers fasciculés, gravure sous la clé ---------- */
+/* ---------- la nef : voÃ»te d'ogives, piliers fasciculÃ©s, gravure sous la clÃ© ---------- */
 .cachot main{padding:11.8rem 7.8rem 7.6rem;background:url(/images/cachot/voute.svg) 0 0/100% var(--vh) no-repeat,linear-gradient(to right,rgba(0,0,0,.9),transparent 8rem,transparent calc(100% - 8rem),rgba(0,0,0,.9)),linear-gradient(rgba(2,2,4,.64),rgba(2,2,4,.64)),var(--pierre);background-color:#060608;background-size:100% var(--vh),100% 100%,100% 100%,38rem 38rem;background-repeat:no-repeat,no-repeat,no-repeat,repeat}
 .cachot main::before,.cachot main::after{display:block;content:"";position:absolute;top:calc(var(--vh) - 1.2rem);bottom:0;width:5.4rem;opacity:1;border:0;z-index:0;pointer-events:none;
   background:url(/images/cachot/chapiteau.svg) 0 0/100% auto no-repeat,url(/images/cachot/base.svg) 0 100%/100% auto no-repeat,url(/images/cachot/pilier.svg) 0 3.8rem/100% 22rem repeat-y;filter:drop-shadow(0 0 1.2rem #000)}
@@ -54,7 +60,7 @@
 .cr-rayon{top:calc(var(--vh) + 1rem)}
 .cr-poussiere{top:calc(var(--vh) + 2rem)}
 
-/* ---------- panneaux : un pan de nef, couronné d'arcs en accolade ---------- */
+/* ---------- panneaux : un pan de nef, couronnÃ© d'arcs en accolade ---------- */
 .cachot .rsec,.cachot .fiche2{margin:3.4rem 0 3rem;border:.12rem solid rgba(196,196,200,.46);
   background:linear-gradient(rgba(6,6,9,.86),rgba(2,2,4,.93)),radial-gradient(ellipse at 50% 0,rgba(255,255,255,.07),transparent 62%);
   box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(196,196,200,.16),inset 0 0 3.4rem #000,0 1.4rem 2.6rem rgba(0,0,0,.75)}
@@ -62,7 +68,7 @@
 .cachot .rsec::after,.cachot .fiche2::after{content:"";position:absolute;left:-.7rem;right:-.7rem;bottom:-.95rem;top:auto;height:.8rem;pointer-events:none;z-index:2;background:repeating-linear-gradient(90deg,#8d8d94 0 1rem,#15151a 1rem 1.2rem),#15151a;border-top:.12rem solid #c4c4c8;border-bottom:.12rem solid #050505}
 .cachot .rsec>h2:first-child{margin-top:0}
 
-/* ---------- les fiches : le portrait dans une niche à crochets ---------- */
+/* ---------- les fiches : le portrait dans une niche Ã  crochets ---------- */
 .cachot .fiche2{grid-template-columns:minmax(17rem,26rem) 1fr;gap:3rem;padding:3rem 3.2rem 2.6rem;align-items:start}
 .cachot .fiche2>div:first-child{position:relative;width:100%;max-width:26rem;aspect-ratio:300/420;background:url(/images/cachot/niche.svg) 0 0/100% 100% no-repeat;filter:drop-shadow(0 .8rem 1.4rem #000)}
 .cachot .fiche2>div:first-child .pf{position:absolute;left:13.33%;top:15.95%;width:73.34%;height:79.3%;aspect-ratio:auto;border:0;outline:0;clip-path:url(#cr-niche);background:radial-gradient(circle at 50% 38%,#26262b,#050506 78%)}
@@ -84,28 +90,55 @@
 .pl-grand a b{font-size:1.4em}
 .pl-grand .l{display:inline}
 
-/* ---------- les dossiers : des lancettes, comme les baies du chœur ---------- */
+/* ---------- les dossiers : des lancettes, comme les baies du chÅ“ur ---------- */
 .cachot .rub>a{--arc:polygon(0 5.2rem,1.5% 3.9rem,6% 2.6rem,13% 1.6rem,24% .8rem,36% .25rem,50% 0,64% .25rem,76% .8rem,87% 1.6rem,94% 2.6rem,98.5% 3.9rem,100% 5.2rem,100% 100%,0 100%);clip-path:var(--arc)}
 .cachot .rub>a article{clip-path:var(--arc);padding:5.6rem 1.4rem 1.5rem}
 .cachot .rub>a article::before{top:2.3rem;width:1rem;height:1rem;margin-left:-.5rem}
 .cachot .rub>a article::after{top:4.9rem;bottom:auto;right:.9rem}
-/* ---------- pied : le parapet de la façade ouest ---------- */
+/* ---------- pied : le parapet de la faÃ§ade ouest ---------- */
 .cachot .pfoot{border-top:.45rem solid #8d8d94;box-shadow:0 -.18rem 0 var(--rouge)}
 .cachot .pfoot::before{content:"";position:absolute;left:0;right:0;top:-3.1rem;height:2.6rem;pointer-events:none;background:url(/images/cachot/frise.svg) 50% 100%/6.1rem 2.6rem repeat-x;opacity:.9}
 
 @media (max-width:899px){
   :root{--vh:6.2rem}
-  .cachot nav{display:flex;align-items:center;height:4.6rem;padding:.5rem .6rem 0;gap:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;box-shadow:inset 0 -.15rem 0 rgba(225,0,25,.5);background:linear-gradient(#040408,#0a0a10)}
-  .cachot nav::-webkit-scrollbar{display:none}
-  .pl-t,.pl-w{display:none}
-  .pl-l{display:flex;flex:none;gap:.4rem;margin:0}
-  .pl-l li{flex:none}
-  .pl-l a{display:flex;align-items:center;gap:.5rem;height:4rem;padding:.4rem 1.3rem 0;border:.12rem solid rgba(255,255,255,.34);border-bottom:0;border-radius:1.7rem 1.7rem 0 0/2.4rem 2.4rem 0 0;font-size:1.15rem;background:rgba(255,255,255,.04)}
-  .pl-l a b{font-size:1.35rem;text-align:left}
-  .pl-l .l{display:none}
-  .pl-l .c{display:inline;white-space:nowrap}
-  .pl-l a[aria-current]{background:#fff1b8;color:#1a0006;border-color:#fff1b8}
-  .pl-l a[aria-current] b{color:#8a0014}
+  .cachot nav{display:block;height:auto;padding:0;overflow:visible;box-shadow:0 .6rem 1.4rem rgba(0,0,0,.75),inset 0 -.15rem 0 rgba(225,0,25,.5);background:linear-gradient(#040408,#0a0a10)}
+  .cachot nav>.pl-t,.cachot nav>.pl-w,.cachot nav>.pl-l{display:none}
+  .pl-mob{display:flex;align-items:stretch;height:4.7rem;padding:.35rem .4rem 0;gap:.4rem}
+  .pl-fl{flex:none;width:2.9rem;display:grid;place-items:center;color:var(--or);text-decoration:none;border:.12rem solid rgba(255,255,255,.26);border-bottom:0;border-radius:1.3rem 1.3rem 0 0/1.9rem 1.9rem 0 0;background:rgba(255,255,255,.04);-webkit-tap-highlight-color:transparent;transition:background .2s}
+  .pl-fl svg{width:1.2rem;height:1.2rem;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+  .pl-fl.off{opacity:.25}
+  a.pl-fl:active{background:rgba(232,185,35,.22)}
+  .pl-cur{all:unset;box-sizing:border-box;flex:1;min-width:0;display:flex;align-items:center;gap:.75rem;padding:.2rem .8rem 0 .9rem;cursor:pointer;color:#fff;border:.1rem solid rgba(232,185,35,.65);border-bottom:0;border-radius:1.9rem 1.9rem 0 0/2.6rem 2.6rem 0 0;background:linear-gradient(180deg,rgba(232,185,35,.2),rgba(232,185,35,.05));-webkit-tap-highlight-color:transparent}
+  .pl-cur:focus-visible,.pl-fl:focus-visible{outline:.2rem solid var(--jaune,#fc0);outline-offset:-.3rem}
+  .pl-mini{flex:none;display:block;width:2.1rem;height:3.5rem}
+  .pl-txt{flex:1;min-width:0;display:grid;gap:.15rem;text-align:left}
+  .pl-txt small{font:600 .66rem/1.1 "Cinzel",Georgia,serif;letter-spacing:.08em;text-transform:uppercase;color:var(--or);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pl-txt b{font:600 .92rem/1.08 "Cinzel",Georgia,serif;color:#fff;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;text-shadow:0 .1rem .3rem #000}
+  .pl-ouv{margin-left:auto;flex:none;width:1.1rem;height:1.4rem;display:grid;place-items:center;color:var(--or)}
+  .pl-ouv i{display:block;width:.6rem;height:.6rem;border-left:.15rem solid currentColor;border-top:.15rem solid currentColor;transform:translateY(.2rem) rotate(45deg);transition:transform .3s}
+  html.pl-ouvert{overflow:hidden}
+  .pl-cur[aria-expanded="true"] .pl-ouv i{transform:translateY(-.1rem) rotate(225deg)}
+  /* la feuille du plan : monte du bas, en arc d'ogive (mÃªme arc que les dossiers) */
+  .pl-feuille{--arc:polygon(0 3.6rem,1.5% 2.7rem,6% 1.8rem,13% 1.1rem,24% .55rem,36% .18rem,50% 0,64% .18rem,76% .55rem,87% 1.1rem,94% 1.8rem,98.5% 2.7rem,100% 3.6rem,100% 100%,0 100%);position:fixed;inset:0;z-index:90;display:block}
+  .pl-feuille[hidden]{display:none}
+  .pl-fond{position:absolute;inset:0;background:rgba(0,0,0,.78);opacity:0;transition:opacity .35s}
+  .pl-vo{position:absolute;left:0;right:0;bottom:0;max-height:94vh;max-height:94dvh;display:flex;flex-direction:column;background:linear-gradient(#cfcfd4,#6e6e74);clip-path:var(--arc);transform:translateY(102%);transition:transform .42s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 -.6rem 1.6rem rgba(225,0,25,.35))}
+  .pl-vi{position:relative;margin:.3rem .3rem 0;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2.6rem 1.2rem 2rem;clip-path:var(--arc);background:radial-gradient(ellipse 120% 40% at 50% 100%,rgba(225,0,25,.28),transparent 74%),linear-gradient(rgba(4,4,8,.9),rgba(4,4,8,.97)),url(/images/cachot/vitrail-2.webp) 50% 20%/cover no-repeat,#050508}
+  .pl-feuille.ouvert .pl-fond{opacity:1}
+  .pl-feuille.ouvert .pl-vo{transform:none}
+  .pl-poignee{position:absolute;left:50%;top:.6rem;width:3.2rem;height:.3rem;margin-left:-1.6rem;border-radius:.3rem;background:rgba(255,255,255,.4)}
+  .pl-t2{margin:0 0 .8rem;text-align:center;font:400 1.15rem/1 "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.28em;color:var(--or);text-shadow:0 .1rem 0 #000}
+  .pl-x{all:unset;box-sizing:border-box;position:absolute;right:.8rem;top:4.2rem;width:2.7rem;height:2.7rem;display:grid;place-items:center;border:.12rem solid rgba(255,255,255,.5);border-radius:50%;background:rgba(0,0,0,.6);color:#fff;cursor:pointer;z-index:3;-webkit-tap-highlight-color:transparent}
+  .pl-x svg{width:1.1rem;height:1.1rem;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+  .pl-x:focus-visible{outline:.2rem solid var(--jaune,#fc0);outline-offset:.2rem}
+  .pl-corps{display:grid;gap:.9rem}
+  .pl-wf .plan{width:auto;max-width:100%;height:min(38vh,25rem);height:min(38dvh,25rem)}
+  .pl-lf{margin:0}
+  .pl-lf a{grid-template-columns:2.2rem 1fr;padding:.6rem .6rem .55rem;font-size:.92rem}
+  .pl-lf a b{font-size:1.05rem}
+  .pl-feuille .pl-src{margin-top:1rem;font-size:.78rem}
+  .pl-mob{display:flex}
+  @media (prefers-reduced-motion:reduce){.pl-vo,.pl-fond,.pl-ouv i{transition:none}}
   .pl-grand{display:grid;margin-top:1rem}
   .pl-grand a{display:grid;grid-template-columns:2.2rem 1fr;height:auto;padding:.5rem .6rem;border:.1rem solid transparent;border-radius:.2rem;background:none;font-size:1.1rem}
   .pl-grand .l{display:inline}.pl-grand .c{display:none}
@@ -124,3 +157,10 @@
   .cachot .pfoot::before{top:-2.3rem;height:1.9rem;background-size:4.4rem 1.9rem}
 }
 @media (prefers-reduced-motion:reduce){.cachot main>.cr-rose,.plan .pl-z.on path{animation:none}}
+
+/* ---------- en-tÃªte : ni torches ni vitrail, la faÃ§ade seule ; la case de droite ne sert qu'Ã  centrer le logo ---------- */
+.cachot header .cr-cote{display:block;flex:1 1 0;min-width:0;padding:0}
+@media (max-width:899px){.cachot header .cr-cote{display:block;flex:0 0 4.2rem;padding:0}}
+/* prise facile : un halo invisible autour de la toile, et un ruban le long des fils tendus */
+@media (hover:hover) and (pointer:fine){.ar-couche .ar-toile::before{content:"";position:absolute;inset:-1.4rem;border-radius:50%}}
+.ar-couche .ar-corde{all:unset;position:absolute;left:0;top:0;width:100%;height:100%;display:none;cursor:grab;pointer-events:auto;touch-action:none;-webkit-tap-highlight-color:transparent}

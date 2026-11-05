@@ -506,6 +506,8 @@ header{overflow:visible}
 .mid a[aria-label="Deezer"]{--ax:8.221rem}.mid a[aria-label="Apple Musique"]{--ax:13.590rem}.mid a[aria-label="Spotify"]{--ax:19.155rem}.mid a[aria-label="Instagram"]{--ax:24.551rem}.mid a[aria-label="YouTube"]{--ax:30.206rem}.mid a[aria-label="X"]{--ax:35.745rem}.mid a[aria-label="TikTok"]{--ax:41.167rem}
 .ppp::after{content:"";position:absolute;right:calc(2.71rem - 0.698rem);top:calc(2.31rem - 0.698rem);height:calc(8.93rem + 1.396rem);aspect-ratio:1379/710;max-width:calc(100% - 3.4rem + 1.396rem);background:url(images/putride/lueur-ppp.webp) right center/contain no-repeat;mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
 .ppp:hover::after,.ppp:focus-visible::after{opacity:1}
+/* le fond du logo : un vitrail néon, gothique, qui prolonge la couronne du blason (arcade de lancettes, rosace derrière le blason, pampres) ; fondu à gauche */
+.ppp::before{content:"";position:absolute;top:0;right:0;bottom:0;width:min(100%,60rem);background:url(images/putride/vitrail-ppp.svg?v=1) right center/auto 100% no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%);mask-image:linear-gradient(90deg,transparent 0,#000 26%);pointer-events:none}
 }
 /* page des Retard-Tinables : l'image (cadre vert) est à droite du texte, qui l'enveloppe */
 .rtfig{margin:0;padding:.45rem;background:var(--g);line-height:0;box-shadow:0 0 1.4rem rgba(57,255,110,.5)}

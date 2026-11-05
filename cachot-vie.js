@@ -85,12 +85,12 @@
     var TOILE='<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><g fill="none" stroke="#fff" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M50 50L50 2M50 50L84 16M50 50L98 50M50 50L84 84M50 50L50 98M50 50L16 84M50 50L2 50M50 50L16 16"/><path d="M50 36L61 39L64 50L61 61L50 64L39 61L36 50L39 39Z"/><path d="M50 22L69 28L78 50L69 72L50 78L31 72L22 50L31 28Z" opacity=".85"/><path d="M50 9L77 17L91 50L77 83L50 91L23 83L9 50L23 17Z" opacity=".65"/></g><circle cx="50" cy="50" r="3.2" fill="#e10019" stroke="#fff" stroke-width=".8"/></svg>';
     var ARAIGNEE='<svg viewBox="0 0 40 44" aria-hidden="true" focusable="false"><g class="ar-p" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 25Q9 15 3 23"/><path d="M20 26Q8 24 2 32"/><path d="M20 27Q9 33 6 42"/><path d="M20 28Q13 35 12 43"/><path d="M20 25Q31 15 37 23"/><path d="M20 26Q32 24 38 32"/><path d="M20 27Q31 33 34 42"/><path d="M20 28Q27 35 28 43"/></g><ellipse cx="20" cy="13" rx="8" ry="10.5" fill="#050505" stroke="#fff" stroke-width="1"/><path d="M20 6L25 13L20 20L15 13Z" fill="#e10019"/><path d="M17 9.5L23 9.5L20 13L23 16.5L17 16.5L20 13Z" fill="#050505"/><circle cx="20" cy="27" r="5.4" fill="#0b0b0b" stroke="#fff" stroke-width="1"/><circle cx="17.6" cy="25.8" r="1" fill="#e10019"/><circle cx="22.4" cy="25.8" r="1" fill="#e10019"/><circle cx="19" cy="23.6" r=".6" fill="#ff5a6e"/><circle cx="21" cy="23.6" r=".6" fill="#ff5a6e"/><path d="M18.3 30.4L19 33.6L19.7 30.4M20.3 30.4L21 33.6L21.7 30.4" fill="#fff" stroke="#fff" stroke-width=".6" stroke-linejoin="round"/></svg>';
     arc=document.createElement('div');arc.className='ar-couche';
-    arc.innerHTML='<svg class="ar-svg" aria-hidden="true"><path class="ar-etire" d="M0 0"/><path class="ar-etire" d="M0 0"/><path class="ar-etire" d="M0 0"/><path class="ar-fil" d="M0 0"/></svg><button class="ar-toile" type="button" aria-label="La toile : saisissez-la pour déplacer l’araignée n’importe où sur l’écran">'+TOILE+'</button><button class="corps-a" type="button" aria-label="Toucher l’araignée : elle parle">'+ARAIGNEE+'</button>';
+    arc.innerHTML='<svg class="ar-svg" aria-hidden="true"><path class="ar-etire" d="M0 0"/><path class="ar-etire" d="M0 0"/><path class="ar-etire" d="M0 0"/><path class="ar-fil" d="M0 0"/></svg><button class="ar-corde" type="button" aria-label="Les fils tendus : saisissez-les pour tirer la toile où vous voulez"></button><button class="ar-toile" type="button" aria-label="La toile : saisissez-la pour déplacer l’araignée n’importe où sur l’écran">'+TOILE+'</button><button class="corps-a" type="button" aria-label="Toucher l’araignée : elle parle">'+ARAIGNEE+'</button>';
     body.appendChild(arc);
     ar=arc.querySelector('.corps-a');
   }
   if(ar){
-    var tl=arc.querySelector('.ar-toile'),fil=arc.querySelector('.ar-fil'),fils=arc.querySelectorAll('.ar-etire'),He=null;
+    var tl=arc.querySelector('.ar-toile'),corde=arc.querySelector('.ar-corde'),fil=arc.querySelector('.ar-fil'),fils=arc.querySelectorAll('.ar-etire'),He=null;
     /* le son : un petit « tchoing » d'élastique au lâcher de la toile, discret, synthétisé à la volée */
     var AC=null;
     var audio=function(){try{if(!AC){var AX=window.AudioContext||window.webkitAudioContext;if(!AX)return;AC=new AX();}if(AC.state==='suspended')AC.resume();}catch(_){}};
@@ -131,11 +131,12 @@
     var maison=function(){
       var m=innerWidth<900,hb=hd?hd.getBoundingClientRect().bottom:0,nv=m&&document.querySelector('nav');
       if(nv){var q=nv.getBoundingClientRect();if(q.top<innerHeight/3)hb=Math.max(hb,q.bottom);}
-      A.x=innerWidth*(m?.88:.58);A.y=hb+10;
+      A.x=innerWidth*(m?.88:.58);A.y=hb+(m?46:10);
     };
     maison();
     var bord=function(){A.x=Math.max(14,Math.min(innerWidth-14,A.x));A.y=Math.max(14,Math.min(innerHeight-60,A.y));};
     addEventListener('resize',function(){if(libre)bord();else maison();});
+    var prise=function(tl){
     tl.addEventListener('pointerdown',function(e){
       if(e.button)return;
       e.preventDefault();try{tl.setPointerCapture(e.pointerId);}catch(_){}
@@ -157,6 +158,8 @@
     tl.addEventListener('pointerup',function(e){lache(e,false);});
     tl.addEventListener('pointercancel',function(e){lache(e,true);});
     tl.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();grimpe=4;}});
+    };
+    prise(tl);prise(corde);
     var sw=0,sh=0;
     (function boucle(now){
       var dt=Math.min(.04,(now-tlast)/1000)||.016;tlast=now;
@@ -192,7 +195,11 @@
             fils[q].setAttribute('d','M'+(He.x+nx*o).toFixed(1)+' '+(He.y+ny*o).toFixed(1)+'Q'+mx2.toFixed(1)+' '+my2.toFixed(1)+' '+A.x.toFixed(1)+' '+A.y.toFixed(1));
             fils[q].style.strokeWidth=Math.max(.5,1.6/(1+dh/260)).toFixed(2)+'px';
           }
-        }else for(var q2=0;q2<3;q2++)fils[q2].setAttribute('d','M0 0');
+          /* un ruban de prise le long des fils tendus : on peut les saisir n'importe où */
+          var hw=innerWidth<900?20:26;
+          corde.style.display='block';
+          corde.style.clipPath='polygon('+[[He.x+nx*hw,He.y+ny*hw],[A.x+nx*hw,A.y+ny*hw],[A.x-nx*hw,A.y-ny*hw],[He.x-nx*hw,He.y-ny*hw]].map(function(v){return v[0].toFixed(1)+'px '+v[1].toFixed(1)+'px';}).join(',')+')';
+        }else{for(var q2=0;q2<3;q2++)fils[q2].setAttribute('d','M0 0');corde.style.display='none';}
         if(bulle){
           var w=bulle.offsetWidth,hb2=bulle.offsetHeight,dessous=sy+sh/2+62+hb2<innerHeight-8;
           bulle.style.left=Math.max(8,Math.min(innerWidth-w-8,sx-w/2))+'px';

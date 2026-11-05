@@ -27,13 +27,6 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 .cachot .cr-logo img{display:block;width:7.8rem;height:7.8rem;object-fit:contain;filter:drop-shadow(0 0 .8rem rgba(255,255,255,.35));transition:filter .25s,transform .25s}
 .cachot .cr-logo:hover img,.cachot .cr-logo:focus-visible img{filter:drop-shadow(0 0 1.2rem rgba(255,255,255,.8));transform:scale(1.04)}
 .cachot .cr-cote{flex:1 1 0;min-width:0;position:relative}
-/* torche murale */
-.torche{position:absolute;right:5.5rem;top:2.3rem;width:3.2rem;height:9.5rem}
-.torche::before{content:"";position:absolute;left:50%;bottom:0;width:.7rem;height:5.4rem;margin-left:-.35rem;background:linear-gradient(90deg,#222,#9a9a9a 45%,#222);border-radius:.2rem}
-.torche::after{content:"";position:absolute;left:0;right:0;bottom:4.2rem;height:1.5rem;background:linear-gradient(#bdbdbd,#3c3c3c);clip-path:polygon(0 0,100% 0,78% 100%,22% 100%);border-radius:.2rem}
-.torche .feu{position:absolute;left:50%;bottom:5.4rem;width:2.5rem;height:4.4rem;margin-left:-1.25rem;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 82%,#fff6b8 0,#ffd23a 28%,#e10019 62%,transparent 74%);filter:blur(.06rem);transform-origin:50% 100%;animation:cr-feu .16s ease-in-out infinite alternate}
-.torche .feu+.feu{width:1.5rem;height:2.7rem;margin-left:-.75rem;opacity:.9;animation-duration:.11s;animation-direction:alternate-reverse}
-.torche .lueur{position:absolute;left:50%;bottom:5.5rem;width:22rem;height:22rem;margin:0 0 -11rem -11rem;border-radius:50%;background:radial-gradient(circle,rgba(255,196,80,.36),rgba(255,70,20,.1) 40%,transparent 68%);animation:cr-lueur 2.6s ease-in-out infinite;pointer-events:none}
 @keyframes cr-feu{from{transform:scale(1,1) skewX(-4deg)}to{transform:scale(.86,1.14) skewX(4deg)}}
 @keyframes cr-lueur{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
 
@@ -273,7 +266,7 @@ body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
   .tombe{aspect-ratio:1/1}
   .cierge-btn{width:100%;justify-content:center;font-size:1.7rem;padding:.9rem 1.2rem}
 }
-@media (prefers-reduced-motion:reduce){body.cachot::after,.cachot h1,.cr-croix svg,.torche .feu,.torche .lueur,.cr-rayon,.cr-poussiere i,.cr-chaine,.cr-grille *,.tb-scene *,.tb-brume,.cierge-btn{animation:none!important}.fv img,.fv-item,.cachot .rub article{transition:none}}
+@media (prefers-reduced-motion:reduce){body.cachot::after,.cachot h1,.cr-croix svg,.cr-rayon,.cr-poussiere i,.cr-chaine,.cr-grille *,.tb-scene *,.tb-brume,.cierge-btn{animation:none!important}.fv img,.fv-item,.cachot .rub article{transition:none}}
 
 /* ================= gothique, glam, fumées, reliques ================= */
 :root{
@@ -511,10 +504,8 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 .cr-sprite{position:absolute;width:0;height:0;overflow:hidden}
 .cachot header{--tour:7.4rem;background:radial-gradient(ellipse 55% 120% at 50% 100%,rgba(120,0,16,.32),transparent 70%),linear-gradient(#070707,#000)}
 .cachot header::before{left:0;right:0;bottom:.5rem;height:1.7rem;opacity:.85;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16' fill='none' stroke='%23fff' stroke-width='.9' stroke-linejoin='round'%3E%3Cpath d='M0 16V9Q0 3 12 0Q24 3 24 9V16M5.500 16V10.500Q5.500 7 12 4.500Q18.500 7 18.500 10.500V16M12 4.500V16' opacity='.9'/%3E%3Cpath d='M12 8Q9 10 9 13M12 8Q15 10 15 13' stroke='%23e10019'/%3E%3C/svg%3E") 0 100%/2.4rem 1.6rem repeat-x;filter:drop-shadow(0 0 .25rem rgba(225,0,25,.5))}
-.cachot .cre{position:relative;padding-left:calc(2.6rem + 4.6rem);justify-content:flex-start}
+.cachot .cre{position:relative;padding-left:2.8rem;justify-content:flex-start}
 .cachot .cr-cote{display:flex;align-items:center;justify-content:flex-end;padding-right:calc(2.6rem + 4.6rem)}
-.cachot .cre .torche{left:2.6rem;right:auto}
-.cachot .cr-cote .torche{right:2.6rem}
 .cachot .cr-mid{position:relative}
 .cachot .cr-mid::before{content:"";position:absolute;z-index:0;left:-5rem;right:-5rem;top:0;bottom:1.7rem;background:url(/images/cachot/fenetres.webp) 50% 38%/cover;opacity:.34;filter:brightness(.78) contrast(1.15);-webkit-mask-image:radial-gradient(ellipse 50% 62% at 50% 44%,#000 38%,transparent 100%);mask-image:radial-gradient(ellipse 50% 62% at 50% 44%,#000 38%,transparent 100%);pointer-events:none}
 .cachot .cr-mid>*{position:relative;z-index:1}
@@ -532,7 +523,6 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 @media (max-width:899px){
   .cachot header::before{height:1rem;background-size:1.5rem 1rem}
   .cachot header .cr-cote{display:flex;flex:0 0 auto;padding:0 .9rem 0 0}
-  .cachot header .cr-cote .torche,.cachot header .cre .torche{display:none}
   .cachot .cre{padding:0 0 0 .9rem}
   .cachot header .mid.cr-mid{justify-content:center;gap:.9rem;padding:0 .2rem}
   .cachot .cr-mid>img.cr-pil{height:calc(100% - .8rem);align-self:flex-end}
@@ -596,7 +586,3 @@ body.ar-prise,body.ar-prise *{cursor:grabbing!important}
 .vt2-hero{margin:1.6rem 0 1.2rem}
 .vt2-hero .vt2{max-width:none;margin:0}
 .cachot .cr-cote{display:flex;align-items:center;justify-content:flex-end;padding-right:calc(2.6rem + 4.6rem)}
-.cr-vitm{display:block;width:min(19rem,100%);flex:none;text-decoration:none}
-.cr-vitm .vt2{margin:0;max-width:none;border-width:.15rem;box-shadow:0 0 0 .15rem #000,0 0 1.6rem rgba(225,40,50,.4)}
-.cr-vitm:hover .vt2,.cr-vitm:focus-visible .vt2{animation-duration:3s}.cr-vitm:hover .vt2 .v2,.cr-vitm:focus-visible .vt2 .v2{animation-duration:3s}
-@media (max-width:899px){.cachot header .cr-cote{padding:0 .9rem 0 0}.cr-vitm{width:6.4rem}.cr-vitm .vt2{border-width:.1rem}}
