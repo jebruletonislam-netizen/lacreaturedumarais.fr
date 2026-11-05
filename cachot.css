@@ -577,6 +577,7 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 .ar-couche{position:fixed;inset:0;z-index:40;pointer-events:none}
 .ar-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .ar-fil{fill:none;stroke:rgba(255,255,255,.72);stroke-width:1.2px;filter:drop-shadow(0 0 2px rgba(255,255,255,.5))}
+.ar-etire{fill:none;stroke:rgba(255,255,255,.9);stroke-width:1.4px;stroke-linecap:round;filter:drop-shadow(0 0 2px rgba(255,255,255,.55))}
 .ar-couche .ar-toile{all:unset;position:absolute;left:0;top:0;width:5.4rem;height:5.4rem;border-radius:50%;cursor:grab;pointer-events:auto;touch-action:none;-webkit-tap-highlight-color:transparent;will-change:transform}
 .ar-couche .ar-toile svg{display:block;width:100%;height:100%;opacity:.85;filter:drop-shadow(0 0 .5rem rgba(255,255,255,.45));transition:opacity .25s,filter .25s}
 .ar-couche .ar-toile:hover svg,.ar-couche .ar-toile:focus-visible svg{opacity:1;filter:drop-shadow(0 0 .9rem rgba(255,255,255,.9))}

@@ -238,7 +238,7 @@
     });
     b.addEventListener('pointermove',function(e){
       var d=S.hd;if(!d||e.pointerId!==d.id)return;
-      if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)>6){d.moved=true;S.free=true;FX.ferme();document.documentElement.classList.add('cro-prise');}
+      if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)>6){d.moved=true;S.free=true;if(!S.an)S.an={x:S.hx,y:S.hy,vx:0,vy:0};FX.ferme();document.documentElement.classList.add('cro-prise');}
       if(!d.moved)return;
       S.hx=e.clientX+d.ox;S.hy=e.clientY+d.oy;
     });
@@ -294,6 +294,12 @@
       S.hx+=S.gvx*dt;S.hy+=S.gvy*dt;var fr=Math.exp(-5*dt);S.gvx*=fr;S.gvy*=fr;
       if(Math.abs(S.gvx)+Math.abs(S.gvy)<12)S.gvx=S.gvy=0;
       S.hx=clamp(S.hx,10,FX.CW-10);S.hy=clamp(S.hy,4,Math.max(8,FX.CH-S.ext-30));
+    }
+    /* l'ancienne attache reste collée là où l'on a saisi les collants ; lâchés, ils claquent comme un élastique et la rejoignent en vibrant */
+    if(S.an){
+      var an=S.an;
+      if(hdm){an.vx=an.vy=0;}
+      else{an.vx+=((S.hx-an.x)*140-an.vx*6)*dt;an.vy+=((S.hy-an.y)*140-an.vy*6)*dt;an.x+=an.vx*dt;an.y+=an.vy*dt;if(Math.hypot(S.hx-an.x,S.hy-an.y)<2&&Math.hypot(an.vx,an.vy)<25)S.an=null;}
     }
     var rvx=(S.hx-S.phx)/dt,rvy=0;if(!S.phx)rvx=0;S.phx=S.hx;
     S.vx+=(rvx-S.vx)*.25;S.vy+=((S.hy-(S.phy||S.hy))/dt-S.vy)*.25;S.phy=S.hy;
@@ -394,10 +400,33 @@
     }
     objets();
   }
+  /* les collants étirés : deux rubans tendus entre l'ancienne attache et le crochet, amincis au milieu, qui vibrent au lâcher */
+  function etire(){
+    var a=S.an;if(!a)return;
+    var x0=a.x,y0=a.y+S.dy,x1=S.hx,y1=S.hy+S.dy,dx=x1-x0,dy=y1-y0,d=Math.hypot(dx,dy);if(d<6)return;
+    var nx=-dy/d,ny=dx/d,m=M[S.k],g=S.g,tens=1/(1+d/160),sag=Math.max(0,120-d)*.35,sp=Math.hypot(a.vx,a.vy),
+        wig=Math.sin(performance.now()/26)*Math.min(16,sp*.014),i,k,n=14,sa,pts,L,R,t,lat,off,wl,w0,w1,wt,px,py;
+    for(i=0;i<2;i++){
+      sa=m.sa[i];if(!sa.d)sa.d=shade(sa.c,.55);
+      wl=Math.max(7,sa.w*g.dw*1.05);off=(i?1:-1)*Math.max(3,wl*.5*(.5+.5*tens));w0=wl*(.55+.45*tens);w1=Math.max(3.4,wl*.2*tens+2);
+      L=[];R=[];
+      for(k=0;k<=n;k++){
+        t=k/n;lat=off*(1-.6*Math.sin(Math.PI*t))+(sag+wig*(i?1:-1))*Math.sin(Math.PI*t);
+        px=x0+dx*t+nx*lat;py=y0+dy*t+ny*lat;wt=w1+(w0-w1)*Math.pow(Math.abs(1-2*t),1.6);
+        L.push([px+nx*wt/2,py+ny*wt/2]);R.push([px-nx*wt/2,py-ny*wt/2]);
+      }
+      cx.beginPath();cx.moveTo(L[0][0],L[0][1]);
+      for(k=1;k<=n;k++)cx.lineTo(L[k][0],L[k][1]);
+      for(k=n;k>=0;k--)cx.lineTo(R[k][0],R[k][1]);
+      cx.closePath();cx.fillStyle=sa.c;cx.globalAlpha=.55+.4*tens;cx.fill();cx.globalAlpha=1;cx.lineWidth=1.2;cx.strokeStyle='rgba(255,255,255,.55)';cx.stroke();
+    }
+    cx.beginPath();cx.arc(x0,y0,4.5,0,TAU);cx.fillStyle='#9aa3a8';cx.fill();cx.lineWidth=1.5;cx.strokeStyle='#14171a';cx.stroke();
+  }
   function draw(){
     if(!S||!S.vis)return;
     if(S.lt!==FX.t){S.lt=FX.t;lay();}
     var g=S.g,m=M[S.k],i,sa,x,w,gr,p,q;
+    etire();
     cx.save();cx.translate(S.hx,S.hy+S.dy);cx.rotate(S.th);
     /* les deux collants partent d'un même crochet */
     for(i=0;i<2;i++){
