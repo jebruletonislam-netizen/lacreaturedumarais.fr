@@ -1483,14 +1483,16 @@
     },150);});
   })();
 
-  /* La Fourolle : un feu-follet furtif sur les pages de Chyren et de Confiteor (au moment de Charia Blanche) ; le script ne se charge que là */
+  /* Clins d'œil furtifs, chargés seulement sur leur page : la Fourolle (Chyren, Confiteor), le père Kitz-Latouch en tricycle (In Odium Fidei) */
   (function(){
-    var charge=false;
+    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=3'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=1']],charge={};
     function verif(){
-      if(/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/.test(location.pathname)){
-        if(window.Fourolle)window.Fourolle.go();
-        else if(!charge){charge=true;loadScript('/fourolle.js?v=2').then(function(){if(window.Fourolle)window.Fourolle.go();});}
-      }else if(window.Fourolle)window.Fourolle.stop();
+      CLINS.forEach(function(q){
+        if(q[0].test(location.pathname)){
+          if(window[q[1]])window[q[1]].go();
+          else if(!charge[q[1]]){charge[q[1]]=1;loadScript(q[2]).then(function(){if(window[q[1]])window[q[1]].go();});}
+        }else if(window[q[1]])window[q[1]].stop();
+      });
     }
     verif();
     document.addEventListener('putride:page',verif);

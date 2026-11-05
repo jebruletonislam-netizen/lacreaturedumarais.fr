@@ -17,6 +17,37 @@
   var TAU=6.283185307;
   var mode='',timer=0,vues=0,run=null,mx=-999,my=-999,styled=false,detEl=null;
 
+  /* le son : un petit souffle de flamme qui s'allume, avec quelques crépitements ; synthétisé à la volée, discret. Le contexte audio naît au toucher. */
+  var AC=null;
+  function audio(){
+    try{
+      if(!AC){var AX=window.AudioContext||window.webkitAudioContext;if(!AX)return;AC=new AX();}
+      if(AC.state==='suspended')AC.resume();
+    }catch(_){}
+  }
+  function souffle(){
+    var c=AC;if(!c||document.hidden)return;
+    function joue(){
+      try{
+        var t=c.currentTime,len=Math.floor(c.sampleRate*.9),buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0),i,k;
+        for(i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,1.5);
+        var s=c.createBufferSource(),bp=c.createBiquadFilter(),g=c.createGain();
+        s.buffer=buf;bp.type='bandpass';bp.Q.value=.9;
+        bp.frequency.setValueAtTime(450,t);bp.frequency.exponentialRampToValueAtTime(2300,t+.32);bp.frequency.exponentialRampToValueAtTime(800,t+.85);
+        g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.085,t+.07);g.gain.exponentialRampToValueAtTime(.0001,t+.85);
+        s.connect(bp);bp.connect(g);g.connect(c.destination);s.start(t);
+        /* crépitements */
+        var hp=c.createBiquadFilter();hp.type='highpass';hp.frequency.value=1800;hp.connect(c.destination);
+        for(k=0;k<8;k++){
+          var tt=t+.1+Math.random()*.6,cs=c.createBufferSource(),cg=c.createGain();
+          cs.buffer=buf;cg.gain.setValueAtTime(.0001,tt);cg.gain.exponentialRampToValueAtTime(.03+Math.random()*.03,tt+.002);cg.gain.exponentialRampToValueAtTime(.0001,tt+.025);
+          cs.connect(cg);cg.connect(hp);cs.start(tt,Math.random()*.4,.04);
+        }
+      }catch(_){}
+    }
+    if(c.state==='running')joue();else if(c.resume)c.resume().then(joue).catch(function(){});
+  }
+
   function css(){
     if(styled)return;styled=true;
     var s=document.createElement('style');
@@ -57,6 +88,7 @@
     run=R;
     function pris(){
       if(R.pris)return;R.pris=true;
+      audio();souffle();
       var b=document.createElement('div');b.className='ff-bulle';b.setAttribute('role','status');
       b.innerHTML='<b>La Fourolle</b>'+TEXTES[m]+'<br><a href="'+FICHE+'">Voir sa fiche →</a>';
       document.body.appendChild(b);R.bul=b;
@@ -65,6 +97,7 @@
       requestAnimationFrame(function(){b.classList.add('on');});
       R.tf=t;
     }
+    hit.addEventListener('pointerdown',audio,{passive:true});
     hit.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();pris();});
     hit.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pris();}});
     function frame(now){
