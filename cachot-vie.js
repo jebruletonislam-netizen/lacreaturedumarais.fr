@@ -91,6 +91,18 @@
   }
   if(ar){
     var tl=arc.querySelector('.ar-toile'),fil=arc.querySelector('.ar-fil'),fils=arc.querySelectorAll('.ar-etire'),He=null;
+    /* le son : un petit « tchoing » d'élastique au lâcher de la toile, discret, synthétisé à la volée */
+    var AC=null;
+    var audio=function(){try{if(!AC){var AX=window.AudioContext||window.webkitAudioContext;if(!AX)return;AC=new AX();}if(AC.state==='suspended')AC.resume();}catch(_){}};
+    var twang=function(f,a,d){
+      var c=AC;if(!c||c.state!=='running'||document.hidden)return;
+      try{
+        var t=c.currentTime,o=c.createOscillator(),o2=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter();
+        o.type='triangle';o2.type='sine';o.frequency.setValueAtTime(f*1.35,t);o.frequency.exponentialRampToValueAtTime(f,t+.05);o2.frequency.setValueAtTime(f*2.01,t);
+        lp.type='lowpass';lp.frequency.value=2600;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(a,t+.006);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+        o.connect(g);o2.connect(g);g.connect(lp);lp.connect(c.destination);o.start(t);o2.start(t);o.stop(t+d+.05);o2.stop(t+d+.05);
+      }catch(_){}
+    };
     var PA=window.CR_PAROLES||{},pool=[],sac=[],bulle=null,traine=[],tb=0,tc=0,last=-1,PROFIL='https://x.com/TancredeCharon';
     (PA.tweets||[]).forEach(function(x){if(x&&(x.t||typeof x==='string'))pool.push({t:x.t||x,u:x.u||PROFIL,d:x.d||'',k:'tweet'});});
     (PA.phrases||[]).forEach(function(x){if(x)pool.push({t:x,u:'',d:'',k:'phrase'});});
@@ -127,6 +139,7 @@
     tl.addEventListener('pointerdown',function(e){
       if(e.button)return;
       e.preventDefault();try{tl.setPointerCapture(e.pointerId);}catch(_){}
+      audio();
       drag={id:e.pointerId,ox:A.x-e.clientX,oy:A.y-e.clientY,sx:e.clientX,sy:e.clientY,moved:false};gvx=gvy=0;
     });
     tl.addEventListener('pointermove',function(e){
@@ -138,7 +151,7 @@
     var lache=function(e,annule){
       if(!drag||e.pointerId!==drag.id)return;
       var d=drag;drag=null;body.classList.remove('ar-prise');try{tl.releasePointerCapture(d.id);}catch(_){}
-      if(d.moved){gvx=Math.max(-1500,Math.min(1500,vx));gvy=0;}
+      if(d.moved){gvx=Math.max(-1500,Math.min(1500,vx));gvy=0;if(He){var dd=Math.hypot(A.x-He.x,A.y-He.y);if(dd>24)twang(170+Math.min(dd,520)*.5,.06,.5);}}
       else if(!annule)grimpe=4;
     };
     tl.addEventListener('pointerup',function(e){lache(e,false);});
