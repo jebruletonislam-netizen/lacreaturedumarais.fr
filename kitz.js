@@ -1,4 +1,4 @@
-/* Le père Kitz-Latouch, curé de Rouen centre et supérieur d'Éphébus, surgit vampiriquement dans son tricycle, avec ses enfants de chœur.
+/* Le père Kitz-Latouch, vampire de Rouen centre et supérieur d'Éphébus, surgit vampiriquement dans son tricycle, avec ses enfants de chœur.
    Quand on ouvre « Misérables » sur la page d'In Odium Fidei (le clip, c'est le tournage qu'il a perturbé), son ombre traverse le bas de
    l'écran, pédale, sonne, et disparaît : un clin d'œil furtif. Chargé à la demande par putride.js ; ne fait rien si l'on a demandé moins d'animations. */
 (function(){
@@ -36,7 +36,7 @@
     c.lineWidth=1.6;c.beginPath();for(i=0;i<5;i++){c.moveTo(x,y);c.lineTo(x+Math.cos(a+i*TAU/5)*r,y+Math.sin(a+i*TAU/5)*r);}c.stroke();
     c.beginPath();c.arc(x,y,2.6,0,TAU);c.fill();
   }
-  /* le curé sur son tricycle, vu de profil, tourné vers la droite ; origine au sol ; d = distance parcourue (les pédales sont sur la grande roue) */
+  /* le père sur son tricycle, vu de profil, tourné vers la droite ; origine au sol ; d = distance parcourue (les pédales sont sur la grande roue) */
   function cure(c,d){
     var F={x:62,y:-22},Rr={x:-40,y:-14},ph=d/22,bob=Math.sin(ph*2)*1.3,H={x:-20,y:-42+bob},S={x:-4,y:-84+bob},HB={x:56,y:-54},k,P,K;
     c.lineCap='round';c.lineJoin='round';

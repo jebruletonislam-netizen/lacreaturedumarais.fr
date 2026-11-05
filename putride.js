@@ -635,7 +635,7 @@
       document.body.appendChild(btn);
       var H0=S0*1.9;
       cro={x:CW*(isM()?.8:.86),y:CH*(isM()?.42:.5),px:0,vx:0,vy:0,rot:0,vr:0,s:S0,h:H0,r:H0*.33,sq:0,sc:0,held:false,fly:0,gone:false,wet:false,
-           sl:0,slv:0,en:0,pev:0,ck:0,ckv:0,ph:rnd(0,6),mix:0,boom:false,ret:false,plong:0,pvx:0,pt:0,cool:0,dirt:0,pier:[],deb:null};
+           sl:0,slv:0,en:0,pev:0,ck:0,ckv:0,ph:rnd(0,6),mix:0,boom:false,ret:false,plong:0,pvx:0,pt:0,cool:0,dirt:0,pier:[],deb:null,vb:0,vbT:0,vin:null,vcasse:null};
       cro.px=cro.x;
       var own={nom:'La dame-jeanne',gone:function(){return cro.gone;},
         ouvre:function(){cro.slv+=rnd(2.4,3.6)*(Math.random()<.5?-1:1);},
@@ -647,7 +647,7 @@
       [[0,-18,6],[0,4,5],[0,20,7],[0,-4,4],[1,-22,4],[1,14,5],[1,-6,4],[3,-16,3],[3,10,4],[3,22,3]].forEach(function(q){LUMPS.push({l:q[0],u:q[1],z:q[2],ph:rnd(0,6)});});
       var BODY=new Path2D('M-10,-44L-10,-26C-10,-14-33,-10-33,12C-33,36-26,50 0,50C26,50 33,36 33,12C33,-10 10,-14 10,-26L10,-44Z');
       var dr=null,hist=[],shx={d:0,e:cro.x,a:cro.x},shy={d:0,e:cro.y,a:cro.y};
-      function gone(){cro.gone=true;if(bulle&&bulle.own===own)ferme();dr=null;document.documentElement.classList.remove('cro-prise');btn.remove();}
+      function gone(){if(cro.vcasse){var vc=cro.vcasse;cro.vcasse=null;vc({x:cro.x,y:cro.y,h:cro.h,rot:cro.rot,sc:cro.sc,vx:cro.vx,vy:cro.vy});}cro.vin=null;cro.gone=true;if(bulle&&bulle.own===own)ferme();dr=null;document.documentElement.classList.remove('cro-prise');btn.remove();}
       btn.addEventListener('pointerdown',function(e){
         if(e.button)return;
         e.preventDefault();try{btn.setPointerCapture(e.pointerId);}catch(_){}
@@ -756,14 +756,14 @@
         cro.slv+=(-46*cro.sl-3.4*cro.slv-clamp(ax,-40000,40000)*.00085)*dt;cro.sl=clamp(cro.sl+cro.slv*dt,-.95,.95);
         cro.en+=((Math.min(3,Math.abs(cro.sl)*2.4+Math.abs(cro.slv)*.45+Math.abs(evy)/2600))-cro.en)*Math.min(1,dt*6);
         /* le bouchon : ouvert tant qu'un tweet est affiché, avec un peu de rebond */
-        cro.mix=Math.max(0,cro.mix-dt*.14);
+        cro.mix=Math.max(0,cro.mix-dt*.14);cro.vb+=(cro.vbT-cro.vb)*Math.min(1,dt*1.6);
         if(cro.mix>.3)FX.pre();
         if(cro.mix>=1){
           if(FX.pret()&&!cro.boom){cro.boom=true;FX.boum({x:cro.x,y:cro.y,rot:cro.rot,h:cro.h});gone();return;}
           if(FX.echec)cro.mix=.3;else cro.mix=1;
         }
         cro.en=Math.max(cro.en,cro.mix*2.4);
-        cro.ckv+=(-150*(cro.ck-(bulle&&bulle.own===own?1:0))-15*cro.ckv)*dt;cro.ck+=cro.ckv*dt;
+        cro.ckv+=(-150*(cro.ck-((bulle&&bulle.own===own)||cro.vin?1:0))-15*cro.ckv)*dt;cro.ck+=cro.ckv*dt;
         if(cro.fly<=0&&cro.held===false&&cro.sq)cro.sq=0;
       };
       /* taches de merde : positions fixes sur le verre (repère du verre) */
@@ -816,9 +816,9 @@
         }
       };
       function casse(){
-        var x=cro.x,y=cro.y,h=cro.h,i,col=['#55300f','#a8691a','#d99a1f','#eee3b4','#f8f3d8'];
+        var x=cro.x,y=cro.y,h=cro.h,i,sang=cro.vb>.25,col=sang?['#7a0010','#a30019','#c80a22','#e3112b']:['#55300f','#a8691a','#d99a1f','#eee3b4','#f8f3d8'];
         /* le fond cède : les liquides se déversent dans le fluide, qui tourne au beige foncé, et les crottes remontent à sa surface */
-        pours.push({x:x,y:y+h*.4,t:0,d:2.8,c:col});
+        pours.push({x:x,y:y+h*.4,t:0,d:2.8,c:col,f:sang?'b':null});
         spray(x,y+h*.35,28,1.2,['#e8fff4','#bfe6d3','#ffffff']);
         for(i=0;i<4;i++){var q=mkItem(0,x+rnd(-18,18),y+h*.3,rnd(-90,90),rnd(-40,110));q.rot=rnd(-1,1);}
         lvl=Math.min(cap(),lvl+16);grow(x,y+h*.4);wave(x,10,y+h*.4);
@@ -826,6 +826,8 @@
         gone();
       }
       var CROUTES=[[-17,-12,3.4,.3,0],[-22,-3,2.6,-.4,0],[-13,-22,2.4,.6,0],[16,-13,3,-.2,0],[21,-5,2.4,.5,0],[12,-23,2.2,0,0],[-8,-31,2.4,.4,1],[7,-33,2.8,-.3,1],[-5,-40,2.2,.2,1],[5,-42,2.4,.1,1],[0,-27,2,0,0]];
+      var BLD=['#3a0008','#6e0010','#a30019','#c80a22','#e3112b'];
+      function mixc(a,b,k){var i,o=[];for(i=0;i<3;i++){var u=parseInt(a.substr(1+i*2,2),16),v=parseInt(b.substr(1+i*2,2),16);o.push(Math.round(u+(v-u)*k));}return 'rgb('+o[0]+','+o[1]+','+o[2]+')';}
       var BANDS=[['#55300f',38],['#a8691a',26],['#d99a1f',12],['#eee3b4',0],['#f8f3d8',-8]];
       cro.draw=function(){
         if(cro.gone){drawDeb();return;}
@@ -840,7 +842,7 @@
           var top=BANDS[i][1]-14-(i===0?0:0);
           cx.beginPath();cx.moveTo(-60,top+130);
           for(j=-60;j<=60;j+=6)cx.lineTo(j,top+Math.sin(j*.16+t*(2.2+i*.4)+i*1.7)*amp*.9*(i===4?1.2:1)+Math.sin(j*.07-t*1.3)*en*1.4);
-          cx.lineTo(60,top+130);cx.closePath();cx.fillStyle=BANDS[i][0];cx.globalAlpha=i>=3?.96:.94;cx.fill();
+          cx.lineTo(60,top+130);cx.closePath();cx.fillStyle=cro.vb>.01?mixc(BANDS[i][0],BLD[i],cro.vb):BANDS[i][0];cx.globalAlpha=i>=3?.96:.94;cx.fill();
         }
         cx.globalAlpha=1;
         /* ce qui flotte : crottes, grumeaux de lait ; et des filaments de sperme sous la surface */
@@ -848,10 +850,11 @@
           var m=LUMPS[i],bt=BANDS[m.l===3?3:m.l][1]-14,bb=(BANDS[m.l===3?2:m.l-1]||[0,76])[1]-14,
               yy=(m.l===0?bt+8:(bt+bb)/2)+Math.sin(t*1.1+m.ph)*(1.6+en*1.5),xx=m.u+Math.sin(t*.8+m.ph*2)*(2+en*3);
           cx.beginPath();cx.ellipse(xx,yy,m.z,m.z*.72,Math.sin(m.ph)*.6,0,6.3);
-          cx.fillStyle=m.l===3?'#fff6d2':'#6b3d17';cx.fill();cx.lineWidth=.9;cx.strokeStyle=m.l===3?'#cdbb86':'#2b1707';cx.stroke();
+          cx.fillStyle=m.l===3?mixc('#fff6d2','#a8101e',cro.vb):mixc('#6b3d17','#7a0c18',cro.vb);cx.fill();cx.lineWidth=.9;cx.strokeStyle=m.l===3?mixc('#cdbb86','#5a0a12',cro.vb):mixc('#2b1707','#2a0308',cro.vb);cx.stroke();
         }
-        cx.strokeStyle='rgba(255,255,255,.85)';cx.lineWidth=2;
+        cx.strokeStyle=cro.vb>.01?mixc('#ffffff','#ff9a9a',cro.vb):'rgba(255,255,255,.85)';cx.lineWidth=2;
         for(i=0;i<3;i++){var sx=-18+i*17+Math.sin(t*.9+i)*3,sy0=BANDS[4][1]-14+3;cx.beginPath();cx.moveTo(sx,sy0);cx.bezierCurveTo(sx+4,sy0+6,sx-4,sy0+10,sx+2,sy0+16+Math.sin(t*1.4+i)*2);cx.stroke();}
+        if(cro.vin)cro.vin(cx,t);
         cx.restore();
         /* des croûtes séchées sur le verre au-dessus du liquide, et la collerette du goulot encroûtée (d'après le vrai bocal) */
         for(i=0;i<CROUTES.length;i++){
@@ -1043,7 +1046,7 @@
     /* ---------- passerelle vers Éphébito (ephebito.js, chargé quand on secoue la dame-jeanne) ---------- */
     Object.defineProperties(FX,{CW:{get:function(){return CW;}},CH:{get:function(){return CH;}},t:{get:function(){return tnow;}},niv:{get:function(){return lvlD;}},tilt:{get:function(){return tilt;}},slope:{get:function(){return ang;}},cro:{get:function(){return cro;}},off:{get:function(){return 0;}}});
     FX.rnd=rnd;FX.clamp=clamp;FX.isM=isM;FX.SL=SL;FX.CO=CO;FX.cx=cxO;FX.ext=ext;FX.items=items;FX.drops=drops;FX.bubs=bubs;FX.LOW=LOW;
-    FX.surfAt=surfAt;FX.vsurf=vsurf;FX.dep=dep;FX.wave=wave;FX.spray=spray;FX.red=function(a){rT=Math.min(1,rT+a);};FX.mk=mkItem;FX.drawItem=drawItem;FX.parle=parle;FX.ferme=ferme;
+    FX.stir=stir;FX.surfAt=surfAt;FX.vsurf=vsurf;FX.dep=dep;FX.wave=wave;FX.spray=spray;FX.red=function(a){rT=Math.min(1,rT+a);};FX.mk=mkItem;FX.drawItem=drawItem;FX.parle=parle;FX.ferme=ferme;
     FX.bulle=function(){return bulle;};FX.lvlAdd=function(n){lvl=Math.min(cap(),lvl+n);};
     FX.bord=hdrBottom;
     FX.sim=function(){return {np:np,cible:cible(),sp:SP,hr:HR,top:FP?FP.mn:null,ms:simN?simMs/simN:0,gx:GX,gy:GY,lvl:lvlD,ext:[ext.x0,ext.tp,ext.x1,ext.fl]};};
@@ -1083,7 +1086,7 @@
           /* ce qui se déverse de la dame-jeanne brisée */
           for(i=pours.length-1;i>=0;i--){
             var pq=pours[i];pq.t+=1/60;
-            if(drops.length<120)drops.push({x:pq.x+rnd(-12,12),y:pq.y+rnd(0,8),vx:rnd(-30,30),vy:rnd(40,170),r:rnd(1.8,3.6),l:3,c:pq.c[(Math.random()*pq.c.length)|0],pour:true});
+            if(drops.length<120)drops.push({x:pq.x+rnd(-12,12),y:pq.y+rnd(0,8),vx:rnd(-30,30),vy:rnd(40,170),r:rnd(1.8,3.6),l:3,c:pq.c[(Math.random()*pq.c.length)|0],pour:pq.f!=='b',f:pq.f});
             if(pq.t>pq.d)pours.splice(i,1);
           }
           if(cro)cro.step(1/60);if(FX.eph)FX.eph.step(1/60);
@@ -1485,7 +1488,7 @@
 
   /* Clins d'œil furtifs, chargés seulement sur leur page : la Fourolle (Chyren, Confiteor), le père Kitz-Latouch en tricycle (In Odium Fidei), la fête du Délycium (Territoire), le Ver du baptistère (un peu partout) */
   (function(){
-    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=3'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=1'],[/^\/mode-putride\/territoire\/?$/,'Fete','/fete.js?v=1'],[/^\/mode-putride\/(?!archives\/ordures)/,'Ver','/ver.js?v=1']],charge={};
+    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=3'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=1'],[/^\/mode-putride\/territoire\/?$/,'Fete','/fete.js?v=2'],[/^\/mode-putride\/(?!archives\/ordures)/,'Ver','/ver.js?v=2']],charge={};
     function verif(){
       CLINS.forEach(function(q){
         if(q[0].test(location.pathname)){
