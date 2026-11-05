@@ -1,4 +1,4 @@
-/* Mode Cachot : le site de PUANTEUR PUTRIDE, sous les égouts.
+/* Les cachots : le site de PUANTEUR PUTRIDE, sous les égouts.
    Squelette de cachot-base.css (déjà en noir et blanc). Ici : la cellule.
    Un mur de pierre humide, un soupirail à barreaux qui laisse tomber un rayon de lune, des chaînes, des torches,
    des portes de cellule en guise de menu, des fiches d'écrou tamponnées en guise de cartes, et une lampe qui suit la main.
@@ -37,34 +37,6 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 @keyframes cr-feu{from{transform:scale(1,1) skewX(-4deg)}to{transform:scale(.86,1.14) skewX(4deg)}}
 @keyframes cr-lueur{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
 
-/* ---------- menu : portes de cellule en fer, guichet à barreaux, plaque gravée ---------- */
-.cachot nav{grid-template-rows:repeat(3,12.2rem) minmax(10rem,1fr);background:#050505 var(--pierre) 0 0/30rem 30rem;border-right:.9rem solid #161616;box-shadow:inset -.14rem 0 0 rgba(255,255,255,.28),.6rem 0 1.6rem rgba(0,0,0,.8)}
-.cachot nav a{position:relative;overflow:hidden;border-bottom:.5rem solid #111;color:#fff;transition:filter .2s;background:
-  repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 .12rem,transparent .12rem .9rem),
-  linear-gradient(#232323,#0d0d0d 55%,#181818)}
-.cachot nav a::before{content:"";position:absolute;left:50%;top:1.3rem;width:6.2rem;height:3.1rem;margin-left:-3.1rem;border:.3rem solid #0a0a0a;border-radius:.3rem;box-shadow:0 0 0 .14rem #7c7c7c,inset 0 0 1rem #000;background:repeating-linear-gradient(90deg,#0a0a0a 0 .36rem,transparent .36rem 1.2rem),radial-gradient(ellipse at 50% 130%,rgba(255,255,255,.42),transparent 70%),#020202;transition:background .25s,box-shadow .25s}
-.cachot nav a::after{content:attr(data-n);position:absolute;left:1.2rem;bottom:.8rem;font:700 1.1rem "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.2em;color:rgba(255,255,255,.55)}
-.cachot nav a:hover::before,.cachot nav a:focus-visible::before{box-shadow:0 0 0 .14rem #fff,0 0 1.6rem rgba(255,255,255,.55),inset 0 0 .6rem #000;background:repeating-linear-gradient(90deg,#0a0a0a 0 .36rem,transparent .36rem 1.2rem),radial-gradient(ellipse at 50% 90%,#fff,rgba(255,255,255,.35) 70%),#111}
-.cachot nav a:hover{filter:brightness(1.18)}
-.cachot nav a[aria-current]{background:repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0 .12rem,transparent .12rem .9rem),linear-gradient(#fafafa,#cfcfcf)}
-.cachot nav a[aria-current]::before{border-color:#000;box-shadow:0 0 0 .14rem #000;background:repeating-linear-gradient(90deg,#000 0 .36rem,transparent .36rem 1.2rem),radial-gradient(ellipse at 50% 90%,#fff,#999 80%),#ccc}
-.cachot nav a[aria-current]::after{color:var(--rouge)}
-.cachot nav a[aria-current] .nav-txt,.cachot nav a[aria-current] .nav-icon{color:#000;text-shadow:none}
-.cachot .nav-txt{position:relative;top:1.1rem;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:700;font-size:2.5rem;letter-spacing:.14em;text-shadow:0 .1rem 0 #000}
-.cachot .nav-icon svg{filter:none}
-.cachot .cr-grille{position:relative;border-bottom:0;overflow:hidden;background:radial-gradient(ellipse 70% 50% at 50% 0,rgba(255,255,255,.16),transparent 70%),repeating-linear-gradient(90deg,transparent 0 2.2rem,#303030 2.2rem 2.9rem,transparent 2.9rem 5.1rem),#030303}
-.cr-grille .goutte{position:absolute;left:30%;top:-1rem;width:.5rem;height:.9rem;border-radius:50% 50% 50% 50%/70% 70% 30% 30%;background:#fff;opacity:0;animation:cr-goutte 5.2s cubic-bezier(.5,0,1,1) infinite}
-.cr-grille .goutte.b{left:68%;animation-delay:-2.7s;animation-duration:6.4s}
-.cr-grille .flaque{position:absolute;left:0;right:0;bottom:0;height:3.4rem;background:linear-gradient(transparent,rgba(255,255,255,.1))}
-.cr-grille .onde{position:absolute;bottom:.7rem;left:calc(30% - 1.2rem);width:2.4rem;height:.8rem;border:.1rem solid rgba(255,255,255,.6);border-radius:50%;opacity:0;animation:cr-onde 5.2s ease-out infinite}
-.cr-grille .onde.b{left:calc(68% - 1.2rem);animation-delay:-2.7s;animation-duration:6.4s}
-.cr-grille .yeux{position:absolute;left:46%;bottom:5.2rem;width:2.2rem;height:.6rem;opacity:0;animation:cr-yeux 19s steps(1,end) infinite}
-.cr-grille .yeux::before,.cr-grille .yeux::after{content:"";position:absolute;top:0;width:.7rem;height:.5rem;border-radius:50%;background:#fff;box-shadow:0 0 .5rem #fff}
-.cr-grille .yeux::before{left:0}.cr-grille .yeux::after{right:0}
-@keyframes cr-goutte{0%{top:-1rem;opacity:0}8%{opacity:.95}64%{top:calc(100% - 3.6rem);opacity:.95}66%,100%{top:calc(100% - 3.4rem);opacity:0}}
-@keyframes cr-onde{0%,63%{transform:scale(.2);opacity:0}65%{opacity:.9}100%{transform:scale(2.2);opacity:0}}
-@keyframes cr-yeux{0%,71%,76%,100%{opacity:0}72%,74%{opacity:.95}73%{opacity:0}75%{opacity:.95}}
-
 /* ---------- la cellule : mur, soupirail, rayon de lune, chaînes ---------- */
 .cachot main{padding:3.2rem 3.4rem 4.6rem;background-color:#0a0a0a;background-image:
   linear-gradient(to right,rgba(0,0,0,.92),transparent 6rem,transparent calc(100% - 6rem),rgba(0,0,0,.92)),
@@ -87,12 +59,6 @@ body.cachot::after{content:"";position:fixed;inset:0;z-index:25;pointer-events:n
 .cr-poussiere{right:2rem;top:5rem;width:min(40rem,70%);height:min(46rem,120%);overflow:hidden}
 .cr-poussiere i{position:absolute;bottom:-1rem;width:.22rem;height:.22rem;border-radius:50%;background:#fff;opacity:0;animation:cr-flotte 14s linear infinite}
 @keyframes cr-flotte{0%{transform:translate(0,0);opacity:0}12%{opacity:.7}60%{opacity:.35}100%{transform:translate(-5rem,-44rem);opacity:0}}
-.cr-chaine{top:-1rem;width:2.6rem;height:22rem;transform-origin:50% 0;animation:cr-balance 7s ease-in-out infinite;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='64'%3E%3Crect x='4' y='3' width='18' height='34' rx='9' fill='none' stroke='%23d8d8d8' stroke-width='3.4'/%3E%3Cpath d='M13 31V63' stroke='%23999' stroke-width='5.5' stroke-linecap='round'/%3E%3Crect x='4' y='3' width='18' height='34' rx='9' fill='none' stroke='%23000' stroke-opacity='.35' stroke-width='1' transform='translate(1 1)'/%3E%3C/svg%3E") 0 0/2.6rem 6.4rem repeat-y;filter:drop-shadow(.3rem .4rem .3rem #000);
-  -webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
-.cr-chaine.g{left:1.8rem}
-.cr-chaine.d{left:6.6rem;height:15rem;animation-delay:-3.1s;animation-duration:8.5s}
-@keyframes cr-balance{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
 
 .cachot .kicker{display:inline-block;margin:0 0 1.1rem;padding:.2rem 1.1rem .1rem;background:var(--rouge);color:#fff;font-size:1.25rem;letter-spacing:.34em;text-shadow:none;box-shadow:.3rem .3rem 0 #000}
 .cachot h1{font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;font-weight:700;font-size:4.2rem;line-height:1.08;letter-spacing:.1em;margin:0 0 1.6rem;color:#f4f4f4;text-shadow:0 -.08rem 0 #000,0 .1rem 0 rgba(255,255,255,.28),0 .4rem 1rem #000;animation:cr-glitch 5.2s steps(1,end) infinite}
@@ -293,15 +259,8 @@ body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
   .cachot .cr-mid>img.cr-pil{height:100%}
   .cachot .cr-mid .cr-logo{margin:0}
   .cachot .cr-logo img{width:3.6rem;height:3.6rem}
-  .cachot nav{grid-template-rows:none;background:#000;border-right:0;box-shadow:none}
-  .cachot nav a{background:#0b0b0b}
-  .cachot nav a::before,.cachot nav a::after{display:none}
-  .cachot nav a[aria-current]{background:#fff}
-  .cachot .cr-grille{display:none}
-  .cachot main{padding:1.8rem 1.3rem 3rem}
   .cr-soupirail{right:1.4rem;top:1.6rem;width:34%}
   .cr-rayon{opacity:.22;width:90%}
-  .cr-chaine.g{left:.6rem;height:12rem}.cr-chaine.d{left:3.6rem;height:8rem}
   .cachot h1{font-size:2.4rem;letter-spacing:.07em}
   .cachot h2{font-size:1.5rem;letter-spacing:.07em}
   .cachot .kicker{font-size:1rem;letter-spacing:.22em}
@@ -344,12 +303,6 @@ body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
 .cachot .kicker{padding:.3rem 2rem .2rem;background:linear-gradient(var(--rouge),#9c0013);box-shadow:none;clip-path:polygon(0 0,100% 0,calc(100% - .9rem) 50%,100% 100%,0 100%,.9rem 50%)}
 .cachot :is(.rfig,.aff,.armes figure){box-shadow:0 0 0 .28rem #000,0 0 0 .4rem rgba(255,204,0,.75),.5rem .9rem 1.4rem rgba(0,0,0,.9)}
 
-/* portes en ogive */
-@media (min-width:900px){
-  .cachot nav a{clip-path:polygon(0 100%,0 32%,3% 20%,12% 9%,28% 2.5%,50% 0,72% 2.5%,88% 9%,97% 20%,100% 32%,100% 100%)}
-  .cachot nav a::before{top:2.3rem}
-}
-
 /* fiches : cartes de tarot aux coins taillés, filet d'argent qui vire à l'or */
 .cachot .rub{gap:2.2rem}
 .cachot .rub>a{--c:1.7rem;display:flex;padding:.16rem;background:linear-gradient(160deg,#fff,#6f6f6f 40%,#fff 75%,#555);transition:background .3s;
@@ -376,7 +329,6 @@ body.cachot #lb img{box-shadow:none;border:.12rem solid #fff}
 @keyframes cr-fumee{0%{transform:translate(0,10vh) scale(.9);opacity:0}14%{opacity:1}62%{opacity:.75}100%{transform:translate(12vw,-34vh) scale(1.5);opacity:0}}
 .cr-disco{position:fixed;inset:-30vmax;z-index:22;pointer-events:none;mix-blend-mode:screen;animation:cr-tourne 140s linear infinite}
 .cr-disco i{position:absolute;width:var(--s,5rem);height:var(--s,5rem);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 68%);animation:cr-scint2 var(--d,6s) ease-in-out infinite}
-@keyframes cr-tourne{to{transform:rotate(360deg)}}
 @keyframes cr-scint2{0%,100%{opacity:.15}50%{opacity:1}}
 .cr-chauve{position:fixed;top:var(--y,20vh);left:-8rem;z-index:24;width:6.4rem;height:3.2rem;pointer-events:none;animation:cr-vol var(--d,10s) linear forwards}
 .cr-chauve.g{left:auto;right:-8rem;animation-name:cr-vol-g}
@@ -566,15 +518,8 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 .cachot .cr-mid{position:relative}
 .cachot .cr-mid::before{content:"";position:absolute;z-index:0;left:-5rem;right:-5rem;top:0;bottom:1.7rem;background:url(/images/cachot/fenetres.webp) 50% 38%/cover;opacity:.34;filter:brightness(.78) contrast(1.15);-webkit-mask-image:radial-gradient(ellipse 50% 62% at 50% 44%,#000 38%,transparent 100%);mask-image:radial-gradient(ellipse 50% 62% at 50% 44%,#000 38%,transparent 100%);pointer-events:none}
 .cachot .cr-mid>*{position:relative;z-index:1}
-.cr-sceau{position:relative;flex:none;display:block;width:6.6rem;height:6.6rem;border-radius:50%;border:.2rem solid #fff;color:#fff;background:radial-gradient(circle at 50% 36%,#2b0409,#050505 72%);box-shadow:0 0 1.1rem rgba(225,0,25,.6),0 0 2.8rem rgba(225,0,25,.25),inset 0 0 1rem rgba(225,0,25,.32)}
-.cr-sceau svg,.cr-sceau-fond svg{display:block;width:100%;height:100%;overflow:visible}
-.cr-sceau .an,.cr-sceau-fond .an{transform-origin:50px 50px;animation:cr-tourne 90s linear infinite}
-.cr-sceau .pe,.cr-sceau-fond .pe{color:#e10019;animation:cr-pouls 4.6s ease-in-out infinite}
-@keyframes cr-tourne{to{transform:rotate(360deg)}}
 
 /* ---------- papier peint damassé et grand sceau en filigrane, derrière le texte ---------- */
-.cachot main>.cr-damas{inset:0;opacity:.05;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 80' fill='none' stroke='%23fff' stroke-width='.9' stroke-linecap='round'%3E%3Cpath d='M30 6C23 17 23 28 30 36C37 28 37 17 30 6ZM30 36C17 30 9 36 14 47C18 41 24 41 30 45C36 41 42 41 46 47C51 36 43 30 30 36Z'/%3E%3Cpath d='M30 45V70M21 60Q30 55 39 60M30 70L23 77M30 70L37 77M24 18Q30 22 36 18'/%3E%3C/svg%3E") 0 0/9rem 12rem,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 80' fill='none' stroke='%23fff' stroke-width='.9' stroke-linecap='round'%3E%3Cpath d='M30 6C23 17 23 28 30 36C37 28 37 17 30 6ZM30 36C17 30 9 36 14 47C18 41 24 41 30 45C36 41 42 41 46 47C51 36 43 30 30 36Z'/%3E%3Cpath d='M30 45V70M21 60Q30 55 39 60M30 70L23 77M30 70L37 77M24 18Q30 22 36 18'/%3E%3C/svg%3E") 4.5rem 6rem/9rem 12rem;-webkit-mask-image:linear-gradient(90deg,#000,transparent 24%,transparent 76%,#000);mask-image:linear-gradient(90deg,#000,transparent 24%,transparent 76%,#000)}
-.cachot main>.cr-sceau-fond{right:-14rem;top:46rem;width:46rem;height:46rem;color:#fff;opacity:.07}
 
 /* ---------- le grand escalier : quatre verrières en arc brisé ---------- */
 .cachot .escalier{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.4rem;margin:1.6rem 0 1.8rem;align-items:start}
@@ -589,14 +534,11 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
   .cachot header .cr-cote{display:flex;flex:0 0 auto;padding:0 .9rem 0 0}
   .cachot header .cr-cote .torche,.cachot header .cre .torche{display:none}
   .cachot .cre{padding:0 0 0 .9rem}
-  .cr-sceau{width:3.3rem;height:3.3rem;border-width:.14rem}
   .cachot header .mid.cr-mid{justify-content:center;gap:.9rem;padding:0 .2rem}
   .cachot .cr-mid>img.cr-pil{height:calc(100% - .8rem);align-self:flex-end}
   .cachot .cr-mid::before{left:-2rem;right:-2rem;bottom:0;opacity:.3}
   .cachot .escalier{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem}
-  .cachot main>.cr-sceau-fond{right:-12rem;top:36rem;width:32rem;height:32rem}
 }
-@media (prefers-reduced-motion:reduce){.cr-sceau .an,.cr-sceau-fond .an,.cr-sceau .pe,.cr-sceau-fond .pe{animation:none!important}}
 
 /* les décors qui débordent à droite ne doivent jamais élargir la page */
 .cachot main{overflow-x:clip}
@@ -604,13 +546,14 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
    les lettres du mot de passe s'inscrivent dans les huit quadrilobes d'en haut : ÉPHÉBAAL ---------- */
 .vt2{position:relative;display:block;aspect-ratio:16/9;width:100%;max-width:64rem;margin:0 auto 1.4rem;overflow:hidden;background:#030308;container-type:inline-size;border:.2rem solid #d9d9d9;box-shadow:0 0 0 .2rem #000,0 0 2.4rem rgba(225,40,50,.32);animation:vt-lueur 8s ease-in-out infinite}
 .vt2>img{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-user-drag:none;user-select:none}
+.vt2 .v1{transform:scale(1.0294);transform-origin:49.8% 31%}
 .vt2 .v2{opacity:0;animation:vt-pulse 8s ease-in-out infinite}
 .vt2-l{position:absolute;inset:0;pointer-events:none}
-.vt2-l b{position:absolute;top:20.8%;width:10%;transform:translate(-50%,-50%);text-align:center;font:400 4.6rem/1 "Bebas Neue",Impact,sans-serif;font:400 8.6cqw/1 "Bebas Neue",Impact,sans-serif;color:#fff;-webkit-text-stroke:.09em #05050a;paint-order:stroke fill;text-shadow:0 0 .35em rgba(255,236,170,.95),0 0 .9em rgba(255,200,80,.6);animation:vt-lettre 8s ease-in-out infinite}
+.vt2-l b{position:absolute;top:20.6%;width:10%;transform:translate(-50%,-50%);text-align:center;font:400 4.6rem/1 "Bebas Neue",Impact,sans-serif;font:400 8.6cqw/1 "Bebas Neue",Impact,sans-serif;color:#fff;-webkit-text-stroke:.09em #05050a;paint-order:stroke fill;text-shadow:0 0 .35em rgba(255,236,170,.95),0 0 .9em rgba(255,200,80,.6);animation:vt-lettre 8s ease-in-out infinite}
 .vt2-l b:empty{display:none}
 .vt2-l b.on{animation:vt-pop .45s cubic-bezier(.2,1.6,.4,1),vt-lettre 8s ease-in-out .45s infinite}
-.vt2-l b:nth-child(1){left:5.6%}.vt2-l b:nth-child(2){left:18.3%}.vt2-l b:nth-child(3){left:31%}.vt2-l b:nth-child(4){left:43.7%}
-.vt2-l b:nth-child(5){left:56.2%}.vt2-l b:nth-child(6){left:68.7%}.vt2-l b:nth-child(7){left:81.3%}.vt2-l b:nth-child(8){left:94%}
+.vt2-l b:nth-child(1){left:4.3%}.vt2-l b:nth-child(2){left:17.3%}.vt2-l b:nth-child(3){left:30.3%}.vt2-l b:nth-child(4){left:43.3%}
+.vt2-l b:nth-child(5){left:56.3%}.vt2-l b:nth-child(6){left:69.3%}.vt2-l b:nth-child(7){left:82.3%}.vt2-l b:nth-child(8){left:95.3%}
 .pb-typing .vt2,.pb-typing .vt2 .v2{animation-duration:3.4s}
 .pb-no .vt2{animation:vt-rouge 2.4s ease-out}
 .pb-ok .vt2{animation:vt-ok 1.5s ease-in forwards}
@@ -656,34 +599,3 @@ body.ar-prise,body.ar-prise *{cursor:grabbing!important}
 .cr-vitm .vt2{margin:0;max-width:none;border-width:.15rem;box-shadow:0 0 0 .15rem #000,0 0 1.6rem rgba(225,40,50,.4)}
 .cr-vitm:hover .vt2,.cr-vitm:focus-visible .vt2{animation-duration:3s}.cr-vitm:hover .vt2 .v2,.cr-vitm:focus-visible .vt2 .v2{animation-duration:3s}
 @media (max-width:899px){.cachot header .cr-cote{padding:0 .9rem 0 0}.cr-vitm{width:6.4rem}.cr-vitm .vt2{border-width:.1rem}}
-
-/* ---------- les boutons de gauche : des lancettes de vitrail, la pierre ajourée en arrière-plan ---------- */
-.cachot nav{
-  grid-template-rows:repeat(3,13rem) minmax(10rem,1fr);
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 120' fill='none' stroke='%23fff' stroke-width='.7' stroke-opacity='.16'%3E%3Cpath d='M8 120V56Q8 24 40 4Q72 24 72 56V120'/%3E%3Cpath d='M16 120V58Q16 32 40 14Q64 32 64 58V120'/%3E%3Cpath d='M40 40a8 8 0 1 0 .01 0M32 40h16M40 32v16'/%3E%3Cpath d='M0 0v120M80 0v120' stroke-opacity='.1'/%3E%3C/svg%3E") 0 0/12rem 18rem,
-    radial-gradient(ellipse 110% 38% at 50% 100%,rgba(225,0,25,.42),transparent 72%),
-    linear-gradient(rgba(4,4,8,.8),rgba(4,4,8,.93)),
-    url(/images/cachot/vitrail-2.webp) 58% 40%/auto 100% no-repeat,
-    #050508;
-  border-right:.9rem solid #14141a;box-shadow:inset -.14rem 0 0 rgba(255,255,255,.3),inset -.5rem 0 0 rgba(225,0,25,.25),.6rem 0 1.6rem rgba(0,0,0,.8)}
-.cachot nav a{overflow:hidden;border-bottom:0;color:#fff;transition:filter .25s;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23e10019' stop-opacity='.55'/%3E%3Cstop offset='1' stop-color='%23200006' stop-opacity='.35'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M10 136V62Q10 26 50 6Q90 26 90 62V136Z' fill='url(%23g)' stroke='%23f2f2f2' stroke-width='2.4'/%3E%3Cpath d='M18 136V64Q18 34 50 16Q82 34 82 64V136' fill='none' stroke='%23ffcc00' stroke-opacity='.55' stroke-width='1'/%3E%3Cpath d='M50 16V136' stroke='%23f2f2f2' stroke-opacity='.35' stroke-width='1'/%3E%3Cpath d='M50 34a9 9 0 1 0 .01 0M41 43h18M50 25v18' fill='none' stroke='%23f2f2f2' stroke-opacity='.55' stroke-width='1.1'/%3E%3C/svg%3E") 50% 55%/auto 94% no-repeat,
-    linear-gradient(90deg,transparent 0 7%,rgba(255,255,255,.07) 7% 8%,transparent 8% 92%,rgba(255,255,255,.07) 92% 93%,transparent 93%);
-  filter:drop-shadow(0 .5rem .8rem #000)}
-.cachot nav a::before{display:none}
-.cachot nav a::after{left:50%;bottom:.9rem;transform:translateX(-50%);font-size:1.15rem;color:rgba(255,230,160,.8)}
-.cachot nav a:hover{filter:brightness(1.3) drop-shadow(0 0 1.2rem rgba(255,204,0,.45))}
-.cachot nav a[aria-current]{
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Cpath d='M10 136V62Q10 26 50 6Q90 26 90 62V136Z' fill='%23fff1b8' stroke='%23fff' stroke-width='2.4'/%3E%3Cpath d='M18 136V64Q18 34 50 16Q82 34 82 64V136' fill='none' stroke='%23e10019' stroke-opacity='.7' stroke-width='1.2'/%3E%3Cpath d='M50 16V136' stroke='%23000' stroke-opacity='.3' stroke-width='1'/%3E%3Cpath d='M50 34a9 9 0 1 0 .01 0M41 43h18M50 25v18' fill='none' stroke='%23000' stroke-opacity='.5' stroke-width='1.1'/%3E%3C/svg%3E") 50% 55%/auto 94% no-repeat;
-  filter:drop-shadow(0 0 1.4rem rgba(255,214,90,.55)) drop-shadow(0 .5rem .8rem #000)}
-.cachot nav a[aria-current]::after{color:#8a0014}
-.cachot .nav-txt{top:1.6rem}
-@media (max-width:899px){
-  .cachot nav{grid-template-rows:none;background:linear-gradient(#040408,#0a0a10);border-right:0;box-shadow:inset 0 -.15rem 0 rgba(225,0,25,.5)}
-  .cachot nav a{background:none;filter:none;border-radius:1.3rem 1.3rem 0 0/1.9rem 1.9rem 0 0;border:.12rem solid rgba(255,255,255,.35);border-bottom:0}
-  .cachot nav a[aria-current]{background:#fff1b8;filter:none}
-  .cachot .nav-txt{top:0}
-}

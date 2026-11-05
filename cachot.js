@@ -1,4 +1,4 @@
-/* Mode Cachot : lampe qui suit le curseur, films chargés au clic, tombe de Kavod (cierges offerts). */
+/* Les cachots : lampe qui suit le curseur, films chargés au clic, tombe de Kavod (cierges offerts). */
 (function(){
   'use strict';
   var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;

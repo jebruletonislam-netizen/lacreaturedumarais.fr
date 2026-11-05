@@ -95,7 +95,8 @@
     var box=document.getElementById('pb');if(!box||box.__ok)return;box.__ok=1;
     var lock=box.querySelector('.pb-lock'),open=box.querySelector('.pb-open'),form=box.querySelector('form'),inp=box.querySelector('input'),msg=box.querySelector('.pb-msg');
     function show(){lock.hidden=true;open.hidden=false;}
-    try{if(sessionStorage.getItem(KEY)==='1'){show();return;}}catch(e){}
+    /* le mot de passe se redemande à chaque descente : le laissez-passer est périmé dès qu'on revient ici */
+    try{sessionStorage.removeItem(KEY);}catch(e){}
     var n=0,tp=0,cases=lock.querySelectorAll('.vt2-l b'),mot=['É','P','H','É','B','A','A','L'];
     /* chaque lettre tapée s'inscrit dans un quadrilobe du vitrail (huit, comme ÉPHÉBAAL) */
     function lettres(arr,pop){
@@ -113,7 +114,7 @@
       ev.preventDefault();
       var v=norm(inp.value);if(!v){inp.focus();return;}
       if(empreinte(v)===EMPREINTE){
-        try{sessionStorage.setItem(KEY,'1');}catch(e){}
+        try{sessionStorage.setItem(KEY,'o'+Date.now());}catch(e){}
         msg.textContent='';lock.classList.remove('pb-typing');lettres(mot,false);lock.classList.add('pb-ok');setTimeout(show,1700);return;
       }
       msg.textContent=MSG[n++%MSG.length];lock.classList.remove('pb-no');void lock.offsetWidth;lock.classList.add('pb-no');

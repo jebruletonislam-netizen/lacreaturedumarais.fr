@@ -691,13 +691,14 @@ main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position
    les lettres du mot de passe s'inscrivent dans les huit quadrilobes d'en haut : ÉPHÉBAAL ---------- */
 .vt2{position:relative;display:block;aspect-ratio:16/9;width:100%;max-width:64rem;margin:0 auto 1.4rem;overflow:hidden;background:#030308;container-type:inline-size;border:.2rem solid #d9d9d9;box-shadow:0 0 0 .2rem #000,0 0 2.4rem rgba(225,40,50,.32);animation:vt-lueur 8s ease-in-out infinite}
 .vt2>img{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-user-drag:none;user-select:none}
+.vt2 .v1{transform:scale(1.0294);transform-origin:49.8% 31%}
 .vt2 .v2{opacity:0;animation:vt-pulse 8s ease-in-out infinite}
 .vt2-l{position:absolute;inset:0;pointer-events:none}
-.vt2-l b{position:absolute;top:20.8%;width:10%;transform:translate(-50%,-50%);text-align:center;font:400 4.6rem/1 "Bebas Neue",Impact,sans-serif;font:400 8.6cqw/1 "Bebas Neue",Impact,sans-serif;color:#fff;-webkit-text-stroke:.09em #05050a;paint-order:stroke fill;text-shadow:0 0 .35em rgba(255,236,170,.95),0 0 .9em rgba(255,200,80,.6);animation:vt-lettre 8s ease-in-out infinite}
+.vt2-l b{position:absolute;top:20.6%;width:10%;transform:translate(-50%,-50%);text-align:center;font:400 4.6rem/1 "Bebas Neue",Impact,sans-serif;font:400 8.6cqw/1 "Bebas Neue",Impact,sans-serif;color:#fff;-webkit-text-stroke:.09em #05050a;paint-order:stroke fill;text-shadow:0 0 .35em rgba(255,236,170,.95),0 0 .9em rgba(255,200,80,.6);animation:vt-lettre 8s ease-in-out infinite}
 .vt2-l b:empty{display:none}
 .vt2-l b.on{animation:vt-pop .45s cubic-bezier(.2,1.6,.4,1),vt-lettre 8s ease-in-out .45s infinite}
-.vt2-l b:nth-child(1){left:5.6%}.vt2-l b:nth-child(2){left:18.3%}.vt2-l b:nth-child(3){left:31%}.vt2-l b:nth-child(4){left:43.7%}
-.vt2-l b:nth-child(5){left:56.2%}.vt2-l b:nth-child(6){left:68.7%}.vt2-l b:nth-child(7){left:81.3%}.vt2-l b:nth-child(8){left:94%}
+.vt2-l b:nth-child(1){left:4.3%}.vt2-l b:nth-child(2){left:17.3%}.vt2-l b:nth-child(3){left:30.3%}.vt2-l b:nth-child(4){left:43.3%}
+.vt2-l b:nth-child(5){left:56.3%}.vt2-l b:nth-child(6){left:69.3%}.vt2-l b:nth-child(7){left:82.3%}.vt2-l b:nth-child(8){left:95.3%}
 .pb-typing .vt2,.pb-typing .vt2 .v2{animation-duration:3.4s}
 .pb-no .vt2{animation:vt-rouge 2.4s ease-out}
 .pb-ok .vt2{animation:vt-ok 1.5s ease-in forwards}
