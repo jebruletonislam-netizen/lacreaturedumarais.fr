@@ -1482,4 +1482,17 @@
       });
     },150);});
   })();
+
+  /* La Fourolle : un feu-follet furtif sur les pages de Chyren et de Confiteor (au moment de Charia Blanche) ; le script ne se charge que là */
+  (function(){
+    var charge=false;
+    function verif(){
+      if(/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/.test(location.pathname)){
+        if(window.Fourolle)window.Fourolle.go();
+        else if(!charge){charge=true;loadScript('/fourolle.js?v=2').then(function(){if(window.Fourolle)window.Fourolle.go();});}
+      }else if(window.Fourolle)window.Fourolle.stop();
+    }
+    verif();
+    document.addEventListener('putride:page',verif);
+  })();
 })();
