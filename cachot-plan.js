@@ -43,6 +43,48 @@
   }
   document.addEventListener('pointerenter',function(e){if(e.target.classList&&e.target.classList.contains('pl-hit'))reagit(e.target);},true);
   document.addEventListener('pointerdown',function(e){if(e.target.classList&&e.target.classList.contains('pl-hit'))reagit(e.target);},true);
+  /* ---------- la marche : on part du lieu que l'on vient de quitter (mémorisé le temps de l'onglet), pas du portail ----------
+     Le chemin remonte la procession du lieu quitté jusqu'au point où les deux trajets se séparent, puis descend vers le lieu courant. */
+  var SOLE='M-1.6,.6C-2.6,-1 -2.9,-3 -2.5,-4.6C-2,-6 2,-6 2.5,-4.6C2.9,-3 2.4,-1 1.6,.6C1,1.5 -1,1.5 -1.6,.6Z',
+      TOES=[[-1.8,-6.5,.9],[-.7,-7.3,.76],[.4,-7.5,.7],[1.4,-7.1,.64],[2.2,-6.3,.54]],NS='http://www.w3.org/2000/svg';
+  function el(n,a,p){var e=document.createElementNS(NS,n),k;for(k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+  function chemin(R,de,vers){
+    var A=R[de],B=R[vers],k=0,i;
+    if(!A||!B)return null;
+    while(k<A.length&&k<B.length&&A[k][0]===B[k][0]&&A[k][1]===B[k][1])k++;
+    var pts=[];
+    for(i=A.length-1;i>=Math.max(0,k-1);i--)pts.push(A[i]);
+    for(i=k;i<B.length;i++)pts.push(B[i]);
+    return pts;
+  }
+  function pas(g,pts,final){
+    var segs=[],total=0,i,n,d,k,s,x,y,ang,side,gp,dx,dy,u;
+    for(i=1;i<pts.length;i++){s=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);if(s>0){segs.push([pts[i-1][0],pts[i-1][1],pts[i][0],pts[i][1],s]);total+=s;}}
+    if(!segs.length)return;
+    n=Math.max(1,Math.floor(total/11));
+    for(i=0;i<=n;i++){
+      d=Math.min(total,i*total/n);k=0;
+      while(k<segs.length-1&&d>segs[k][4]){d-=segs[k][4];k++;}
+      s=segs[k];u=Math.min(1,d/s[4]);dx=(s[2]-s[0])/s[4];dy=(s[3]-s[1])/s[4];side=i%2?1:-1;
+      x=s[0]+(s[2]-s[0])*u-dy*2.5*side;y=s[1]+(s[3]-s[1])*u+dx*2.5*side;ang=Math.atan2(dy,dx)*180/Math.PI+90;
+      gp=el('g',{'class':'pas'+(final&&i===n?' fin':'')+(i>=n-2?' dern':''),transform:'translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+ang.toFixed(1)+') scale('+(side<0?-1.2:1.2)+' 1.2)'},g);
+      gp.style.animationDelay=(i*.085).toFixed(2)+'s,'+(i*.085+1.3).toFixed(2)+'s';
+      el('path',{d:SOLE},gp);
+      TOES.forEach(function(t){el('circle',{'class':'t',cx:t[0],cy:t[1],r:t[2]},gp);});
+    }
+  }
+  (function(){
+    var svgs=document.querySelectorAll('svg.plan[data-lieu]'),cur=svgs.length?svgs[0].getAttribute('data-lieu'):'',prev=null,calmeSvg=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    try{prev=sessionStorage.getItem('lcm-lieu');if(cur)sessionStorage.setItem('lcm-lieu',cur);}catch(_){}
+    if(!cur||!prev||prev===cur)return;
+    [].forEach.call(svgs,function(v){
+      var R;try{R=JSON.parse(v.getAttribute('data-routes')||'{}');}catch(_){return;}
+      var pts=chemin(R,prev,cur),g=v.querySelector('.pl-pas');
+      if(!pts||!g)return;
+      while(g.firstChild)g.removeChild(g.firstChild);
+      pas(g,pts,cur!=='portail');
+    });
+  })();
   var feuille=document.getElementById('pl-feuille'),bouton=document.querySelector('.pl-cur');
   if(!feuille||!bouton)return;
   var vo=feuille.querySelector('.pl-vo'),vi=feuille.querySelector('.pl-vi'),fond=feuille.querySelector('.pl-fond'),x=feuille.querySelector('.pl-x');
