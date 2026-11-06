@@ -3,6 +3,7 @@
    d'un appui sur le fond ou de la touche Échap. Sur ordinateur, le plan reste affiché à gauche : rien ne se passe ici. */
 (function(){
   'use strict';
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)[].forEach.call(document.querySelectorAll('svg.plan'),function(v){try{v.pauseAnimations();}catch(_){}});
   var feuille=document.getElementById('pl-feuille'),bouton=document.querySelector('.pl-cur');
   if(!feuille||!bouton)return;
   var vo=feuille.querySelector('.pl-vo'),vi=feuille.querySelector('.pl-vi'),fond=feuille.querySelector('.pl-fond'),x=feuille.querySelector('.pl-x');

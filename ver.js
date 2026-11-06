@@ -62,11 +62,12 @@
   }
 
   /* ---------- le baptistère : la vraie margelle (photo détourée), couvercle en deux dalles qui coulissent, bain de sang ---------- */
-  var BI=null,DI=null,DP=null;
+  var BI=null,DI=null,DP=null,HI=null;
   function charge(){
     if(BI)return;
     BI=new Image();BI.decoding='async';BI.src='/images/putride/bapteme.webp?v=1';
     DI=new Image();DI.decoding='async';DI.src='/images/putride/dalle.webp?v=1';
+    HI=new Image();HI.decoding='async';HI.src='/images/putride/ver-tete.webp?v=1';
   }
   function pret(){return !!(BI&&BI.complete&&BI.naturalWidth>0);}
   function bapt(c,x,y,R,al,sc,open,blood,t,rip){
@@ -127,10 +128,14 @@
     function rad(o,idx){var t=o.f;return r0*(t>.55?1-.62*smooth((t-.55)/.45):1)*(idx<3?1+.05*idx:1);}
     function pass(sel,fn){for(k=n-1;k>=0;k--)if(sel(out[k]))fn(out[k],k);}
     function tout(fnSel){
-      /* contour, corps, anneaux, reflet */
-      pass(fnSel,function(o){c.fillStyle='#2c1111';c.beginPath();c.arc(o.x,o.y,rad(o)+1.7,0,TAU);c.fill();});
-      pass(fnSel,function(o,i){c.fillStyle=(i%4===0)?'#b98672':'#d6ab98';c.beginPath();c.arc(o.x,o.y,rad(o),0,TAU);c.fill();});
-      pass(fnSel,function(o){c.fillStyle='rgba(255,230,215,.42)';c.beginPath();c.arc(o.x-rad(o)*.28,o.y-rad(o)*.3,rad(o)*.38,0,TAU);c.fill();});
+      /* d'après l'image de référence : chair rose annelée, liseré pâle, lueur rouge tout autour */
+      pass(fnSel,function(o){c.save();c.shadowColor='rgba(255,36,48,.85)';c.shadowBlur=Math.max(4,rad(o)*1.1);c.fillStyle='#f1d3cc';c.beginPath();c.arc(o.x,o.y,rad(o)+1.2,0,TAU);c.fill();c.restore();});
+      pass(fnSel,function(o,i){c.fillStyle=(i%2===0)?'#c98085':'#d8979a';c.beginPath();c.arc(o.x,o.y,rad(o),0,TAU);c.fill();});
+      pass(fnSel,function(o,i){
+        var p=out[Math.max(0,i-1)],q=out[Math.min(n-1,i+1)],dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy)||1,r=rad(o);
+        c.strokeStyle='rgba(110,46,56,.5)';c.lineWidth=Math.max(.8,r*.12);c.beginPath();c.moveTo(o.x-dy/d*r*.9,o.y+dx/d*r*.9);c.lineTo(o.x+dy/d*r*.9,o.y-dx/d*r*.9);c.stroke();
+      });
+      pass(fnSel,function(o){c.fillStyle='rgba(255,236,226,.4)';c.beginPath();c.arc(o.x-rad(o)*.28,o.y-rad(o)*.3,rad(o)*.36,0,TAU);c.fill();});
     }
     /* les anneaux passés derrière le texte sont masqués là où se trouve la ligne */
     var gi,seen={};
@@ -141,15 +146,23 @@
       c.restore();
     }
     tout(function(o){return !o.b;});
-    /* la tête : plus large, une gueule sombre ronde et deux petits yeux */
+    /* la tête : celle de l'image de référence (yeux exorbités, bouche ouverte, langue pendante) */
     if(n>1){
-      var h=out[0],nx=out[Math.min(3,n-1)],a=Math.atan2(h.y-nx.y,h.x-nx.x),hr=r0*1.28;
-      c.save();c.translate(h.x,h.y);c.rotate(a);
-      c.fillStyle='#2c1111';c.beginPath();c.ellipse(1,0,hr*1.18+1.7,hr+1.7,0,0,TAU);c.fill();
-      c.fillStyle='#e0b5a2';c.beginPath();c.ellipse(1,0,hr*1.18,hr,0,0,TAU);c.fill();
-      c.fillStyle='#3a0a10';c.beginPath();c.ellipse(hr*.82,0,hr*.42,hr*.5*(.65+.35*Math.sin(tNow*9)),0,0,TAU);c.fill();
-      c.fillStyle='#f6dfe0';for(var j=-1;j<=1;j+=2){c.beginPath();c.arc(hr*.35,j*hr*.5,hr*.2,0,TAU);c.fill();c.fillStyle='#1b0306';c.beginPath();c.arc(hr*.4,j*hr*.5,hr*.09,0,TAU);c.fill();c.fillStyle='#f6dfe0';}
-      c.restore();
+      var h=out[0],nx=out[Math.min(3,n-1)],a=Math.atan2(h.y-nx.y,h.x-nx.x);
+      if(HI&&HI.complete&&HI.naturalWidth){
+        var sw=TH*2.6,sh=sw*HI.naturalHeight/HI.naturalWidth;
+        /* le visage regarde le visiteur, comme sur l'image : il reste droit, et s'incline un peu du côté où le ver avance */
+        c.save();c.translate(h.x,h.y);c.rotate(Math.cos(a)*.32+Math.sin(tNow*6)*.06);
+        c.shadowColor='rgba(255,36,48,.85)';c.shadowBlur=TH*.8;
+        c.drawImage(HI,-sw/2,-sh+TH*.95,sw,sh);
+        c.restore();
+      }else{
+        var hr=r0*1.28;
+        c.save();c.translate(h.x,h.y);c.rotate(a);
+        c.fillStyle='#d8979a';c.beginPath();c.ellipse(1,0,hr*1.18,hr,0,0,TAU);c.fill();
+        c.fillStyle='#3a0a10';c.beginPath();c.ellipse(hr*.82,0,hr*.42,hr*.5,0,0,TAU);c.fill();
+        c.restore();
+      }
     }
   }
 
@@ -169,7 +182,7 @@
   function passe(){
     if(run||document.hidden||calm)return;
     charge();
-    var W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,1.5),s=W<900?.72:1,TH=12*s,sp=4.4*s,hdr=document.querySelector('header'),hb=hdr?hdr.getBoundingClientRect().bottom:0;
+    var W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,1.5),s=W<900?.72:1,TH=16*s,sp=4.6*s,hdr=document.querySelector('header'),hb=hdr?hdr.getBoundingClientRect().bottom:0;
     var jo=jarLibre(hb,W,H),mode=(jo&&(force==='jar'||(force!=='bap'&&Math.random()<.5)))?'jar':'bap';force='';
     if(mode==='bap'&&!pret()){BI.addEventListener('load',function(){if(!run&&on)passe();},{once:true});return;}
     var all=lignes(W,H,hb),ls=[],cir=cercle(W,H),i;
@@ -194,13 +207,13 @@
       return fallback;
     }
     function ln(k){var q=ls[k],dy=sy0-scrollY,dx=sx0-scrollX;return {l:q.l+dx,t:q.t+dy,w:q.w,h:q.h};}
-    var side=Math.random()<.5?-1:1,hx=side<0?-30*s:W+30*s,hy=rnd(hb+50,H-60),th=side<0?0:Math.PI,L=170*s,pts=[{x:hx,y:hy,b:0,ln:-1}],last={x:hx,y:hy};
+    var side=Math.random()<.5?-1:1,hx=side<0?-30*s:W+30*s,hy=rnd(hb+50,H-60),th=side<0?0:Math.PI,L=200*s,pts=[{x:hx,y:hy,b:0,ln:-1}],last={x:hx,y:hy};
     var ph='in',pt=0,t=0,li=0,u=0,dir=1,uMax=0,x0=0,A=0,lam=64*s,ang=0,trav=0,rr=0,rip=[],drops=[],rippled=0,clipsL=[],bform=0,open=0,blood=0,film=0,sc=1,balpha=0,splashed=false,lastT=performance.now();
     var R={cv:cv,raf:0,ph:function(){return ph;},mode:function(){return mode;},dbg:function(){return {hx:hx,hy:hy,L:L,TH:TH,n:pts.length,al:alpha,tg:ftg,Lin:Lin};}};run=R;
 
     /* --- dans la dame-jeanne : le ver dans le repère du verre --- */
     var J=null,yl=-66,ipts=[],ihx=0,ihy=0,ith=Math.PI/2,Lin=0,iT={x:0,y:20,t:0},swimEnd=0,vx=0,vy=0,ftg=null,fat=0,alpha=1;
-    var THI=6.4,SPI=2.1,LINMAX=92,ISP=54;
+    var THI=8.4,SPI=2.6,LINMAX=100,ISP=54;
     function ipush(){var d=ipts.length?Math.hypot(ihx-ipts[ipts.length-1].x,ihy-ipts[ipts.length-1].y):9;if(d>=.8){ipts.push({x:ihx,y:ihy,b:0,ln:-1});if(ipts.length>420)ipts.splice(0,150);}}
     function inner(dt){
       var dx,dy,da,want,ex,ey,d;
