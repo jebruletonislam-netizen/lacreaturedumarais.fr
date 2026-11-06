@@ -171,13 +171,15 @@
 
 /* ---------- la procession : des pas en pointillés (plante du pied et orteils) du portail jusqu'au lieu courant ---------- */
 .plan .pl-pas,.plan .pl-nuage,.plan .pl-ver,.plan .pl-bapt{pointer-events:none}
-.plan .pas{opacity:0;animation:pas-in .5s ease-out forwards}
+.plan .pas{opacity:0;animation:pas-in .4s ease-out forwards,pas-out 1.2s ease-in forwards}
+.plan .pas.dern{animation:pas-in .4s ease-out forwards}
 .plan .pas path{fill:rgba(232,185,35,.07);stroke:#e8b923;stroke-width:.65;stroke-dasharray:1.1 .9;stroke-linecap:round}
 .plan .pas .t{fill:#e8b923;stroke:none}
 .plan .pas.fin path{fill:rgba(255,241,184,.3);stroke:#fff1b8;stroke-dasharray:none}
 .plan .pas.fin .t{fill:#fff1b8}
-.plan .pas.fin{animation:pas-in .5s ease-out forwards,pas-pouls 2.2s ease-in-out 1.2s infinite}
+.plan .pas.fin{animation:pas-in .4s ease-out forwards,pas-pouls 2.2s ease-in-out forwards infinite}
 @keyframes pas-in{to{opacity:.95}}
+@keyframes pas-out{from{opacity:.95}to{opacity:0}}
 @keyframes pas-pouls{50%{filter:drop-shadow(0 0 1.6px rgba(255,214,90,.95))}}
 /* le clocher et son nuage de chauves-souris */
 .plan .pl-chv path{fill:#050505;stroke:#e9e9ee;stroke-width:1.6;stroke-linejoin:round}
@@ -188,3 +190,9 @@
 @keyframes ver-tort{0%,100%{transform:rotate(-3deg) scale(1,1)}25%{transform:rotate(2deg) scale(1.03,.97)}50%{transform:rotate(4deg) scale(.98,1.04)}75%{transform:rotate(-1deg) scale(1.02,.98)}}
 .plan .pl-ver{filter:drop-shadow(0 0 2px rgba(255,36,48,.8))}
 @media (prefers-reduced-motion:reduce){.plan .pas{opacity:.95;animation:none}.plan .pl-chv .aile,.plan .ver-img{animation:none}}
+
+/* le baptistère répond au survol : le ver glousse, ou fait « ploc » */
+.plan .pl-hit{fill:transparent;pointer-events:all;cursor:help}
+.plan .pl-ver.rit .ver-img{animation:ver-rit .13s ease-in-out 6 alternate}
+.plan .pl-ver.rit{filter:drop-shadow(0 0 4px rgba(255,36,48,1))}
+@keyframes ver-rit{from{transform:rotate(-6deg) scale(1.06,.94)}to{transform:rotate(7deg) scale(.95,1.07)}}
