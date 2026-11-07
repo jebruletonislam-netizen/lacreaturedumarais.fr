@@ -724,3 +724,11 @@ main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position
 @media (min-width:900px){.fiche2.solo .rtfig{width:min(36%,34rem)}}
 @media (max-width:899px){.fiche2.solo .rtfig{max-width:20rem;margin:0 auto 1.2rem}.rtfig img{max-height:62vh;object-fit:cover;object-position:top}}
 @media (max-width:899px){.fiche2>div>.pf{max-width:19rem;margin-inline:auto}}
+/* saints de Rouen : vignette ronde dans chaque titre, légendes avec leur image */
+.rdet>summary img.av{flex:none;align-self:center;width:3.6rem;height:3.6rem;border-radius:50%;object-fit:cover;border:.15rem solid var(--g);background:#000}
+.leg{list-style:none;margin:.8rem 0 1.2rem;padding:0;display:grid;gap:1rem}
+.leg li{display:flex;gap:1.1rem;align-items:center}
+.leg img{flex:none;width:8rem;height:8rem;object-fit:cover;border:.15rem solid var(--g);background:#000}
+.leg li>.lt{flex:1;min-width:0}
+.leg small{display:block;margin-top:.2rem;font-size:.78rem;line-height:1.3;opacity:.75;color:#e8dcff}
+@media (max-width:899px){.rdet>summary img.av{width:3rem;height:3rem}.leg img{width:6rem;height:6rem}}

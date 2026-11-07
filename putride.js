@@ -630,7 +630,7 @@
        Dedans : des crottes, de la diarrhée, de la pisse, du lait cru périmé et, par-dessus, du sperme. Le liquide suit les gestes :
        il penche et clapote quand on la secoue. Le bouchon de liège saute quand un tweet s'ouvre et se remet quand il se ferme. */
     (function(){
-      var S0=isM()?54:66,btn=document.createElement('button');
+      var S0=isM()?38:66,btn=document.createElement('button');
       btn.type='button';btn.className='cro-btn';btn.setAttribute('aria-label','La dame-jeanne : touchez-la, elle parle ; saisissez-la pour la déplacer ou l’envoyer valser');
       document.body.appendChild(btn);
       var H0=S0*1.9;
@@ -1055,7 +1055,7 @@
     FX.pret=function(){return !!(window.Ephebito&&window.Ephebito.ok());};
     FX.pre=function(){
       if(plugT)return;plugT=1;
-      var sc=document.createElement('script');sc.src='/ephebito.js?v=11';
+      var sc=document.createElement('script');sc.src='/ephebito.js?v=14';
       sc.onload=function(){if(window.Ephebito)window.Ephebito.pre();else FX.echec=true;};sc.onerror=function(){FX.echec=true;};
       document.head.appendChild(sc);
     };
@@ -1488,7 +1488,7 @@
 
   /* Clins d'œil furtifs, chargés seulement sur leur page : la Fourolle (Chyren, Confiteor), le père Kitz-Latouch en tricycle (In Odium Fidei), la fête du Délycium (Territoire), le Ver du baptistère (un peu partout) */
   (function(){
-    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=3'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=1'],[/^\/mode-putride\/territoire\/?$/,'Fete','/fete.js?v=2'],[/^\/mode-putride\/(?!archives\/ordures)/,'Ver','/ver.js?v=3']],charge={};
+    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=3'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=1'],[/^\/mode-putride\/territoire\/?$/,'Fete','/fete.js?v=2'],[/^\/mode-putride\/(?!archives\/ordures)/,'Ver','/ver.js?v=4']],charge={};
     function verif(){
       CLINS.forEach(function(q){
         if(q[0].test(location.pathname)){

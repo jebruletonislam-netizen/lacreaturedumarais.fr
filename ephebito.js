@@ -54,7 +54,7 @@
   /* ---------- géométrie : tout est dans le repère du crochet, le corps pend de la longueur des collants ---------- */
   function lay(){
     var X=FX.ext,m=M[S.k],cw=m.crop[2]-m.crop[0],g=S.g;
-    S.hs=clamp(FX.CH*(FX.isM()?.3:.44),170,440);S.f=S.hs/1024;S.ext=S.hs*.2;
+    S.hs=FX.isM()?clamp(FX.CH*.2,112,200):clamp(FX.CH*.44,170,440);S.f=S.hs/1024;S.ext=S.hs*.2;
     if(S.free){S.hx=clamp(S.hx,10,FX.CW-10);S.hy=clamp(S.hy,4,Math.max(8,FX.CH-S.ext-30));}
     else{S.hx=(X.x0+X.x1)/2;S.hy=FX.bord();}
     g.dw=cw*S.f;g.dh=(m.crop[3]-m.crop[1])*S.f;g.mx=(m.sa[0].x+m.sa[1].x)/2*g.dw;
@@ -538,14 +538,14 @@
       b.style.width=g.dw+'px';b.style.height=g.dh+'px';
       b.style.transform='translate('+S.hx+'px,'+(S.hy+S.dy)+'px) rotate('+S.th+'rad) translate('+(-g.mx)+'px,'+S.ext+'px)';
       if(S.sg){
-        var H2=S.ext+6,pad=FX.isM()?16:24,pth='',sa2,xb,wb;
+        var H2=S.ext+6,pad=FX.isM()?26:24,pth='',sa2,xb,wb;
         var xl=1e9,xr=-1e9;
         for(i=0;i<2;i++){
           sa2=M[S.k].sa[i];xb=sa2.x*g.dw;wb=Math.max(7,sa2.w*g.dw*1.05);
           xl=Math.min(xl,xb-wb/2);xr=Math.max(xr,xb+wb/2);
         }
-        pth='M'+(g.mx-pad).toFixed(1)+',0L'+(g.mx+pad).toFixed(1)+',0L'+(xr+pad).toFixed(1)+','+H2.toFixed(1)+'L'+(xl-pad).toFixed(1)+','+H2.toFixed(1)+'Z';
-        if(S.sgk!==pth){S.sgk=pth;S.sg.style.clipPath='path("'+pth+'")';}
+        pth='polygon('+(g.mx-pad).toFixed(1)+'px 0,'+(g.mx+pad).toFixed(1)+'px 0,'+(xr+pad).toFixed(1)+'px '+H2.toFixed(1)+'px,'+(xl-pad).toFixed(1)+'px '+H2.toFixed(1)+'px)';
+        if(S.sgk!==pth){S.sgk=pth;S.sg.style.clipPath=pth;}
         S.sg.style.width=g.dw+'px';S.sg.style.height=H2+'px';
         S.sg.style.transform='translate('+S.hx+'px,'+(S.hy+S.dy)+'px) rotate('+S.th+'rad) translate('+(-g.mx)+'px,0px)';
       }
@@ -553,7 +553,7 @@
         var an3=S.an,rx0,ry0,rx1,rx1y,rd;
         if(an3){rx0=an3.x;ry0=an3.y+S.dy;rx1=S.hx;rx1y=S.hy+S.dy;rd=Math.hypot(rx1-rx0,rx1y-ry0);}
         if(an3&&rd>44){
-          var rnx=-(rx1y-ry0)/rd*(FX.isM()?20:26),rny=(rx1-rx0)/rd*(FX.isM()?20:26),rpth='polygon('+[[rx0+rnx,ry0+rny],[rx1+rnx,rx1y+rny],[rx1-rnx,rx1y-rny],[rx0-rnx,ry0-rny]].map(function(v){return v[0].toFixed(1)+'px '+v[1].toFixed(1)+'px';}).join(',')+')';
+          var rnx=-(rx1y-ry0)/rd*(FX.isM()?26:26),rny=(rx1-rx0)/rd*(FX.isM()?26:26),rpth='polygon('+[[rx0+rnx,ry0+rny],[rx1+rnx,rx1y+rny],[rx1-rnx,rx1y-rny],[rx0-rnx,ry0-rny]].map(function(v){return v[0].toFixed(1)+'px '+v[1].toFixed(1)+'px';}).join(',')+')';
           S.rp.style.display='';S.rp.style.width=FX.CW+'px';S.rp.style.height=FX.CH+'px';S.rp.style.transform='none';S.rp.style.clipPath=rpth;
         }else S.rp.style.display='none';
       }
