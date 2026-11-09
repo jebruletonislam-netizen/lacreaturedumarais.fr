@@ -566,7 +566,7 @@ header{overflow:visible}
 .fiche2 .pf.t23{aspect-ratio:2/3;background:#000}
 .rfig.rfig-w{width:min(46%,30rem)}
 @media (max-width:899px){.rfig.rfig-w{width:100%;max-width:30rem}}
-/* carte : épingle de Gricigliano */
+/* carte : épingle du Panvampirium */
 .pin.vamp i{border-color:#ff1736;background:#2a0010;box-shadow:0 0 .8rem rgba(255,23,54,.85)}
 /* archives : accès restreint vers la partie la plus putride du site */
 .gate{--bile:#c6ff3c;--sang:#ff1736;position:relative;display:block;max-width:62rem;margin:1.6rem 0 2rem;text-decoration:none;color:var(--bile);background:#030006;border:.2rem solid #240a2c;isolation:isolate;overflow:hidden;cursor:pointer;box-shadow:0 0 0 .15rem #000,0 0 1.6rem rgba(255,23,54,.25),inset 0 0 2.4rem rgba(0,0,0,.9);animation:gate-pulse 3.4s ease-in-out infinite}
@@ -732,3 +732,6 @@ main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position
 .leg li>.lt{flex:1;min-width:0}
 .leg small{display:block;margin-top:.2rem;font-size:.78rem;line-height:1.3;opacity:.75;color:#e8dcff}
 @media (max-width:899px){.rdet>summary img.av{width:3rem;height:3rem}.leg img{width:6rem;height:6rem}}
+/* fiches v2 (nov. 2026) : photo de texte flottante, ni trop petite ni envahissante ; le titre suivant se place dessous */
+@media (min-width:900px){.rfig.rf-s{width:min(32%,17rem)}}
+.rsec h2.cl{clear:both}

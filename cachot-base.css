@@ -572,7 +572,7 @@ header{overflow:visible}
 .fiche2 .pf.t23{aspect-ratio:2/3;background:#000}
 .rfig.rfig-w{width:min(46%,30rem)}
 @media (max-width:899px){.rfig.rfig-w{width:100%;max-width:30rem}}
-/* carte : épingle de Gricigliano */
+/* carte : épingle du Panvampirium */
 .pin.vamp i{border-color:#ff1736;background:#2a0010;box-shadow:0 0 .8rem rgba(255,23,54,.85)}
 /* archives : accès restreint vers la partie la plus putride du site */
 .gate{--bile:#ffcc00;--sang:#ff1736;position:relative;display:block;max-width:62rem;margin:1.6rem 0 2rem;text-decoration:none;color:var(--bile);background:#020202;border:.2rem solid #2a2a2a;isolation:isolate;overflow:hidden;cursor:pointer;box-shadow:0 0 0 .15rem #000,0 0 1.6rem rgba(255,23,54,.25),inset 0 0 2.4rem rgba(0,0,0,.9);animation:gate-pulse 3.4s ease-in-out infinite}
