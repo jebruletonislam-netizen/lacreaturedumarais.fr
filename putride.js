@@ -1080,7 +1080,7 @@
     FX.pret=function(){return !!(window.Ephebito&&window.Ephebito.ok());};
     FX.pre=function(){
       if(plugT)return;plugT=1;
-      var sc=document.createElement('script');sc.src='/ephebito.js?v=15';
+      var sc=document.createElement('script');sc.src='/ephebito.js?v=16';
       sc.onload=function(){if(window.Ephebito)window.Ephebito.pre();else FX.echec=true;};sc.onerror=function(){FX.echec=true;};
       document.head.appendChild(sc);
     };

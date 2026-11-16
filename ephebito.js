@@ -71,7 +71,7 @@
   /* la secousse verticale (S.dy : chute à l'apparition, rebond au lâcher) allonge ou raccourcit les collants ; trop courte, elle soulève le tout */
   function geo(){
     var Le=S.len+S.dy,ry=S.rod,c,s,bx,by;
-    if(Le<LMIN){ry+=Le-LMIN;Le=LMIN;}
+    if(Le<LMIN){if(!S.free)ry+=Le-LMIN;Le=LMIN;}
     S.ry=ry;S.le=Le;
     bx=S.rx-Le*Math.sin(S.ang);by=ry+Le*Math.cos(S.ang);c=Math.cos(S.th);s=Math.sin(S.th);
     S.ox=bx+S.ext*s;S.oy=by-S.ext*c;
@@ -244,7 +244,7 @@
     b.setAttribute('aria-label','Éphébito : touchez-le, il parle ; tirez-le pour le faire glisser sur sa tringle et allonger ses collants (flèches du clavier aussi)');
     document.body.appendChild(b);S.bE=b;bind(b,0);
     var sg=document.createElement('button');sg.type='button';sg.className='eph-btn eph-sg';
-    sg.setAttribute('aria-label','Les collants d’Éphébito : faites-les glisser comme un rideau, tirez-les pour les allonger (flèches du clavier aussi)');
+    sg.setAttribute('aria-label','Les collants d’Éphébito : tirez dans une direction puis lâchez pour le faire rebondir (flèches du clavier aussi)');
     document.body.appendChild(sg);S.sg=sg;bind(sg,2);
   }
   /* le son : un petit « tchoing » d'élastique, discret, synthétisé à la volée (rien à charger) ; le contexte audio naît au premier geste */
@@ -269,12 +269,13 @@
     }catch(_){}
   }
   var NOTES=[196,220,261.6,293.7,329.6,392,440,523.3];
-  /* lâché : il reste là où on l'a laissé ; ses anneaux finissent de glisser au-dessus de lui, l'élan le balance un peu et fait rebondir les collants */
-  function lache(d){
-    var Le=Math.max(LMIN,S.len),c=Math.cos(S.ang),s=Math.sin(S.ang),vx=clamp(S.bvx,-1800,1800),vy=clamp(S.bvy,-1800,1800),h=ringHalf(),dl=Math.abs(S.len-d.l0);
-    S.om=clamp(-(vx*c+vy*s)/Le*.5,-3,3);S.omL=S.om;S.ax=0;
-    S.dyv=clamp((-vx*s+vy*c)*.3,-260,260);
-    S.rxt=clamp(S.rx-Le*s,h,Math.max(h,FX.CW-h));
+  /* L'étirement conserve son énergie même après une prise immobile.
+     La vitesse se projette sur le fil et sa tangente ; les anneaux ne poursuivent plus le corps au lâcher. */
+  function lache(d,annule){
+    var Le=Math.max(LMIN,S.len),c=Math.cos(S.ang),s=Math.sin(S.ang),vx=annule?0:clamp(S.bvx,-1800,1800),vy=annule?0:clamp(S.bvy,-1800,1800),dl=Math.abs(Le-d.l0);
+    S.om=clamp(-(vx*c+vy*s)/Le,-8,8);S.omL=S.om;S.ax=S.vx=0;S.prx=S.rx;
+    S.len=clamp(d.l0,LMIN,lenMax());S.dy=Le-S.len;
+    S.dyv=clamp(-vx*s+vy*c,-1200,1200);S.rxt=null;
     if(dl>24){S.vib=Math.min(16,dl*.05);twang(150+Math.min(dl,520)*.45,.07,.55);}
   }
   /* où qu'on le saisisse (corps, Éphénégro, collants), on le tire tout entier : seuls les collants s'allongent, et leurs anneaux glissent sur la tringle.
@@ -284,14 +285,14 @@
       if(e.button||!S.vis||S.drag)return;
       audio();
       e.preventDefault();try{b.setPointerCapture(e.pointerId);}catch(_){}
-      S.drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:0,oy:0,tx:0,ty:0,moved:false,l0:S.len};
+      S.drag={id:e.pointerId,who:who,sx:e.clientX,sy:e.clientY,ox:0,oy:0,tx:0,ty:0,moved:false,l0:S.len};
       var B=toW(0,S.ext);S.drag.ox=B[0]-e.clientX;S.drag.oy=B[1]-e.clientY;
     });
     b.addEventListener('pointermove',function(e){
       var d=S.drag;if(!d||e.pointerId!==d.id)return;
       if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)>6){
         d.moved=true;S.free=true;FX.ferme();document.documentElement.classList.add('cro-prise');
-        S.len=S.le;S.dy=S.dyv=0;S.rxt=null;S.pbx=null;S.bvx=S.bvy=0;d.l0=S.len;
+        S.len=S.le;S.dy=S.dyv=0;S.rxt=null;S.pbx=null;S.bvx=S.bvy=0;
       }
       if(!d.moved)return;
       d.tx=e.clientX+d.ox;d.ty=e.clientY+d.oy;
@@ -299,10 +300,11 @@
     function fin(e,annule){
       var d=S.drag;if(!d||e.pointerId!==d.id)return;
       S.drag=null;document.documentElement.classList.remove('cro-prise');try{b.releasePointerCapture(d.id);}catch(_){}
-      if(!d.moved){if(!annule)FX.parle(who===1?oN:oE);}else lache(d);
+      if(!d.moved){if(!annule)FX.parle(who===1?oN:oE);}else lache(d,annule);
     }
     b.addEventListener('pointerup',function(e){fin(e,false);});
     b.addEventListener('pointercancel',function(e){fin(e,true);});
+    b.addEventListener('lostpointercapture',function(e){fin(e,true);});
     /* au clavier : Entrée le fait parler, les flèches le font glisser le long de la tringle ou allongent ses collants */
     b.addEventListener('keydown',function(e){
       var k=e.key,h=ringHalf(),l0;
@@ -330,7 +332,7 @@
     if(!S.vis){S.t+=dt;if(S.t>.55)apparait();return;}
     var g=S.g,dm=S.drag&&S.drag.moved,om0=S.om,a0=S.ang,h=ringHalf(),Le,rv,i2,gl=!dm&&S.rxt!==null,bx0=S.rx-S.le*Math.sin(S.ang);
     /* les anneaux : tenus, ils glissent sur la tringle pour rester au-dessus de lui ; lâchés, ils finissent de glisser là où on l'a laissé, puis ne bougent plus */
-    if(dm)S.rx+=(clamp(clamp(S.drag.tx,-g.dw*.25,FX.CW+g.dw*.25),h,Math.max(h,FX.CW-h))-S.rx)*(1-Math.exp(-14*dt));
+    if(dm&&S.drag.who!==2)S.rx+=(clamp(clamp(S.drag.tx,-g.dw*.25,FX.CW+g.dw*.25),h,Math.max(h,FX.CW-h))-S.rx)*(1-Math.exp(-14*dt));
     else if(gl){S.rx+=(S.rxt-S.rx)*(1-Math.exp(-7*dt));if(Math.abs(S.rxt-S.rx)<.3){S.rx=S.rxt;S.rxt=null;}}
     /* pendant qu'ils glissent, lui ne bouge pas : seuls les collants changent d'inclinaison */
     if(gl)S.ang=Math.asin(clamp((S.rx-bx0)/Math.max(LMIN,S.le),-.99,.99));
@@ -349,10 +351,17 @@
       Le=Math.max(LMIN,S.len+S.dy)+g.dh*.35;
       /* les secousses venues d'ailleurs (crottes, clystères, paroles) balancent moins un pendu aux longs collants */
       if(S.omL!==null&&S.om!==S.omL)S.om=S.omL+(S.om-S.omL)*Math.min(1,(S.ext+g.dh*.35)/Le);
-      S.om+=(-GRAV/Le*Math.sin(S.ang)+clamp(S.ax,-25000,25000)/Le*Math.cos(S.ang)-(.9+(S.sub?2.6:0)+(S.hov?9:0))*S.om)*dt;
-      S.ang+=S.om*dt;
-      if(S.ang>1.3){S.ang=1.3;S.om*=-.35;}else if(S.ang<-1.3){S.ang=-1.3;S.om*=-.35;}
-      S.dyv+=(-140*S.dy-8*S.dyv)*dt;S.dy+=S.dyv*dt;
+      var ns=Math.max(1,Math.ceil(dt*120)),ds=dt/ns;
+      for(var sub=0;sub<ns;sub++){
+        Le=Math.max(LMIN,S.len+S.dy)+g.dh*.35;
+        S.om+=(-GRAV/Le*Math.sin(S.ang)+clamp(S.ax,-25000,25000)/Le*Math.cos(S.ang)
+          -(2.2+(S.sub?2.6:0)+(S.hov?.8:0)+2*S.dyv/Le)*S.om)*ds;
+        S.ang+=S.om*ds;
+        if(S.ang>1.3){S.ang=1.3;S.om*=-.35;}else if(S.ang<-1.3){S.ang=-1.3;S.om*=-.35;}
+        S.dyv+=(-90*S.dy-7*S.dyv)*ds;S.dy+=S.dyv*ds;
+        if(S.free&&S.len+S.dy<LMIN){S.dy=LMIN-S.len;if(S.dyv<0)S.dyv*=-.3;}
+        if(S.len+S.dy>lenMax()){S.dy=lenMax()-S.len;if(S.dyv>0)S.dyv*=-.3;}
+      }
     }
     S.omL=S.om;
     S.th+=(clamp(S.ang*.3,-.22,.22)-S.th)*Math.min(1,dt*10);

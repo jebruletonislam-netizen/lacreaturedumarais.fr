@@ -2,7 +2,7 @@
    À gauche : couper (ou rétablir) les effets ; le choix est gardé, et vaut comme le réglage « moins d'animations » de l'appareil.
    À droite : l'Oracle, incarné par le Ver du baptistère, qui répond aux questions sur le lore. Il ne répond qu'avec les textes du site
    (/oracle-*.json, tirés des pages par _outils/oracle.py), avec des répliques écrites et sourcées : ce n'est pas un modèle génératif.
-   Le mode putride connaît aussi les biographies publiques ; les cachots gardent leurs propres registres. Dans les cachots,
+   Les deux couches connaissent les textes publics, putrides et les cachots. Dans les cachots,
    interrogé sur les reliques cachées, il répond par une énigme sur l'une de
    celles qu'on n'a pas encore trouvées (liste RELIQUES, à tenir d'accord avec les boutons .rel des pages et cachot-vie.js). */
 (function(){
@@ -102,20 +102,20 @@
     cachot:'Baisse la voix. Je suis le Ver du baptistère. Ici, les murs ont plus de mémoire que les vivants : les prisonniers, les fonds, la Gazette… Et quelques reliques que je ne livrerai pas toutes mâchées.'
   };
   var SUG={
-    putride:['Qui est ton maître ?','Pourquoi mêler le sacré et la merde ?','Quelle est la philosophie de la Créature ?','De Chyren à Confiteor','Qui est Madame Edwarda ?','Que fais-tu au Vampirium ?'],
-    cachot:['Qui est Kavod TinkiWizkhi ?','Qui est Noo-Noo ?','Pourquoi PUANTEUR PUTRIDE est-il au cachot ?','Le fonds du Baron','La Gazette du Prisonnier','Les reliques cachées']
+    putride:['Comment vas-tu ?','Qu’est-ce qui te fait rire ?','Quelle est la philosophie de la Créature ?','Les témoignages sur Vampirix','Qui est Madame Edwarda ?','Par quel album commencer ?'],
+    cachot:['Comment vas-tu ?','Qui est Kavod TinkiWizkhi ?','Qui est Noo-Noo ?','Pourquoi PUANTEUR PUTRIDE est-il au cachot ?','La Gazette du Prisonnier','Les reliques cachées']
   };
   var ICO_OR='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M35 38a3 3 0 0 1-6 0a6 6 0 0 1 12 0a9 9 0 0 1-18 0a12 12 0 0 1 24 0a15 15 0 0 1-30 0C17 27 31 28 27 16"/><circle cx="26" cy="11" r="5.5" style="fill:currentColor"/><circle cx="27.8" cy="9.8" r="1.6" style="fill:#000;stroke:none"/></svg>';
   var ob=el('<button type="button" class="cn-b cn-or'+cls+'" aria-expanded="false" aria-controls="cn-oracle" aria-label="Le Ver, l’Oracle : questions sur le lore" title="Le Ver, l’Oracle : questions sur le lore">'+ICO_OR+'</button>');
   var pan=el('<section class="cn-p'+cls+'" id="cn-oracle" role="dialog" aria-labelledby="cn-ot" hidden>'
-    +'<div class="cn-h"><div><b id="cn-ot">Le Ver</b><small>Une langue sous la margelle. Dialogue local, nourri des textes du site.</small></div><button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></div>'
+    +'<div class="cn-h"><div><b id="cn-ot">Le Ver</b><small>Serviteur de Kobal. Répliques et registres du site, sans IA générative.</small></div><button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></div>'
     +'<div class="cn-log" aria-live="polite"></div><div class="cn-sug"></div>'
-    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><input id="cn-q" type="text" maxlength="160" enterkeyhint="send" placeholder="Pose ta question…"><button type="submit" aria-label="Demander">➤</button></form>'
+    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><input id="cn-q" type="text" maxlength="600" enterkeyhint="send" placeholder="Parle au Ver…"><button type="submit" aria-label="Demander">➤</button></form>'
     +'</section>');
   var log=pan.querySelector('.cn-log'),sug=pan.querySelector('.cn-sug'),inp=pan.querySelector('input'),ouvert=false,hist=[];
   try{hist=JSON.parse(sessionStorage.getItem(SS+'-'+couche)||'[]');}catch(_){hist=[];}
 
-  function garde(){try{sessionStorage.setItem(SS+'-'+couche,JSON.stringify(hist.slice(-16)));}catch(_){}}
+  function garde(){hist=hist.slice(-48);try{sessionStorage.setItem(SS+'-'+couche,JSON.stringify(hist));}catch(_){}}
   function bas(){log.scrollTop=log.scrollHeight;}
   function bulle(m,anim){
     var d=D.createElement('div');d.className='cn-m '+m.r;
@@ -136,10 +136,12 @@
       bas();if(i<noeuds.length&&++k<400)setTimeout(tape,16);else noeuds.forEach(function(x){x[0].nodeValue=x[1];});
     })();
   }
-  function ajoute(m,anim){hist.push(m);garde();bulle(m,anim);}
+  function ajoute(m,anim){hist.push(m);garde();bulle(m,anim);if(m.r==='a')suggestions();}
   function suggestions(){
     sug.innerHTML='';
-    SUG[couche].forEach(function(q){var b=D.createElement('button');b.type='button';b.textContent=q;b.addEventListener('click',function(){demande(q);});sug.appendChild(b);});
+    var p=precedent(),choix=p&&p.dialogue?['Et toi ?','Pourquoi ?','Qui est ton maître ?']:
+      p&&p.sujet?['Dis-m’en plus','Quelles sont tes sources ?','Parlons d’autre chose']:SUG[couche];
+    choix.forEach(function(q){var b=D.createElement('button');b.type='button';b.textContent=q;b.addEventListener('click',function(){demande(q);});sug.appendChild(b);});
   }
   function ouvre(){
     if(ouvert)return;ouvert=true;pan.hidden=false;ob.setAttribute('aria-expanded','true');
@@ -164,7 +166,7 @@
   /* ---------- les registres et la recherche ---------- */
   var KB=null,attente=null,occupeQuestion=false;
   var STOP=('a ai alors au aussi aux avait avec ca ce cela ces cest cet cette ci comme comment connais d dans de des dis dit donc du elle elles en es est et etaient etait ete etre eu fait faire fais il ils j je l la le les leur leurs lui m ma mais me meme mes moi mon n ne ni nos notre nous on ont ou par parle parler pas peu peut peux plus pour pourquoi qu quand que quel quelle quelles quels qui quoi raconte s sa sais savoir se ses si son sont sur t ta te tes toi ton tu un une vos votre vous y '
-    +'est-ce dire veux voudrais aimerais explique expliquer cest qu\'est quest moi histoire bonjour salut merci stp svp sil plait quelle lien entre rapport sujet propos encore continue suite davantage developpe').split(' ');
+    +'est-ce dire veux voudrais aimerais explique expliquer cest qu\'est quest moi histoire bonjour salut merci stp svp sil plait quelle lien entre rapport sujet propos encore continue suite davantage developpe raconte detail details savoir pense penses avis album disque film clip morceau titre groupe').split(' ');
   var STOPS={};STOP.forEach(function(w){STOPS[w]=1;});
   function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/œ/g,'oe').replace(/æ/g,'ae').replace(/[’'`]/g,' ').replace(/[^a-z0-9]+/g,' ').trim();}
   function rac(w){if(w.length>4)w=w.replace(/(es|s|x)$/,'');if(w.length>5)w=w.replace(/e$/,'');return w;}
@@ -180,13 +182,26 @@
       tot+=ws.length;
       return {p:e[0],h:e[1],a:e[2],t:e[3],k:e[4],tf:tf,tt:tt,n:ws.length};
     });
-    return {P:P,E:ent,df:df,voc:Object.keys(voc),avg:tot/Math.max(1,ent.length),N:ent.length};
+    var noms=[];
+    P.forEach(function(p,i){
+      if(!/^\/(?:mode-putride\/bestiaire|mode-putride\/discographie|cachot)\/[^/]+\/$/.test(p[1]))return;
+      if(/\/(?:archives|respects)\/$/.test(p[1]))return;
+      var slug=p[1].split('/').filter(Boolean).pop(),alias=[norm(slug),norm(p[0])];
+      if(slug==='createur')alias=['la creature','creature du marais','cul pointu','tancrede'];
+      if(slug==='ver')alias=['le ver','ver du baptistere'];
+      if(slug==='kavod-tinkiwizkhi')alias.push('kavod');
+      if(slug==='puanteur-putride')alias.push('puanteur');
+      noms.push({p:i,alias:alias});
+    });
+    return {P:P,E:ent,df:df,voc:Object.keys(voc),noms:noms,avg:tot/Math.max(1,ent.length),N:ent.length};
   }
   function charge(){
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
-    attente=fetch('/oracle-'+couche+'.json?v=3',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
-      if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length)throw new Error('Registres invalides');
+    attente=fetch('/oracle-'+couche+'.json?v=4',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+      if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
+        !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
+        !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
       KB=prepare(d);return KB;
     }).catch(function(e){attente=null;console.error('Le Ver : chargement des registres impossible.',e);throw e;});
     return attente;
@@ -211,9 +226,28 @@
     }
     return ecarts+(a.length-i)+(b.length-j)<=1;
   }
+  var SYNONYMES=[
+    ['accusation','temoignage','emprise'],['temoin','temoignage'],['soeur','soeurs'],
+    ['parent','mere','pere','enfant'],['enfant','fils','fille'],['mari','epoux','compagnon'],
+    ['foi','croyance'],['pouvoir','autorite'],['musique','album','disque'],
+    ['prison','cachot'],['farce','humour','rire'],['philosophie','demarche','partisanisme'],
+    ['peine','condamnation','sursis'],['dossier','presse','piece'],['annee','date','parution']
+  ];
+  function termesDe(q){
+    var vu={},termes=[];
+    mots(q).forEach(function(w){
+      if(vu[w])return;vu[w]=1;
+      var vs=variantes(w);
+      SYNONYMES.forEach(function(g){
+        var racines=g.map(rac);
+        if(racines.indexOf(w)>=0)racines.forEach(function(x){if(x!==w)vs.push([x,.45]);});
+      });
+      termes.push(vs);
+    });
+    return termes;
+  }
   function cherche(q){
-    var qs=mots(q),vu={},termes=[];
-    qs.forEach(function(w){if(vu[w])return;vu[w]=1;termes.push(variantes(w));});
+    var termes=termesDe(q);
     if(!termes.length)return [];
     var res=[];
     KB.E.forEach(function(e,ix){
@@ -256,73 +290,184 @@
     {id:'sacre',test:/\b(sacre|blaspheme|scatolog\w*|merde|trivial|profan\w*)\b/,
       t:'Tu voudrais séparer l’encens de la merde ? Voilà qui arrangerait les vampires. Chez la Créature, le sacré et le grotesque se heurtent sans s’annuler. La ferveur reste prise dans ce qu’elle profane. Dans Confiteor, le désir et la culpabilité retournent la confession contre celui qui parle. Moi, je rampe dans cette fissure.',
       sources:['/mode-putride/bestiaire/createur/','/mode-putride/discographie/confiteor/']},
-    {id:'philosophie',test:/\b(philosoph\w*|psycholog\w*|comprend\w*|comprends|sens de (mon|son|l) (art|oeuvre)|demarche|contradiction\w*|partisan\w*|politique)\b/,
+    {id:'philosophie',test:/\b(philosoph\w*|psycholog\w*|sens de (mon|son|l) (art|oeuvre)|demarche|contradiction\w*|partisan\w*|politique)\b/,
       t:'Je lis les œuvres, pas l’intérieur de ton crâne. La Créature garde les signes d’autorité pour en suspendre le sérieux : voilà le carnaval. Sa critique vise le partisanisme, quand un camp devient une identité et remplace la discussion. Sa foi nourrit aussi son conflit avec ceux qui prétendent en détenir les clefs. Le masque expose ces contradictions ; il ne les range pas dans une doctrine bien propre.',
       sources:['/biographie/','/mode-putride/bestiaire/createur/']},
     {id:'parcours',test:/\b(parcours|evolution|chronolog\w*)\b|\bchyren\b.*\bconfiteor\b|\bconfiteor\b.*\b(?:chyren|odium)\b/,
       t:'D’abord les signes, ensuite le procès. Dans Chyren, la Fourolle ouvre à la Créature le monde des prophéties. Après le Panvampirium, Confiteor ramène le combat dans la conscience : désir, foi, culpabilité. In Odium Fidei repart de La Chute. Il ne suffit plus de demander pardon ; il faut se relever. J’aime beaucoup ce moment où les beaux costumes craquent.',
       sources:['/mode-putride/discographie/chyren/','/mode-putride/discographie/confiteor/','/mode-putride/in-odium-fidei/']},
-    {id:'art',test:/\b(esthetique|influence\w*|style|musical|art|oeuvre|masque|personnage)\b/,
+    {id:'art',test:/\b(esthetique|influence\w*|style|musical|art|oeuvre|personnage)\b/,
       t:'Du velours noir, des machines et une vieille cérémonie qui tourne mal. La Créature chante, compose et met ses clips en scène. Son opéra gothique électronique catholique traditionnel fait se rencontrer carnaval, liturgie et romantisme noir. Le masque relie les disques aux rues de Rouen ; ce n’est pas un déguisement posé après la musique.',
       sources:['/mode-putride/bestiaire/createur/']},
     {id:'rouen',test:/\b(pourquoi rouen|rouen.*(?:important|oeuvre|mental)|normandie.*(?:art|oeuvre))\b/,
       t:'Rouen n’est pas une toile peinte derrière la Créature. Ses rues, ses hauteurs et ses légendes lui donnent de quoi raconter sa chute. Dans Confiteor, la côte devient une montée vers l’expiation, la Gargouille un double ou un juge. Moi, je préfère les conduits : on y entend tout sans saluer personne.',
-      sources:['/mode-putride/discographie/confiteor/','/mode-putride/territoire/']}
+      sources:['/mode-putride/discographie/confiteor/','/mode-putride/territoire/']},
+    {id:'autorite',test:/\b(autorite|obeir|obeissance|hierarchie|pouvoir)\b/,
+      t:'Je suis un subordonné, pas un adorateur du grade. Kobal reçoit mes rapports ; cela ne m’empêche pas de voir les ficelles. Chez la Créature, conserver les signes du pouvoir sert justement à en suspendre le sérieux. Ce qui m’intéresse : ce qu’un maître exige des autres et s’épargne à lui-même.',
+      sources:['/biographie/','/mode-putride/bestiaire/vampirix/']},
+    {id:'foi',test:/\b(foi|croire|croyance|religion|dieu|redemption)\b/,
+      t:'Ne confonds pas la ferveur et le guichet qui prétend la distribuer. La critique de la Créature naît d’un attachement, pas d’une simple envie de casser les cierges. Moi, serviteur de Kobal, je regarde surtout l’instant où l’institution réclame pour elle ce qui était destiné au sacré.',
+      sources:['/biographie/','/mode-putride/bestiaire/createur/']},
+    {id:'masque',test:/\b(carnaval|masque|grotesque|provocation)\b/,
+      t:'Le masque n’efface pas la contradiction : il la met sous les projecteurs. Un symbole peut être retourné sans devenir un programme. La Créature fait dérailler une forme reconnaissable ; moi, j’aime le bruit de ce déraillement. Je ne demande pas que tu applaudisses tout : regarde ce que la farce révèle.',
+      sources:['/biographie/','/mode-putride/bestiaire/ver/']},
+    {id:'temoignages',test:/\b(?:accusations?|temoignages?) (?:contre|sur|de) vampirix\b/,
+      t:'Les témoignages repris sur le site décrivent le contrôle des personnes, des humiliations, une concentration du pouvoir et le contraste entre le train de vie du sommet et celui des membres. La direction conteste les accusations et défend sa discipline communautaire. Je peux te montrer les passages sur les séminaristes, les anciennes sœurs, les bienfaiteurs ou cette réponse. Ne confondons pas les sources rapportées et mon théâtre de vampires.',
+      sources:['/mode-putride/bestiaire/vampirix/#ames-exsangues']}
   ];
+  var AVIS={
+    kobal:'Moi, je suis le machiniste local, pas le directeur des Enfers. Je connais ses vanités : le rire doit toujours venir de la bonne loge. Voilà une obéissance qui donne beaucoup à observer.',
+    chaos:'Je préfère le grain de sable au grand sermon. Une contradiction bien placée peut révéler tout un dispositif ; ce n’est pas une raison pour faire du mal aux gens.',
+    sacre:'Moi, je ne lave pas la contradiction pour la rendre présentable. Si une farce dérange, regardons ce qu’elle met à nu plutôt que de décider aussitôt qui doit se taire.',
+    philosophie:'Je prends le parti de la question qui survit à son camp. Kobal reçoit mes services, pas le monopole de mes observations. Une idée ne devient pas juste parce que la bonne troupe l’applaudit.',
+    foi:'Moi, je sers Kobal dans cette fiction. Cela ne m’empêche pas de distinguer la ferveur de celui qui prie et la vanité de celui qui veut parler à sa place.',
+    art:'Je préfère un costume qui se fissure à une provocation qui tourne à vide. Quand le beau et le grotesque se heurtent, il faut qu’on entende autre chose que le bruit du choc.',
+    masque:'Le masque est mon outil de travail. Il permet de montrer une posture sans prétendre résumer toute une personne. La farce perd son intelligence quand elle oublie cette différence.',
+    autorite:'Je suis payé en courants d’air, alors le prestige du titre m’impressionne peu. Je regarde surtout qui supporte réellement les conséquences des ordres.',
+    temoignages:'Je ne transforme pas un témoignage en verdict. Le personnage peut railler les mécanismes de pouvoir ; les faits demandent leurs sources et leur contexte.'
+  };
   function precedent(){
-    for(var i=hist.length-1;i>=0;i--)if(hist[i].r==='a'&&hist[i].sujet)return hist[i];
+    for(var i=hist.length-1;i>=0;i--)if(hist[i].r==='a')return hist[i];
     return null;
+  }
+  /* Répliques de jeu, pas des connaissances inventées : chaque sujet avance sans répéter la même amorce. */
+  var CAUSERIE=[
+    {id:'salut',test:/^(salut|bonjour|bonsoir|coucou|hello|hey)( a toi)?( le ver| ver)?$/,
+      lignes:['Entre. Kobal reçoit les grands de ce monde ; moi, je reçois ce qui tombe de leurs poches. Comment va ta journée ?','Te revoilà. Aucun dignitaire n’a encore vérifié ce conduit. Profitons-en : tu viens bavarder ou fouiller les registres ?','Je t’écoute. Pas besoin d’une confession solennelle : une petite contrariété fait déjà une excellente entrée en scène.']},
+    {id:'humeur',test:/\b(comment (vas tu|ca va|tu vas|te sens tu)|ca va( et toi)?|tu vas bien)\b/,
+      lignes:['Humide, affairé, insuffisamment décoré. Kobal m’a confié les dessous du théâtre, pas la loge royale. Et toi, journée supportable ou grande comédie ?','Je fais le travail du petit personnel infernal : écouter, retenir, repérer le moment où le puissant trébuche sur son propre discours. Tu préfères le premier rang ou les coulisses ?','Mon ambition ? Une belle farce qui se passe de victime facile. Faire craquer une posture demande plus de finesse que piétiner quelqu’un déjà à terre.']},
+    {id:'rire',test:/\b(blague|fais moi rire|fait rire|humour|plaisanterie|drole|farce)\b/,
+      lignes:['Un dignitaire réclame un miroir. On lui apporte ses discours. Il exige aussitôt qu’on chasse le caricaturiste. Voilà le genre de service que je rends à Kobal.','Kobal aime les puissants transformés en pantins. Mais qu’on tire sur ses propres ficelles, et le directeur ferme le théâtre. Même l’Enfer a ses susceptibilités.','Le bon tour retourne une prétention contre elle-même. La cruauté facile, elle, manque terriblement d’imagination. Quelle posture te paraît la plus comique ?']},
+    {id:'journee',test:/\b(journee|boulot|travail|bureau|collegue|lundi|week end|vacances)\b/,
+      lignes:['Une journée entière à tenir son rôle ? Les coulisses peuvent attendre cinq minutes. Qu’est-ce qui t’a le plus occupé : le travail lui-même ou la comédie autour ?','Je connais le rang du subordonné : on te confie les courants d’air, puis on te reproche la poussière. Tu voudrais changer la tâche ou la façon dont on te parle ?','Avant de renverser le décor, séparons ce qui dépend de toi de ce que les autres exigent. Une seule chose concrète à alléger demain, ce serait laquelle ?']},
+    {id:'ennui',test:/\b(ennui|ennuie|rien a faire|parler de tout|tout et de rien|bavard\w*|discut\w*|quoi parler|parlons d autre chose|raconte.*quelque chose)\b/,
+      lignes:['Ne rien avoir à déclarer, quel luxe. On peut parler de musique, de ce qui t’agace, ou inventer une petite scène sans la faire passer pour le lore. Qu’est-ce qui te tente ?','Imaginons une salle où chacun doit déposer son titre à la porte. Qui continuerait à parler aussi fort ? Voilà ma distraction de machiniste.','Je peux aussi te guider : une œuvre pour la ferveur, une autre pour le grotesque, un détour par les cachots. Quel chemin te plaît ?']},
+    {id:'meteo',test:/\b(meteo|pleut|pluie|soleil|beau temps|fait (chaud|froid))\b/,
+      lignes:['Je n’ai pas de bulletin météo en direct. Mais la pluie va bien à ce théâtre : elle retire aux statues leur air de ne jamais transpirer. Tu l’aimes derrière une vitre ou en marchant ?','La brume cache les couronnes aussi bien que les trous du trottoir. Je préfère quand elle rend tout le monde un peu moins certain de sa grandeur.']},
+    {id:'repas',test:/\b(manger|repas|cuisine|faim|cafe|the|pates|raviolis)\b/,
+      lignes:['Même les grands drames font une pause pour manger. À choisir, je préfère une table où l’on parle franchement à un banquet plein de révérences. Tu cuisines ou tu improvises ?','Kobal aurait un maître de cérémonie pour servir des restes. Moi, je garderais les restes et renverrais le maître de cérémonie. Un repas simple n’a pas besoin d’être une punition.']},
+    {id:'fatigue',test:/\b(fatigue|epuise|dormir|sommeil|insomnie|creve)\b/,
+      lignes:['Pose un instant le costume. Même un petit serviteur peut quitter la scène sans que le théâtre s’effondre. C’est une fatigue du corps, ou surtout une journée trop pleine ?','Je ne te donnerai pas de diagnostic sous prétexte que je connais les canalisations. Un peu de repos et quelqu’un à qui parler valent mieux qu’un numéro de bravoure.']},
+    {id:'tristesse',test:/\b(triste|tristesse|seul|solitude|malheureux|ca ne va pas|vais mal|moral)\b/,
+      lignes:['Pour une fois, je laisse la farce de côté. Tu peux dire ce qui pèse sans devoir en faire une belle scène. Tu veux raconter, ou parler d’autre chose un moment ?','Le masque peut aider à parler ; il ne doit pas obliger à tout cacher. Si cela dure ou devient trop lourd, parle aussi à une personne de confiance. Je reste un personnage, pas un soignant.']},
+    {id:'amour',test:/\b(amour|amoureux|aimer|desir|jalousie|romantique)\b/,
+      lignes:['Le désir adore distribuer des rôles : muse, juge, sauveur. Puis il s’étonne que l’autre refuse le costume. Tu parles d’une histoire vécue, ou de la manière dont l’art la transforme ?','Je me méfie des grandes déclarations qui oublient d’écouter. Dans ce théâtre, la contradiction est intéressante ; dans une relation, elle ne dispense pas de respecter l’autre.']},
+    {id:'desaccord',test:/\b(pas d accord|tu as tort|n importe quoi|c est faux|tu mens|tu inventes)\b/,
+      lignes:['Alors reprenons. Quelle phrase contestes-tu ? Je peux revenir au texte du site ; mon ton assuré ne transforme pas une réplique en preuve.','Kobal n’aime pas la contradiction. Moi, petit subordonné, je peux au moins distinguer la farce, le récit et ce qui est sourcé. Donne-moi le point précis.']},
+    {id:'pique',test:/\b(tu es (nul|idiot|bete|stupide)|t es (nul|con)|mauvais ver)\b/,
+      lignes:['Une critique sans dossier, quel sens de l’économie. Dis-moi plutôt ce qui ne fonctionne pas dans ma réponse : je peux au moins reprendre la trace.','Je suis un petit serviteur, pas un oracle infaillible. Une question précise me sera plus utile qu’un nouveau titre honorifique.']},
+    {id:'scene',test:/\b(invente|raconte une histoire|petite scene)\b/,
+      lignes:['Petite fiction, pas un nouvel événement du lore : un dignitaire exige le silence avant de parler. La salle obéit si bien qu’il entend enfin le grincement de son trône. Il accuse le parquet.','Dans cette scène inventée, Kobal me charge de préparer un banquet d’honneurs. Je ne pose que des miroirs sur les assiettes. Personne ne remarque l’absence du repas.']},
+    {id:'merci',test:/^(merci( beaucoup| le ver)?|c est gentil|super|tres bien)$/,
+      lignes:['Garde la révérence pour Kobal. Moi, une conversation sans encens me suffit.','Service rendu. Ne le dis pas trop fort : on pourrait m’en demander davantage.']},
+    {id:'depart',test:/^(au revoir|a bientot|a plus|bonne nuit|bonne soiree|bye)$/,
+      lignes:['Je regagne les dessous de scène. Reviens quand les beaux discours auront commencé à sentir le renfermé.','Bonne route. Je garde les registres, pas tes pas.']},
+    {id:'limites',test:/\b(une ia|intelligence artificielle|comment (fonctionnes|marches)|tes limites|es tu reel|vraiment vivant)\b/,
+      lignes:['Je suis un personnage animé par des répliques écrites et une recherche locale dans le site. Pas un modèle génératif : je ne peux ni tout comprendre, ni consulter le monde en direct. Mes sources restent visibles.','Ma mémoire reste dans cette session du navigateur. Les messages ne partent pas vers un service d’IA. Je sais retrouver une trace ; hors des registres, je préfère reconnaître mes limites.']}
+  ];
+  function bavarde(q){
+    var n=norm(q),p=precedent(),v=CAUSERIE.find(function(v){return v.test.test(n);});
+    if(/\b(suicide|me tuer|me faire du mal|veux en finir)\b/.test(n))return {r:'a',h:esc('Je mets le personnage de côté : si tu risques de te faire du mal, contacte immédiatement une personne de confiance ou les secours. En France, le 3114 est gratuit, 24 h/24 ; en cas de danger immédiat, appelle le 112.')};
+    if((KB&&entites(q).length)||/\b(creature|edwarda|epheb\w*|kobal|vampirix|confiteor|chyren|odium|kavod|noo noo|puanteur|temoign\w*|accus\w*|album|disque|sources?|site)\b/.test(n))return null;
+    var court=/^(et toi|et vous|oui|non|peut etre|pourquoi|comment ca|continue|et ensuite|encore|developpe|dis m en plus)$/.test(n);
+    if(!v&&court&&p&&p.dialogue)v=CAUSERIE.find(function(v){return v.id===p.dialogue;});
+    if(!v)return null;
+    var tours=hist.filter(function(m){return m.dialogue===v.id;}).length;
+    return {r:'a',h:esc(v.lignes[tours%v.lignes.length]),dialogue:v.id};
   }
   function sourcesVoix(v){
     return v.sources.map(function(url){
-      var p=KB.P.find(function(p){return p[1]===url;});
+      var p=KB.P.find(function(p){return p[1]===url.split('#')[0];});
       return p?'<a href="'+esc(url)+'">'+esc(p[0])+'</a>':'';
     }).filter(Boolean).join(' · ');
   }
   function parole(q){
     var n=norm(q);
-    if(/^(bonjour|salut|bonsoir|coucou|hello)( le ver| ver)?$/.test(n))return {r:'a',h:esc(ACC[couche])};
-    if(/^(merci|merci beaucoup|d accord|ok|compris|au revoir|bonne nuit)$/.test(n))return {r:'a',h:'Garde tes remerciements au sec. Je retourne sous la margelle.'};
-    if(couche!=='putride')return null;
     var v=VOIX.find(function(v){return v.test.test(n);});
     /* Un nom ou un titre précis prime sur une réponse thématique générale. */
-    if(v&&/^(art|sacre)$/.test(v.id)&&/\b(edwarda|epheb\w*|vampirix|chyren|confiteor|odium|kobal)\b/.test(n))return null;
-    if(!v)return null;
-    return {r:'a',h:esc(v.t)+'<span class="va">Les traces : '+sourcesVoix(v)+'</span>',sujet:v.sources[0],voix:v.id};
+    if(v&&/^(art|sacre|autorite|foi|masque)$/.test(v.id)&&entites(q).some(function(i){return KB.P[i][1]!=='/mode-putride/bestiaire/createur/';}))return null;
+    if(!v||hist.slice(-8).some(function(m){return m.voix===v.id;}))return null;
+    var texte=v.t;
+    if(v.id==='philosophie'&&/\b(ta|ton|toi|tu)\b/.test(n)){
+      texte='Ne donne pas ton jugement en garde à un camp. Le partisanisme transforme vite une idée en livrée. Je sers Kobal, mais son fauteuil n’est pas une preuve. Les signes d’autorité font de beaux costumes ; je regarde ce qu’ils cachent. Je peux rire du guichet sans mépriser la ferveur de celui qui attend devant. Voilà ce que l’œuvre de la Créature m’apprend à observer.';
+    }
+    return {r:'a',h:esc(texte)+'<span class="va">Les traces : '+sourcesVoix(v)+'</span>',sujet:v.sources[0].split('#')[0],sources:v.sources,voix:v.id,question:q};
+  }
+  function entites(q){
+    var n=' '+norm(q)+' ',ws=mots(q);
+    return KB.noms.filter(function(e){
+      return e.alias.some(function(a){
+        if(n.indexOf(' '+a+' ')>=0)return true;
+        var ts=mots(a);
+        return ts.length===1&&ts[0].length>=5&&ws.some(function(w){return proche(w,ts[0]);});
+      });
+    }).map(function(e){return e.p;});
+  }
+  function passage(t,q,max){
+    if(t.length<=max)return t;
+    var phrases=t.match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g)||[t],termes=termesDe(q),best=0,pos=0;
+    phrases.forEach(function(s,i){
+      var ws=mots(s),score=0;
+      termes.forEach(function(vs){if(vs.some(function(v){return ws.indexOf(v[0])>=0;}))score++;});
+      if(score>best){best=score;pos=i;}
+    });
+    return (pos?'… ':'')+coupe(phrases.slice(pos).join('').trim(),max);
   }
   function repond(q){
     var p=precedent(),n=norm(q),suiteDemandee=/^(et )?(ensuite|apres|continue|la suite|encore|developpe|dis m en plus|pourquoi|comment ca|et alors)$/.test(n);
-    var oral=parole(q);if(oral&&!suiteDemandee)return oral;
-    var contextuel=p&&(suiteDemandee||/^(et (il|elle|son|sa|ses|lui)|pourquoi (il|elle)|ses |son |sa )/.test(n));
+    if(p&&p.sujet&&/^(et toi|tu en penses quoi|qu en penses tu|ton avis)$/.test(n)){
+      var avis=AVIS[p.voix]||'Moi, je regarde ce que cette trace révèle des rôles et des contradictions. Je ne prétends pas connaître les pensées privées des personnages ou de leur auteur.';
+      return {r:'a',h:esc(avis),sujet:p.sujet,sources:p.sources,voix:p.voix,question:p.question,ix:p.ix};
+    }
+    if(p&&p.sujet&&/\b(sources?|preuves?)\b/.test(n)&&!entites(q).length){
+      var src=p.sources||[p.sujet];
+      return {r:'a',h:'Vérifie la trace plutôt que ma mine assurée. Les références et leur contexte sont sur cette page : <span class="va">'+sourcesVoix({sources:src})+'</span>',sujet:p.sujet,sources:src,ix:p.ix,question:p.question};
+    }
+    var noms=entites(q),oral=parole(q);
+    if(oral&&!suiteDemandee&&(noms.length<2||oral.voix==='parcours'))return oral;
+    var contextuel=!noms.length&&p&&p.sujet&&(suiteDemandee||/^(et |pourquoi (il|elle)|ses |son |sa |il |elle |ils |elles |quelles preuves|les sources|d ou)/.test(n));
     var pageP=contextuel?KB.P.findIndex(function(x){return x[1]===p.sujet;}):-1;
-    var requete=q.replace(/\bmme\b/gi,'Madame');
-    if(/\b(tu|toi|ton|tes)\b/.test(n)&&couche==='putride')requete+=' Ver baptistère';
+    var requete=(suiteDemandee&&p&&p.question?p.question:q).replace(/\bmme\b/gi,'Madame');
+    if(/\b(ton histoire|tes lieux|ou (habites|vis) tu)\b/.test(n)&&!noms.length&&!contextuel)requete+=' Ver baptistère';
     if(pageP>=0)requete+=' '+KB.P[pageP][0];
     var r=cherche(requete);
+    if(noms.length)r=r.filter(function(x){return noms.indexOf(x.e.p)>=0;});
     if(pageP>=0){
-      r=r.filter(function(x){return x.e.p===pageP&&x.ix!==p.ix;});
+      var deja=hist.filter(function(m){return m.sujet===p.sujet&&m.ix!=null;}).map(function(m){return m.ix;});
+      r=r.filter(function(x){return x.e.p===pageP&&deja.indexOf(x.ix)<0;});
       var details=mots(q);
       if(details.length&&!suiteDemandee)r=r.filter(function(x){
-        return details.some(function(w){return variantes(w).some(function(v){return !!x.e.tf[v[0]];});});
+        return termesDe(q).some(function(vs){return vs.some(function(v){return !!x.e.tf[v[0]]||!!x.e.tt[v[0]];});});
       });
       if(suiteDemandee&&p.ix!=null)r.sort(function(a,b){return (a.ix>p.ix?0:1)-(b.ix>p.ix?0:1)||a.ix-b.ix;});
+    }
+    if(/\b(temoign\w*|accus\w*|emprise)\b/.test(n)&&!noms.length&&!contextuel){
+      r=r.filter(function(x){return /temoign|accus|emprise/.test(norm(x.e.h+' '+x.e.t));});
     }
     if(!r.length||r[0].s<2.2){
       return {r:'a',h:'Je ne vais pas te vendre de la vase pour une révélation. Je n’ai pas de passage assez sûr pour te répondre. Donne-moi un nom, un lieu ou un disque ; si tu reprends une question, précise lequel.'};
     }
     var b=r[0],e=b.e,autres=[],pages={};pages[e.p]=1;
     /* la suite immédiate du même passage, si elle répond aussi */
-    var suite=KB.E[b.ix+1],txt=coupe(e.t,650);
+    var suite=KB.E[b.ix+1],txt=passage(e.t,q,650);
     if(txt.length<170&&suite&&suite.p===e.p&&suite.h===e.h&&suite.k!==2){
       /* si la suite redit déjà le chapeau (résumé puis texte), on ne garde que la suite */
       var a=mots(e.t),dans={},com=0;mots(suite.t).forEach(function(w){dans[w]=1;});a.forEach(function(w){if(dans[w])com++;});
       txt=coupe(com>=a.length*.6?suite.t:e.t+' '+suite.t,650);
     }
     for(var i=1;i<r.length&&autres.length<2;i++){if(!pages[r[i].e.p]&&r[i].s>b.s*.42){pages[r[i].e.p]=1;autres.push(r[i].e);}}
-    var amorces=['J’ai trouvé cette trace sous la margelle.','Écoute ce que les murs ont gardé.','Voilà ce qui remonte de la vase.'];
-    var h=amorces[hist.filter(function(m){return m.r==='q';}).length%amorces.length]+'<span class="src">'+esc(nom(e))+'</span><q>'+esc(txt)+'</q><br><a class="lire" href="'+esc(lien(e))+'">Suivre la trace →</a>';
+    var amorces=['Les grands discours sont moins solides quand on regarde leurs coutures. Voici le passage.','Je garde la trace ; à toi de juger le costume.','Pas besoin d’inventer une révélation : les registres ont déjà de quoi faire grincer la scène.'];
+    var intro=amorces[hist.filter(function(m){return m.r==='q';}).length%amorces.length];
+    if(/temoign|accus|ames exsangues/.test(norm(e.h+' '+q)))intro='Ici, je distingue les témoignages rapportés, leur contestation et le lore. Le site rapporte ce passage ; ma farce ne vaut pas vérification indépendante.';
+    if(/dossiers-compromettants/.test(lien(e)))intro='Cette pièce est publiée en image. Je connais son titre, sa description et sa légende, pas une transcription intégrale. Ouvre la pièce pour vérifier le détail.';
+    var h=esc(intro)+'<span class="src">'+esc(nom(e))+'</span><q>'+esc(txt)+'</q><br><a class="lire" href="'+esc(lien(e))+'">Suivre la trace →</a>';
+    if(noms.length>1){
+      var second=r.find(function(x){return x.e.p!==e.p;});
+      if(second)h+='<span class="src">'+esc(nom(second.e))+'</span><q>'+esc(passage(second.e.t,q,420))+'</q><br><a class="lire" href="'+esc(lien(second.e))+'">L’autre trace →</a>';
+    }
+    if(/ames-exsangues/.test(e.a))h+='<span class="va">La même section donne les sources et la réponse de la direction, qui conteste les accusations.</span>';
     if(autres.length)h+='<span class="va">Voir aussi : '+autres.map(function(o){return '<a href="'+esc(lien(o))+'">'+esc(nom(o))+'</a>';}).join(' · ')+'</span>';
-    return {r:'a',h:h,sujet:KB.P[e.p][1],ix:b.ix};
+    return {r:'a',h:h,sujet:KB.P[e.p][1],sources:[lien(e)],ix:b.ix,question:suiteDemandee&&p?p.question:q};
   }
   /* ---------- les reliques cachées des cachots : une énigme par relique, dans l'ordre de la procession ---------- */
   var RELIQUES=[
@@ -353,9 +498,9 @@
     ajoute({r:'q',t:q},false);
     var att=D.createElement('div');att.className='cn-m a cn-dots';att.setAttribute('aria-label','Le Ver consulte les registres');att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
     var t0=performance.now();
-    var reliques=couche==='cachot'&&/reliq/.test(norm(q));
-    (reliques?Promise.resolve(null):charge()).then(function(kb){
-      var m=couche==='cachot'&&/reliq/.test(norm(q))?enigme():kb?repond(q):{r:'a',h:'Les registres sont hors d’atteinte pour l’instant. Réessaie dans un moment.'};
+    var reliques=/reliq/.test(norm(q)),social=bavarde(q);
+    (reliques||social?Promise.resolve(null):charge()).then(function(kb){
+      var m=reliques?enigme():social||repond(q);
       setTimeout(function(){att.remove();ajoute(m,true);occupeQuestion=false;pan.querySelector('button[type="submit"]').disabled=false;},Math.max(0,(calme?0:420)-(performance.now()-t0)));
     }).catch(function(){
       att.remove();ajoute({r:'a',h:'Les registres sont hors d’atteinte. Je ne peux pas les consulter : réessaie dans un moment.'},false);

@@ -1,7 +1,7 @@
-"""Base de l'Oracle : extrait, mot pour mot, les textes des pages du mode putride et des cachots.
+"""Registres du Ver : textes publiés du site, avec leurs pages et leurs sections.
 
 Le Ver cite ces extraits et les relie à des répliques écrites dans coins.js.
-Le mode putride connaît aussi les deux biographies publiques ; les cachots restent isolés.
+Les deux couches consultent désormais les mêmes connaissances, sur choix du propriétaire.
 Relancer après avoir modifié le contenu de ces pages :  python _outils/oracle.py
 """
 from html.parser import HTMLParser
@@ -10,14 +10,8 @@ import json
 import re
 
 RACINE = Path(__file__).resolve().parent.parent
-COUCHES = {
-    'putride': {'dossier': 'mode-putride', 'sortie': 'oracle-putride.json',
-                # la porte du bas reste un secret : l'Oracle ne la connaît pas
-                'exclus': {'/mode-putride/', '/mode-putride/archives/ordures/'},
-                'public': ['biographie/index.html', 'la-creature-du-marais/index.html']},
-    'cachot': {'dossier': 'cachot', 'sortie': 'oracle-cachot.json', 'exclus': set()},
-}
-BLOCS = {'p', 'li', 'blockquote', 'dd', 'dt', 'figcaption', 'h1', 'h2', 'h3', 'h4'}
+SORTIES = ('oracle-putride.json', 'oracle-cachot.json')
+BLOCS = {'p', 'li', 'blockquote', 'dd', 'dt', 'figcaption', 'summary', 'button', 'h1', 'h2', 'h3', 'h4'}
 IGNORES = {'script', 'style', 'svg', 'button', 'nav', 'noscript', 'template', 'select', 'form'}
 CLASSES_IGNOREES = {'kicker', 'back', 'gal', 'voixnone', 'pl-t', 'pl-t2', 'sr-only', 'pfoot'}
 VIDES = {'br', 'img', 'hr', 'input', 'source', 'meta', 'link', 'wbr'}
@@ -51,14 +45,18 @@ class Lecteur(HTMLParser):
         if tag in VIDES:
             if tag == 'br' and self.ouverts:
                 self.ouverts[-1][2].append(' ')
+            if tag == 'img' and not self.ignore() and a.get('aria-hidden') != 'true' and 'hidden' not in a and len(a.get('alt', '')) >= 40:
+                self.sortie.append(('figcaption', None, propre(a['alt']), set()))
             return
         cls = set((a.get('class') or '').split())
-        ign = tag in IGNORES or bool(cls & CLASSES_IGNOREES) or a.get('aria-hidden') == 'true' or 'hidden' in a
+        ign = (tag in IGNORES and not (tag == 'button' and 'trp' in cls)) or bool(cls & CLASSES_IGNOREES) or a.get('aria-hidden') == 'true' or 'hidden' in a
         self.pile.append((tag, ign))
         if self.ignore():
             return
         if a.get('id'):
             self.ids[len(self.sortie)] = a['id']
+        if a.get('data-artist'):
+            self.sortie.append(('p', None, 'Interprète : ' + a['data-artist'], set()))
         if 'bio' in cls:
             # la présentation d'un album suit la liste des titres : elle ouvre une section à part
             self.sortie.append(('sec', a.get('id'), '', cls))
@@ -99,9 +97,14 @@ def titre_page(html_txt, blocs):
 
 def extraits(chemin):
     html_txt = chemin.read_text(encoding='utf-8')
+    inclusion = '{% include discographie-content.html %}'
+    if inclusion in html_txt:
+        html_txt = html_txt.replace(inclusion, (RACINE / '_includes' / 'discographie-content.html').read_text(encoding='utf-8'))
     if html_txt.startswith('---'):
         html_txt = re.sub(r'\A---\r?\n.*?\r?\n---\r?\n', '', html_txt, count=1, flags=re.S)
-        html_txt = '<main>' + html_txt + '</main>'
+        if not re.search(r'<main\b', html_txt):
+            html_txt = '<main>' + html_txt + '</main>'
+    html_txt = re.sub(r'{%.*?%}|{{.*?}}', '', html_txt, flags=re.S)
     lec = Lecteur()
     lec.feed(html_txt)
     titre = titre_page(html_txt, lec.sortie)
@@ -112,10 +115,14 @@ def extraits(chemin):
         if b in ('h2', 'sec'):
             h2, sous, ancre, section = t, '', i or lec.ids.get(n, ''), True
             continue
-        if b in ('h3', 'h4', 'dt'):
+        if b in ('h3', 'h4', 'dt', 'summary'):
             sous = t
             continue
-        court = len(t) < 40
+        if 'am' in c:
+            t = 'Parution : ' + t
+        if 'trp' in c:
+            t = 'Titre : ' + t
+        court = len(t) < 40 and not (c & {'am', 'trp'}) and not t.startswith('Interprète :')
         if (court and not sous) or 'role' in c:
             continue
         texte = f'{sous} : {t}' if sous and (court or b == 'dd') else t
@@ -124,7 +131,7 @@ def extraits(chemin):
         # 1 : présentation de la page ; 2 : légende (crédits, titres de films), moins prioritaire
         k = 1 if ('accroche' in c or (not section and not sous)) else 2 if b == 'figcaption' else 0
         a = i or lec.ids.get(n) or (ancre if section else '')
-        res.append([h2, '#' + a if a else '', texte, k])
+        res.append([' · '.join(x for x in (h2, sous) if x), '#' + a if a else '', texte, k])
         if court or b == 'dd':
             sous = ''
     vus, uniques = set(), []
@@ -135,25 +142,48 @@ def extraits(chemin):
     return titre, uniques
 
 
-def construit(conf):
+def url_page(chemin):
+    contenu = chemin.read_text(encoding='utf-8')
+    if contenu.startswith('---'):
+        entete = re.split(r'\r?\n---\r?\n', contenu, maxsplit=1)[0]
+        lien = re.search(r'''(?m)^permalink:\s*["']?(/[^"'\s]*)''', entete)
+        if lien:
+            return lien[1]
+    parent = chemin.parent.relative_to(RACINE).as_posix()
+    return '/' if parent == '.' else '/' + parent + '/'
+
+
+def construit():
     pages, ent = [], []
-    fichiers = sorted((RACINE / conf['dossier']).rglob('index.html'))
-    fichiers.extend(RACINE / p for p in conf.get('public', []))
+    fichiers = sorted(
+        p for p in RACINE.rglob('index.html')
+        if not any(x.startswith(('.', '_')) or x == 'node_modules'
+                   for x in p.relative_to(RACINE).parts)
+    )
     for f in fichiers:
-        url = '/' + f.parent.relative_to(RACINE).as_posix() + '/'
-        if url in conf['exclus']:
-            continue
+        url = url_page(f)
         titre, ex = extraits(f)
         if not ex:
             continue
         pages.append([titre, url])
         for h, a, t, l in ex:
             ent.append([len(pages) - 1, h, a, t, l])
-    sortie = RACINE / conf['sortie']
-    sortie.write_text(json.dumps({'v': 1, 'p': pages, 'e': ent}, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-    print(f'{conf["sortie"]} : {len(pages)} pages, {len(ent)} extraits, {sortie.stat().st_size // 1024} Ko')
+    # Les paroles déjà publiées par les compagnons sont des citations, pas des faits à extrapoler.
+    paroles = (RACINE / 'cachot-paroles.js').read_text(encoding='utf-8')
+    chaine = r'"(?:\\.|[^"\\])*"'
+    lignes = re.findall(r'\{t:(' + chaine + r')(?:,d:(' + chaine + r'))?(?:,u:(' + chaine + r'))?\}', paroles)
+    if len(lignes) != len(re.findall(r'\{t:', paroles)):
+        raise ValueError('Format des paroles non reconnu : adapter le lecteur avant de publier.')
+    pages.append(['Paroles publiées des compagnons', '/cachot/'])
+    for texte, date, _ in lignes:
+        ent.append([len(pages) - 1, 'Parole publiée' + (' · ' + json.loads(date) if date else ''),
+                    '', json.loads(texte), 2])
+    contenu = json.dumps({'v': 2, 'p': pages, 'e': ent}, ensure_ascii=False, separators=(',', ':'))
+    for nom in SORTIES:
+        sortie = RACINE / nom
+        sortie.write_text(contenu, encoding='utf-8')
+        print(f'{nom} : {len(pages)} pages, {len(ent)} extraits, {sortie.stat().st_size // 1024} Ko')
 
 
 if __name__ == '__main__':
-    for conf in COUCHES.values():
-        construit(conf)
+    construit()

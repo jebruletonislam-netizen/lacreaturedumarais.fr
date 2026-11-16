@@ -51,11 +51,36 @@ with sync_playwright() as p:
             answer = question(page, query)
             assert expected in answer, (width, query, answer)
         assert page.locator(".cn-log img").count() == 0
+        cases = [
+            ("Salut", "journée"),
+            ("Comment vas-tu ?", "Kobal"),
+            ("Et toi ?", "petit personnel"),
+            ("Continue", "victime facile"),
+            ("Quelle météo aujourd'hui ?", "pas de bulletin"),
+            ("Qui est Noo-Noo ?", "Noo-Noo"),
+            ("Les témoignages sur Vampirix", "témoignages"),
+            ("Et les anciennes sœurs ?", "regarder"),
+            ("Et la réponse de la direction ?", "conteste"),
+            ("Par quel album commencer ?", "Confiteor"),
+            ("Je ne sais pas de quoi parler", "déclarer"),
+            ("Tu es nul", "critique"),
+            ("Quelle est ta philosophie ?", "partisanisme"),
+            ("Et toi ?", "question qui survit"),
+            ("Quelles sont tes sources ?", "Biographie"),
+            ("Sur quel album est Casso ?", "Rien à déclarer"),
+            ("En quelle année est sorti Rien à déclarer ?", "2018"),
+            ("Quelle est la date de naissance exacte d’Edwarda ?", "pas de passage assez sûr"),
+        ]
+        for query, expected in cases:
+            answer = question(page, query)
+            assert expected in answer, (width, query, answer)
+        assert page.locator(".cn-log a[href^='/cachot/']").count() > 0
         assert page.evaluate("Ver.actif()") is False
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         page.reload()
         page.locator(".cn-or").click()
-        assert "partisanisme" in page.locator(".cn-log").inner_text()
+        assert "2018" in page.locator(".cn-log").inner_text()
+        assert page.locator(".cn-log .cn-m").count() <= 48
 
         page.goto(BASE + "/mode-putride/bestiaire/edwarda/")
         portrait = page.locator(".fiche2 .cz-edw")
@@ -64,6 +89,23 @@ with sync_playwright() as p:
         assert page.locator(".fiche2 .fgz").evaluate(
             "(im) => im.complete && im.naturalWidth === 900"
         )
+        photos = page.locator(".gal a[href*='/edw-']")
+        assert photos.count() == 9
+        for photo in photos.all():
+            if photo.evaluate("(a)=>a.closest('li').hidden"):
+                page.get_by_role("button", name="Page suivante", exact=True).click()
+            image = photo.locator("img")
+            image.scroll_into_view_if_needed()
+            page.wait_for_function("(im)=>im.complete && im.naturalWidth>0", arg=image.element_handle())
+            assert image.evaluate("(im)=>Math.max(im.naturalWidth,im.naturalHeight)<=900")
+            full = photo.get_attribute("href")
+            photo.click()
+            page.wait_for_selector("#lb")
+            active = int(page.locator("#lb .lb-c").inner_text().split("/")[0]) - 1
+            enlarged = page.locator("#lb .lb-slide img").nth(active)
+            assert enlarged.get_attribute("src") == full
+            page.wait_for_function("(im)=>im.complete && im.naturalWidth===1050", arg=enlarged.element_handle())
+            page.keyboard.press("Escape")
         context.close()
         print(f"Dialogue, contexte, fautes, historique et portrait : {width}px OK", flush=True)
 
@@ -142,13 +184,14 @@ with sync_playwright() as p:
     page.route("**/oracle-cachot.json*", lambda route: route.fulfill(status=503, body="indisponible"))
     page.locator(".cn-or").click()
     assert "Énigme" in question(page, "Les reliques cachées")
+    assert "Kobal" in question(page, "Comment vas-tu ?")
     assert "hors d’atteinte" in question(page, "Qui est Kobal ?")
     page.unroute("**/oracle-cachot.json*")
     answer = question(page, "Qui est Kobal ?")
-    assert "pas de passage assez sûr" in answer
-    assert page.locator(".cn-log a[href^='/mode-putride/']").count() == 0
+    assert "Je sers Kobal" in answer
+    assert page.locator(".cn-log a[href^='/mode-putride/']").count() > 0
     assert page.evaluate("Ver.actif()") is False
     context.close()
     browser.close()
     assert not errors, errors
-    print("Cachots isolés, énigmes et réduction des mouvements : OK", flush=True)
+    print("Registres partagés, énigmes, conversation hors ligne et réduction des mouvements : OK", flush=True)

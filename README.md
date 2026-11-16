@@ -3,11 +3,23 @@ Site officiel de La Créature du Marais — version visuelle basée sur le fichi
 ## Le Ver
 
 Le dialogue fonctionne localement, sans API ni modèle génératif. `coins.js` combine
-des répliques sourcées, la recherche d'extraits (avec tolérance aux fautes) et le
-contexte des questions précédentes. Il décrit l'œuvre, sans diagnostiquer son auteur.
+des répliques sourcées, des échanges quotidiens écrits pour le personnage, la
+recherche d'extraits (fautes, synonymes, noms et sous-sections) et le contexte des
+questions précédentes. Les relances proposées suivent le sujet. Il décrit l'œuvre,
+sans diagnostiquer son auteur ; les témoignages restent attribués, distincts du lore.
 Après une modification éditoriale, lancer `python _outils/oracle.py` et incrémenter
-la version des registres dans `coins.js`. Le mode putride connaît ses pages et les
-deux biographies publiques ; les registres des cachots restent séparés.
+la version des registres dans `coins.js`. Sur choix du propriétaire, les deux couches
+connaissent désormais l'ensemble des textes publics, putrides et des cachots.
+Les deux fichiers `oracle-*.json` contiennent les mêmes registres, tout en conservant
+leurs adresses existantes. L'historique reste limité à 48 messages par couche dans
+la session du navigateur ; aucun échange n'est envoyé à un service d'IA.
+
+Le générateur conserve les permaliens, les libellés, les titres des morceaux,
+les données de parution, les descriptions d'images et les paroles publiées des
+compagnons. Il ne transcrit ni les coupures de presse numérisées, ni l'audio ou les
+films : pour ces documents, le Ver renvoie aux pièces et aux descriptions existantes.
+Il n'a pas d'accès à l'actualité et ne comprend pas librement tous les sujets comme
+un modèle génératif. Une question sans trace fiable reçoit une réponse d'incertitude.
 
 Le bouton du dialogue est le nid du Ver : clic pour parler, glissement pour le
 faire suivre le pointeur. Premier départ après 3 secondes sans interaction,
@@ -18,6 +30,19 @@ promenade. Incrémenter les versions des scripts dans tous leurs chargeurs.
 Tests ciblés : `python -m unittest discover -s _outils -p test_oracle.py`, puis
 `python _outils/test_ver.py http://127.0.0.1:8851` avec Playwright Python et Edge.
 Le second test mesure le cycle en temps réel et vérifie le dialogue et les gestes.
+
+## Collants et fil de l'araignée
+
+Tirer les collants conserve leur attache ; déplacer le corps d'Éphébito déplace
+aussi ses anneaux. La toile déplace l'attache de l'araignée horizontalement ; la
+traction verticale sur la toile étire son fil. Le fil et le corps de l'araignée
+se tirent dans les deux directions. Au lâcher, la longueur de repos ne change pas :
+l'étirement et la vitesse du geste produisent un rebond amorti, même après un maintien.
+Les flèches du clavier permettent toujours de régler la position et la longueur.
+
+`python _outils/test_elastiques.py http://127.0.0.1:8851` vérifie les vrais scripts
+dans Edge avec une horloge contrôlée : directions opposées, amplitudes, retour au
+repos et stabilité à 30/120 Hz, sur des largeurs de 390 et 1366 px.
 
 ## Référencement
 
