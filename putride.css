@@ -600,10 +600,10 @@ header{overflow:visible}
 .pb-lock{position:relative;border:.2rem solid #240a2c;background:#030006;padding:2.2rem 1.6rem 1.8rem;box-shadow:0 0 0 .15rem #000,0 0 1.6rem rgba(255,23,54,.22),inset 0 0 2.4rem rgba(0,0,0,.9);overflow:hidden}
 .pb-lock::before{content:"";position:absolute;left:0;right:0;top:0;height:.9rem;background:repeating-linear-gradient(-45deg,#0b0b0b 0 .9rem,#c6ff3c .9rem 1.8rem);animation:gate-tape 6s linear infinite}
 .pb-k{margin:.6rem 0 1.2rem;text-align:center;font:400 1.2rem/1 "Bebas Neue",sans-serif;letter-spacing:.36em;color:#ff1736;text-shadow:0 0 .6rem rgba(255,23,54,.7)}
-.pb-form{display:grid;gap:1rem;justify-items:center}
+.pb-form{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;justify-items:center}
 .pb-q{font:400 3.2rem/1.1 "Bebas Neue",sans-serif;letter-spacing:.05em;text-align:center;color:#c6ff3c;text-shadow:0 0 .8rem rgba(198,255,60,.4),0 .12rem 0 #000}
 .pb-row{display:flex;gap:.8rem;width:100%;max-width:44rem}
-.pb-row input{flex:1;min-width:0;background:#000;color:#fff;border:.2rem solid #c6ff3c;border-radius:0;padding:.5rem 1rem;font:400 2.4rem/1.2 "Bebas Neue",sans-serif;letter-spacing:.08em;caret-color:#ff1736;text-align:center;outline:0}
+.pb-row input{flex:1;min-width:0;width:100%;background:#000;color:#fff;border:.2rem solid #c6ff3c;border-radius:0;padding:.5rem 1rem;font:400 2.4rem/1.2 "Bebas Neue",sans-serif;letter-spacing:.08em;caret-color:#ff1736;text-align:center;outline:0}
 .pb-row input:focus{border-color:#ff1736;box-shadow:0 0 1.2rem rgba(255,23,54,.55)}
 .pb-row .btn{font-size:2rem;padding:.2rem 1.2rem;cursor:pointer}
 .pb-row .btn:disabled,.pb-row input:disabled{opacity:.55;cursor:wait}
