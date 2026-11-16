@@ -13,8 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Check oracle extraction
+      run: python3 -m unittest discover -s _outils -p test_oracle.py
     - name: Build the site in the jekyll/builder container
       run: |
         docker run \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+    - name: Check sitemap and rendered SEO metadata
+      run: python3 _outils/controle_seo.py _site

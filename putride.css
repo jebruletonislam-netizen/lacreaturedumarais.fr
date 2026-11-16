@@ -739,4 +739,4 @@ main :where(.fiche2>div:first-child:has(:is(.pf,.eph,.map)),.rfig,.rtfig){positi
 .rsec h2.cl{clear:both}
 /* mode calme (bouton en bas à gauche, ou réglage « réduire les animations » du système) : plus rien ne bouge ni ne coule */
 html.calme *,html.calme ::before,html.calme ::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001s!important;transition-delay:0s!important;scroll-behavior:auto!important}
-html.calme #drips,html.calme #mpool,html.calme #mobj,html.calme .ver-cv,html.calme .ver-nid,html.calme .pb-flash{display:none!important}
+html.calme #drips,html.calme #mpool,html.calme #mobj,html.calme .ver-cv,html.calme .pb-flash{display:none!important}

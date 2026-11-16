@@ -5,8 +5,9 @@
      s'ouvre sur un bain de sang ; le ver y plonge, le couvercle se referme, et tout disparaît ;
    - soit vers la dame-jeanne : il entre par le goulot (le bouchon saute), son contenu tourne au sang et il y nage jusqu'à ce qu'on la brise ; alors
      le sang se déverse dans le fluide vert, le rougit, et le ver y nage à son tour avant de s'y dissoudre. Si on la laisse intacte, il s'y dissout seul.
-   Entre deux apparitions, il dort enroulé sur lui-même dans son trou, en bas à gauche, et c'est de là qu'il sort. Un clic sur le trou l'incarne :
-   il suit la souris (ou le doigt), puis rentre s'enrouler après six secondes sans mouvement, sur un nouveau clic ou avec Échap.
+   Entre deux apparitions, il dort en bas à droite, dans le bouton de dialogue. Premier départ après trois secondes, puis treize secondes
+   de promenade et treize de repos. Un clic lui parle ; un glissement l'incarne. Il suit alors la souris (ou le doigt),
+   puis rentre s'enrouler après six secondes sans mouvement ou avec Échap.
    Chargé à la demande par putride.js ; ne fait rien si l'on a demandé moins d'animations. */
 (function(){
   'use strict';
@@ -14,7 +15,8 @@
   var calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
   var TAU=6.283185307,rnd=function(a,b){return a+Math.random()*(b-a);},clamp=function(v,a,b){return v<a?a:v>b?b:v;};
   var smooth=function(t){t=clamp(t,0,1);return t*t*(3-2*t);};
-  var run=null,timer=0,vues=0,on=false,AC=null,ph0='',force='';
+  var run=null,timer=0,cycle=0,premier=true,on=false,AC=null,ph0='',force='',dialogue=false,survole=false;
+  var INITIAL=3000,PERIODE=13000;
 
   /* le son : un « plouf » lourd et humide quand il plonge dans le sang ; le contexte audio naît au premier geste */
   function audio(){try{if(!AC){var AX=window.AudioContext||window.webkitAudioContext;if(!AX)return;AC=new AX();}if(AC.state==='suspended')AC.resume();}catch(_){}}
@@ -169,34 +171,50 @@
     }
   }
 
-  /* ---------- le nid : un trou en bas à gauche (au-dessus du bouton des effets), où il dort enroulé sur lui-même ---------- */
+  /* ---------- le nid : le bouton du dialogue, en bas à droite ---------- */
   var nid=null,nidCv=null,ptr={x:0,y:0,t:0},NW=54,NH=62;
   function creeNid(){
     if(nid)return;
+    nid=document.querySelector('.cn-or');
+    if(!nid)return;
     var st=document.createElement('style');
-    st.textContent='.ver-nid{position:fixed;left:9px;bottom:calc(64px + env(safe-area-inset-bottom,0px) + var(--lc-h,0px));z-index:84;width:54px;height:62px;margin:0;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}'
+    st.textContent='.cn-b.ver-nid{position:fixed;left:auto;right:9px;bottom:calc(12px + env(safe-area-inset-bottom,0px) + var(--lc-h,0px));z-index:85;width:54px;height:62px;margin:0;padding:0;border:0;background:none;box-shadow:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:none}'
       +'.ver-nid[hidden]{display:none}.ver-nid canvas{display:block;width:100%;height:100%;transform-origin:50% 72%;animation:ver-tic 11s ease-in-out 5s infinite}'
       +'.ver-nid.vide canvas{animation:none}.ver-nid.nait canvas{animation:ver-nait .7s cubic-bezier(.3,1.6,.5,1)}'
       +'.ver-nid:focus-visible{outline:2px solid #ff2430;outline-offset:2px;border-radius:14px}'
       +'@keyframes ver-tic{0%,86%,100%{transform:none}89%{transform:rotate(-8deg) scale(1.06)}92%{transform:rotate(7deg)}95%{transform:rotate(-4deg)}}'
       +'@keyframes ver-nait{0%{transform:scale(.15);opacity:0}100%{transform:none;opacity:1}}'
-      +'@media (max-width:560px){.ver-nid{left:5px;width:46px;height:53px;bottom:calc(58px + env(safe-area-inset-bottom,0px) + var(--lc-h,0px))}}'
+      +'@media (max-width:560px){.cn-b.ver-nid{right:5px;width:46px;height:53px}}'
+      +'.calme .ver-nid canvas{animation:none!important}.cn-cachot.ver-nid canvas,body.cachot .ver-cv{filter:grayscale(1)}'
+      +'@media (prefers-reduced-motion:reduce){.ver-nid canvas{animation:none!important}}'
       +'@media print{.ver-nid{display:none!important}}';
     document.head.appendChild(st);
-    nid=document.createElement('button');nid.type='button';nid.className='ver-nid';
-    nid.title='Le Ver du baptistère : cliquez pour l’incarner';
-    nid.setAttribute('aria-label','Le Ver du baptistère : le faire sortir de son trou (il suit la souris ou le doigt), ou l’y faire rentrer');
+    nid.classList.add('ver-nid');
+    nid.title='Parler au Ver du baptistère · glisser pour le faire ramper';
+    nid.setAttribute('aria-label','Parler au Ver du baptistère');
     var k=Math.min(window.devicePixelRatio||1,2);
     nidCv=document.createElement('canvas');nidCv.width=Math.round(NW*k);nidCv.height=Math.round(NH*k);nidCv.setAttribute('aria-hidden','true');
-    nid.appendChild(nidCv);document.body.appendChild(nid);
+    nid.textContent='';nid.appendChild(nidCv);
     nid.addEventListener('animationend',function(e){if(e.animationName==='ver-nait')nid.classList.remove('nait');});
-    nid.addEventListener('click',clicNid);
+    var depart=null,glisse=false;
+    nid.addEventListener('pointerenter',function(){survole=true;clearTimeout(timer);});
+    nid.addEventListener('pointerleave',function(){survole=false;if(!run)plan(premier?INITIAL:PERIODE);});
+    nid.addEventListener('pointerdown',function(e){depart={x:e.clientX,y:e.clientY};glisse=false;clearTimeout(timer);});
+    addEventListener('pointermove',function(e){
+      if(!depart||calm)return;
+      if(!glisse&&Math.hypot(e.clientX-depart.x,e.clientY-depart.y)>8){
+        glisse=true;clearTimeout(cycle);if(run)fin(false,true);passe('suit');
+      }
+    },{passive:true});
+    addEventListener('pointerup',function(){if(!depart)return;depart=null;survole=false;if(!run)plan(premier?INITIAL:PERIODE);},{passive:true});
+    addEventListener('pointercancel',function(){if(!depart)return;depart=null;glisse=false;survole=false;if(!run)plan(premier?INITIAL:PERIODE);},{passive:true});
+    nid.addEventListener('click',function(e){if(glisse){e.preventDefault();e.stopImmediatePropagation();glisse=false;}},true);
     var lit=function(e){var p=e.touches?e.touches[0]:e;if(!p)return;ptr.x=p.clientX;ptr.y=p.clientY;ptr.t=performance.now();};
     addEventListener('pointermove',lit,{passive:true});addEventListener('pointerdown',lit,{passive:true});
     addEventListener('touchstart',lit,{passive:true});addEventListener('touchmove',lit,{passive:true});
     addEventListener('keydown',function(e){if(e.key==='Escape'&&run&&run.rentre)run.rentre();});
     if(HI&&!HI.complete)HI.addEventListener('load',dessineNid);
-    dessineNid();
+    nidVide(false);
   }
   function dessineNid(){
     if(!nidCv)return;
@@ -222,7 +240,7 @@
     if(!nid)return;
     nid.classList.toggle('vide',!!v);nid.classList.remove('nait');
     if(!v&&anim){void nid.offsetWidth;nid.classList.add('nait');}
-    nid.setAttribute('aria-pressed',v?'true':'false');
+    nid.dataset.verEtat=v?(run&&run.auto?'promenade':'suivi'):'repos';
     dessineNid();
   }
   /* le centre du trou, à l'écran (et sa demi-largeur, pour cacher ce qui est dedans) */
@@ -255,7 +273,8 @@
   /* ---------- l'apparition ---------- */
   function passe(m){
     var suit=m==='suit';
-    if(run||document.hidden||calm)return;
+    if(run||document.hidden||calm||dialogue||!nid)return;
+    clearTimeout(timer);
     charge();
     var W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,1.5),s=W<900?.72:1,TH=16*s,sp=4.6*s,hdr=document.querySelector('header'),hb=hdr?hdr.getBoundingClientRect().bottom:0;
     var jo=suit?null:jarLibre(hb,W,H),mode=(jo&&(force==='jar'||(force!=='bap'&&Math.random()<.5)))?'jar':'bap';force='';
@@ -292,17 +311,24 @@
     if(nc0){hx=nc0.x;hy=nc0.y+34*s;th=-Math.PI/2;nidVide(true);}
     var pts=[{x:hx,y:hy,b:0,ln:-1}],last={x:hx,y:hy};phx=hx;phy=hy;
     var ph='in',pt=0,t=0,li=0,u=0,dir=1,uMax=0,x0=0,A=0,lam=64*s,ang=0,trav=0,rr=0,rip=[],drops=[],rippled=0,clipsL=[],bform=0,open=0,blood=0,film=0,sc=1,balpha=0,splashed=false,lastT=performance.now();
-    var R={cv:cv,raf:0,ph:function(){return ph;},mode:function(){return suit?'suit':mode;},dbg:function(){return {hx:hx,hy:hy,L:L,TH:TH,n:pts.length,al:alpha,tg:ftg,Lin:Lin};}};run=R;
+    var R={cv:cv,raf:0,auto:!suit,finA:performance.now()+PERIODE,ph:function(){return ph;},mode:function(){return suit?'suit':mode;},dbg:function(){return {hx:hx,hy:hy,L:L,TH:TH,n:pts.length,al:alpha,tg:ftg,Lin:Lin};}};run=R;
+    nidVide(true);premier=false;
+    if(R.auto)cycle=setTimeout(function(){fin(true,true);},PERIODE);
     /* l'incarner : il quitte ce qu'il faisait (tant qu'il n'a pas commencé son baptistère) et suit la souris ou le doigt */
     R.libre=function(){return ph==='suit'||ph==='retour'||ph==='plonge'||(ph==='sort'&&apres==='suit');};
     R.incarne=function(){
       if(ph==='sort'){apres='suit';}
       else if(ph==='in'||ph==='wrap'||ph==='trans'||(ph==='flee'&&!choisi&&mode!=='jar')){ph='suit';pt=0;}
       else return false;
+      R.auto=false;clearTimeout(cycle);nidVide(true);
       suit=true;L=Math.max(L,170*s);ptr.x=hx+rnd(-60,60)*s;ptr.y=hy-rnd(60,120)*s;ptr.t=performance.now();
       return true;
     };
-    R.rentre=function(){if(ph==='suit'||(ph==='sort'&&apres==='suit')){ph='retour';pt=0;return true;}return false;};
+    R.rentre=function(){
+      if(ph==='retour'||ph==='plonge'||ph==='veille')return true;
+      lache();alpha=1;film=0;balpha=0;Lin=0;L=Math.max(L,170*s);TH=16*s;sp=4.6*s;
+      ph='retour';pt=0;return true;
+    };
     if(suit){ptr.x=hx+90*s;ptr.y=hy-190*s;ptr.t=performance.now();}
 
     /* --- dans la dame-jeanne : le ver dans le repère du verre --- */
@@ -377,6 +403,7 @@
       var dt=Math.min(.05,(now-lastT)/1000);lastT=now;
       if(document.hidden){R.raf=requestAnimationFrame(frame);return;}
       t+=dt;pt+=dt;
+      if(R.auto&&now>=R.finA-3000)R.rentre();
       var b=0,lk=-1,cc=choisi?centre():{x:0,y:0},e,a,o=null,f=fx(),kk=1,clipJ=null;
       if(ph==='sort'){
         hy-=150*s*dt;th=-Math.PI/2;
@@ -392,7 +419,12 @@
         if(!nr){fin();return;}
         nc0=nr;e=Math.hypot(nr.x-hx,nr.y-30*s-hy);
         if(e>9*s)steer(nr.x,nr.y-30*s,clamp(e*3,130*s,700*s),dt,.5);
-        else{ph='plonge';pt=0;parc=0;}
+        else{ph=R.auto&&now<R.finA-1500?'veille':'plonge';pt=0;parc=0;}
+      }else if(ph==='veille'){
+        var repos=nidCentre();
+        if(!repos){fin(true,true);return;}
+        steer(repos.x-30*s+Math.cos(t*3)*18*s,repos.y-45*s+Math.sin(t*3)*12*s,100*s,dt,.3);
+        if(now>=R.finA-1500){ph='retour';pt=0;}
       }else if(ph==='plonge'){
         hx+=(nc0.x-hx)*Math.min(1,dt*10);th=Math.PI/2;hy+=150*s*dt;parc+=150*s*dt;
         if(parc>L+44*s){fin(true);return;}
@@ -542,37 +574,44 @@
         if(d.l<=0){drops.splice(i,1);continue;}
         c.fillStyle='rgba(190,6,30,'+clamp(d.l*1.6,0,1).toFixed(2)+')';c.beginPath();c.ellipse(d.x,d.y,d.r,d.r*(1+Math.min(1,Math.abs(d.vy)/1200)),0,0,TAU);c.fill();
       }
-      R.raf=requestAnimationFrame(frame);
+      R.reprend=function(){R.raf=requestAnimationFrame(frame);};
+      R.reprend();
     }
     R.raf=requestAnimationFrame(frame);
   }
-  function fin(rentre){
+  function fin(rentre,immediat){
     if(!run)return;
+    if(run.auto&&!immediat&&performance.now()<run.finA){run.rentre();run.reprend();return;}
+    clearTimeout(cycle);
     cancelAnimationFrame(run.raf);run.cv.remove();run=null;
     var o=jarLue();if(o){if(o.vcasse&&o.vcasse.name==='spill')o.vcasse=null;o.vin=null;o.vbT=0;}
     /* rentré par le trou, il y est déjà ; sinon (baptistère, dame-jeanne, page quittée) il y renaît */
     nidVide(false,!rentre);
+    if(on)plan(PERIODE);
   }
 
-  /* quand reparaît-il ? rarement, jamais deux effets à la fois */
-  function occupe(){return (window.Fourolle&&window.Fourolle.actif&&window.Fourolle.actif())||(window.Kitz&&window.Kitz.actif&&window.Kitz.actif())||document.querySelector('.lb-open,.lightbox.open,#lb.open');}
+  /* Le dialogue, la liseuse et une page masquée suspendent les promenades. */
+  function occupe(){return dialogue||survole||document.querySelector('.lb-open,.lightbox.open,#lb.open');}
   function plan(delai){
     clearTimeout(timer);
+    if(!on||calm||dialogue||survole||document.hidden||run||!nid)return;
     timer=setTimeout(function(){
       if(!on)return;
-      if(document.hidden||run||occupe()){plan(7000);return;}
+      if(document.hidden||run||occupe()){plan(1000);return;}
       passe();
-      if(++vues<4)plan(rnd(70000,140000));
     },delai);
   }
   function go(){
-    if(calm)return;
-    charge();creeNid();nid.hidden=false;
+    charge();creeNid();on=true;if(!nid)return;nid.hidden=false;
     /* incarné, il suit le visiteur d'une page à l'autre */
-    if(run&&run.libre&&run.libre())clearTimeout(timer);else stopFx();
-    on=true;if(!vues)plan(rnd(22000,45000));else plan(rnd(30000,70000));
+    if(run&&run.libre&&run.libre())return;
+    on=false;stopFx();on=true;plan(premier?INITIAL:PERIODE);
   }
-  function stopFx(){clearTimeout(timer);fin();}
-  function stop(){on=false;stopFx();if(nid)nid.hidden=true;}
-  window.Ver={go:go,stop:stop,show:function(m){on=true;fin();if(m==='suit'){passe('suit');return;}force=m||'';passe();},incarne:clicNid,actif:function(){return !!run;},phase:function(){return run?run.ph():'';},mode:function(){return run?run.mode():'';},dbg:function(){return run?run.dbg():null;}};
+  function stopFx(){clearTimeout(timer);clearTimeout(cycle);fin(false,true);clearTimeout(timer);}
+  function stop(){on=false;stopFx();}
+  document.addEventListener('coins:pret',function(){go();});
+  document.addEventListener('ver:dialogue',function(e){dialogue=!!e.detail;if(dialogue)stopFx();else plan(premier?INITIAL:PERIODE);});
+  document.addEventListener('visibilitychange',function(){if(document.hidden)stopFx();else plan(premier?INITIAL:PERIODE);});
+  addEventListener('resize',function(){if(run){stopFx();plan(PERIODE);}});
+  window.Ver={go:go,stop:stop,show:function(m){on=true;fin(false,true);if(m==='suit'){passe('suit');return;}force=m||'';passe();},incarne:clicNid,actif:function(){return !!run;},phase:function(){return run?run.ph():'';},mode:function(){return run?run.mode():'';},dbg:function(){return run?run.dbg():null;}};
 })();

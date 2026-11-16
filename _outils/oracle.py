@@ -1,6 +1,7 @@
 """Base de l'Oracle : extrait, mot pour mot, les textes des pages du mode putride et des cachots.
 
-L'Oracle ne répond qu'avec ces extraits (et un lien vers leur page) : il n'invente rien.
+Le Ver cite ces extraits et les relie à des répliques écrites dans coins.js.
+Le mode putride connaît aussi les deux biographies publiques ; les cachots restent isolés.
 Relancer après avoir modifié le contenu de ces pages :  python _outils/oracle.py
 """
 from html.parser import HTMLParser
@@ -12,7 +13,8 @@ RACINE = Path(__file__).resolve().parent.parent
 COUCHES = {
     'putride': {'dossier': 'mode-putride', 'sortie': 'oracle-putride.json',
                 # la porte du bas reste un secret : l'Oracle ne la connaît pas
-                'exclus': {'/mode-putride/', '/mode-putride/archives/ordures/'}},
+                'exclus': {'/mode-putride/', '/mode-putride/archives/ordures/'},
+                'public': ['biographie/index.html', 'la-creature-du-marais/index.html']},
     'cachot': {'dossier': 'cachot', 'sortie': 'oracle-cachot.json', 'exclus': set()},
 }
 BLOCS = {'p', 'li', 'blockquote', 'dd', 'dt', 'figcaption', 'h1', 'h2', 'h3', 'h4'}
@@ -97,6 +99,9 @@ def titre_page(html_txt, blocs):
 
 def extraits(chemin):
     html_txt = chemin.read_text(encoding='utf-8')
+    if html_txt.startswith('---'):
+        html_txt = re.sub(r'\A---\r?\n.*?\r?\n---\r?\n', '', html_txt, count=1, flags=re.S)
+        html_txt = '<main>' + html_txt + '</main>'
     lec = Lecteur()
     lec.feed(html_txt)
     titre = titre_page(html_txt, lec.sortie)
@@ -107,20 +112,20 @@ def extraits(chemin):
         if b in ('h2', 'sec'):
             h2, sous, ancre, section = t, '', i or lec.ids.get(n, ''), True
             continue
-        if b in ('h3', 'h4'):
+        if b in ('h3', 'h4', 'dt'):
             sous = t
             continue
         court = len(t) < 40
         if (court and not sous) or 'role' in c:
             continue
-        texte = f'{sous} : {t}' if sous and court else t
+        texte = f'{sous} : {t}' if sous and (court or b == 'dd') else t
         if len(texte) < 12 or texte.startswith('Voir aussi'):
             continue
         # 1 : présentation de la page ; 2 : légende (crédits, titres de films), moins prioritaire
         k = 1 if ('accroche' in c or (not section and not sous)) else 2 if b == 'figcaption' else 0
         a = i or lec.ids.get(n) or (ancre if section else '')
         res.append([h2, '#' + a if a else '', texte, k])
-        if court:
+        if court or b == 'dd':
             sous = ''
     vus, uniques = set(), []
     for e in res:
@@ -132,7 +137,9 @@ def extraits(chemin):
 
 def construit(conf):
     pages, ent = [], []
-    for f in sorted((RACINE / conf['dossier']).rglob('index.html')):
+    fichiers = sorted((RACINE / conf['dossier']).rglob('index.html'))
+    fichiers.extend(RACINE / p for p in conf.get('public', []))
+    for f in fichiers:
         url = '/' + f.parent.relative_to(RACINE).as_posix() + '/'
         if url in conf['exclus']:
             continue

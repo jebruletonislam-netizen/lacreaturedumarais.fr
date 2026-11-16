@@ -1,8 +1,9 @@
 /* Les deux coins du bas, dans le mode putride et dans les cachots.
    À gauche : couper (ou rétablir) les effets ; le choix est gardé, et vaut comme le réglage « moins d'animations » de l'appareil.
    À droite : l'Oracle, incarné par le Ver du baptistère, qui répond aux questions sur le lore. Il ne répond qu'avec les textes du site
-   (/oracle-*.json, tirés des pages par _outils/oracle.py) et montre toujours où lire la suite : il n'invente rien. Chaque couche n'interroge
-   que ses propres registres. Seule exception, dans les cachots : interrogé sur les reliques cachées, il répond par une énigme sur l'une de
+   (/oracle-*.json, tirés des pages par _outils/oracle.py), avec des répliques écrites et sourcées : ce n'est pas un modèle génératif.
+   Le mode putride connaît aussi les biographies publiques ; les cachots gardent leurs propres registres. Dans les cachots,
+   interrogé sur les reliques cachées, il répond par une énigme sur l'une de
    celles qu'on n'a pas encore trouvées (liste RELIQUES, à tenir d'accord avec les boutons .rel des pages et cachot-vie.js). */
 (function(){
   'use strict';
@@ -97,17 +98,17 @@
 
   /* ---------- à droite : l'Oracle, c'est-à-dire le Ver ---------- */
   var ACC={
-    putride:'Je suis le Ver du baptistère, et l’Oracle du mode putride. J’ai rampé dans tous les registres : interroge-moi sur le bestiaire, le territoire, les disques ou les méfaits, et je te montre où lire la suite.',
-    cachot:'Je suis le Ver, l’Oracle des cachots. Du fond du baptistère, je lis les registres : les prisonniers, les fonds d’archives, la Gazette. Et les reliques cachées, si tu sais demander.'
+    putride:'Approche de la margelle. Je suis le Ver du baptistère, serviteur de Kobal. Les vampires ont leurs grands airs ; moi, leurs dessous. Parle-moi de la Créature, de ses disques ou de ce qui fermente au Vampirium.',
+    cachot:'Baisse la voix. Je suis le Ver du baptistère. Ici, les murs ont plus de mémoire que les vivants : les prisonniers, les fonds, la Gazette… Et quelques reliques que je ne livrerai pas toutes mâchées.'
   };
   var SUG={
-    putride:['Qui est Éphébito ?','Qu’est-ce que le Vampirium ?','Qui est Vampirix ?','La Gargouille de Rouen','Le Ver du baptistère','De quoi parle Chyren ?'],
+    putride:['Qui est ton maître ?','Pourquoi mêler le sacré et la merde ?','Quelle est la philosophie de la Créature ?','De Chyren à Confiteor','Qui est Madame Edwarda ?','Que fais-tu au Vampirium ?'],
     cachot:['Qui est Kavod TinkiWizkhi ?','Qui est Noo-Noo ?','Pourquoi PUANTEUR PUTRIDE est-il au cachot ?','Le fonds du Baron','La Gazette du Prisonnier','Les reliques cachées']
   };
   var ICO_OR='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M35 38a3 3 0 0 1-6 0a6 6 0 0 1 12 0a9 9 0 0 1-18 0a12 12 0 0 1 24 0a15 15 0 0 1-30 0C17 27 31 28 27 16"/><circle cx="26" cy="11" r="5.5" style="fill:currentColor"/><circle cx="27.8" cy="9.8" r="1.6" style="fill:#000;stroke:none"/></svg>';
   var ob=el('<button type="button" class="cn-b cn-or'+cls+'" aria-expanded="false" aria-controls="cn-oracle" aria-label="Le Ver, l’Oracle : questions sur le lore" title="Le Ver, l’Oracle : questions sur le lore">'+ICO_OR+'</button>');
   var pan=el('<section class="cn-p'+cls+'" id="cn-oracle" role="dialog" aria-labelledby="cn-ot" hidden>'
-    +'<div class="cn-h"><div><b id="cn-ot">Le Ver</b><small>L’Oracle du baptistère. Il ne répond qu’avec ce que disent les registres du site.</small></div><button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></div>'
+    +'<div class="cn-h"><div><b id="cn-ot">Le Ver</b><small>Une langue sous la margelle. Dialogue local, nourri des textes du site.</small></div><button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></div>'
     +'<div class="cn-log" aria-live="polite"></div><div class="cn-sug"></div>'
     +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><input id="cn-q" type="text" maxlength="160" enterkeyhint="send" placeholder="Pose ta question…"><button type="submit" aria-label="Demander">➤</button></form>'
     +'</section>');
@@ -142,14 +143,15 @@
   }
   function ouvre(){
     if(ouvert)return;ouvert=true;pan.hidden=false;ob.setAttribute('aria-expanded','true');
+    D.dispatchEvent(new CustomEvent('ver:dialogue',{detail:true}));
     if(!log.childNodes.length){
       if(!hist.length)hist.push({r:'a',h:esc(ACC[couche])});
       hist.forEach(function(m){bulle(m,false);});
     }
-    suggestions();bas();charge();
+    suggestions();bas();
     if(matchMedia('(pointer:fine)').matches)setTimeout(function(){try{inp.focus({preventScroll:true});}catch(_){}},60);
   }
-  function ferme(){if(!ouvert)return;ouvert=false;pan.hidden=true;ob.setAttribute('aria-expanded','false');}
+  function ferme(){if(!ouvert)return;ouvert=false;pan.hidden=true;ob.setAttribute('aria-expanded','false');D.dispatchEvent(new CustomEvent('ver:dialogue',{detail:false}));}
   ob.addEventListener('click',function(){ouvert?ferme():ouvre();});
   pan.querySelector('.cn-x').addEventListener('click',function(){ferme();ob.focus();});
   D.addEventListener('keydown',function(e){if(e.key==='Escape'&&ouvert){ferme();ob.focus();}});
@@ -160,9 +162,9 @@
   D.addEventListener('putride:page',ferme);
 
   /* ---------- les registres et la recherche ---------- */
-  var KB=null,attente=null;
+  var KB=null,attente=null,occupeQuestion=false;
   var STOP=('a ai alors au aussi aux avait avec ca ce cela ces cest cet cette ci comme comment connais d dans de des dis dit donc du elle elles en es est et etaient etait ete etre eu fait faire fais il ils j je l la le les leur leurs lui m ma mais me meme mes moi mon n ne ni nos notre nous on ont ou par parle parler pas peu peut peux plus pour pourquoi qu quand que quel quelle quelles quels qui quoi raconte s sa sais savoir se ses si son sont sur t ta te tes toi ton tu un une vos votre vous y '
-    +'est-ce dire veux voudrais aimerais explique expliquer cest qu\'est quest moi histoire bonjour salut merci stp svp sil plait').split(' ');
+    +'est-ce dire veux voudrais aimerais explique expliquer cest qu\'est quest moi histoire bonjour salut merci stp svp sil plait quelle lien entre rapport sujet propos encore continue suite davantage developpe').split(' ');
   var STOPS={};STOP.forEach(function(w){STOPS[w]=1;});
   function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/œ/g,'oe').replace(/æ/g,'ae').replace(/[’'`]/g,' ').replace(/[^a-z0-9]+/g,' ').trim();}
   function rac(w){if(w.length>4)w=w.replace(/(es|s|x)$/,'');if(w.length>5)w=w.replace(/e$/,'');return w;}
@@ -181,8 +183,12 @@
     return {P:P,E:ent,df:df,voc:Object.keys(voc),avg:tot/Math.max(1,ent.length),N:ent.length};
   }
   function charge(){
-    if(KB||attente)return attente;
-    attente=fetch('/oracle-'+couche+'.json?v=2',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){KB=prepare(d);return KB;}).catch(function(){attente=null;return null;});
+    if(KB)return Promise.resolve(KB);
+    if(attente)return attente;
+    attente=fetch('/oracle-'+couche+'.json?v=3',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+      if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length)throw new Error('Registres invalides');
+      KB=prepare(d);return KB;
+    }).catch(function(e){attente=null;console.error('Le Ver : chargement des registres impossible.',e);throw e;});
     return attente;
   }
   function idf(w){var n=KB.df[w]||0;return Math.log(1+(KB.N-n+.5)/(n+.5));}
@@ -190,7 +196,20 @@
   function variantes(w){
     if(KB.df[w]||w.length<4)return [[w,1]];
     var r=[];for(var i=0;i<KB.voc.length&&r.length<10;i++){var v=KB.voc[i];if(v.length>=4&&(v.indexOf(w)===0||(w.indexOf(v)===0&&v.length>=5)))r.push([v,.75]);}
+    if(!r.length&&w.length>=5)KB.voc.some(function(v){if(proche(w,v))r.push([v,.65]);return r.length>=5;});
     return r.length?r:[[w,1]];
+  }
+  function proche(a,b){
+    if(Math.abs(a.length-b.length)>1)return false;
+    var i=0,j=0,ecarts=0;
+    while(i<a.length&&j<b.length){
+      if(a[i]===b[j]){i++;j++;continue;}
+      if(++ecarts>1)return false;
+      if(a.length===b.length){
+        if(a[i]===b[j+1]&&a[i+1]===b[j]){i+=2;j+=2;}else{i++;j++;}
+      }else if(a.length>b.length)i++;else j++;
+    }
+    return ecarts+(a.length-i)+(b.length-j)<=1;
   }
   function cherche(q){
     var qs=mots(q),vu={},termes=[];
@@ -211,7 +230,7 @@
         if(tb)titre++;
         s+=best+tb;
       });
-      if(!s)return;
+      if(!s||touche<Math.min(2,termes.length))return;
       s*=1+.6*(touche-1);
       if(e.k===1&&titre)s*=1.45;
       if(e.k===2)s*=.6;
@@ -227,23 +246,83 @@
   }
   function lien(e){var P=KB.P[e.p];return P[1]+(e.a||'');}
   function nom(e){var P=KB.P[e.p];return P[0]+(e.h?' · '+e.h:'');}
+  var VOIX=[
+    {id:'kobal',test:/\b(kobal|ton maitre|qui te commande|qui sers tu|qui es tu|presente toi|possess\w*|possed\w*)\b/,
+      t:'Je sers Kobal, pas les beaux messieurs à crocs. Mon maître possède la Créature et Madame Edwarda. Il dirige les théâtres de l’Enfer ; moi, je travaille sous la scène. Il sait la farce perdue, mais tient à choisir qui glissera dans la merde. Ris des dignitaires tant que tu veux : de lui, beaucoup moins.',
+      sources:['/mode-putride/bestiaire/ver/']},
+    {id:'chaos',test:/\b(crime fecal|chaos|que fais tu|ton role|pourquoi.*vampirium)\b/,
+      t:'Je hante le Vampirium. Je ramasse une rancœur, je la glisse sous une autre soutane, puis je laisse lever. Ce chaos a poussé la Créature au crime fécal. Les vampires se croient les maîtres de cérémonie ; Kobal leur a distribué les rôles sans les prévenir.',
+      sources:['/mode-putride/bestiaire/ver/']},
+    {id:'sacre',test:/\b(sacre|blaspheme|scatolog\w*|merde|trivial|profan\w*)\b/,
+      t:'Tu voudrais séparer l’encens de la merde ? Voilà qui arrangerait les vampires. Chez la Créature, le sacré et le grotesque se heurtent sans s’annuler. La ferveur reste prise dans ce qu’elle profane. Dans Confiteor, le désir et la culpabilité retournent la confession contre celui qui parle. Moi, je rampe dans cette fissure.',
+      sources:['/mode-putride/bestiaire/createur/','/mode-putride/discographie/confiteor/']},
+    {id:'philosophie',test:/\b(philosoph\w*|psycholog\w*|comprend\w*|comprends|sens de (mon|son|l) (art|oeuvre)|demarche|contradiction\w*|partisan\w*|politique)\b/,
+      t:'Je lis les œuvres, pas l’intérieur de ton crâne. La Créature garde les signes d’autorité pour en suspendre le sérieux : voilà le carnaval. Sa critique vise le partisanisme, quand un camp devient une identité et remplace la discussion. Sa foi nourrit aussi son conflit avec ceux qui prétendent en détenir les clefs. Le masque expose ces contradictions ; il ne les range pas dans une doctrine bien propre.',
+      sources:['/biographie/','/mode-putride/bestiaire/createur/']},
+    {id:'parcours',test:/\b(parcours|evolution|chronolog\w*)\b|\bchyren\b.*\bconfiteor\b|\bconfiteor\b.*\b(?:chyren|odium)\b/,
+      t:'D’abord les signes, ensuite le procès. Dans Chyren, la Fourolle ouvre à la Créature le monde des prophéties. Après le Panvampirium, Confiteor ramène le combat dans la conscience : désir, foi, culpabilité. In Odium Fidei repart de La Chute. Il ne suffit plus de demander pardon ; il faut se relever. J’aime beaucoup ce moment où les beaux costumes craquent.',
+      sources:['/mode-putride/discographie/chyren/','/mode-putride/discographie/confiteor/','/mode-putride/in-odium-fidei/']},
+    {id:'art',test:/\b(esthetique|influence\w*|style|musical|art|oeuvre|masque|personnage)\b/,
+      t:'Du velours noir, des machines et une vieille cérémonie qui tourne mal. La Créature chante, compose et met ses clips en scène. Son opéra gothique électronique catholique traditionnel fait se rencontrer carnaval, liturgie et romantisme noir. Le masque relie les disques aux rues de Rouen ; ce n’est pas un déguisement posé après la musique.',
+      sources:['/mode-putride/bestiaire/createur/']},
+    {id:'rouen',test:/\b(pourquoi rouen|rouen.*(?:important|oeuvre|mental)|normandie.*(?:art|oeuvre))\b/,
+      t:'Rouen n’est pas une toile peinte derrière la Créature. Ses rues, ses hauteurs et ses légendes lui donnent de quoi raconter sa chute. Dans Confiteor, la côte devient une montée vers l’expiation, la Gargouille un double ou un juge. Moi, je préfère les conduits : on y entend tout sans saluer personne.',
+      sources:['/mode-putride/discographie/confiteor/','/mode-putride/territoire/']}
+  ];
+  function precedent(){
+    for(var i=hist.length-1;i>=0;i--)if(hist[i].r==='a'&&hist[i].sujet)return hist[i];
+    return null;
+  }
+  function sourcesVoix(v){
+    return v.sources.map(function(url){
+      var p=KB.P.find(function(p){return p[1]===url;});
+      return p?'<a href="'+esc(url)+'">'+esc(p[0])+'</a>':'';
+    }).filter(Boolean).join(' · ');
+  }
+  function parole(q){
+    var n=norm(q);
+    if(/^(bonjour|salut|bonsoir|coucou|hello)( le ver| ver)?$/.test(n))return {r:'a',h:esc(ACC[couche])};
+    if(/^(merci|merci beaucoup|d accord|ok|compris|au revoir|bonne nuit)$/.test(n))return {r:'a',h:'Garde tes remerciements au sec. Je retourne sous la margelle.'};
+    if(couche!=='putride')return null;
+    var v=VOIX.find(function(v){return v.test.test(n);});
+    /* Un nom ou un titre précis prime sur une réponse thématique générale. */
+    if(v&&/^(art|sacre)$/.test(v.id)&&/\b(edwarda|epheb\w*|vampirix|chyren|confiteor|odium|kobal)\b/.test(n))return null;
+    if(!v)return null;
+    return {r:'a',h:esc(v.t)+'<span class="va">Les traces : '+sourcesVoix(v)+'</span>',sujet:v.sources[0],voix:v.id};
+  }
   function repond(q){
-    var r=cherche(q);
+    var p=precedent(),n=norm(q),suiteDemandee=/^(et )?(ensuite|apres|continue|la suite|encore|developpe|dis m en plus|pourquoi|comment ca|et alors)$/.test(n);
+    var oral=parole(q);if(oral&&!suiteDemandee)return oral;
+    var contextuel=p&&(suiteDemandee||/^(et (il|elle|son|sa|ses|lui)|pourquoi (il|elle)|ses |son |sa )/.test(n));
+    var pageP=contextuel?KB.P.findIndex(function(x){return x[1]===p.sujet;}):-1;
+    var requete=q.replace(/\bmme\b/gi,'Madame');
+    if(/\b(tu|toi|ton|tes)\b/.test(n)&&couche==='putride')requete+=' Ver baptistère';
+    if(pageP>=0)requete+=' '+KB.P[pageP][0];
+    var r=cherche(requete);
+    if(pageP>=0){
+      r=r.filter(function(x){return x.e.p===pageP&&x.ix!==p.ix;});
+      var details=mots(q);
+      if(details.length&&!suiteDemandee)r=r.filter(function(x){
+        return details.some(function(w){return variantes(w).some(function(v){return !!x.e.tf[v[0]];});});
+      });
+      if(suiteDemandee&&p.ix!=null)r.sort(function(a,b){return (a.ix>p.ix?0:1)-(b.ix>p.ix?0:1)||a.ix-b.ix;});
+    }
     if(!r.length||r[0].s<2.2){
-      return {r:'a',h:'Les registres restent muets sur ce point. Essaie un nom, un lieu ou un titre : les suggestions ci-dessous sont un bon début.'};
+      return {r:'a',h:'Je ne vais pas te vendre de la vase pour une révélation. Je n’ai pas de passage assez sûr pour te répondre. Donne-moi un nom, un lieu ou un disque ; si tu reprends une question, précise lequel.'};
     }
     var b=r[0],e=b.e,autres=[],pages={};pages[e.p]=1;
     /* la suite immédiate du même passage, si elle répond aussi */
-    var suite=KB.E[b.ix+1],txt=coupe(e.t,430);
+    var suite=KB.E[b.ix+1],txt=coupe(e.t,650);
     if(txt.length<170&&suite&&suite.p===e.p&&suite.h===e.h&&suite.k!==2){
       /* si la suite redit déjà le chapeau (résumé puis texte), on ne garde que la suite */
       var a=mots(e.t),dans={},com=0;mots(suite.t).forEach(function(w){dans[w]=1;});a.forEach(function(w){if(dans[w])com++;});
-      txt=coupe(com>=a.length*.6?suite.t:e.t+' '+suite.t,430);
+      txt=coupe(com>=a.length*.6?suite.t:e.t+' '+suite.t,650);
     }
     for(var i=1;i<r.length&&autres.length<2;i++){if(!pages[r[i].e.p]&&r[i].s>b.s*.42){pages[r[i].e.p]=1;autres.push(r[i].e);}}
-    var h='<span class="src">'+esc(nom(e))+'</span><q>'+esc(txt)+'</q><br><a class="lire" href="'+esc(lien(e))+'">Lire la suite →</a>';
+    var amorces=['J’ai trouvé cette trace sous la margelle.','Écoute ce que les murs ont gardé.','Voilà ce qui remonte de la vase.'];
+    var h=amorces[hist.filter(function(m){return m.r==='q';}).length%amorces.length]+'<span class="src">'+esc(nom(e))+'</span><q>'+esc(txt)+'</q><br><a class="lire" href="'+esc(lien(e))+'">Suivre la trace →</a>';
     if(autres.length)h+='<span class="va">Voir aussi : '+autres.map(function(o){return '<a href="'+esc(lien(o))+'">'+esc(nom(o))+'</a>';}).join(' · ')+'</span>';
-    return {r:'a',h:h};
+    return {r:'a',h:h,sujet:KB.P[e.p][1],ix:b.ix};
   }
   /* ---------- les reliques cachées des cachots : une énigme par relique, dans l'ordre de la procession ---------- */
   var RELIQUES=[
@@ -269,16 +348,30 @@
     return {r:'a',h:'<span class="src">Énigme du Ver</span><q>'+esc(r[1])+'</q><span class="va">Reliques trouvées : '+n+' / '+RELIQUES.length+'. '+(reste.length>1?'Redemande-moi : j’en garde d’autres.':'C’est la dernière.')+'</span>'};
   }
   function demande(q){
+    if(occupeQuestion){toast('Laisse-moi finir cette réponse avant de reprendre.');return;}
+    occupeQuestion=true;pan.querySelector('button[type="submit"]').disabled=true;
     ajoute({r:'q',t:q},false);
     var att=D.createElement('div');att.className='cn-m a cn-dots';att.setAttribute('aria-label','Le Ver consulte les registres');att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
     var t0=performance.now();
-    Promise.resolve(charge()).then(function(kb){
+    var reliques=couche==='cachot'&&/reliq/.test(norm(q));
+    (reliques?Promise.resolve(null):charge()).then(function(kb){
       var m=couche==='cachot'&&/reliq/.test(norm(q))?enigme():kb?repond(q):{r:'a',h:'Les registres sont hors d’atteinte pour l’instant. Réessaie dans un moment.'};
-      setTimeout(function(){att.remove();ajoute(m,true);},Math.max(0,(calme?0:420)-(performance.now()-t0)));
+      setTimeout(function(){att.remove();ajoute(m,true);occupeQuestion=false;pan.querySelector('button[type="submit"]').disabled=false;},Math.max(0,(calme?0:420)-(performance.now()-t0)));
+    }).catch(function(){
+      att.remove();ajoute({r:'a',h:'Les registres sont hors d’atteinte. Je ne peux pas les consulter : réessaie dans un moment.'},false);
+      occupeQuestion=false;pan.querySelector('button[type="submit"]').disabled=false;
     });
   }
 
-  function pose(){D.body.appendChild(fx);D.body.appendChild(ob);D.body.appendChild(pan);}
+  function pose(){
+    D.body.appendChild(fx);D.body.appendChild(ob);D.body.appendChild(pan);D.dispatchEvent(new Event('coins:pret'));
+    if(couche==='cachot'){
+      var ver=D.createElement('script');ver.src='/ver.js?v=6';
+      ver.onload=function(){window.Ver.go();};
+      ver.onerror=function(){console.error('Le Ver : animation indisponible. Le dialogue reste accessible.');};
+      D.head.appendChild(ver);
+    }
+  }
   if(D.body)pose();else D.addEventListener('DOMContentLoaded',pose);
   window.Coins={ouvre:ouvre,ferme:ferme,calme:function(){return calme;},cherche:function(q){return KB?cherche(q).slice(0,5).map(function(r){return [r.s.toFixed(2),nom(r.e),r.e.t.slice(0,80)];}):null;},charge:charge};
 })();
