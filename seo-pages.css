@@ -104,7 +104,7 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-footer{display:block;padding:2.8rem 1rem 3rem;border:0;background:#000;text-align:center}
 .route-footer-title{display:block;width:min(66rem,90%);height:auto;margin:0 auto;mix-blend-mode:screen}
 .route-footer-copyright{margin:.2rem 0 0;color:#fff;font:400 1.8rem/1.1 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.08em;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
-.route-footer-droits{margin:.7rem 0 0}.route-footer-droits a{color:#b9b9b9;font:400 1.6rem/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.14em;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.28)}.route-footer-droits a:hover,.route-footer-droits a:focus-visible{color:#fff;border-color:#fff}
+.route-footer-droits{margin:.7rem 0 0;line-height:2.1rem}.route-footer-droits a{white-space:nowrap;color:#b9b9b9;font:400 1.6rem/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.14em;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.28)}.route-footer-droits a:hover,.route-footer-droits a:focus-visible{color:#fff;border-color:#fff}
 @media(max-width:899px){
   html{font-size:16px}
   .route-header{display:flex;flex-direction:row;align-items:center;height:var(--route-mobile-header);min-height:0;border-bottom:.25rem solid var(--route-red)}

@@ -562,7 +562,7 @@ body[data-via-ust] #archive-objets .back{display:none}
 .sf{padding:2.8rem 1rem 3rem}
 .sf-t{display:block;margin:0 auto;width:min(66rem,90%);height:auto;mix-blend-mode:screen}
 .sf p.sf-c{margin:.2rem 0 0;font-family:"Religath","Religath Ligatures","Cinzel",Georgia,serif;color:#fff;font-size:1.8rem;font-weight:400;letter-spacing:.08em;line-height:1.1;text-shadow:0 0 .5rem rgba(255,255,255,.8),0 0 1.4rem rgba(255,255,255,.3)}
-.sf p.sf-d{margin:.7rem 0 0}.sf-d a{color:#b9b9b9;font:400 1.6rem/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.14em;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.28)}.sf-d a:hover,.sf-d a:focus-visible{color:#fff;border-color:#fff}
+.sf p.sf-d{margin:.7rem 0 0;line-height:2.1rem}.sf-d a{white-space:nowrap;color:#b9b9b9;font:400 1.6rem/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.14em;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.28)}.sf-d a:hover,.sf-d a:focus-visible{color:#fff;border-color:#fff}
 .album-link{color:#fc0;text-decoration:underline;text-underline-offset:.12em}
 .identity-link{color:#fff;text-decoration:underline;text-underline-offset:.12em}
 .album-link:hover,.album-link:focus-visible{color:#fff}
@@ -840,7 +840,7 @@ body[data-via-ust] #archive-objets .back{display:none}
 </section>
 <section class="pg" data-title="Contact" id="contact"><h2>CONTACT</h2>
 <p><a aria-controls="mailbox" aria-expanded="false" class="btn" href="mailto:puanteur.putride.productions@gmail.com" id="mailbtn">PUANTEUR.PUTRIDE.PRODUCTIONS@GMAIL.COM</a><a class="btn" href="https://www.instagram.com/lacreaturedumarais/" rel="noopener" target="_blank">INSTAGRAM</a></p>
-<p><a class="btn" href="/presse/">ESPACE PRESSE →</a></p>
+<p><a class="btn" href="/presse/dossier-de-presse.pdf" download>DOSSIER DE PRESSE (PDF) ↓</a><a class="btn" href="/images/creature.jpg" download>PHOTO OFFICIELLE HD ↓</a><a class="btn" href="/presse/dossier-de-presse.zip" download>KIT PRESSE (ZIP) ↓</a><a class="btn" href="/presse/">ESPACE PRESSE →</a></p>
 <form class="mf" hidden="" id="mailbox" method="post">
 <label for="mf-email">VOTRE E-MAIL <i>*</i></label><input autocomplete="email" id="mf-email" maxlength="200" name="email" required="" type="email"/>
 <label for="mf-obj">OBJET <i>*</i></label><input id="mf-obj" maxlength="200" name="objet" required="" type="text"/>
@@ -993,6 +993,7 @@ if(p&&window.LCMPlayer){var sec=p.closest(".pg"),im=sec&&sec.querySelector(".ah 
 LCMPlayer.play({section:p.dataset.sec,index:+p.dataset.i,apple:p.dataset.apple||undefined,title:p.dataset.t,art:im&&im.getAttribute("src")})}});
 function norm(s){return s.toLowerCase().replace(/œ/g,"oe").replace(/æ/g,"ae").replace(/[’‘]/g,"'").normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 var IX=[],routeBySection={biographie:"/biographie/",discographie:"/discographie/",clips:"/videos/",contact:"/contact/"};
+IX.push({t:"Kit presse",k:"Presse",h:"/presse/",n:norm("Kit presse — dossier de presse, photo HD, visuels"),s:0});
 P.forEach(function(s){var t=s.getAttribute("data-title");if(!t)return;
 var kd=s.id.indexOf("album-")===0?"Discographie":s.id.indexOf("clip-")===0?"Vidéos":s.id.indexOf("archive-")===0?"Archives":"";
 var h=routeBySection[s.id]||"#"+s.id;
@@ -1024,7 +1025,7 @@ else if(e.key==="ArrowUp"){e.preventDefault();if(i<=0)inp.focus();else as[i-1].f
 else if(e.key==="Escape"){shut();inp.focus()}}
 inp.addEventListener("keydown",function(e){nav(e,[].slice.call(out.querySelectorAll("a")),-1)});
 out.addEventListener("keydown",function(e){var as=[].slice.call(out.querySelectorAll("a"));nav(e,as,as.indexOf(document.activeElement))});
-out.addEventListener("click",function(e){var a=e.target.closest("a");if(!a||!a._r)return;e.preventDefault();var r=a._r;OPEN=r.tr||null;
+out.addEventListener("click",function(e){var a=e.target.closest("a");if(!a||!a._r)return;e.preventDefault();var r=a._r;if(r.h.charAt(0)!=="#"){shut();done();location.href=r.h;return}OPEN=r.tr||null;
 if(location.hash===r.h||(!location.hash&&r.h==="#accueil"))go();else location.hash=r.h;shut();done()});
 document.addEventListener("click",function(e){if(!form.parentNode.contains(e.target))out.classList.remove("on")})}
 var q1=document.getElementById("q1"),q2=document.getElementById("q2"),sb=document.querySelector(".sbtn"),mp=document.getElementById("msearch");
@@ -1039,7 +1040,7 @@ mp.addEventListener("keydown",function(e){if(e.key==="Escape"){closeM();sb.focus
 <footer class="sf">
 <img decoding="async" loading="lazy" width="1400" height="283" alt="La Créature du Marais — Cul-Pointu" class="sf-t" src="images/pied-titre.webp"/>
 <p class="sf-c">© MMXXVI</p>
-<p class="sf-d"><a href="/mentions-legales/">Mentions légales</a> · <a href="/droits-d-utilisation/">Droits d’utilisation</a></p>
+<p class="sf-d"><a href="/presse/">Presse</a> · <a href="/mentions-legales/">Mentions légales</a> · <a href="/droits-d-utilisation/">Droits d’utilisation</a></p>
 <p class="remonter"><button type="button">↑ REMONTER</button></p>
 <a class="egout" href="/mode-putride/accueil/" data-slime="down" aria-label="Entrer dans l’égout : mode putride"><svg viewBox="0 0 160 134" aria-hidden="true" focusable="false"><defs><linearGradient id="mh-metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#68706d"/><stop offset=".45" stop-color="#292e2c"/><stop offset=".78" stop-color="#464d49"/><stop offset="1" stop-color="#111514"/></linearGradient><radialGradient id="mh-cover" cx=".35" cy=".2"><stop stop-color="#727976"/><stop offset=".42" stop-color="#343a37"/><stop offset="1" stop-color="#171b19"/></radialGradient><pattern id="mh-texture" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 1H5M0 3H5" stroke="#aab1a9" stroke-opacity=".22" stroke-width=".7"/></pattern></defs><path class="mh-w" d="M22 92v11a58 21 0 0 0 116 0V92"/><ellipse class="mh-r" cx="80" cy="92" rx="58" ry="21"/><ellipse class="mh-h" cx="80" cy="92" rx="45" ry="15"/><g class="mh-f"><path d="M38 92C38 76 56 72 64 80C68 62 94 62 98 80C110 72 124 78 124 92A44 15 0 0 1 38 92Z"/></g><g class="mh-s"><path d="M44 106h9v13q-4.500 6-9 0z"/><path d="M76 111h10v15q-5 7-10 0z"/><path d="M106 106h9v11q-4.500 6-9 0z"/></g><g class="mh-d"><g transform="translate(48.500 124)"><path d="M0 0c-2 3-3.500 5-3.500 7a3.500 3.500 0 0 0 7 0c0-2-1.500-4-3.500-7z"/></g><g transform="translate(81 129)"><path d="M0 0c-2 3-3.500 5-3.500 7a3.500 3.500 0 0 0 7 0c0-2-1.500-4-3.500-7z"/></g><g transform="translate(110.500 120)"><path d="M0 0c-2 3-3.500 5-3.500 7a3.500 3.500 0 0 0 7 0c0-2-1.500-4-3.500-7z"/></g></g><g class="mh-lid"><ellipse cx="80" cy="92" rx="55" ry="19.500"/><ellipse class="mh-texture" cx="80" cy="92" rx="55" ry="19.500"/><ellipse cx="80" cy="92" rx="40" ry="13"/><path d="M80 79v26M52 92h56M60 83l40 18M100 83l-40 18M47 88c15-7 51-7 66 0M47 96c15 7 51 7 66 0"/><g class="mh-bolts"><circle cx="33" cy="92" r="2"/><circle cx="127" cy="92" r="2"/><path d="M32 92h2M126 92h2"/></g></g></svg></a>
 </footer>
