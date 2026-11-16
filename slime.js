@@ -423,8 +423,9 @@
   }
 
   /* ---------- la descente aux cachots : un tunnel d'arcs brisés en néon, de la crasse vers la poussière ----------
-     Violet et vert toxique (la crasse des égouts), puis or, puis blanc d'os (la poussière des cachots). Au bout du tunnel,
-     une rose flamboyante dont l'oculus est le visage de PUANTEUR PUTRIDE ; on la traverse, et c'est la lumière qui se pose. */
+     Violet et vert toxique (la crasse des égouts), puis or, puis blanc d'os (la poussière des cachots). Des nappes de fumée
+     verte traversent le chemin, des lueurs changeantes veillent aux quatre coins. Au bout du tunnel, une rose flamboyante :
+     on s'arrête devant elle le temps que le blason de PUANTEUR PUTRIDE s'allume en son cœur, puis on la traverse. */
   var NEON=[[0,[150,8,248]],[.34,[190,255,60]],[.64,[255,204,0]],[1,[238,231,214]]];
   function teinte(g){
     g=clamp(g,0,1);
@@ -453,60 +454,153 @@
     c.arc(cx+s*hw-s*r,cy+s*ys,s*r,A_AR,0);
     c.lineTo(cx+s*hw,cy+s*yb);
   }
-  function tunnel(c,cx,cy,S0,p,g,a){
+  /* quadrilobe : quatre lobes tangents au centre, chacun tracé par son demi-cercle extérieur */
+  function quadrilobe(c,x,y,r){
+    c.beginPath();
+    for(var i=0;i<4;i++){var th=i*Math.PI/2;c.arc(x+r*Math.cos(th),y+r*Math.sin(th),r,th-Math.PI/2,th+Math.PI/2);}
+    c.closePath();
+  }
+  /* les arcs entre les profondeurs zmin et zmax (on dessine séparément ce qui est derrière la rose et ce qui est devant) ;
+     ph fait courir un reflet irisé d'un arc à l'autre */
+  function tunnel(c,cx,cy,S0,p,g,a,ph,zmin,zmax){
     var N=16,k0=Math.floor(p)+1,k,z,s,al,col,lx,ly,i;
+    ph=ph||0;zmin=zmin==null?.12:Math.max(.12,zmin);zmax=zmax==null?99:zmax;
     /* nervures longitudinales : naissances, sommet et pieds de mur filent vers le point de fuite */
     var L=[[-1,.95],[-1,-.1],[0,-1.65],[1,-.1],[1,.95]];
     col=teinte(g);
-    for(i=0;i<L.length;i++){
+    if(zmax>=99)for(i=0;i<L.length;i++){
       lx=L[i][0];ly=L[i][1];
       neon(c,(function(lx,ly){return function(){c.beginPath();c.moveTo(cx+lx*S0/N,cy+ly*S0/N);c.lineTo(cx+lx*S0/.35,cy+ly*S0/.35);};})(lx,ly),col,a*.32,.9);
     }
     for(k=k0+N;k>=k0;k--){
-      z=k-p;if(z<.12)continue;
+      z=k-p;if(z<zmin||z>=zmax)continue;
       s=S0/z;al=a*Math.pow(clamp(1.08-z/N,0,1),1.3)*smooth(z/.45);
-      col=teinte(g+.06*Math.sin(k*1.7));
+      col=teinte(g+.07*Math.sin(k*1.7+ph));
       var lw=Math.min(11,Math.max(1.5,s*.0135));
       neon(c,function(){arche(c,cx,cy,s,1,-.1,.95);},col,al,lw);
       neon(c,function(){arche(c,cx,cy,s,.84,-.1,.95);},col,al*.5,lw*.6);
-      neon(c,function(){c.beginPath();c.arc(cx,cy-s*1.54,Math.max(1,s*.035),0,TAU);},col,al*.8,Math.max(1,lw*.8));
+      if(s*.05>3)neon(c,function(){quadrilobe(c,cx,cy-s*1.525,s*.05);},col,al*.8,Math.max(1,lw*.6));
+      else neon(c,function(){c.beginPath();c.arc(cx,cy-s*1.54,Math.max(1,s*.035),0,TAU);},col,al*.8,Math.max(1,lw*.8));
     }
   }
-  /* rose flamboyante : couronne, douze soufflets, meneaux ; l'oculus porte le visage de PUANTEUR PUTRIDE */
-  function rose(c,cx,cy,R,g,a,tints){
-    var col=teinte(g),lw=Math.min(10,Math.max(1,R*.012)),i,an,d=.2;
+  /* le blason PUANTEUR PUTRIDE en tube de néon : un halo seul (l'ombre portée d'une image tenue hors du cadre) et un cœur,
+     teints à chaque image dans la couleur exacte des arcs */
+  var BLASON=null,TEINTE=null;
+  function blasonNeon(){
+    if(!BLASON)BLASON=new Promise(function(res){
+      var im=new Image();
+      im.onload=function(){
+        var w=im.naturalWidth,h=im.naturalHeight,m=56,mk=function(){var cv=document.createElement('canvas');cv.width=w+2*m;cv.height=h+2*m;return cv;};
+        var cr=mk(),ha=mk(),x=cr.getContext('2d');
+        x.drawImage(im,m,m);
+        x=ha.getContext('2d');x.shadowColor='#fff';x.shadowOffsetX=1e4;
+        x.globalAlpha=.5;x.shadowBlur=40;x.drawImage(im,m-1e4,m);
+        x.globalAlpha=.85;x.shadowBlur=12;x.drawImage(im,m-1e4,m);
+        TEINTE=mk();
+        res({coeur:cr,halo:ha,w:w+2*m,h:h+2*m,ih:h});
+      };
+      im.onerror=function(){res(null);};im.src='/images/cachot/blason-neon.webp';
+    });
+    return BLASON;
+  }
+  function teint(src,col){
+    var x=TEINTE.getContext('2d');
+    x.globalCompositeOperation='source-over';x.clearRect(0,0,TEINTE.width,TEINTE.height);x.drawImage(src,0,0);
+    x.globalCompositeOperation='source-in';x.fillStyle=rgba(col,1);x.fillRect(0,0,TEINTE.width,TEINTE.height);
+    return TEINTE;
+  }
+  function blason(c,B,cx,cy,hgt,col,a){
+    if(!B||a<=.01)return;
+    var k=hgt/B.ih,w=B.w*k,h=B.h*k,x=cx-w/2,y=cy-h/2;
+    c.globalAlpha=clamp(a,0,1);c.drawImage(teint(B.halo,col),x,y,w,h);
+    c.globalAlpha=clamp(a*.95,0,1);c.drawImage(teint(B.coeur,coeur(col)),x,y,w,h);
+    c.globalAlpha=1;
+  }
+  /* rose flamboyante : couronne, douze soufflets, meneaux ; l'oculus porte le blason de PUANTEUR PUTRIDE */
+  function rose(c,cx,cy,R,g,a,B,bl){
+    var col=teinte(g),lw=Math.min(10,Math.max(1,R*.012)),i,an,d=.17;
     neon(c,function(){c.beginPath();c.arc(cx,cy,R,0,TAU);},col,a,lw);
     neon(c,function(){c.beginPath();c.arc(cx,cy,R*.88,0,TAU);},col,a*.6,lw*.6);
+    neon(c,function(){c.beginPath();c.arc(cx,cy,R*.45,0,TAU);},col,a*.45,lw*.5);
     neon(c,function(){
       c.beginPath();
       for(i=0;i<12;i++){
         an=i/12*TAU;
-        c.moveTo(cx+R*.34*Math.cos(an-d),cy+R*.34*Math.sin(an-d));
-        c.quadraticCurveTo(cx+R*.7*Math.cos(an-d*1.5),cy+R*.7*Math.sin(an-d*1.5),cx+R*.78*Math.cos(an),cy+R*.78*Math.sin(an));
-        c.quadraticCurveTo(cx+R*.7*Math.cos(an+d*1.5),cy+R*.7*Math.sin(an+d*1.5),cx+R*.34*Math.cos(an+d),cy+R*.34*Math.sin(an+d));
-        c.moveTo(cx+R*.34*Math.cos(an),cy+R*.34*Math.sin(an));c.lineTo(cx+R*.88*Math.cos(an),cy+R*.88*Math.sin(an));
+        c.moveTo(cx+R*.47*Math.cos(an-d),cy+R*.47*Math.sin(an-d));
+        c.quadraticCurveTo(cx+R*.74*Math.cos(an-d*1.4),cy+R*.74*Math.sin(an-d*1.4),cx+R*.8*Math.cos(an),cy+R*.8*Math.sin(an));
+        c.quadraticCurveTo(cx+R*.74*Math.cos(an+d*1.4),cy+R*.74*Math.sin(an+d*1.4),cx+R*.47*Math.cos(an+d),cy+R*.47*Math.sin(an+d));
+        c.moveTo(cx+R*.45*Math.cos(an),cy+R*.45*Math.sin(an));c.lineTo(cx+R*.88*Math.cos(an),cy+R*.88*Math.sin(an));
       }
     },col,a*.85,lw*.8);
-    if(tints){
-      var im=tints[clamp(Math.round(g*3),0,3)],dd=R*.7;
-      c.globalAlpha=clamp(a,0,1);c.drawImage(im,cx-dd/2,cy-dd/2,dd,dd);c.globalAlpha=1;
+    blason(c,B,cx,cy+R*.015,R*.8,col,a*bl);
+  }
+  /* fumée verte : une bande de bouffées douces étirées à l'horizontale, raccordable bord à bord, tirée une fois pour toutes */
+  var FUMEE=null;
+  function texFumee(){
+    if(FUMEE)return FUMEE;
+    var w=512,h=160,cv=document.createElement('canvas'),x=cv.getContext('2d'),i,j,px,py,r,gr,col,al,TONS=[[143,214,31],[190,255,60],[214,255,134],[79,154,23]];
+    cv.width=w;cv.height=h;
+    function bouffee(px,py,r,sx,col,al){
+      for(var j=-1;j<=1;j++){
+        x.save();x.translate(px+j*w,py);x.scale(sx,1);
+        gr=x.createRadialGradient(0,0,0,0,0,r);gr.addColorStop(0,rgba(col,al));gr.addColorStop(.6,rgba(col,al*.35));gr.addColorStop(1,rgba(col,0));
+        x.fillStyle=gr;x.fillRect(-r,-r,2*r,2*r);x.restore();
+      }
+    }
+    /* de grosses volutes, des filets plus fins, puis des trou?es pour que la nappe s'effiloche */
+    for(i=0;i<46;i++)bouffee(Math.random()*w,h*.5+(Math.random()+Math.random()-1)*h*.2,rnd(22,58),rnd(1.6,2.6),TONS[i%4],rnd(.035,.09));
+    for(i=0;i<60;i++)bouffee(Math.random()*w,h*.5+(Math.random()+Math.random()-1)*h*.3,rnd(6,18),rnd(2.5,4.5),TONS[(i+1)%4],rnd(.05,.13));
+    x.globalCompositeOperation='destination-out';
+    for(i=0;i<22;i++)bouffee(Math.random()*w,h*.5+(Math.random()-.5)*h*.5,rnd(14,40),rnd(1.2,2.2),[0,0,0],rnd(.35,.7));
+    x.globalCompositeOperation='destination-in';
+    gr=x.createLinearGradient(0,0,0,h);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.3,'#000');gr.addColorStop(.7,'#000');gr.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=gr;x.fillRect(0,0,w,h);
+    return FUMEE=cv;
+  }
+  /* des nappes posées en travers du chemin à intervalles réguliers : elles dérivent à l'horizontale, chacune dans son sens,
+     et grandissent à mesure qu'on avance jusqu'à ce qu'on les traverse */
+  function nappes(c,W,cx,cy,S0,p,t,a,zmin,zmax){
+    if(a<=.01)return;
+    var tex=texFumee(),Z=9,E=2.4,m0=Math.max(0,Math.floor((p-1.1)/E)),m,z,s,hh,ww,y,ph,x0,x,al;
+    for(m=m0+Math.ceil(Z/E)+1;m>=m0;m--){
+      z=m*E+1.1-p;if(z<Math.max(.2,zmin)||z>=zmax||z>=Z)continue;
+      s=S0/z;hh=s*(m&1?1.1:1.6);ww=hh*3.2;
+      y=cy+s*(m%3===0?.6:m%3===1?.12:.38);
+      ph=((t*(m&1?-1:1)*(.045+.012*(m%3))+m*.37)%1+1)%1;
+      x0=cx+ph*ww;x0-=Math.ceil(x0/ww)*ww;
+      /* les nappes lointaines restent ? peine visibles : empil?es au point de fuite, elles feraient une raie */
+      al=a*1.15*Math.pow(clamp(1-z/Z,0,1),1.6)*smooth((z-.2)/1.2);
+      if(al<=.01)continue;
+      c.globalAlpha=clamp(al,0,1);
+      for(x=x0;x<W;x+=ww)c.drawImage(tex,x,y-hh/2,ww,hh);
+    }
+    c.globalAlpha=1;
+  }
+  /* lueurs psychédéliques aux quatre coins : la teinte tourne lentement, chaque coin décalé d'un quart de tour */
+  function coins(c,W,H,t,a){
+    if(a<=.01)return;
+    var R=Math.max(W,H)*.4,i,x,y,h,r,g;
+    for(i=0;i<4;i++){
+      x=i&1?W:0;y=i&2?H:0;h=Math.round(t*50+i*90)%360;r=R*(.82+.18*Math.sin(t*2.1+i*1.7));
+      g=c.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0,'hsla('+h+',100%,62%,'+(.2*a).toFixed(3)+')');
+      g.addColorStop(.45,'hsla('+((h+45)%360)+',100%,52%,'+(.07*a).toFixed(3)+')');
+      g.addColorStop(1,'hsla('+((h+90)%360)+',100%,50%,0)');
+      c.fillStyle=g;c.fillRect(x-r,y-r,2*r,2*r);
     }
   }
-  /* le logo blanc, teinté une fois pour toutes aux quatre couleurs du néon */
-  var LOGO=null;
-  function logoNeon(){
-    if(!LOGO)LOGO=new Promise(function(res){
-      var im=new Image();
-      im.onload=function(){
-        res(NEON.map(function(n){
-          var cv=document.createElement('canvas');cv.width=cv.height=256;
-          var x=cv.getContext('2d');x.drawImage(im,0,0,256,256);x.globalCompositeOperation='source-in';x.fillStyle=rgba(coeur(n[1]),1);x.fillRect(0,0,256,256);
-          return cv;
-        }));
-      };
-      im.onerror=function(){res(null);};im.src='/images/cachot/logo-pp-blanc.webp';
-    });
-    return LOGO;
+  /* paillettes : étoiles à quatre branches qui scintillent autour du blason */
+  function paillettes(c,cx,cy,R,a,liste,dt){
+    if(a>.05&&liste.length<18&&Math.random()<dt*34)liste.push({an:rnd(0,TAU),d:rnd(.3,1),t:0,vie:rnd(.3,.75),r:rnd(.025,.06),or:Math.random()<.55});
+    for(var i=liste.length-1;i>=0;i--){
+      var q=liste[i];q.t+=dt;
+      if(q.t>q.vie){liste.splice(i,1);continue;}
+      var k=Math.sin(Math.PI*q.t/q.vie)*a,x=cx+Math.cos(q.an)*q.d*R,y=cy+Math.sin(q.an)*q.d*R,r=q.r*R*(.4+.6*k);
+      if(k<=.01)continue;
+      c.fillStyle=q.or?rgba([255,226,120],.95*k):rgba([255,255,255],.95*k);
+      c.beginPath();c.moveTo(x,y-r);c.quadraticCurveTo(x,y,x+r,y);c.quadraticCurveTo(x,y,x,y+r);c.quadraticCurveTo(x,y,x-r,y);c.quadraticCurveTo(x,y,x,y-r);c.fill();
+      c.fillStyle=rgba([255,250,230],.35*k);c.beginPath();c.arc(x,y,r*.32,0,TAU);c.fill();
+    }
   }
   /* crasse qui goutte (au début), poussière qui flotte (ensuite) */
   function matiere(c,W,H,t,dt,g,gouttes,poussiere,intensite){
@@ -528,13 +622,21 @@
       c.fillStyle=rgba(col,.75*k*intensite);c.beginPath();c.arc(m.x,m.y,m.r,0,TAU);c.fill();
     }
   }
+  /* l'avancée (en arcs parcourus) selon u = t/D : on file, on ralentit devant la rose, puis on la traverse d'un coup */
+  function avance(u){
+    if(u<.7)return 15*smooth(Math.pow(u/.7,.8));
+    if(u<.86)return 15+.3*(u-.7)/.16;
+    return 15.3+.5*Math.pow((u-.86)/.14,2.2);
+  }
+  var DV=3.1;
   function coverVisage(){
-    return logoNeon().then(function(tints){
-      var o=mkCanvas(),c=o.c,W=o.W,H=o.H,D=2.8,cx=W/2,cy=H*.5,S0=Math.min(H*.43,W*.52),gouttes=[],poussiere=[];
+    return blasonNeon().then(function(B){
+      var o=mkCanvas(),c=o.c,W=o.W,H=o.H,D=DV,cx=W/2,cy=H*.5,S0=Math.min(H*.43,W*.52),gouttes=[],poussiere=[],eclats=[];
       return loop(D,function(t,dt){
-        var u=t/D,g=clamp(u*1.05,0,1),p=15.7*Math.pow(clamp(t/(D-.3),0,1),1.85),
+        var u=t/D,g=clamp(u*1.12,0,1),p=avance(u),ph=t*3.2,
             allume=t<.55?(Math.random()<.2?.18:smooth(t/.55)):1,
-            bloom=smooth((t-(D-1.05))/.6),noir=smooth((t-(D-.34))/.34);
+            bl=u<.5?0:u<.66?(Math.random()<.3?.15:smooth((u-.5)/.16)):1,
+            eclat=smooth((u-.86)/.09),noir=smooth((t-(D-.24))/.24);
         c.globalCompositeOperation='source-over';c.clearRect(0,0,W,H);
         c.fillStyle='#030104';c.fillRect(0,0,W,H);
         var hz=c.createRadialGradient(cx,cy,0,cx,cy,Math.hypot(W,H)*.55);
@@ -545,30 +647,50 @@
         bd.addColorStop(0,'rgba(0,0,0,0)');bd.addColorStop(1,'rgba('+(52*sj+110*g|0)+','+(86*sj+102*g|0)+','+(6*sj+88*g|0)+','+(.5*sj+.22*g).toFixed(3)+')');
         c.fillStyle=bd;c.fillRect(0,0,W,H);
         c.globalCompositeOperation='lighter';
-        tunnel(c,cx,cy,S0,p,g,allume);
-        var zr=16-p;
-        if(zr>.2)rose(c,cx,cy-S0*.4/zr*.6,S0/zr*.95,g,allume,tints);
+        coins(c,W,H,t,allume);
+        var zr=16-p,R=S0/zr*.95,ry=cy-S0*.24/zr;
+        tunnel(c,cx,cy,S0,p,g,allume,ph,zr,99);
+        nappes(c,W,cx,cy,S0,p,t,allume,zr,99);
+        if(zr>.2){
+          /* la rose cache ce qui est derrière elle */
+          c.globalCompositeOperation='source-over';
+          var dk=c.createRadialGradient(cx,ry,R*.4,cx,ry,R);
+          dk.addColorStop(0,'rgba(3,1,4,.85)');dk.addColorStop(1,'rgba(3,1,4,0)');
+          c.fillStyle=dk;c.beginPath();c.arc(cx,ry,R,0,TAU);c.fill();
+          c.globalCompositeOperation='lighter';
+          /* au moment de traverser, le blason s'embrase et sa lumi?re d?borde de l'oculus */
+          if(eclat>0){
+            var fl=c.createRadialGradient(cx,ry,0,cx,ry,R*.75);
+            fl.addColorStop(0,rgba(teinte(g),.28*eclat));fl.addColorStop(1,rgba(teinte(g),0));
+            c.fillStyle=fl;c.fillRect(0,0,W,H);
+          }
+          rose(c,cx,ry,R,g,allume*(1-.45*eclat),B,bl*(1+.7*eclat));
+          paillettes(c,cx,ry,R*.95,bl*(1-eclat),eclats,dt);
+        }
+        tunnel(c,cx,cy,S0,p,g,allume,ph,.12,zr);
+        nappes(c,W,cx,cy,S0,p,t,allume,.2,zr);
         matiere(c,W,H,t,dt,g,gouttes,poussiere,1);
         c.globalCompositeOperation='source-over';
-        if(bloom>0){c.fillStyle='rgba(238,231,214,'+(bloom*.9).toFixed(3)+')';c.fillRect(0,0,W,H);}
-        if(noir>0){c.fillStyle='rgba(0,0,0,'+noir.toFixed(3)+')';c.fillRect(0,0,W,H);}
+        if(noir>0){c.fillStyle='rgba(3,1,4,'+noir.toFixed(3)+')';c.fillRect(0,0,W,H);}
       }).then(function(){return o;});
     });
   }
   function revealVisage(){
-    return logoNeon().then(function(){
+    return blasonNeon().then(function(){
       var o=mkCanvas(),c=o.c,W=o.W,H=o.H,D=2.2,cx=W/2,cy=H*.5,S0=Math.min(H*.43,W*.52),hy=Math.hypot(W,H),poussiere=[],gouttes=[];
       document.documentElement.classList.remove('slx');
       return loop(D,function(t,dt){
-        var u=t/D,open=eOut(clamp(u/.9,0,1)),vis=1-smooth((u-.4)/.6),k;
+        var u=t/D,open=eOut(clamp(u/.9,0,1)),vis=1-smooth((u-.4)/.6),p=16+6*eOut(u);
         c.globalCompositeOperation='source-over';c.clearRect(0,0,W,H);
         /* le rideau de poussière sombre s'ouvre depuis le centre */
         var rh=hy*(.03+.92*open),g=c.createRadialGradient(cx,cy,0,cx,cy,rh);
         g.addColorStop(0,'rgba(3,1,4,0)');g.addColorStop(.55,'rgba(3,1,4,'+(.5*vis).toFixed(3)+')');g.addColorStop(1,'rgba(3,1,4,'+vis.toFixed(3)+')');
         c.fillStyle=g;c.fillRect(0,0,W,H);
         c.globalCompositeOperation='lighter';
-        /* les arcs continuent de filer vers nous, de plus en plus lentement, et s'éteignent */
-        tunnel(c,cx,cy,S0,16+6*eOut(u),1,.95*(1-smooth((u-.05)/.65)));
+        /* les arcs continuent de filer vers nous, de plus en plus lentement, et s'éteignent ; la fumée se dissipe, les coins pâlissent */
+        coins(c,W,H,t+DV,1-smooth(u/.75));
+        tunnel(c,cx,cy,S0,p,1,.95*(1-smooth((u-.05)/.65)),(t+DV)*3.2);
+        nappes(c,W,cx,cy,S0,p,t+DV,.9*(1-smooth(u/.8)),.2,99);
         matiere(c,W,H,t+3,dt,1,gouttes,poussiere,1-u*.8);
         c.globalCompositeOperation='source-over';
       }).then(function(){o.cv.remove();});
