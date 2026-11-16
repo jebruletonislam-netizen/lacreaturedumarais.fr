@@ -1,5 +1,5 @@
 /* Cachot : nouvel en-tête (arcades de fer, vitrail, logos), fond en vitrail répété, logos du bas sur mobile.
-   Chargé APRÈS cachot.min.css : il l'emporte sans le modifier. */
+   Concaténé en dernier dans cachot.min.css (après cachot-base, cachot et cachot-chateau) : il l'emporte sur l'ancien en-tête. */
 
 /* ---- en-tête, ordinateur ---- */
 body.cachot header.ce{position:sticky;top:0;z-index:30;display:block;box-sizing:border-box;height:14.8125rem;overflow:hidden;border:0;
@@ -10,6 +10,7 @@ body.cachot header.ce::after{display:none}
 body.cachot header.ce::before{content:"";display:block;position:absolute;left:0;right:0;bottom:0;height:.8rem;z-index:5;pointer-events:none;opacity:1;filter:none;border:0;
   background:radial-gradient(circle at 50% 50%,#ffd0d4 0 .08rem,#5a000c .09rem .2rem,transparent .21rem) 0 0/1.6rem 100% repeat-x,linear-gradient(#ff2a3c,#c40018 55%,#7a0010)}
 .ce-art{position:absolute;left:50%;bottom:.8rem;transform:translateX(-50%);width:min(100%,112rem);aspect-ratio:8/1}
+.ce-art picture{display:contents}
 .ce-img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .ce-h{position:absolute;display:block;border-radius:50%;aspect-ratio:1;outline:0;transition:box-shadow .2s,background .2s}
 .ce-h:hover,.ce-h:focus-visible{background:rgba(255,40,60,.12);box-shadow:0 0 1.1rem rgba(255,40,60,.85),inset 0 0 .9rem rgba(255,40,60,.45)}
@@ -18,6 +19,8 @@ body.cachot header.ce::before{content:"";display:block;position:absolute;left:0;
 .ce-pp{left:2.375%}.ce-kv{left:89.875%}
 .ce-pp:hover,.ce-kv:hover{box-shadow:0 0 1.3rem rgba(255,255,255,.7),inset 0 0 1rem rgba(255,255,255,.3);background:rgba(255,255,255,.08)}
 .ce-bl{top:20%;left:46.1875%;width:7.625%;border-radius:12%}
+/* le quadrilobe de la première arcade mène à la tombe de Kavod */
+.ce-qd{top:45.75%;left:13.15%;width:4.5%}
 .ce-mob,.ce-bas{display:none}
 
 /* ---- fond du texte : le vitrail se répète comme dans les autres modes (rouge et noir) ---- */

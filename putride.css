@@ -451,7 +451,7 @@ header{overflow:visible}
  .mppp img{height:6rem;width:auto;display:block;pointer-events:auto}
 }
 
-#mpool{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:36;pointer-events:none}
+#mpool{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:35;pointer-events:none}
 .dpool{display:none}
 
 .fiche2 h3.sub{color:var(--g);font-size:1.45em;margin:1rem 0 .1rem;text-shadow:none}.fiche2 h3.sub+p{margin-top:.1rem}
@@ -674,9 +674,11 @@ header{overflow:visible}
 .dos-art figcaption{margin:.5rem .1rem .1rem;font-size:.9rem;line-height:1.35;color:#e8dcff}
 @media (max-width:899px){.dcard{grid-template-columns:6.5rem 1fr}.dcard h3{font-size:1.6rem}}
 .dos-list{margin-bottom:1.4rem}
-/* Empilement : le fluide passe sous le texte (36), le texte (37) reste sous l'en-tête et la navigation (38), puis viennent les objets (40). */
+/* Empilement : le fluide (35) passe sous le texte (36) ; les images flottantes (37) passent au-dessus des blocs de texte qui glissent sous elles,
+   pour s'ouvrir dans la liseuse sur toute leur surface ; tout reste sous l'en-tête et la navigation (38), puis viennent les objets (40). */
 #mobj{display:block;position:fixed;left:0;top:0;width:100%;height:100%;z-index:40;pointer-events:none}
-main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position:relative;z-index:37}
+main :where(h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,.kicker,.note){position:relative;z-index:36}
+main :where(.fiche2>div:first-child:has(:is(.pf,.eph,.map)),.rfig,.rtfig){position:relative;z-index:37}
 /* ---------- le portail des cachots : un vitrail gothique, la Créature en verre devant un soleil de rayons bleus, argentés, jaunes et rouges ---------- */
 .cgate{position:relative;display:block;max-width:72rem;margin:1.8rem 0 2.4rem;padding:0;text-decoration:none;color:#fff;cursor:pointer;isolation:isolate;background:#030308;border:.2rem solid #d9d9d9;box-shadow:0 0 0 .2rem #000,0 0 2.6rem rgba(255,204,0,.2),0 1.4rem 3rem rgba(0,0,0,.8);transition:border-color .3s,box-shadow .3s}
 .cv-txt{position:relative;display:grid;gap:.7rem;justify-items:center;padding:1.6rem 1.4rem 2rem;text-align:center;background:linear-gradient(#050505,#000)}

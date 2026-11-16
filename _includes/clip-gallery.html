@@ -5,10 +5,11 @@
     <a href="/images/{{ base | append: '.webp' | uri_escape }}" target="_blank" rel="noopener" aria-label="Ouvrir la photo : {{ photo.caption | escape }}">
       <picture>
         <source type="image/webp" srcset="/images/{{ base | append: '.th.webp' | uri_escape }}">
-        <img src="/images/{{ photo.file | uri_escape }}" alt="Photo du tournage de {{ page.clip_title }} — {{ photo.caption | escape }}" loading="lazy" decoding="async">
+        <img src="/images/{{ photo.file | uri_escape }}" alt="Photo du tournage du clip « {{ page.clip_title | escape }} » de Cul-Pointu (La Créature du Marais) : {{ photo.caption | escape }}" loading="lazy" decoding="async">
       </picture>
     </a>
     <figcaption>{{ photo.caption | escape }}</figcaption>
   </figure>
   {% endfor %}
 </div>
+<script type="application/ld+json">[{% for photo in site.data.clip_galleries[page.gallery] %}{% assign base = photo.file | split: '.' | first %}{% unless forloop.first %},{% endunless %}{"@context":"https://schema.org","@type":"ImageObject","contentUrl":"https://lacreaturedumarais.fr/images/{{ base | append: '.webp' | uri_escape }}","thumbnailUrl":"https://lacreaturedumarais.fr/images/{{ base | append: '.th.webp' | uri_escape }}","caption":{{ "Photo du tournage du clip « " | append: page.clip_title | append: " » de Cul-Pointu (La Créature du Marais) : " | append: photo.caption | jsonify }},"creditText":"La Créature du Marais","copyrightNotice":"© La Créature du Marais"}{% endfor %}]</script>
