@@ -1,7 +1,9 @@
 /* Les deux coins du bas, dans le mode putride et dans les cachots.
    À gauche : couper (ou rétablir) les effets ; le choix est gardé, et vaut comme le réglage « moins d'animations » de l'appareil.
-   À droite : l'Oracle, qui répond aux questions sur le lore. Il ne répond qu'avec les textes du site (/oracle-*.json, tirés des pages
-   par _outils/oracle.py) et montre toujours où lire la suite : il n'invente rien. Chaque couche n'interroge que ses propres registres. */
+   À droite : l'Oracle, incarné par le Ver du baptistère, qui répond aux questions sur le lore. Il ne répond qu'avec les textes du site
+   (/oracle-*.json, tirés des pages par _outils/oracle.py) et montre toujours où lire la suite : il n'invente rien. Chaque couche n'interroge
+   que ses propres registres. Seule exception, dans les cachots : interrogé sur les reliques cachées, il répond par une énigme sur l'une de
+   celles qu'on n'a pas encore trouvées (liste RELIQUES, à tenir d'accord avec les boutons .rel des pages et cachot-vie.js). */
 (function(){
   'use strict';
   if(window.Coins)return;
@@ -93,21 +95,21 @@
     setTimeout(function(){toast(r.m==='off'?'Effets coupés. Le bouton en bas à gauche les rétablit.':'Effets rétablis.');},350);
   })();
 
-  /* ---------- à droite : l'Oracle ---------- */
+  /* ---------- à droite : l'Oracle, c'est-à-dire le Ver ---------- */
   var ACC={
-    putride:'Je suis l’Oracle du mode putride. Interroge-moi sur le bestiaire, le territoire, les disques ou les méfaits : je te réponds avec les registres, et je te montre où lire la suite.',
-    cachot:'Je suis l’Oracle des cachots. Interroge-moi sur les prisonniers, les fonds d’archives ou la Gazette : je ne réponds qu’avec ce que gardent les registres.'
+    putride:'Je suis le Ver du baptistère, et l’Oracle du mode putride. J’ai rampé dans tous les registres : interroge-moi sur le bestiaire, le territoire, les disques ou les méfaits, et je te montre où lire la suite.',
+    cachot:'Je suis le Ver, l’Oracle des cachots. Du fond du baptistère, je lis les registres : les prisonniers, les fonds d’archives, la Gazette. Et les reliques cachées, si tu sais demander.'
   };
   var SUG={
     putride:['Qui est Éphébito ?','Qu’est-ce que le Vampirium ?','Qui est Vampirix ?','La Gargouille de Rouen','Le Ver du baptistère','De quoi parle Chyren ?'],
-    cachot:['Qui est Kavod TinkiWizkhi ?','Qui est Noo-Noo ?','Pourquoi PUANTEUR PUTRIDE est-il au cachot ?','Le fonds du Baron','La Gazette du Prisonnier']
+    cachot:['Qui est Kavod TinkiWizkhi ?','Qui est Noo-Noo ?','Pourquoi PUANTEUR PUTRIDE est-il au cachot ?','Le fonds du Baron','La Gazette du Prisonnier','Les reliques cachées']
   };
-  var ICO_OR='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 5C21 15 13 27 13 40v18h38V40C51 27 43 15 32 5z"/><path d="M19 39q13-11 26 0q-13 11-26 0z"/><circle cx="32" cy="39" r="3.6" style="fill:currentColor"/></svg>';
-  var ob=el('<button type="button" class="cn-b cn-or'+cls+'" aria-expanded="false" aria-controls="cn-oracle" aria-label="L’Oracle : questions sur le lore" title="L’Oracle : questions sur le lore">'+ICO_OR+'</button>');
+  var ICO_OR='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M35 38a3 3 0 0 1-6 0a6 6 0 0 1 12 0a9 9 0 0 1-18 0a12 12 0 0 1 24 0a15 15 0 0 1-30 0C17 27 31 28 27 16"/><circle cx="26" cy="11" r="5.5" style="fill:currentColor"/><circle cx="27.8" cy="9.8" r="1.6" style="fill:#000;stroke:none"/></svg>';
+  var ob=el('<button type="button" class="cn-b cn-or'+cls+'" aria-expanded="false" aria-controls="cn-oracle" aria-label="Le Ver, l’Oracle : questions sur le lore" title="Le Ver, l’Oracle : questions sur le lore">'+ICO_OR+'</button>');
   var pan=el('<section class="cn-p'+cls+'" id="cn-oracle" role="dialog" aria-labelledby="cn-ot" hidden>'
-    +'<div class="cn-h"><div><b id="cn-ot">L’Oracle</b><small>Il ne répond qu’avec ce que disent les registres du site.</small></div><button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></div>'
+    +'<div class="cn-h"><div><b id="cn-ot">Le Ver</b><small>L’Oracle du baptistère. Il ne répond qu’avec ce que disent les registres du site.</small></div><button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></div>'
     +'<div class="cn-log" aria-live="polite"></div><div class="cn-sug"></div>'
-    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question à l’Oracle</label><input id="cn-q" type="text" maxlength="160" enterkeyhint="send" placeholder="Pose ta question…"><button type="submit" aria-label="Demander">➤</button></form>'
+    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><input id="cn-q" type="text" maxlength="160" enterkeyhint="send" placeholder="Pose ta question…"><button type="submit" aria-label="Demander">➤</button></form>'
     +'</section>');
   var log=pan.querySelector('.cn-log'),sug=pan.querySelector('.cn-sug'),inp=pan.querySelector('input'),ouvert=false,hist=[];
   try{hist=JSON.parse(sessionStorage.getItem(SS+'-'+couche)||'[]');}catch(_){hist=[];}
@@ -243,12 +245,35 @@
     if(autres.length)h+='<span class="va">Voir aussi : '+autres.map(function(o){return '<a href="'+esc(lien(o))+'">'+esc(nom(o))+'</a>';}).join(' · ')+'</span>';
     return {r:'a',h:h};
   }
+  /* ---------- les reliques cachées des cachots : une énigme par relique, dans l'ordre de la procession ---------- */
+  var RELIQUES=[
+    ['rince','Ni vin de messe ni eau bénite : les miséreux me boivent au pied d’une fontaine, sans calice. Au portail, sur ta droite, on m’a oublié.'],
+    ['miroir','Je montre tout, sauf ceux qui ont les dents longues. Au portail, longe le mur de gauche et penche-toi : je suis plus bas que tes yeux.'],
+    ['rat','Il a tout vu avant toi et le répète à qui veut l’entendre. Il loge au portail, tout en bas, côté droit, là où l’on ne descend jamais assez.'],
+    ['plume','J’ai quitté le blason pour écrire des aveux et des dénonciations. Dans le bas-côté nord, lève les yeux vers la droite.'],
+    ['escarpin','Un talon sans pied, qui scintille encore. Quelqu’un a fui le bas-côté nord à cloche-pied : cherche à gauche.'],
+    ['lunettes','Deux lunes noires et cerclées, à personne et pourtant de la famille. Dans le bas-côté nord, descends, puis regarde à droite.'],
+    ['rose','Une fleur en deuil, qui ne pique pas, posée sans signature. Le chœur la garde, en haut, à droite.'],
+    ['gaufre','Quadrillée comme une grille de cachot, tachée de rouge, venue de la plantation. Le chœur la cache sur sa gauche.'],
+    ['boule','Mille facettes pour un seul mort : même ici, on danse. À l’abside, près de la tombe, cherche à droite.']
+  ];
+  function enigme(){
+    var pris=[],i=0;
+    try{pris=JSON.parse(localStorage.getItem('lcm-reliques')||'[]');}catch(_){}
+    if(!Array.isArray(pris))pris=[];
+    var reste=RELIQUES.filter(function(r){return pris.indexOf(r[0])<0;}),n=RELIQUES.length-reste.length;
+    if(!reste.length)return {r:'a',h:'<span class="src">Les reliques cachées</span>'+esc('Les neuf sont à toi. Le vitrail t’a reconnu : tu es une icône, et le Ver n’a plus d’énigme à te donner.')};
+    /* chaque nouvelle question passe à une autre relique manquante */
+    try{i=+sessionStorage.getItem(SS+'-enigme')||0;sessionStorage.setItem(SS+'-enigme',String(i+1));}catch(_){}
+    var r=reste[i%reste.length];
+    return {r:'a',h:'<span class="src">Énigme du Ver</span><q>'+esc(r[1])+'</q><span class="va">Reliques trouvées : '+n+' / '+RELIQUES.length+'. '+(reste.length>1?'Redemande-moi : j’en garde d’autres.':'C’est la dernière.')+'</span>'};
+  }
   function demande(q){
     ajoute({r:'q',t:q},false);
-    var att=D.createElement('div');att.className='cn-m a cn-dots';att.setAttribute('aria-label','L’Oracle consulte les registres');att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
+    var att=D.createElement('div');att.className='cn-m a cn-dots';att.setAttribute('aria-label','Le Ver consulte les registres');att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
     var t0=performance.now();
     Promise.resolve(charge()).then(function(kb){
-      var m=kb?repond(q):{r:'a',h:'Les registres sont hors d’atteinte pour l’instant. Réessaie dans un moment.'};
+      var m=couche==='cachot'&&/reliq/.test(norm(q))?enigme():kb?repond(q):{r:'a',h:'Les registres sont hors d’atteinte pour l’instant. Réessaie dans un moment.'};
       setTimeout(function(){att.remove();ajoute(m,true);},Math.max(0,(calme?0:420)-(performance.now()-t0)));
     });
   }
