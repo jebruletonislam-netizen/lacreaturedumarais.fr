@@ -59,9 +59,10 @@
     var b=d.querySelector('.ly'),s=d.closest('.alp');
     if(!d.open){b.textContent='';d.dataset.l='';return;}
     Array.prototype.forEach.call(d.parentNode.querySelectorAll('details[open]'),function(o){if(o!==d)o.open=false;});
+    var muet=d.hasAttribute('data-rouvert');d.removeAttribute('data-rouvert');
     if(d.dataset.l)return;d.dataset.l=1;
     var t=d.dataset.t,i=Array.prototype.indexOf.call(d.parentNode.children,d);
-    if(window.LCMPlayer)LCMPlayer.play(cfg(s,i,t));
+    if(window.LCMPlayer&&!muet)LCMPlayer.play(cfg(s,i,t));
     var go=function(){if(d.open&&d.dataset.l)lyrics(b,t);};
     if(window.LCM_G)go();else loadScript('/putride-genius.js?v=2').then(go);
   },true);

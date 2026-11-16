@@ -32,6 +32,7 @@
   /* liste des titres */
   function open(d) {
     var tl = d.parentNode, sec = tl.getAttribute('data-sec'), t = d.getAttribute('data-t'), ly = d.querySelector('.ly');
+    var muet = d.hasAttribute('data-rouvert'); d.removeAttribute('data-rouvert');
     [].forEach.call(tl.querySelectorAll('details[open]'), function (o) { if (o !== d) o.open = false; });
     if (d.getAttribute('data-l')) return; d.setAttribute('data-l', '1');
     var g = G[t], yt = d.getAttribute('data-yt'), clipUrl = d.getAttribute('data-clip');
@@ -44,7 +45,7 @@
       if (clipUrl) { var a = document.createElement('a'); a.className = 'clip-gallery-link'; a.href = clipUrl; a.textContent = 'PAGE DU CLIP →'; l.appendChild(a); }
     }
     tp.appendChild(r); tp.appendChild(l); ly.appendChild(tp);
-    play({ section: sec, index: +d.getAttribute('data-i'), apple: d.getAttribute('data-apple') || undefined, title: t, art: tl.getAttribute('data-art') });
+    if (!muet) play({ section: sec, index: +d.getAttribute('data-i'), apple: d.getAttribute('data-apple') || undefined, title: t, art: tl.getAttribute('data-art') });
   }
   document.addEventListener('toggle', function (ev) {
     var d = ev.target; if (!d.matches || !d.matches('.tl details')) return;

@@ -156,6 +156,41 @@
     openLB([it],0);
   });
 
+  /* Volets dépliants (details) : le temps de la visite, chaque page retrouve ceux qu'on y avait laissés ouverts.
+     Ils se rouvrent sans relancer la musique : data-rouvert est lu puis retiré par les listes de titres. */
+  (function(){
+    var SS=null,K='lcm-volets';try{SS=window.sessionStorage;SS.getItem(K);}catch(e){SS=null;}
+    if(!SS)return;
+    function page(){return location.pathname.replace(/\/index\.html$/,'/');}
+    function lire(){try{return JSON.parse(SS.getItem(K)||'{}')||{};}catch(e){return {};}}
+    document.addEventListener('toggle',function(ev){
+      if(!ev.target.matches||!ev.target.matches('details'))return;
+      var m=lire(),o=[],p=page(),ks;
+      [].forEach.call(document.querySelectorAll('details'),function(d,i){if(d.open)o.push(i);});
+      if(o.length)m[p]=[o,Date.now()];else delete m[p];
+      ks=Object.keys(m);
+      if(ks.length>60){ks.sort(function(a,b){return m[a][1]-m[b][1];});ks.slice(0,ks.length-40).forEach(function(k){delete m[k];});}
+      try{SS.setItem(K,JSON.stringify(m));}catch(e){}
+    },true);
+    /* un lien vers un volet précis (#titre-3) l'emporte sur l'état mémorisé */
+    function rouvrir(){
+      var v=lire()[page()],L=document.querySelectorAll('details'),c=null;
+      if(!v)return;
+      try{c=location.hash&&document.getElementById(decodeURIComponent(location.hash.slice(1)));}catch(e){}
+      if(c&&c.closest('details'))return;
+      v[0].forEach(function(i){var d=L[i];if(d&&!d.open){d.setAttribute('data-rouvert','');d.open=true;}});
+    }
+    window.LCMVolets={rouvrir:rouvrir};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rouvrir);else rouvrir();
+  })();
+
+  /* « ↑ REMONTER » (pied du mode normal, sur mobile) : retour en haut de la page */
+  document.addEventListener('click',function(ev){
+    if(!(ev.target.closest&&ev.target.closest('.remonter button')))return;
+    var doux=!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+    try{window.scrollTo({top:0,left:0,behavior:doux?'smooth':'auto'});}catch(e){window.scrollTo(0,0);}
+  });
+
   /* Retour à la bonne hauteur. Chaque entrée de l'historique note sa position de défilement (sessionStorage).
      Le mode putride (navigation sans rechargement) et l'accueil (rubriques à ancre) la rétablissent eux-mêmes
      (history.scrollRestoration='manual'), les autres pages laissent faire le navigateur.
@@ -282,6 +317,7 @@
       /* contenu en place : nouvelle page en haut (ou à la hauteur voulue par un lien de retour), page revisitée à sa hauteur */
       arriver:function(push){
         var c,h;
+        if(window.LCMVolets)LCMVolets.rouvrir();
         pause=false;sync();c=cible;cible=null;
         if(push){c=voulue();return c?aller(c):false;}
         if(aller(c))return true;

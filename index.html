@@ -8,7 +8,7 @@
 <meta content="La Créature du Marais, alias Cul-Pointu (Tancrède Charon), artiste indépendant de Rouen, Normandie : chanson gothique et baroque, post-punk, expérimental, avant-garde, alternatif, poésie de gueux et mystique catholique. Albums, clips et archives." name="description"/>
 <meta content="index,follow" name="robots"/>
 <meta content="#000000" name="theme-color"/>
-<link href="/egout.css?v=4" rel="stylesheet"/>
+<link href="/egout.css?v=5" rel="stylesheet"/>
 <link href="/charte.css?v=1" rel="stylesheet"/>
 <script>(function(){var m={"album-confiteor":"/discographie/confiteor/","album-chyren":"/discographie/chyren/","album-omerta434":"/discographie/omerta434/","album-machines":"/discographie/les-machines-infernales/","album-jubile":"/discographie/jubile/","album-miserables":"/discographie/miserables/","album-in-odium-fidei":"/discographie/in-odium-fidei/","clip-chimaera":"/video/clip-chimaera/","clip-cote":"/video/clip-cote-sainte-catherine/","clip-chute":"/video/clip-la-chute/","clip-dis":"/video/clip-dis-ferme-un-instant-les-yeux/","clip-miserables":"/video/clip-miserables/","nouvelles":"/nouvelles/"};function go(){var h=(location.hash||"").slice(1);if(m[h])location.replace(m[h])}go();addEventListener("hashchange",go)})();</script>
 <meta content="website" property="og:type"/><meta content="La Créature du Marais - Musique, clips et archives (Cul-Pointu) Artiste Rouennais" property="og:title"/><meta content="La Créature du Marais, alias Cul-Pointu (Tancrède Charon), artiste indépendant de Rouen, Normandie : chanson gothique et baroque, post-punk, expérimental, avant-garde, alternatif, poésie de gueux et mystique catholique. Albums, clips et archives." property="og:description"/><meta content="https://lacreaturedumarais.fr/" property="og:url"/><meta content="La Créature du Marais" property="og:site_name"/><meta content="fr_FR" property="og:locale"/><meta content="https://lacreaturedumarais.fr/images/og-creature.jpg" property="og:image"/><meta content="image/jpeg" property="og:image:type"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="La Créature du Marais, Tancrède Charon en robe noire tenant une lance, sur fond rouge" property="og:image:alt"/><meta content="summary_large_image" name="twitter:card"/><meta content="La Créature du Marais - Musique, clips et archives (Cul-Pointu) Artiste Rouennais" name="twitter:title"/><meta content="La Créature du Marais, alias Cul-Pointu (Tancrède Charon), artiste indépendant de Rouen, Normandie : chanson gothique et baroque, post-punk, expérimental, avant-garde, alternatif, poésie de gueux et mystique catholique. Albums, clips et archives." name="twitter:description"/><meta content="https://lacreaturedumarais.fr/images/og-creature.jpg" name="twitter:image"/><meta content="La Créature du Marais, Tancrède Charon en robe noire tenant une lance, sur fond rouge" name="twitter:image:alt"/>
@@ -972,7 +972,8 @@ d.classList.remove("track-art-open");
 d.dataset.l="";return;
 }
 [].slice.call(trackList.querySelectorAll("details[open]")).forEach(function(other){if(other!==d)other.open=false});
-if(d.dataset.l)return;d.dataset.l=1;if(window.LCMPlayer){var th=summary&&summary.querySelector(".track-art-thumb"),ah=section&&section.querySelector(".ah img");LCMPlayer.play({section:section&&section.id,index:trackIndex,apple:appleId,title:t,art:(th||ah)&&(th||ah).getAttribute("src")})}
+var muet=d.hasAttribute("data-rouvert");d.removeAttribute("data-rouvert");
+if(d.dataset.l)return;d.dataset.l=1;if(window.LCMPlayer&&!muet){var th=summary&&summary.querySelector(".track-art-thumb"),ah=section&&section.querySelector(".ah img");LCMPlayer.play({section:section&&section.id,index:trackIndex,apple:appleId,title:t,art:(th||ah)&&(th||ah).getAttribute("src")})}
 if(g||clip||appleId||t==="Misérables"){
 var bioSrc=t==="Jubilé"?document.querySelector("#album-jubile .tp-bio"):t==="Misérables"?document.querySelector("#album-miserables .tp-bio"):null;
 if(clip||bioSrc){var tp=buildPanel({t:t,g:g,clip:clip,bio:bioSrc});b.appendChild(tp)}
@@ -1039,6 +1040,7 @@ mp.addEventListener("keydown",function(e){if(e.key==="Escape"){closeM();sb.focus
 <img decoding="async" loading="lazy" width="1400" height="283" alt="La Créature du Marais — Cul-Pointu" class="sf-t" src="images/pied-titre.webp"/>
 <p class="sf-c">© MMXXVI</p>
 <p class="sf-d"><a href="/mentions-legales/">Mentions légales</a> · <a href="/droits-d-utilisation/">Droits d’utilisation</a></p>
+<p class="remonter"><button type="button">↑ REMONTER</button></p>
 <a class="egout" href="/mode-putride/accueil/" data-slime="down" aria-label="Entrer dans l’égout : mode putride"><svg viewBox="0 0 160 134" aria-hidden="true" focusable="false"><defs><linearGradient id="mh-metal" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#68706d"/><stop offset=".45" stop-color="#292e2c"/><stop offset=".78" stop-color="#464d49"/><stop offset="1" stop-color="#111514"/></linearGradient><radialGradient id="mh-cover" cx=".35" cy=".2"><stop stop-color="#727976"/><stop offset=".42" stop-color="#343a37"/><stop offset="1" stop-color="#171b19"/></radialGradient><pattern id="mh-texture" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 1H5M0 3H5" stroke="#aab1a9" stroke-opacity=".22" stroke-width=".7"/></pattern></defs><path class="mh-w" d="M22 92v11a58 21 0 0 0 116 0V92"/><ellipse class="mh-r" cx="80" cy="92" rx="58" ry="21"/><ellipse class="mh-h" cx="80" cy="92" rx="45" ry="15"/><g class="mh-f"><path d="M38 92C38 76 56 72 64 80C68 62 94 62 98 80C110 72 124 78 124 92A44 15 0 0 1 38 92Z"/></g><g class="mh-s"><path d="M44 106h9v13q-4.500 6-9 0z"/><path d="M76 111h10v15q-5 7-10 0z"/><path d="M106 106h9v11q-4.500 6-9 0z"/></g><g class="mh-d"><g transform="translate(48.500 124)"><path d="M0 0c-2 3-3.500 5-3.500 7a3.500 3.500 0 0 0 7 0c0-2-1.500-4-3.500-7z"/></g><g transform="translate(81 129)"><path d="M0 0c-2 3-3.500 5-3.500 7a3.500 3.500 0 0 0 7 0c0-2-1.500-4-3.500-7z"/></g><g transform="translate(110.500 120)"><path d="M0 0c-2 3-3.500 5-3.500 7a3.500 3.500 0 0 0 7 0c0-2-1.500-4-3.500-7z"/></g></g><g class="mh-lid"><ellipse cx="80" cy="92" rx="55" ry="19.500"/><ellipse class="mh-texture" cx="80" cy="92" rx="55" ry="19.500"/><ellipse cx="80" cy="92" rx="40" ry="13"/><path d="M80 79v26M52 92h56M60 83l40 18M100 83l-40 18M47 88c15-7 51-7 66 0M47 96c15 7 51 7 66 0"/><g class="mh-bolts"><circle cx="33" cy="92" r="2"/><circle cx="127" cy="92" r="2"/><path d="M32 92h2M126 92h2"/></g></g></svg></a>
 </footer>
 <script>
@@ -1076,7 +1078,7 @@ else fail("Échec de l’envoi"+(m?" ("+m+")":"")+".")}})
 })();
 </script>
 
-<script src="lightbox.js?v=4"></script><script src="lecteur.js?v=6"></script>
+<script src="lightbox.js?v=5"></script><script src="lecteur.js?v=6"></script>
 <script src="navdrag.js?v=1"></script>
 <script>
 (function(){

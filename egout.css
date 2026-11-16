@@ -26,6 +26,11 @@
 .egout:hover .mh-d g:nth-child(1) path,.egout:focus-visible .mh-d g:nth-child(1) path{animation-delay:4.4s}
 .egout:hover .mh-d g:nth-child(2) path,.egout:focus-visible .mh-d g:nth-child(2) path{animation-delay:5.2s}
 .egout:hover .mh-d g:nth-child(3) path,.egout:focus-visible .mh-d g:nth-child(3) path{animation-delay:6s}
+/* « ↑ REMONTER » : retour en haut de page, sur mobile seulement */
+footer p.remonter{display:none;margin:1.1rem 0 0}
+.remonter button{padding:.35rem .9rem;border:.12rem dashed #f00;background:none;color:#f00;font:400 1.15rem/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.08em;cursor:pointer;opacity:.85;transition:color .3s,border-color .3s,box-shadow .3s,opacity .3s;-webkit-tap-highlight-color:transparent}
+.remonter button:hover,.remonter button:focus-visible{opacity:1;color:#fff;border-color:#fff;box-shadow:0 0 1rem rgba(255,0,0,.6);outline:0}
+@media (max-width:899px){footer p.remonter{display:block}}
 @keyframes mhb{0%,100%{transform:scale(1,1)}50%{transform:scale(1.03,1.09)}}
 @keyframes mhd{0%{opacity:0;transform:scale(.2)}12%{opacity:1;transform:scale(1)}35%{opacity:1;transform:translateY(0) scale(.85,1.35)}85%{opacity:1;transform:translateY(16px) scale(.8,1.2)}100%{opacity:0;transform:translateY(20px) scale(.7,1.1)}}
 @media (prefers-reduced-motion:reduce){.egout .mh-lid,.egout .mh-f,.egout .mh-s path{transition:none;animation:none}.egout .mh-d path{animation:none!important}}
