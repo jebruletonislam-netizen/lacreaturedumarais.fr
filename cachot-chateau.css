@@ -1,6 +1,6 @@
 /* ====================================================================================================
    LE CHÃ‚TEAU DE FENGSEL : gothique flamboyant normand.
-   FaÃ§ade et frise d'accolades en haut, plan en trident (Saint-Patrice de Rouen) Ã  gauche, nef Ã  voÃ»te d'ogives et piliers
+   FaÃ§ade et frise d'accolades en haut, plan en trident Ã  gauche, nef Ã  voÃ»te d'ogives et piliers
    fasciculÃ©s pour le texte, niches Ã  crochets pour les fiches, gravures sous la voÃ»te.
    Les dÃ©cors sont des SVG autonomes (images/cachot/*.svg), gÃ©nÃ©rÃ©s Ã  partir de la gÃ©omÃ©trie gothique.
    ==================================================================================================== */
@@ -11,7 +11,7 @@
 .cachot header::before{left:0;right:0;bottom:.45rem;height:2.55rem;opacity:.95;background:none;filter:drop-shadow(0 0 .3rem rgba(225,0,25,.45))}
 .cachot .cr-mid::before{display:none}
 
-/* ---------- le plan du chÃ¢teau, en trident (Saint-Patrice de Rouen) : on s'y dÃ©place comme dans l'Ã©difice ---------- */
+/* ---------- le plan du chÃ¢teau, en trident : on s'y dÃ©place comme dans l'Ã©difice ---------- */
 .cachot nav{display:block;grid-template-rows:none;padding:1.6rem 3.4rem 2.4rem 1.6rem;border:0;box-shadow:.6rem 0 1.6rem rgba(0,0,0,.8);
   background:radial-gradient(ellipse 120% 40% at 50% 100%,rgba(225,0,25,.3),transparent 74%),linear-gradient(rgba(4,4,8,.88),rgba(4,4,8,.95)),url(/images/cachot/vitrail-2.webp) 58% 30%/auto 100% no-repeat,#050508}
 .pl-t{margin:0 0 1rem;text-align:center;font:400 1.5rem/1 "Bebas Neue","Arial Narrow",Impact,sans-serif;letter-spacing:.34em;color:var(--or);text-shadow:0 .1rem 0 #000}

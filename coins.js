@@ -180,7 +180,7 @@
   }
   function charge(){
     if(KB||attente)return attente;
-    attente=fetch('/oracle-'+couche+'.json?v=1',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){KB=prepare(d);return KB;}).catch(function(){attente=null;return null;});
+    attente=fetch('/oracle-'+couche+'.json?v=2',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){KB=prepare(d);return KB;}).catch(function(){attente=null;return null;});
     return attente;
   }
   function idf(w){var n=KB.df[w]||0;return Math.log(1+(KB.N-n+.5)/(n+.5));}

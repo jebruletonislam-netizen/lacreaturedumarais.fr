@@ -73,12 +73,12 @@
   var VER='<span class="vt">'+ws+'<span>PRENEZ GARDE AU VER DU BAPTISTÈRE</span>'+ws+'</span>';
   var ic=function(n,eg,vp){return L.divIcon({className:'pin'+(vp?' vamp':''),html:'<i>'+n+'</i>'+(eg?'<b class="eg"></b>':''),iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-14]});};
   P.forEach(function(p,n){mk[p[0]]=L.marker([p[2],p[3]],{icon:ic(n+1,EGP[p[0]],p[0]==='panvampirium'),title:EGP[p[0]]?'':p[1]}).addTo(m).bindPopup('<b>'+p[1]+'</b>');if(EGP[p[0]])mk[p[0]].bindTooltip(VER,{direction:'top',className:'ver-tip',offset:[0,-14]});});
-  /* églises de Rouen (hors Saint-Patrice, masquée par le nuage) : petit point rouge, mise en garde au survol */
+  /* églises de Rouen (hors celle que masque le nuage) : petit point rouge, mise en garde au survol */
   [[49.46147,1.13526],[49.44292,1.08833],[49.45036,1.06265],[49.42576,1.09734],[49.42654,1.07782],[49.4528,1.05946],[49.44962,1.08271],[49.44496,1.09553],[49.44216,1.11718],[49.43683,1.08154],[49.45212,1.12702],[49.4495,1.10408],[49.44292,1.08122],[49.43408,1.10622],[49.44849,1.09539],[49.43037,1.08562],[49.44186,1.10372],[49.44779,1.14071],[49.4459,1.08027]].forEach(function(c){
     L.circleMarker(c,{radius:7,color:'#2a0008',weight:1.5,fillColor:'#e0001b',fillOpacity:1,className:'eg-dot'}).addTo(m).bindTooltip(VER,{direction:'top',className:'ver-tip',offset:[0,-6]});
   });
   m.fitBounds(P.filter(function(p){return p[0]!=='baisodrome'&&p[0]!=='panvampirium';}).map(function(p){return [p[2],p[3]];}).concat([[49.4543,1.0675]]),{padding:[30,30]});
-  /* nuage noir et chauves-souris sur l'église Saint-Patrice : ancré aux coordonnées, il suit tous les niveaux de zoom */
+  /* nuage noir et chauves-souris sur l'église masquée : ancré aux coordonnées, il suit tous les niveaux de zoom */
   (function(){
     var C=[49.44593,1.09155],A=.00052,B=.00075,NS='http://www.w3.org/2000/svg';
     var el=function(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
@@ -420,6 +420,6 @@
 })();
 </script><script src="/slime.js?v=15"></script><script src="/lecteur.js?v=6"></script><script src="/putride.js?v=43"></script>
 <script src="/apercu.js?v=2" defer></script>
-<script src="/coins.js?v=1" defer></script>
+<script src="/coins.js?v=2" defer></script>
 </body>
 </html>
