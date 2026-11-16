@@ -94,12 +94,23 @@
     window.openLB(L.map(function(l){return {src:l.getAttribute('href'),alt:l.dataset.lb};}),Math.max(0,L.indexOf(a)));
   });
 
-  /* Éveil d'Éphébus */
-  function tog(e){var on=e.classList.toggle('on');e.setAttribute('aria-pressed',on);}
+  /* Éveil d'Éphébus et des portraits. Au doigt, le premier toucher sur un portrait de fiche réveille l'effet,
+     le second ouvre la liseuse ; toucher ailleurs le rendort. La souris garde le survol, le clavier bascule. */
+  function tog(e,on){on=e.classList.toggle('on',on);e.setAttribute('aria-pressed',on);}
+  var doigt=false,arme=null;
   document.addEventListener('pointerdown',function(ev){
-    var e=ev.target.closest&&ev.target.closest('#eph,.fx');
-    if(e&&ev.pointerType!=='mouse')tog(e);
+    doigt=ev.pointerType!=='mouse';arme=null;
+    var e=doigt&&ev.target.closest&&ev.target.closest('#eph,.fx');
+    if(!e)return;
+    if(e.matches('[data-lb-src]')&&!e.closest('a[href]')){if(!e.classList.contains('on')){tog(e,true);arme=e;}}
+    else tog(e);
   });
+  document.addEventListener('click',function(ev){
+    var e=ev.target.closest&&ev.target.closest('#eph,.fx');
+    if(e&&e===arme)ev.preventDefault();
+    arme=null;
+    if(doigt)Array.prototype.forEach.call(document.querySelectorAll('[data-lb-src].on'),function(o){if(o!==e)tog(o,false);});
+  },true);
   document.addEventListener('keydown',function(ev){
     var e=ev.target.closest&&ev.target.closest('#eph,.fx');
     if(e&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();tog(e);}
