@@ -420,18 +420,18 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 @media (prefers-reduced-motion:reduce){.cr-fumee i,.cr-disco,.cr-disco i,.cr-chauve,.cr-chauve svg,.paillette,.cr-conf,.cr-araignee .fil,.cr-araignee .corps-a,.vt-svg .nb,.vt-arc::after,.tb-scene .sc-led,.tb-scene .sac.tremble{animation:none!important}.cr-fumee,.cr-disco{display:none}}
 .cachot .rfig.rfig-l{float:none;width:min(100%,76rem);max-width:none;margin:1rem 0 1.4rem}
 .cachot .rfig.rfig-l img{filter:contrast(1.04)}
-.cr-bulle{position:fixed;z-index:9002;width:min(36rem,calc(100vw - 2rem));padding:1.3rem 1.7rem 1.1rem;color:#fff;background:linear-gradient(#0e0e0e,#040404);border:.15rem solid #fff;
-  box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(255,204,0,.75),0 1rem 2.4rem rgba(0,0,0,.9);opacity:0;transform:translateY(-.6rem);transition:opacity .3s,transform .3s;cursor:pointer;text-align:left;
-  font:400 1.7rem/1.4 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.03em;text-shadow:none}
+/* la bulle de l'araignée : la même fiche que celle du mode putride (.cro-bulle de putride.css), à l'accent rouge des cachots */
+.cr-bulle{position:fixed;left:0;top:0;z-index:9002;width:min(290px,calc(100vw - 24px));padding:9px 12px 10px;color:#fff;background:linear-gradient(180deg,rgba(14,0,0,.97),rgba(0,0,0,.98));border:1px solid #ff1736;border-radius:14px;
+  box-shadow:0 8px 22px rgba(0,0,0,.75),0 0 12px rgba(255,23,54,.35);text-shadow:0 1px 2px #000;text-align:left;cursor:pointer;opacity:0;transform:translateY(5px);transition:opacity .16s,transform .16s;
+  font:400 14px/1.4 "Segoe UI",system-ui,-apple-system,Arial,sans-serif;letter-spacing:0;text-transform:none}
 .cr-bulle.on{opacity:1;transform:none}
-.cr-bulle q{display:block;quotes:"« " " »";white-space:pre-line}
-.cr-bulle small{display:block;margin-top:.7rem;font:500 .95rem/1.3 "Religath","Religath Ligatures","Cinzel",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:var(--jaune)}
-.cr-bulle a{color:var(--jaune)}
-@media (max-width:899px){.cr-bulle{font-size:1.4rem;padding:1.1rem 1.2rem .9rem}}
-@media (prefers-reduced-motion:reduce){.cr-bulle{transition:none}}
+.cr-bulle .cb-k{font:400 11px/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ff1736;opacity:.9;margin-bottom:6px}
+.cr-bulle .cb-k a{color:inherit;text-decoration:none}.cr-bulle .cb-k a:hover{text-decoration:underline}
+.cr-bulle .cb-t{display:block;quotes:"« " " »";white-space:pre-line;color:#e6e6e6}
+@media (prefers-reduced-motion:reduce){.cr-bulle,.cr-bulle.on{transition:none;transform:none}}
 
 /* ================= refonte v3 : polices des deux autres modes, feuillets, arcades, vitraux, lettrines ================= */
-.cachot :is(h1,h2,h3,.kicker,.sub,.btn,.nav-txt,.rub>a article h3){font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;font-weight:400}
+.cachot :is(h1,h2,h3),.cachot :is(.kicker,.sub,.btn,.nav-txt),.cachot .rub>a article h3{font-family:"Bebas Neue","Arial Narrow",Impact,sans-serif;font-weight:400}
 .cachot h1{font-size:6.6rem;line-height:.95;letter-spacing:.035em;margin-bottom:1.4rem}
 .cachot h2{font-size:3.9rem;line-height:1.02;letter-spacing:.045em}
 .cachot h3{letter-spacing:.05em}
@@ -491,7 +491,6 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 .cr-vb.fixe{animation:cr-vbp .45s cubic-bezier(.2,1.6,.4,1) var(--dl,0s) both}
 @keyframes cr-vb{0%{transform:translate(var(--x),var(--y)) scale(.2);opacity:0}14%{opacity:1;transform:translate(calc(var(--x) + var(--dx)*.15),calc(var(--y) + var(--dy)*.15)) scale(1)}55%{transform:translate(calc(var(--x) + var(--dx)*.7 + 10px),calc(var(--y) + var(--dy)*.6)) scale(1.05)}100%{transform:translate(calc(var(--x) + var(--dx)),calc(var(--y) + var(--dy))) scale(.55);opacity:0}}
 @keyframes cr-vbp{from{transform:translate(var(--x),var(--y)) scale(0)}to{transform:translate(var(--x),var(--y)) scale(1)}}
-.cr-bulle{border-radius:2.2rem 2.2rem 2.2rem .6rem;border-color:#ff1736;box-shadow:0 0 0 .3rem #000,0 0 0 .42rem rgba(225,0,25,.65),0 0 2.2rem rgba(225,0,25,.45),0 1rem 2.4rem rgba(0,0,0,.9);background:radial-gradient(ellipse at 50% 0,rgba(225,0,25,.2),transparent 70%),linear-gradient(#120408,#040203)}
 @media (prefers-reduced-motion:reduce){.cr-vb{animation:none!important;opacity:0}.cr-vb.fixe{opacity:1}}
 .cachot .nav-txt{top:2.2rem}
 @media (max-width:899px){.cachot .nav-txt{top:0}}
@@ -563,11 +562,10 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 @media (prefers-reduced-motion:reduce){.vt2,.vt2 .v2,.vt2-l b,.vt2-l b.on{animation:none!important}.vt2 .v2{opacity:.5}}
 
 
-/* ---------- l'araignée refaite : sa toile se saisit et se tire n'importe où, elle y pend et se balance ---------- */
+/* ---------- l'araignée refaite : pendue à son fil, sa toile glisse le long du haut comme un anneau de rideau ; tirée, seul le fil s'allonge ---------- */
 .ar-couche{position:fixed;inset:0;z-index:40;pointer-events:none}
 .ar-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .ar-fil{fill:none;stroke:rgba(255,255,255,.72);stroke-width:1.2px;filter:drop-shadow(0 0 2px rgba(255,255,255,.5))}
-.ar-etire{fill:none;stroke:rgba(255,255,255,.9);stroke-width:1.4px;stroke-linecap:round;filter:drop-shadow(0 0 2px rgba(255,255,255,.55))}
 .ar-couche .ar-toile{all:unset;position:absolute;left:0;top:0;width:5.4rem;height:5.4rem;border-radius:50%;cursor:grab;pointer-events:auto;touch-action:none;-webkit-tap-highlight-color:transparent;will-change:transform}
 .ar-couche .ar-toile svg{display:block;width:100%;height:100%;opacity:.85;filter:drop-shadow(0 0 .5rem rgba(255,255,255,.45));transition:opacity .25s,filter .25s}
 .ar-couche .ar-toile:hover svg,.ar-couche .ar-toile:focus-visible svg{opacity:1;filter:drop-shadow(0 0 .9rem rgba(255,255,255,.9))}

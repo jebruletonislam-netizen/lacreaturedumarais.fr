@@ -51,16 +51,33 @@
     g.restore();
   }
 
-  /* ---------- géométrie : tout est dans le repère du crochet, le corps pend de la longueur des collants ---------- */
+  /* ---------- géométrie : il pend à la tringle (le bas des barres du haut) par ses deux collants, chacun glissant sur son anneau comme un rideau.
+     Les deux collants restent parallèles (un parallélogramme) : le corps ne se déforme jamais, seuls les collants s'allongent ou raccourcissent.
+     S.rx : milieu des deux anneaux sur la tringle ; S.len : longueur des collants ; S.ang : leur inclinaison ; S.th : la légère inclinaison du corps.
+     Le repère local du corps a son origine en (S.ox,S.oy) ; le milieu des deux attaches des collants y est en (0,S.ext). ---------- */
+  var LMIN=10,GRAV=1500;
+  function lenMax(){return Math.max(LMIN+20,FX.CH-S.rod-44);}
+  function cw2(i){return Math.max(7,M[S.k].sa[i].w*S.g.dw*1.05);}
+  function ringHalf(){return S.g.ha+Math.max(cw2(0),cw2(1))/2+6;}
   function lay(){
-    var X=FX.ext,m=M[S.k],cw=m.crop[2]-m.crop[0],g=S.g;
+    var X=FX.ext,m=M[S.k],cw=m.crop[2]-m.crop[0],g=S.g,h;
     S.hs=FX.isM()?clamp(FX.CH*.2,112,200):clamp(FX.CH*.44,170,440);S.f=S.hs/1024;S.ext=S.hs*.2;
-    if(S.free){S.hx=clamp(S.hx,10,FX.CW-10);S.hy=clamp(S.hy,4,Math.max(8,FX.CH-S.ext-30));}
-    else{S.hx=(X.x0+X.x1)/2;S.hy=FX.bord();}
-    g.dw=cw*S.f;g.dh=(m.crop[3]-m.crop[1])*S.f;g.mx=(m.sa[0].x+m.sa[1].x)/2*g.dw;
+    g.dw=cw*S.f;g.dh=(m.crop[3]-m.crop[1])*S.f;g.mx=(m.sa[0].x+m.sa[1].x)/2*g.dw;g.ha=(m.sa[1].x-m.sa[0].x)/2*g.dw;
+    S.rod=FX.bord();h=ringHalf();
+    if(S.free){S.rx=clamp(S.rx,h,Math.max(h,FX.CW-h));if(S.rxt!==null)S.rxt=clamp(S.rxt,h,Math.max(h,FX.CW-h));if(!S.drag||!S.drag.moved)S.len=clamp(S.len,LMIN,lenMax());}
+    else{S.rx=(X.x0+X.x1)/2;S.len=S.ext;}
+    geo();
   }
-  function toW(lx,ly){var c=Math.cos(S.th),s=Math.sin(S.th);return [S.hx+lx*c-ly*s,S.hy+S.dy+lx*s+ly*c];}
-  function toL(wx,wy){var dx=wx-S.hx,dy=wy-S.hy-S.dy,c=Math.cos(S.th),s=Math.sin(S.th);return [dx*c+dy*s,-dx*s+dy*c];}
+  /* la secousse verticale (S.dy : chute à l'apparition, rebond au lâcher) allonge ou raccourcit les collants ; trop courte, elle soulève le tout */
+  function geo(){
+    var Le=S.len+S.dy,ry=S.rod,c,s,bx,by;
+    if(Le<LMIN){ry+=Le-LMIN;Le=LMIN;}
+    S.ry=ry;S.le=Le;
+    bx=S.rx-Le*Math.sin(S.ang);by=ry+Le*Math.cos(S.ang);c=Math.cos(S.th);s=Math.sin(S.th);
+    S.ox=bx+S.ext*s;S.oy=by-S.ext*c;
+  }
+  function toW(lx,ly){var c=Math.cos(S.th),s=Math.sin(S.th);return [S.ox+lx*c-ly*s,S.oy+lx*s+ly*c];}
+  function toL(wx,wy){var dx=wx-S.ox,dy=wy-S.oy,c=Math.cos(S.th),s=Math.sin(S.th);return [dx*c+dy*s,-dx*s+dy*c];}
   function toUV(wx,wy){var l=toL(wx,wy),g=S.g;return [(l[0]+g.mx)/g.dw,(l[1]-S.ext)/g.dh];}
   function pointIn(wx,wy){
     var uv=toUV(wx,wy);
@@ -127,12 +144,12 @@
   function boum(fx,o){
     if(S)return;
     FX=fx;cx=fx.cx;pre();
-    S={ab:0,zc:0,bl:0,cl:0,zp:0,mud:0,mudR:0,dp:0,hits:0,wd:[],ch:[],free:false,hd:null,sg:null,sgk:'',phx:0,vx:0,vy:0,pvx:0,ax:0,gvx:0,gvy:0,vis:false,k:'a',th:0,om:0,omP:0,al:0,alv:0,dy:0,dyv:0,t:0,drag:null,tt:0,st:[],pl:[],bts:[],born:false,nais:0,sw:false,bs:0,bsv:0,fl:0,sh:[],sub:false,wet:false,lt:-1,
-       hs:300,f:.3,ext:60,hx:0,hy:0,g:{dw:1,dh:1,mx:0},cv:{},mk:{},bE:null,bN:null,hk:'',fx:null};
+    S={ab:0,zc:0,bl:0,cl:0,zp:0,mud:0,mudR:0,dp:0,hits:0,wd:[],ch:[],free:false,vx:0,ax:0,vis:false,k:'a',th:0,om:0,omL:null,al:0,alv:0,dy:0,dyv:0,t:0,drag:null,st:[],pl:[],bts:[],born:false,nais:0,sw:false,bs:0,bsv:0,fl:0,sh:[],sub:false,wet:false,lt:-1,
+       hs:300,f:.3,ext:60,rod:0,rx:0,prx:null,rxt:null,len:60,le:60,ang:0,ry:0,ox:0,oy:0,bvx:0,bvy:0,pbx:null,pby:0,vib:0,g:{dw:1,dh:1,mx:0,ha:0},cv:{},mk:{},bE:null,bN:null,sg:null,hk:'',fx:null};
     ['a','b'].forEach(function(k){var c=document.createElement('canvas');c.width=IM[k].width;c.height=IM[k].height;c.getContext('2d').drawImage(IM[k],0,0);S.cv[k]=c;S.mk[k]=maskOf(IM[k]);});
     S.mk.n=maskOf(IM.n);
     var cn=document.createElement('canvas');cn.width=IM.n.width;cn.height=IM.n.height;cn.getContext('2d').drawImage(IM.n,0,0);S.cv.n=cn;
-    S.phx=0;var API={on:true,step:step,draw:draw,top:top,place:place};
+    var API={on:true,step:step,draw:draw,top:top,place:place};
     FX.eph=API;
     /* éclats de verre, bouchon, éclaboussures des cinq liquides */
     var i,h=o.h,n=FX.LOW?12:18;
@@ -222,16 +239,13 @@
 
   /* ---------- la vie ---------- */
   function apparait(){
-    S.vis=true;lay();S.dy=-(S.ext+S.g.dh+90);S.dyv=0;S.om=rnd(-.5,.5);
+    S.vis=true;lay();S.dy=-(S.ext+S.g.dh+90);S.dyv=0;S.om=rnd(-.5,.5);geo();
     var b=document.createElement('button');b.type='button';b.className='eph-btn';
-    b.setAttribute('aria-label','Éphébito : touchez-le, il parle ; saisissez-le pour le balancer');
-    document.body.appendChild(b);S.bE=b;bind(b);
+    b.setAttribute('aria-label','Éphébito : touchez-le, il parle ; tirez-le pour le faire glisser sur sa tringle et allonger ses collants (flèches du clavier aussi)');
+    document.body.appendChild(b);S.bE=b;bind(b,0);
     var sg=document.createElement('button');sg.type='button';sg.className='eph-btn eph-sg';
-    sg.setAttribute('aria-label','Les collants : saisissez-les pour tirer Éphébito n’importe où sur l’écran');
-    document.body.appendChild(sg);S.sg=sg;bindSg(sg);
-    var rp=document.createElement('button');rp.type='button';rp.className='eph-btn eph-rp';rp.style.display='none';
-    rp.setAttribute('aria-label','Les collants tendus : saisissez-les pour tirer Éphébito où vous voulez');
-    document.body.appendChild(rp);S.rp=rp;bindSg(rp);
+    sg.setAttribute('aria-label','Les collants d’Éphébito : faites-les glisser comme un rideau, tirez-les pour les allonger (flèches du clavier aussi)');
+    document.body.appendChild(sg);S.sg=sg;bind(sg,2);
   }
   /* le son : un petit « tchoing » d'élastique, discret, synthétisé à la volée (rien à charger) ; le contexte audio naît au premier geste */
   var AC=null;
@@ -255,56 +269,51 @@
     }catch(_){}
   }
   var NOTES=[196,220,261.6,293.7,329.6,392,440,523.3];
-  function bindSg(b){
+  /* lâché : il reste là où on l'a laissé ; ses anneaux finissent de glisser au-dessus de lui, l'élan le balance un peu et fait rebondir les collants */
+  function lache(d){
+    var Le=Math.max(LMIN,S.len),c=Math.cos(S.ang),s=Math.sin(S.ang),vx=clamp(S.bvx,-1800,1800),vy=clamp(S.bvy,-1800,1800),h=ringHalf(),dl=Math.abs(S.len-d.l0);
+    S.om=clamp(-(vx*c+vy*s)/Le*.5,-3,3);S.omL=S.om;S.ax=0;
+    S.dyv=clamp((-vx*s+vy*c)*.3,-260,260);
+    S.rxt=clamp(S.rx-Le*s,h,Math.max(h,FX.CW-h));
+    if(dl>24){S.vib=Math.min(16,dl*.05);twang(150+Math.min(dl,520)*.45,.07,.55);}
+  }
+  /* où qu'on le saisisse (corps, Éphénégro, collants), on le tire tout entier : seuls les collants s'allongent, et leurs anneaux glissent sur la tringle.
+     who : 0 Éphébito, 1 Éphénégro, 2 les collants */
+  function bind(b,who){
     b.addEventListener('pointerdown',function(e){
-      if(e.button||!S.vis)return;
+      if(e.button||!S.vis||S.drag)return;
       audio();
       e.preventDefault();try{b.setPointerCapture(e.pointerId);}catch(_){}
-      S.hd={id:e.pointerId,ox:S.hx-e.clientX,oy:S.hy-e.clientY,sx:e.clientX,sy:e.clientY,moved:false};S.gvx=S.gvy=0;
-    });
-    b.addEventListener('pointermove',function(e){
-      var d=S.hd;if(!d||e.pointerId!==d.id)return;
-      if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)>6){d.moved=true;S.free=true;if(!S.an)S.an={x:S.hx,y:S.hy,vx:0,vy:0};FX.ferme();document.documentElement.classList.add('cro-prise');}
-      if(!d.moved)return;
-      S.hx=e.clientX+d.ox;S.hy=e.clientY+d.oy;
-    });
-    function fin(e,annule){
-      var d=S.hd;if(!d||e.pointerId!==d.id)return;
-      S.hd=null;S.hov=false;document.documentElement.classList.remove('cro-prise');try{b.releasePointerCapture(d.id);}catch(_){}
-      if(!d.moved){if(!annule)FX.parle(oE);}else{
-        S.gvx=clamp(S.vx,-1600,1600);S.gvy=clamp(S.vy,-1600,1600);
-        if(S.an){var dd=Math.hypot(S.hx-S.an.x,S.hy-S.an.y);if(dd>24){S.vib=Math.min(16,dd*.05);twang(150+Math.min(dd,520)*.45,.07,.55);}}
-      }
-    }
-    b.addEventListener('pointerup',function(e){fin(e,false);});
-    b.addEventListener('pointercancel',function(e){fin(e,true);});
-    b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();FX.parle(oE);}});
-    b.addEventListener('pointerenter',function(){S.hov=true;S.gvx=S.gvy=0;});
-    b.addEventListener('pointerleave',function(){S.hov=false;});
-  }
-  function bind(b){
-    b.addEventListener('pointerdown',function(e){
-      if(e.button||!S.vis)return;
-      e.preventDefault();try{b.setPointerCapture(e.pointerId);}catch(_){}
-      var l=toL(e.clientX,e.clientY);
-      S.drag={id:e.pointerId,who:b===S.bN?1:0,sx:e.clientX,sy:e.clientY,moved:false,phi:Math.atan2(-l[0],l[1])};S.tt=S.th;
+      S.drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:0,oy:0,tx:0,ty:0,moved:false,l0:S.len};
+      var B=toW(0,S.ext);S.drag.ox=B[0]-e.clientX;S.drag.oy=B[1]-e.clientY;
     });
     b.addEventListener('pointermove',function(e){
       var d=S.drag;if(!d||e.pointerId!==d.id)return;
-      if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)>6){d.moved=true;FX.ferme();document.documentElement.classList.add('cro-prise');}
+      if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)>6){
+        d.moved=true;S.free=true;FX.ferme();document.documentElement.classList.add('cro-prise');
+        S.len=S.le;S.dy=S.dyv=0;S.rxt=null;S.pbx=null;S.bvx=S.bvy=0;d.l0=S.len;
+      }
       if(!d.moved)return;
-      var a=Math.atan2(-(e.clientX-S.hx),e.clientY-S.hy-S.dy)-d.phi;
-      while(a>Math.PI)a-=TAU;while(a<-Math.PI)a+=TAU;
-      S.tt=clamp(a,-1.45,1.45);
+      d.tx=e.clientX+d.ox;d.ty=e.clientY+d.oy;
     });
     function fin(e,annule){
       var d=S.drag;if(!d||e.pointerId!==d.id)return;
       S.drag=null;document.documentElement.classList.remove('cro-prise');try{b.releasePointerCapture(d.id);}catch(_){}
-      if(!d.moved){if(!annule)FX.parle(d.who?oN:oE);}else S.om=clamp(S.om,-9,9);
+      if(!d.moved){if(!annule)FX.parle(who===1?oN:oE);}else lache(d);
     }
     b.addEventListener('pointerup',function(e){fin(e,false);});
     b.addEventListener('pointercancel',function(e){fin(e,true);});
-    b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();FX.parle(b===S.bN?oN:oE);}});
+    /* au clavier : Entrée le fait parler, les flèches le font glisser le long de la tringle ou allongent ses collants */
+    b.addEventListener('keydown',function(e){
+      var k=e.key,h=ringHalf(),l0;
+      if(k==='Enter'||k===' '){e.preventDefault();FX.parle(who===1?oN:oE);}
+      else if(k==='ArrowLeft'||k==='ArrowRight'){e.preventDefault();S.free=true;S.rxt=clamp((S.rxt===null?S.rx:S.rxt)+(k==='ArrowLeft'?-40:40),h,Math.max(h,FX.CW-h));}
+      else if(k==='ArrowUp'||k==='ArrowDown'){e.preventDefault();S.free=true;l0=S.len;S.len=clamp(S.len+(k==='ArrowUp'?-40:40),LMIN,lenMax());S.dy-=S.len-l0;}
+    });
+    if(who===2){
+      b.addEventListener('pointerenter',function(){S.hov=true;});
+      b.addEventListener('pointerleave',function(){S.hov=false;});
+    }
   }
   function step(dt){
     if(!S)return;
@@ -319,48 +328,54 @@
     if(S.fx){S.fx.t+=dt;if(S.fx.t>.5)S.fx=null;}
     if(S.fl>0)S.fl=Math.max(0,S.fl-dt*3);
     if(!S.vis){S.t+=dt;if(S.t>.55)apparait();return;}
-    var g=S.g,grab=S.drag&&S.drag.moved,th0=S.th,om0=S.om,Lp=S.ext+g.dh*.5,hdm=S.hd&&S.hd.moved;
-    /* le crochet : on l'a tiré, il glisse un peu puis s'arrête ; le corps, lui, suit par inertie */
-    if(!hdm&&(S.gvx||S.gvy)){
-      S.hx+=S.gvx*dt;S.hy+=S.gvy*dt;var fr=Math.exp(-5*dt);S.gvx*=fr;S.gvy*=fr;
-      if(Math.abs(S.gvx)+Math.abs(S.gvy)<12)S.gvx=S.gvy=0;
-      S.hx=clamp(S.hx,10,FX.CW-10);S.hy=clamp(S.hy,4,Math.max(8,FX.CH-S.ext-30));
+    var g=S.g,dm=S.drag&&S.drag.moved,om0=S.om,a0=S.ang,h=ringHalf(),Le,rv,i2,gl=!dm&&S.rxt!==null,bx0=S.rx-S.le*Math.sin(S.ang);
+    /* les anneaux : tenus, ils glissent sur la tringle pour rester au-dessus de lui ; lâchés, ils finissent de glisser là où on l'a laissé, puis ne bougent plus */
+    if(dm)S.rx+=(clamp(clamp(S.drag.tx,-g.dw*.25,FX.CW+g.dw*.25),h,Math.max(h,FX.CW-h))-S.rx)*(1-Math.exp(-14*dt));
+    else if(gl){S.rx+=(S.rxt-S.rx)*(1-Math.exp(-7*dt));if(Math.abs(S.rxt-S.rx)<.3){S.rx=S.rxt;S.rxt=null;}}
+    /* pendant qu'ils glissent, lui ne bouge pas : seuls les collants changent d'inclinaison */
+    if(gl)S.ang=Math.asin(clamp((S.rx-bx0)/Math.max(LMIN,S.le),-.99,.99));
+    rv=S.prx===null?0:(S.rx-S.prx)/dt;S.prx=S.rx;
+    if(gl)S.ax=0;else S.ax+=((rv-S.vx)/dt-S.ax)*.3;
+    S.vx=rv;
+    if(dm){
+      /* tenu : le point saisi suit le doigt ; le corps ne tourne pas, seuls les collants s'allongent, raccourcissent ou s'inclinent */
+      var d=S.drag,lm=lenMax(),tx=clamp(d.tx,-g.dw*.25,FX.CW+g.dw*.25),ddx=S.rx-tx,ty=clamp(d.ty,S.rod+LMIN,S.rod+Math.sqrt(Math.max(LMIN*LMIN,lm*lm-ddx*ddx)));
+      S.len=Math.max(LMIN,Math.hypot(ddx,ty-S.rod));S.ang=Math.atan2(ddx,ty-S.rod);S.dy=S.dyv=0;
+      if(S.pbx!==null){S.bvx+=((tx-S.pbx)/dt-S.bvx)*.3;S.bvy+=((ty-S.pby)/dt-S.bvy)*.3;}
+      S.pbx=tx;S.pby=ty;
+      S.om+=((S.ang-a0)/dt-S.om)*.35;
+    }else{
+      /* pendu : deux collants parallèles de même longueur, il se balance sans tourner ; le fluide et le survol des collants l'apaisent */
+      Le=Math.max(LMIN,S.len+S.dy)+g.dh*.35;
+      /* les secousses venues d'ailleurs (crottes, clystères, paroles) balancent moins un pendu aux longs collants */
+      if(S.omL!==null&&S.om!==S.omL)S.om=S.omL+(S.om-S.omL)*Math.min(1,(S.ext+g.dh*.35)/Le);
+      S.om+=(-GRAV/Le*Math.sin(S.ang)+clamp(S.ax,-25000,25000)/Le*Math.cos(S.ang)-(.9+(S.sub?2.6:0)+(S.hov?9:0))*S.om)*dt;
+      S.ang+=S.om*dt;
+      if(S.ang>1.3){S.ang=1.3;S.om*=-.35;}else if(S.ang<-1.3){S.ang=-1.3;S.om*=-.35;}
+      S.dyv+=(-140*S.dy-8*S.dyv)*dt;S.dy+=S.dyv*dt;
     }
-    /* l'ancienne attache reste collée là où l'on a saisi les collants ; lâchés, ils claquent comme un élastique et la rejoignent en vibrant */
-    if(S.an){
-      var an=S.an;
-      if(hdm){an.vx=an.vy=0;}
-      else{an.vx+=((S.hx-an.x)*140-an.vx*6)*dt;an.vy+=((S.hy-an.y)*140-an.vy*6)*dt;an.x+=an.vx*dt;an.y+=an.vy*dt;if(Math.hypot(S.hx-an.x,S.hy-an.y)<2&&Math.hypot(an.vx,an.vy)<25)S.an=null;}
-    }
-    if(S.an){
-      S.vib=(S.vib||0)*Math.exp(-3.2*dt);
-      var a2=S.an,ax0=a2.x,ay0=a2.y+S.dy,ddx=S.hx-ax0,ddy=S.hy+S.dy-ay0,dl=Math.hypot(ddx,ddy);
-      /* des collants tendus sont des cordes : ce qu'on y jette rebondit, et ils vibrent en chantant */
-      if(dl>40&&FX.items.length){
-        var ux=ddx/dl,uy=ddy/dl,nx2=-uy,ny2=ux,ii,it2,px,py,tt,sd,rr,sg,vn;
+    S.omL=S.om;
+    S.th+=(clamp(S.ang*.3,-.22,.22)-S.th)*Math.min(1,dt*10);
+    S.vib*=Math.exp(-3.2*dt);
+    geo();
+    /* de longs collants sont des cordes : ce qu'on y jette rebondit, et ils vibrent en chantant */
+    if(S.le>40&&FX.items.length){
+      for(i2=0;i2<2;i2++){
+        var lx=-g.mx+M[S.k].sa[i2].x*g.dw,ax0=S.rx+lx,ay0=S.ry,at=toW(lx,S.ext),ddx2=at[0]-ax0,ddy2=at[1]-ay0,dl=Math.hypot(ddx2,ddy2),
+            ux=ddx2/dl,uy=ddy2/dl,nx2=-uy,ny2=ux,ii,it2,px,py,tt,sd,rr,sg,vn;
         for(ii=0;ii<FX.items.length;ii++){
           it2=FX.items[ii];if(it2.held||it2.dead||it2.out)continue;
           px=it2.x-ax0;py=it2.y-ay0;tt=(px*ux+py*uy)/dl;if(tt<.02||tt>.98)continue;
-          sd=px*nx2+py*ny2;rr=(it2.k===1?9:it2.k===2?5:it2.s*.36)+3;if(Math.abs(sd)>=rr)continue;
+          sd=px*nx2+py*ny2;rr=(it2.k===1?9:it2.k===2?5:it2.s*.36)+cw2(i2)/2;if(Math.abs(sd)>=rr)continue;
           sg=sd>=0?1:-1;vn=it2.vx*nx2+it2.vy*ny2;
           it2.x+=nx2*sg*(rr-Math.abs(sd));it2.y+=ny2*sg*(rr-Math.abs(sd));
           if(vn*sg<0){
             it2.vx-=1.5*vn*nx2;it2.vy-=1.5*vn*ny2;it2.vr+=rnd(-3,3);
-            if(-vn*sg>90&&FX.t-(S.plk||0)>70){S.plk=FX.t;S.vib=Math.min(16,(S.vib||0)+Math.abs(vn)*.012);twang(NOTES[Math.min(7,Math.floor(tt*8))]*(sg>0?1:2),.05,.7);}
+            if(-vn*sg>90&&FX.t-(S.plk||0)>70){S.plk=FX.t;S.vib=Math.min(16,S.vib+Math.abs(vn)*.012);twang(NOTES[Math.min(7,Math.floor(tt*8))]*(i2?2:1),.05,.7);}
           }
         }
       }
-    }else S.vib=0;
-    var rvx=(S.hx-S.phx)/dt,rvy=0;if(!S.phx)rvx=0;S.phx=S.hx;
-    S.vx+=(rvx-S.vx)*.25;S.vy+=((S.hy-(S.phy||S.hy))/dt-S.vy)*.25;S.phy=S.hy;
-    S.ax+=(((S.vx-S.pvx)/dt)-S.ax)*.3;S.pvx=S.vx;
-    if(grab){
-      S.th+=(S.tt-S.th)*Math.min(1,dt*18);S.om+=((S.th-th0)/dt-S.om)*.35;
-    }else{
-      S.om+=(-11*Math.sin(S.th)-(.3+(S.sub?2.6:0)+(S.hov?9:0))*S.om+clamp(S.ax,-25000,25000)/Lp*Math.cos(S.th))*dt;S.th+=S.om*dt;
-      if(S.th>1.45){S.th=1.45;S.om*=-.35;}else if(S.th<-1.45){S.th=-1.45;S.om*=-.35;}
     }
-    S.dyv+=(-140*S.dy-8*S.dyv)*dt;S.dy+=S.dyv*dt;
     var hp=toW(-g.mx+g.dw*.5,S.ext+g.dh*.97),dh=FX.dep(hp[0],hp[1]);
     S.sub=dh>6;
     /* le sang : chaque plaie coule, gicle par saccades au début et laisse des traînées ; le fluide vert, lui, lave et guérit tout ce qu'il touche */
@@ -441,8 +456,8 @@
           });
           S.pl=keep;S.k='b';lay();rebake('b');S.bs=0;S.bsv=0;
           var b=document.createElement('button');b.type='button';b.className='eph-btn';
-          b.setAttribute('aria-label','Éphénégro : touchez-le, il parle ; saisissez-le pour le balancer avec Éphébito');
-          document.body.appendChild(b);S.bN=b;bind(b);S.hk='';
+          b.setAttribute('aria-label','Éphénégro : touchez-le, il parle ; tirez-le pour faire glisser Éphébito sur sa tringle et allonger ses collants');
+          document.body.appendChild(b);S.bN=b;bind(b,1);S.hk='';
           b.style.clipPath=poly(M.n.hull);
         }
         if(S.sw){S.bsv+=(-170*(S.bs-1)-11*S.bsv)*dt;S.bs+=S.bsv*dt;}
@@ -450,43 +465,41 @@
     }
     objets();
   }
-  /* les collants étirés : deux rubans tendus entre l'ancienne attache et le crochet, amincis au milieu, qui vibrent au lâcher */
-  function etire(){
-    var a=S.an;if(!a)return;
-    var x0=a.x,y0=a.y+S.dy,x1=S.hx,y1=S.hy+S.dy,dx=x1-x0,dy=y1-y0,d=Math.hypot(dx,dy);if(d<6)return;
-    var nx=-dy/d,ny=dx/d,m=M[S.k],g=S.g,tens=1/(1+d/160),sag=Math.max(0,120-d)*.35,sp=Math.hypot(a.vx,a.vy),
-        wig=Math.sin(performance.now()/26)*Math.min(16,sp*.014+(S.vib||0)),i,k,n=14,sa,pts,L,R,t,lat,off,wl,w0,w1,wt,px,py;
+  /* les collants : deux rubans parallèles, chacun de sa largeur, de son anneau sur la tringle jusqu'à son attache sur le corps ; au lâcher, ils vibrent ensemble */
+  function collants(){
+    var m=M[S.k],g=S.g,i,k,n=12,sa,w,lx,a,b0,b1,bc,dx,dy,d,nx,ny,t,lat,L,R,gr,
+        wig=S.vib>.3?Math.sin(performance.now()/26)*Math.min(16,S.vib):0;
     for(i=0;i<2;i++){
-      sa=m.sa[i];if(!sa.d)sa.d=shade(sa.c,.55);
-      wl=Math.max(7,sa.w*g.dw*1.05);off=(i?1:-1)*Math.max(3,wl*.5*(.5+.5*tens));w0=wl*(.55+.45*tens);w1=Math.max(3.4,wl*.2*tens+2);
+      sa=m.sa[i];if(!sa.d){sa.d=shade(sa.c,.55);sa.l=shade(sa.c,1.5);}
+      w=cw2(i);lx=-g.mx+sa.x*g.dw;
+      a=[S.rx+lx,S.ry];b0=toW(lx-w/2,S.ext+3);b1=toW(lx+w/2,S.ext+3);bc=[(b0[0]+b1[0])/2,(b0[1]+b1[1])/2];
+      dx=bc[0]-a[0];dy=bc[1]-a[1];d=Math.hypot(dx,dy)||1;nx=-dy/d;ny=dx/d;
       L=[];R=[];
       for(k=0;k<=n;k++){
-        t=k/n;lat=off*(1-.6*Math.sin(Math.PI*t))+(sag+wig*(i?1:-1))*Math.sin(Math.PI*t);
-        px=x0+dx*t+nx*lat;py=y0+dy*t+ny*lat;wt=w1+(w0-w1)*Math.pow(Math.abs(1-2*t),1.6);
-        L.push([px+nx*wt/2,py+ny*wt/2]);R.push([px-nx*wt/2,py-ny*wt/2]);
+        t=k/n;lat=wig*Math.sin(Math.PI*t);
+        L.push([a[0]+nx*w/2+(b0[0]-a[0]-nx*w/2)*t+nx*lat,a[1]+ny*w/2+(b0[1]-a[1]-ny*w/2)*t+ny*lat]);
+        R.push([a[0]-nx*w/2+(b1[0]-a[0]+nx*w/2)*t+nx*lat,a[1]-ny*w/2+(b1[1]-a[1]+ny*w/2)*t+ny*lat]);
       }
       cx.beginPath();cx.moveTo(L[0][0],L[0][1]);
       for(k=1;k<=n;k++)cx.lineTo(L[k][0],L[k][1]);
       for(k=n;k>=0;k--)cx.lineTo(R[k][0],R[k][1]);
-      cx.closePath();cx.fillStyle=sa.c;cx.globalAlpha=.55+.4*tens;cx.fill();cx.globalAlpha=1;cx.lineWidth=1.2;cx.strokeStyle='rgba(255,255,255,.55)';cx.stroke();
+      cx.closePath();
+      gr=cx.createLinearGradient(a[0],a[1],bc[0],bc[1]);gr.addColorStop(0,sa.d);gr.addColorStop(Math.min(1,26/d),sa.c);gr.addColorStop(1,sa.c);
+      cx.fillStyle=gr;cx.fill();cx.lineWidth=1;cx.strokeStyle='rgba(0,0,0,.5)';cx.stroke();
+      /* un reflet le long du ruban */
+      cx.beginPath();
+      for(k=0;k<=n;k++){t=k/n;lat=wig*Math.sin(Math.PI*t)-w*.12;var hx=(L[k][0]+R[k][0])/2+nx*lat,hy=(L[k][1]+R[k][1])/2+ny*lat;if(k)cx.lineTo(hx,hy);else cx.moveTo(hx,hy);}
+      cx.lineWidth=Math.max(1,w*.18);cx.strokeStyle=sa.l;cx.globalAlpha=.3;cx.stroke();cx.globalAlpha=1;
+      /* l'anneau qui glisse sur la tringle */
+      cx.beginPath();cx.ellipse(a[0],a[1],w*.5+3,4.5,0,0,TAU);cx.lineWidth=3.6;cx.strokeStyle='#14171a';cx.stroke();cx.lineWidth=1.7;cx.strokeStyle='#b9c1c5';cx.stroke();
     }
-    cx.beginPath();cx.arc(x0,y0,4.5,0,TAU);cx.fillStyle='#9aa3a8';cx.fill();cx.lineWidth=1.5;cx.strokeStyle='#14171a';cx.stroke();
   }
   function draw(){
     if(!S||!S.vis)return;
     if(S.lt!==FX.t){S.lt=FX.t;lay();}
-    var g=S.g,m=M[S.k],i,sa,x,w,gr,p,q;
-    etire();
-    cx.save();cx.translate(S.hx,S.hy+S.dy);cx.rotate(S.th);
-    /* les deux collants partent d'un même crochet */
-    for(i=0;i<2;i++){
-      sa=m.sa[i];if(!sa.d)sa.d=shade(sa.c,.55);
-      x=-g.mx+sa.x*g.dw;w=Math.max(7,sa.w*g.dw*1.05);
-      cx.beginPath();cx.moveTo(-w*.22,-1);cx.lineTo(w*.22,-1);cx.lineTo(x+w/2,S.ext+3);cx.lineTo(x-w/2,S.ext+3);cx.closePath();
-      gr=cx.createLinearGradient(0,0,0,S.ext);gr.addColorStop(0,sa.d);gr.addColorStop(1,sa.c);
-      cx.fillStyle=gr;cx.fill();cx.lineWidth=1;cx.strokeStyle='rgba(0,0,0,.5)';cx.stroke();
-    }
-    cx.beginPath();cx.arc(0,0,5.5,0,TAU);cx.fillStyle='#9aa3a8';cx.fill();cx.lineWidth=2;cx.strokeStyle='#14171a';cx.stroke();
+    var g=S.g,i,x,p,q;
+    collants();
+    cx.save();cx.translate(S.ox,S.oy);cx.rotate(S.th);
     cx.drawImage(S.cv[S.k],-g.mx,S.ext,g.dw,g.dh);
     /* ce qu'on lui a planté : clystères (la canule dedans) et crottes */
     for(i=0;i<S.pl.length;i++){
@@ -536,32 +549,23 @@
       b=S.bE;
       if(S.hk!==S.k){S.hk=S.k;b.style.clipPath=poly(M[S.k].hull);}
       b.style.width=g.dw+'px';b.style.height=g.dh+'px';
-      b.style.transform='translate('+S.hx+'px,'+(S.hy+S.dy)+'px) rotate('+S.th+'rad) translate('+(-g.mx)+'px,'+S.ext+'px)';
+      b.style.transform='translate('+S.ox+'px,'+S.oy+'px) rotate('+S.th+'rad) translate('+(-g.mx)+'px,'+S.ext+'px)';
       if(S.sg){
-        var H2=S.ext+6,pad=FX.isM()?26:24,pth='',sa2,xb,wb;
-        var xl=1e9,xr=-1e9;
-        for(i=0;i<2;i++){
-          sa2=M[S.k].sa[i];xb=sa2.x*g.dw;wb=Math.max(7,sa2.w*g.dw*1.05);
-          xl=Math.min(xl,xb-wb/2);xr=Math.max(xr,xb+wb/2);
-        }
-        pth='polygon('+(g.mx-pad).toFixed(1)+'px 0,'+(g.mx+pad).toFixed(1)+'px 0,'+(xr+pad).toFixed(1)+'px '+H2.toFixed(1)+'px,'+(xl-pad).toFixed(1)+'px '+H2.toFixed(1)+'px)';
-        if(S.sgk!==pth){S.sgk=pth;S.sg.style.clipPath=pth;}
-        S.sg.style.width=g.dw+'px';S.sg.style.height=H2+'px';
-        S.sg.style.transform='translate('+S.hx+'px,'+(S.hy+S.dy)+'px) rotate('+S.th+'rad) translate('+(-g.mx)+'px,0px)';
-      }
-      if(S.rp){
-        var an3=S.an,rx0,ry0,rx1,rx1y,rd;
-        if(an3){rx0=an3.x;ry0=an3.y+S.dy;rx1=S.hx;rx1y=S.hy+S.dy;rd=Math.hypot(rx1-rx0,rx1y-ry0);}
-        if(an3&&rd>44){
-          var rnx=-(rx1y-ry0)/rd*(FX.isM()?26:26),rny=(rx1-rx0)/rd*(FX.isM()?26:26),rpth='polygon('+[[rx0+rnx,ry0+rny],[rx1+rnx,rx1y+rny],[rx1-rnx,rx1y-rny],[rx0-rnx,ry0-rny]].map(function(v){return v[0].toFixed(1)+'px '+v[1].toFixed(1)+'px';}).join(',')+')';
-          S.rp.style.display='';S.rp.style.width=FX.CW+'px';S.rp.style.height=FX.CH+'px';S.rp.style.transform='none';S.rp.style.clipPath=rpth;
-        }else S.rp.style.display='none';
+        /* la prise des collants : un quadrilatère qui suit les deux rubans, des anneaux jusqu'au haut du corps */
+        var m2=M[S.k],pad=FX.isM()?22:16,l0=-g.mx+m2.sa[0].x*g.dw-cw2(0)/2,l1=-g.mx+m2.sa[1].x*g.dw+cw2(1)/2,
+            q0=toW(l0-pad,S.ext+8),q1=toW(l1+pad,S.ext+8),pth;
+        if(S.le>4){
+          pth='polygon('+[[S.rx+l0-pad,S.ry-12],[S.rx+l1+pad,S.ry-12],q1,q0].map(function(v){return v[0].toFixed(1)+'px '+v[1].toFixed(1)+'px';}).join(',')+')';
+          if(S.sg.style.display)S.sg.style.display='';
+          if(!S.sg.style.width||S.sgw!==FX.CW+'x'+FX.CH){S.sgw=FX.CW+'x'+FX.CH;S.sg.style.width=FX.CW+'px';S.sg.style.height=FX.CH+'px';S.sg.style.transform='none';}
+          if(S.sgk!==pth){S.sgk=pth;S.sg.style.clipPath=pth;}
+        }else S.sg.style.display='none';
       }
       if(S.bN){
         q=M.n.pos;var bw=q[2]*g.dw,bh=q[3]*g.dh,bx=-g.mx+q[0]*g.dw,by=S.ext+q[1]*g.dh,px=bx+M.n.piv[0]*bw,py=by+M.n.piv[1]*bh;
         S.bN.style.display=S.bs>.5?'':'none';
         S.bN.style.width=bw+'px';S.bN.style.height=bh+'px';
-        S.bN.style.transform='translate('+S.hx+'px,'+(S.hy+S.dy)+'px) rotate('+S.th+'rad) translate('+px+'px,'+py+'px) rotate('+S.al+'rad) translate('+(bx-px)+'px,'+(by-py)+'px)';
+        S.bN.style.transform='translate('+S.ox+'px,'+S.oy+'px) rotate('+S.th+'rad) translate('+px+'px,'+py+'px) rotate('+S.al+'rad) translate('+(bx-px)+'px,'+(by-py)+'px)';
       }
     }
   }

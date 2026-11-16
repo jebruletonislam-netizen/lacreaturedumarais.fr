@@ -6,7 +6,7 @@
 (function(){
   'use strict';
   if(window.Fete)return;
-  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
   var TAU=6.283185307,rnd=function(a,b){return a+Math.random()*(b-a);},clamp=function(v,a,b){return v<a?a:v>b?b:v;};
   var io=null,vu=false,run=null,cool=0,styled=false,onClick=null,onHash=null,poll=0,wait=0;
   var COUL=['#9608f8','#c6ff3c','#ffcc00','#ff1736','#7dffd0','#ffffff','#ff7ad9'];

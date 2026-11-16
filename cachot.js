@@ -1,7 +1,7 @@
 /* Les cachots : lampe qui suit le curseur, films chargés au clic, tombe de Kavod (cierges offerts). */
 (function(){
   'use strict';
-  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
 
   /* ---------- la lampe ---------- */
   if(!calm&&window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches){

@@ -5,7 +5,7 @@
   if(window.PBInit)return;
   var KEY='lcm-plusbas',EMPREINTE='pvtfr1cpdw';
   var MSG=['Raté. Le fluide te remercie.','Non. Prends-le en pleine face.','Faux. Te voilà tout vert.','Mauvaise réponse. Ça gicle.'];
-  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
 
   function norm(s){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
   function empreinte(s){

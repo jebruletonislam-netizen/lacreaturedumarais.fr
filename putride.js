@@ -105,11 +105,15 @@
     if(e&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();tog(e);}
   });
 
-  /* Navigation sans rechargement : le lecteur survit */
-  var busy=false;
+  /* Navigation sans rechargement : le lecteur survit. Chaque page retrouve sa hauteur au retour,
+     y compris par « ← BESTIAIRE » & co (LCMNav, dans lightbox.js) ; le menu garde son défilement. */
+  var busy=false,seq=0,shown=location.pathname,N=window.LCMNav||null;
+  if(N)N.manuel();
   function loadScript(src){return new Promise(function(r){var s=document.createElement('script');s.src=src;s.onload=s.onerror=r;document.head.appendChild(s);});}
   function swap(url,push){
+    var n=++seq;
     return fetch(url).then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(h){
+      if(n!==seq)return;
       var d=new DOMParser().parseFromString(h,'text/html');
       var nw=d.querySelector('.wrap'),ow=document.querySelector('.wrap');
       if(!nw||!ow)throw 0;
@@ -124,13 +128,19 @@
       var inl=Array.prototype.filter.call(d.querySelectorAll('body script:not([src])'),function(s){return s.textContent.trim();});
       var hd=document.querySelector('header'),nh=d.querySelector('header');
       return Promise.all(want).then(function(){
+        if(n!==seq)return;
         document.title=d.title;
         if(hd&&nh)hd.innerHTML=nh.innerHTML;
+        var nv=ow.querySelector('nav'),ns=nv?nv.scrollTop:0;
+        if(push&&N)N.quitter();
         ow.innerHTML=nw.innerHTML;
-        if(push)history.pushState({},'',url);
+        nv=ow.querySelector('nav');if(nv&&ns)nv.scrollTop=ns;
+        if(push)history.pushState(N?N.etat():{},'',url);
+        shown=location.pathname;
         window.scrollTo(0,0);
         document.dispatchEvent(new Event('putride:page'));
         inl.forEach(function(s){var x=document.createElement('script');x.textContent=s.textContent;document.body.appendChild(x);x.remove();});
+        if(N)N.arriver(push);
       });
     });
   }
@@ -145,7 +155,8 @@
   });
   window.addEventListener('popstate',function(){
     var p=location.pathname;
-    if(/^\/mode-putride\//.test(p))swap(p,false).catch(function(){location.reload();});
+    if(p===shown){if(N)N.arriver(false);return;}
+    if(/^\/mode-putride\//.test(p)){if(N)N.attendre();swap(p,false).catch(function(){location.reload();});}
     else location.reload();
   });
 
@@ -154,7 +165,7 @@
 
   /* Gouttes de slime accrochées aux bords verts */
   (function(){
-    if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    if(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;
     var rnd=function(a,b){return a+Math.random()*(b-a);};
     /* couleurs et crottes de dessin anime : definies dans slime.js */
     var SL=window.Slime||{},CO=SL.couleurs||{vert:'#8fd61f',ombre:'#4f9a17',clair:'#d6ff86',trait:'#2c6a0c',reflet:'#f4ffd9'};
@@ -165,10 +176,10 @@
     var clamp=function(v,a,b){return v<a?a:v>b?b:v;};
     var inc=function(w){return w*w*.085*(isM()?1.8:1);};
     var mainBox=function(){var m=document.querySelector('main');return m&&m.getBoundingClientRect();};
-    /* au plus un tiers de la zone de texte visible, quelle que soit la façon dont il est réparti */
-    var cap=function(){var m=document.querySelector('main');return Math.min(Math.max(40,innerHeight-hdrBottom())/3,m?m.offsetHeight*.5:1e9);};
+    /* au plus un quart de la zone de texte visible, quelle que soit la façon dont il est réparti */
+    var cap=function(){var m=document.querySelector('main');return Math.min(Math.max(40,innerHeight-hdrBottom())/4,m?m.offsetHeight*.25:1e9);};
     /* ---------- le fluide : une surface d'ondes (champ de hauteurs) dessinée sur un seul canvas, la même sur ordinateur et téléphone ----------
-       Il monte avec les gouttes, jusqu'au tiers de l'écran au maximum. Chaque goutte, chaque objet qui tombe y fait des vagues ;
+       Il monte avec les gouttes, jusqu'au quart de l'écran au maximum. Chaque goutte, chaque objet qui tombe y fait des vagues ;
        sur téléphone, l'inclinaison et les secousses le font glisser et déborder. Les crottes flottent, les clystères en étain coulent. */
     var cv=document.createElement('canvas');cv.id='mpool';cv.setAttribute('aria-hidden','true');document.body.appendChild(cv);
     var cxF=cv.getContext('2d'),cx=cxF;
@@ -206,11 +217,11 @@
        Quelques centaines de grumeaux (SPH à double densité : pression et tension de surface) s'écoulent selon la pesanteur du téléphone,
        collent un peu aux parois, se rassemblent en nappes, en coulées et en gouttes, dans toute la zone de texte. Un champ de densité en
        tire la surface dessinée, la profondeur des objets qui flottent et la pente sur laquelle ils glissent. */
-    var MAXP=LOW?640:1500,PX=new Float32Array(MAXP),PY=new Float32Array(MAXP),PVX=new Float32Array(MAXP),PVY=new Float32Array(MAXP),
+    var MAXP=LOW?480:1100,PX=new Float32Array(MAXP),PY=new Float32Array(MAXP),PVX=new Float32Array(MAXP),PVY=new Float32Array(MAXP),
         PXO=new Float32Array(MAXP),PYO=new Float32Array(MAXP),PQ=new Float32Array(MAXP),PQN=new Float32Array(MAXP),
         AVX=new Float32Array(MAXP),AVY=new Float32Array(MAXP),ASW=new Float32Array(MAXP),DPX=new Float32Array(MAXP),DPY=new Float32Array(MAXP),NEXT=new Int32Array(MAXP),np=0;
     var SP=12,HR=24,RK=21,RHO0=1,RHON0=1,DN=1,PK=1,GX=0,GY=1,GA=1500,hint=null,simMs=0,simN=0;
-    var HGW=0,HGH=0,HEAD=null,GC=4,GW=0,GHH=0,GD=null,GCOL=null,gfc=null,gfx=null,gimg=null,gu32=null,gtc=null,gtx=null,gtop=1e9,LUT=[],INV=1;
+    var HGW=0,HGH=0,HEAD=null,GC=LOW?5:4,GW=0,GHH=0,GD=null,GCOL=null,gfc=null,gfx=null,gimg=null,gu32=null,gtc=null,gtx=null,gtop=1e9,LUT=[],INV=1;
     var THR=.32;
     /* rayon d'interaction, densités de repos et normalisation du champ, mesurés sur un réseau hexagonal à l'espacement de repos */
     function calib(){
@@ -617,6 +628,8 @@
       bulle.style.left=clamp(a.x-bw/2,8,CW-bw-8)+'px';bulle.style.top=clamp(ty,8,CH-bh-8)+'px';
     }
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&bulle)ferme();});
+    /* toucher ailleurs que dans la bulle la ferme ; ses liens restent cliquables, et retoucher celui qui parle le fait reparler (il parle au lâcher) */
+    document.addEventListener('pointerdown',function(e){if(bulle&&!bulle.contains(e.target))ferme();},true);
     /* un va-et-vient (changement de sens d'au moins 36 px) : sert à mesurer qu'on secoue */
     function rev(s,p){
       if(!s.d){if(Math.abs(p-s.e)>10)s.d=p>s.e?1:-1;else return 0;}
@@ -1055,18 +1068,26 @@
     FX.pret=function(){return !!(window.Ephebito&&window.Ephebito.ok());};
     FX.pre=function(){
       if(plugT)return;plugT=1;
-      var sc=document.createElement('script');sc.src='/ephebito.js?v=14';
+      var sc=document.createElement('script');sc.src='/ephebito.js?v=15';
       sc.onload=function(){if(window.Ephebito)window.Ephebito.pre();else FX.echec=true;};sc.onerror=function(){FX.echec=true;};
       document.head.appendChild(sc);
     };
     FX.boum=function(o){window.Ephebito.boum(FX,o);};
     window.PutrideFx=FX;
-    var last=performance.now(),skip=0;
+    var last=performance.now(),skip=0,lentS=0,lentN=0,lentK=0;
     (function frame(now){
-      var dt=Math.min(.05,((now||last)-last)/1000||0);last=now||last;tnow=last;
+      var raw=(now||last)-last,dt=Math.min(.05,raw/1000||0);last=now||last;tnow=last;
       var work=false;
       if(!document.hidden){
         if(LOW&&wasWork&&(skip^=1)){requestAnimationFrame(frame);return;}
+        /* appareil à la peine (sous 40 images par seconde) : on dessine moins fin, puis sur une grille plus grossière */
+        if(wasWork&&!LOW&&lentK<2&&raw>0&&raw<250){
+          lentS+=raw;lentN++;
+          if(lentN>=90){
+            if(lentS/lentN>25){lentK++;if(lentK===1&&dpr>1){dpr=1;sizeCv();}else{lentK=2;GC=6;fgrid();}}
+            lentS=lentN=0;
+          }
+        }
         if(innerWidth!==CW||innerHeight!==CH)sizeCv();else upd();
         gx+=(tgx-gx)*.35;gy+=(tgy-gy)*.35;gm+=(tgm-gm)*.35;tilt+=(gx-tilt)*.1;
         /* la pesanteur du fluide est celle du téléphone : il file où elle l'appelle, sans rien qui le retienne (à plat, elle revient vers le bas de l'écran) */
@@ -1435,7 +1456,7 @@
     function remonter(g){
       var t=g.previousElementSibling&&/^H[23]$/.test(g.previousElementSibling.tagName)?g.previousElementSibling:g;
       var y=t.getBoundingClientRect().top+scrollY-bandeau()-12;
-      window.scrollTo({top:Math.max(0,y),behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+      window.scrollTo({top:Math.max(0,y),behavior:(window.CALME||matchMedia('(prefers-reduced-motion:reduce)').matches)?'auto':'smooth'});
     }
     function bouton(texte,nom,fn){
       var b=document.createElement('button');b.type='button';b.className='btn';b.textContent=texte;
@@ -1488,7 +1509,7 @@
 
   /* Clins d'œil furtifs, chargés seulement sur leur page : la Fourolle (Chyren, Confiteor), le père Kitz-Latouch en tricycle (In Odium Fidei), la fête du Délycium (Territoire), le Ver du baptistère (un peu partout) */
   (function(){
-    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=3'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=1'],[/^\/mode-putride\/territoire\/?$/,'Fete','/fete.js?v=2'],[/^\/mode-putride\/(?!archives\/ordures)/,'Ver','/ver.js?v=4']],charge={};
+    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=4'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=2'],[/^\/mode-putride\/territoire\/?$/,'Fete','/fete.js?v=3'],[/^\/mode-putride\/(?!archives\/ordures)/,'Ver','/ver.js?v=5']],charge={};
     function verif(){
       CLINS.forEach(function(q){
         if(q[0].test(location.pathname)){

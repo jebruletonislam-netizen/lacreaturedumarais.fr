@@ -3,7 +3,7 @@
    d'un appui sur le fond ou de la touche Échap. Sur ordinateur, le plan reste affiché à gauche : rien ne se passe ici. */
 (function(){
   'use strict';
-  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)[].forEach.call(document.querySelectorAll('svg.plan'),function(v){try{v.pauseAnimations();}catch(_){}});
+  if((window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches))[].forEach.call(document.querySelectorAll('svg.plan'),function(v){try{v.pauseAnimations();}catch(_){}});
   /* ---------- les pas : ils s'effacent derrière le visiteur et se redessinent à chaque arrivée (et à l'ouverture de la feuille) ---------- */
   function rejoue(){
     [].forEach.call(document.querySelectorAll('svg.plan .pl-pas'),function(g){var n=g.cloneNode(true);g.parentNode.replaceChild(n,g);});
@@ -74,7 +74,7 @@
     }
   }
   (function(){
-    var svgs=document.querySelectorAll('svg.plan[data-lieu]'),cur=svgs.length?svgs[0].getAttribute('data-lieu'):'',prev=null,calmeSvg=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var svgs=document.querySelectorAll('svg.plan[data-lieu]'),cur=svgs.length?svgs[0].getAttribute('data-lieu'):'',prev=null,calmeSvg=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
     try{prev=sessionStorage.getItem('lcm-lieu');if(cur)sessionStorage.setItem('lcm-lieu',cur);}catch(_){}
     if(!cur||!prev||prev===cur)return;
     [].forEach.call(svgs,function(v){
@@ -88,7 +88,7 @@
   var feuille=document.getElementById('pl-feuille'),bouton=document.querySelector('.pl-cur');
   if(!feuille||!bouton)return;
   var vo=feuille.querySelector('.pl-vo'),vi=feuille.querySelector('.pl-vi'),fond=feuille.querySelector('.pl-fond'),x=feuille.querySelector('.pl-x');
-  var calme=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches,mobile=window.matchMedia('(max-width:899px)'),ouvert=false,t0=0;
+  var calme=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches),mobile=window.matchMedia('(max-width:899px)'),ouvert=false,t0=0;
   var html=document.documentElement;
 
   function ouvre(){

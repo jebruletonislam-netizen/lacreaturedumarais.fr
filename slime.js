@@ -8,7 +8,7 @@
 (function(){
   'use strict';
   var KEY='lcm-slime',busy=false,TAU=6.283185307,Z=99999;
-  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var reduce=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
   var rnd=function(a,b){return a+Math.random()*(b-a);};
   var clamp=function(v,a,b){return v<a?a:v>b?b:v;};
   var lerp=function(a,b,t){return a+(b-a)*t;};

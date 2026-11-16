@@ -4,7 +4,7 @@
 (function(){
   'use strict';
   if(window.Kitz)return;
-  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
   var TAU=6.283185307,rnd=function(a,b){return a+Math.random()*(b-a);},clamp=function(v,a,b){return v<a?a:v>b?b:v;};
   var AC=null,timer=0,vues=0,run=null,mode=false,detEl=null;
 

@@ -1,45 +1,103 @@
 /* Cachot : nouvel en-tête (arcades de fer, vitrail, logos), fond en vitrail répété, logos du bas sur mobile.
    Concaténé en dernier dans cachot.min.css (après cachot-base, cachot et cachot-chateau) : il l'emporte sur l'ancien en-tête. */
 
-/* ---- en-tête, ordinateur ---- */
+/* ---- en-tête, ordinateur : nuit noire qui vire au pourpre, deux crosses et trois arcs en accolade de chaque côté,
+   un vitrail au centre sous le blason ; trois blocs (560 × 224, 340 × 224, 560 × 224) : les % se rapportent à leur bloc ---- */
 body.cachot header.ce{position:sticky;top:0;z-index:30;display:block;box-sizing:border-box;height:14.8125rem;overflow:hidden;border:0;
-  background:radial-gradient(ellipse 30% 110% at 50% 85%,rgba(190,0,22,.3),transparent 70%),linear-gradient(90deg,#26053f 0%,#0d0218 42%,#030005 100%);
-  box-shadow:0 1.2rem 2.4rem rgba(0,0,0,.9)}
+  background:radial-gradient(ellipse 22% 95% at 50% 70%,rgba(200,0,30,.22),transparent 72%),
+    radial-gradient(ellipse 60% 70% at 50% 120%,rgba(120,40,190,.35),transparent 75%),
+    linear-gradient(#000 0%,#050009 30%,#160428 68%,#2b0a48 100%);
+  box-shadow:0 .9rem 1.6rem rgba(0,0,0,.92),0 .2rem .5rem rgba(0,0,0,.9)}
 body.cachot header.ce::after{display:none}
-/* filet rouge à rivets sous l'en-tête */
+/* filet rouge sous l'en-tête : un fer rouge biseauté, rivets clairs */
 body.cachot header.ce::before{content:"";display:block;position:absolute;left:0;right:0;bottom:0;height:.8rem;z-index:5;pointer-events:none;opacity:1;filter:none;border:0;
-  background:radial-gradient(circle at 50% 50%,#ffd0d4 0 .08rem,#5a000c .09rem .2rem,transparent .21rem) 0 0/1.6rem 100% repeat-x,linear-gradient(#ff2a3c,#c40018 55%,#7a0010)}
-.ce-art{position:absolute;left:50%;bottom:.8rem;transform:translateX(-50%);width:min(100%,112rem);aspect-ratio:8/1}
-.ce-art picture{display:contents}
-.ce-img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
-.ce-h{position:absolute;display:block;border-radius:50%;aspect-ratio:1;outline:0;transition:box-shadow .2s,background .2s}
-.ce-h:hover,.ce-h:focus-visible{background:rgba(255,40,60,.12);box-shadow:0 0 1.1rem rgba(255,40,60,.85),inset 0 0 .9rem rgba(255,40,60,.45)}
-.ce-ic{top:52%;width:4.5%}
-.ce-pp,.ce-kv{top:19%;width:7.75%}
-.ce-pp{left:2.375%}.ce-kv{left:89.875%}
-.ce-pp:hover,.ce-kv:hover{box-shadow:0 0 1.3rem rgba(255,255,255,.7),inset 0 0 1rem rgba(255,255,255,.3);background:rgba(255,255,255,.08)}
-.ce-bl{top:20%;left:46.1875%;width:7.625%;border-radius:12%}
-/* le quadrilobe de la première arcade mène à la tombe de Kavod */
-.ce-qd{top:45.75%;left:13.15%;width:4.5%}
+  background:radial-gradient(circle at 50% 50%,#ffe0e3 0 .07rem,#ff6a78 .08rem .12rem,#5a000c .13rem .2rem,transparent .21rem) 0 0/1.6rem 100% repeat-x,
+    linear-gradient(#ff8a96 0,#ff2a3c .12rem,#e3001c 45%,#a50015 80%,#4a0008 100%);
+  box-shadow:0 -.1rem .5rem rgba(255,30,50,.55)}
+.ce-art{position:absolute;left:0;right:0;bottom:.8rem;height:min(14.0125rem,calc((100vw - 2rem)*.1514));max-width:124rem;margin:0 auto;padding:0 1rem;box-sizing:border-box;
+  display:flex;justify-content:space-between;align-items:stretch}
+/* les deux groupes (crosses et arcs) : un seul dessin, retourné pour la droite ; la lumière vient du vitrail */
+.ce-g{position:relative;flex:none;height:100%;aspect-ratio:560/224}
+.ce-g::before{content:"";position:absolute;inset:0;background:url(/images/cachot/entete-arches.svg) 0 0/100% 100% no-repeat;pointer-events:none}
+.ce-g.d::before{transform:scaleX(-1)}
+.ce-c{position:relative;flex:none;height:100%;aspect-ratio:340/224;background:url(/images/cachot/entete-vitrail.webp) center/100% 100% no-repeat}
+.ce-h{position:absolute;display:block;border-radius:50%;aspect-ratio:1;outline:0;transition:filter .25s,transform .25s,box-shadow .25s,background .25s}
+.ce-ic{top:53.125%;width:11.071%;filter:drop-shadow(0 0 .35rem rgba(255,20,45,.75)) drop-shadow(0 .2rem .25rem #000)}
+.ce-ic img{display:block;width:100%;height:100%;-webkit-user-drag:none}
+.ce-ic:hover,.ce-ic:focus-visible{transform:scale(1.1);filter:drop-shadow(0 0 .55rem rgba(255,40,60,1)) drop-shadow(0 0 1.3rem rgba(255,0,30,.8))}
+.ce-pp,.ce-kv{top:17.86%;width:20%;background:center/100% 100% no-repeat}
+.ce-pp{left:4.286%;background-image:url(/images/cachot/logo-pp-blanc.webp);filter:drop-shadow(0 0 .45rem rgba(214,170,255,.85)) drop-shadow(0 0 1.4rem rgba(150,60,255,.45))}
+.ce-kv{left:75.714%;background-image:url(/images/cachot/logo-kavod-blanc.webp);filter:drop-shadow(0 0 .45rem rgba(255,255,255,.75)) drop-shadow(0 0 1.6rem rgba(200,170,255,.45))}
+.ce-pp:hover,.ce-pp:focus-visible,.ce-kv:hover,.ce-kv:focus-visible{transform:scale(1.06);filter:drop-shadow(0 0 .6rem #fff) drop-shadow(0 0 1.8rem rgba(214,170,255,.9))}
+/* la fumée qui monte de Kavod */
+.ce-kv .fm{position:absolute;left:18%;bottom:62%;width:64%;height:110%;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse 34% 50% at 50% 60%,rgba(255,255,255,.34),rgba(220,200,255,.1) 55%,transparent 72%);filter:blur(.35rem);animation:ce-fum 7s ease-out infinite}
+.ce-kv .fm+.fm{left:30%;animation-delay:-3.5s;animation-duration:8.5s}
+@keyframes ce-fum{0%{transform:translate(0,30%) scale(.5,.6);opacity:0}25%{opacity:.85}100%{transform:translate(-14%,-38%) scale(1.15,1.5);opacity:0}}
+.ce-bl{left:36.37%;top:22.32%;width:27.26%;height:58.93%;aspect-ratio:auto;border-radius:0;background:url(/images/cachot/blason-cachot-hd.webp) center/contain no-repeat;
+  filter:drop-shadow(0 0 .5rem rgba(255,20,40,.7)) drop-shadow(0 .25rem .35rem rgba(0,0,0,.95))}
+.ce-bl:hover,.ce-bl:focus-visible{transform:scale(1.05);filter:drop-shadow(0 0 .7rem rgba(255,40,60,1)) drop-shadow(0 0 1.6rem rgba(255,0,30,.75))}
+/* le petit quadrilobe rouge du vitrail, en haut à gauche, mène à la tombe de Kavod */
+.ce-qd{left:24.7%;top:7.14%;width:8.24%}
+.ce-qd:hover,.ce-qd:focus-visible{background:rgba(255,204,0,.25);box-shadow:0 0 .8rem rgba(255,204,0,.95)}
 .ce-mob,.ce-bas{display:none}
 
-/* ---- fond du texte : le vitrail se répète comme dans les autres modes (rouge et noir) ---- */
-.cachot main{background-color:#070004;
-  background-image:var(--cusp-h),var(--cusp-b),
-    linear-gradient(to right,rgba(0,0,0,.92),transparent 6rem,transparent calc(100% - 6rem),rgba(0,0,0,.92)),
-    linear-gradient(to bottom,rgba(0,0,0,.8),transparent 6rem,transparent calc(100% - 6rem),rgba(0,0,0,.92)),
-    linear-gradient(rgba(6,0,4,.55),rgba(6,0,4,.55)),
-    linear-gradient(#a8001a,#a8001a),
-    url(/images/fond-vitrail-texte.webp);
-  background-size:4.2rem 2.6rem,4.2rem 2.6rem,100% 100%,100% 100%,auto,auto,100% auto;
+/* ================= le corps des cachots : la chapelle d'Éphébus en fond, la fonte noire de Notre-Dame-du-Travail,
+   titres gothiques (UnifrakturCook), texte courant lisible (EB Garamond) en jaune ================= */
+:root{--vh:4.4rem;--goth:"UnifrakturCook","Religath",Georgia,serif;--lisible:"EB Garamond",Garamond,Georgia,serif;--txt:#ffe23f}
+/* le fond se répète comme le vitrail des deux autres couches : bleu nuit à gauche, sang à droite */
+.cachot main{padding:7.6rem 6.6rem 6.8rem;background-color:#06000a;
+  background-image:url(/images/cachot/fonte-arcature.svg),url(/images/cachot/fonte-poutre.svg),
+    linear-gradient(to right,rgba(2,3,26,.94) 0,rgba(8,10,62,.6) 17%,rgba(18,8,46,.16) 38%,transparent 52%,rgba(100,0,12,.3) 70%,rgba(110,0,14,.62) 88%,rgba(50,0,6,.94) 100%),
+    linear-gradient(to bottom,rgba(0,0,0,.8),transparent 9rem,transparent calc(100% - 7rem),rgba(0,0,0,.92)),
+    linear-gradient(rgba(10,0,6,.5),rgba(10,0,6,.5)),
+    linear-gradient(#a04a60,#a04a60),
+    url(/images/cachot/fond-chapelle.webp);
+  background-size:9.18rem var(--vh),9.18rem 1.72rem,100% 100%,100% 100%,auto,auto,100% auto;
   background-position:0 0,0 100%,0 0,0 0,0 0,0 0,center top;
   background-repeat:repeat-x,repeat-x,no-repeat,no-repeat,repeat,repeat,repeat-y;
-  background-blend-mode:normal,normal,normal,normal,normal,color,normal}
+  background-blend-mode:normal,normal,normal,normal,normal,color,normal;
+  font-family:var(--lisible);font-weight:500;color:var(--txt)}
+/* colonnes de fonte sur les flancs, sous l'arcature */
+.cachot main::before,.cachot main::after{top:calc(var(--vh) - .25rem);bottom:1.5rem;width:2.6rem;filter:drop-shadow(0 0 .8rem #000);
+  background:url(/images/cachot/fonte-chapiteau.svg) 0 0/100% auto no-repeat,url(/images/cachot/fonte-base.svg) 0 100%/100% auto no-repeat,url(/images/cachot/fonte-fut.svg) 0 4rem/100% 4.16rem repeat-y}
+.cachot main::before{left:.6rem}.cachot main::after{right:.6rem}
+.cachot main>.grav{left:6rem;right:6rem;top:calc(var(--vh) + .7rem);font:600 1.05rem/1 "Cinzel",Georgia,serif;color:rgba(255,226,63,.5)}
+/* la barre latérale : noire, filet rouge, une colonne de fonte contre le filet */
+@media (min-width:900px){
+.cachot nav{border-right:.5rem solid var(--rouge);box-shadow:.3rem 0 1.2rem rgba(225,0,25,.35),.8rem 0 1.6rem rgba(0,0,0,.8);
+  background:url(/images/cachot/fonte-chapiteau.svg) right .25rem top/2.6rem auto no-repeat,url(/images/cachot/fonte-base.svg) right .25rem bottom/2.6rem auto no-repeat,
+    url(/images/cachot/fonte-fut.svg) right .25rem top 4rem/2.6rem 4.16rem repeat-y,radial-gradient(ellipse 120% 30% at 50% 100%,rgba(225,0,25,.22),transparent 74%),#020203}
+}
+.pl-t,.pl-t2{font:700 2.35rem/1.05 var(--goth);letter-spacing:.02em;color:var(--jaune);text-shadow:0 .12rem 0 #000,0 0 .9rem rgba(255,204,0,.35)}
+/* titres : le grand sur un bloc rouge, en lettres noires ; les autres en jaune, soulignés de rouge */
+.cachot h1{display:table;font:700 5.6rem/1.12 var(--goth);text-transform:none;letter-spacing:.01em;color:#000;background:var(--rouge);padding:.02em .22em .1em;margin:0 0 1.6rem;
+  text-shadow:0 .05rem 0 rgba(255,120,130,.45);box-shadow:.35rem .35rem 0 #000,0 0 1.8rem rgba(225,0,25,.45)}
+.cachot h1::after{display:none}
+.cachot h2{font:700 3.3rem/1.15 var(--goth);text-transform:none;letter-spacing:.01em;color:var(--jaune);border-bottom-color:rgba(225,0,25,.9);
+  text-shadow:0 .12rem 0 #000,0 0 1rem rgba(0,0,0,.95),0 0 1.4rem rgba(255,204,0,.22)}
+.cachot .fiche2 h2,.cachot .fiche2 h3.sub{font-family:var(--goth);font-weight:700;letter-spacing:.01em;text-transform:none}
+.cachot .kicker{display:block;margin:0 0 .9rem;padding:0;background:none;clip-path:none;box-shadow:none;font:600 1.15rem/1.2 "Cinzel",Georgia,serif;letter-spacing:.32em;color:#fff;opacity:.8}
+.cachot .lead-title{font:600 1.5rem/1.3 "Cinzel",Georgia,serif;letter-spacing:.2em;text-decoration:none;color:#fff;text-shadow:0 .1rem .4rem #000}
+.cachot p.lettrine::first-letter{font:700 5.4rem/.82 var(--goth);color:var(--rouge);padding:.3rem .7rem 0 0;text-shadow:.12rem .12rem 0 #000,0 0 1rem rgba(225,0,25,.55)}
+/* texte courant : jaune, lisible, détaché du fond par une ombre */
+.cachot main :is(p,li,dd,figcaption,blockquote){font-family:var(--lisible)}
+.cachot :is(.rsec,.fiche2) :is(p,li,dd){color:var(--txt);text-shadow:0 .08rem .1rem #000,0 0 .7rem rgba(0,0,0,.95),0 0 1.4rem rgba(0,0,0,.6)}
+.cachot .lk{color:#fff;text-decoration-color:var(--rouge);text-decoration-thickness:.1em}
+.cachot .lk:hover{color:var(--jaune)}
+/* panneaux : plus de cadre de pierre, le texte repose sur la chapelle ; une poutre de fonte ferme chaque panneau */
+.cachot .rsec,.cachot .fiche2{border:0;box-shadow:none;background:radial-gradient(ellipse 75% 85% at 40% 50%,rgba(0,0,0,.42),rgba(0,0,0,.12) 75%,transparent)}
+.cachot .rsec::before,.cachot .fiche2::before{display:none}
+.cachot .rsec::after,.cachot .fiche2::after{left:0;right:0;bottom:-.9rem;height:1.2rem;border:0;background:url(/images/cachot/fonte-poutre.svg) 0 0/6.4rem 1.2rem repeat-x;opacity:.85}
+.cachot .pfoot{border-top:.45rem solid var(--rouge);box-shadow:0 -.3rem 1.2rem rgba(225,0,25,.35)}
+.cachot .pfoot::before{top:-1.72rem;height:1.72rem;background:url(/images/cachot/fonte-poutre.svg) 0 0/9.18rem 1.72rem repeat-x;opacity:1}
 
 /* ---- mobile ---- */
 @media (max-width:899px){
-  body.cachot header.ce{height:var(--mh);display:flex;align-items:center;overflow:visible}
-  body.cachot header.ce::before{height:.35rem;background:linear-gradient(#ff2a3c,#a80014)}
+  body.cachot header.ce{height:var(--mh);display:flex;align-items:center;overflow:visible;
+    background:radial-gradient(ellipse 40% 120% at 8% 60%,rgba(200,0,30,.28),transparent 70%),linear-gradient(#000 0%,#0a0214 45%,#2b0a48 100%);
+    box-shadow:0 .5rem 1rem rgba(0,0,0,.92),0 .15rem .35rem rgba(0,0,0,.9)}
+  body.cachot header.ce::before{height:.35rem;background:linear-gradient(#ff7a88,#ff2a3c 30%,#a80014)}
   .ce-art{display:none}
   .ce-mob{display:flex;align-items:center;gap:.4rem;width:100%;height:100%;padding:0 .5rem .35rem .5rem;box-sizing:border-box}
   .ce-m-logo{flex:none;display:block;height:calc(100% - .3rem);aspect-ratio:1}
@@ -51,9 +109,24 @@ body.cachot header.ce::before{content:"";display:block;position:absolute;left:0;
   .ce-bas{display:flex;justify-content:center;align-items:center;gap:1.8rem;margin:0 auto 1.2rem}
   .ce-bas a{display:block;width:5rem;height:5rem}
   .ce-bas img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 .4rem rgba(255,255,255,.35))}
-  .cachot main{background-size:3rem 1.9rem,3rem 1.9rem,100% 100%,100% 100%,auto,auto,100% auto}
+  :root{--vh:3rem}
+  .cachot main{padding:5.4rem 2.4rem 4.6rem;background-size:6.26rem var(--vh),6.26rem 1.17rem,100% 100%,100% 100%,auto,auto,100% auto}
+  .cachot main::before,.cachot main::after{width:1.5rem;bottom:1rem;background-position:0 0,0 100%,0 2.3rem;background-size:100% auto,100% auto,100% 2.4rem}
+  .cachot main::before{left:.25rem}.cachot main::after{right:.25rem}
+  .cachot main>.grav{left:2.2rem;right:2.2rem;top:calc(var(--vh) + .4rem);font-size:.72rem;line-height:1.35}
+  .cachot h1{font-size:3.5rem}
+  .cachot h2{font-size:2.35rem;padding-left:2.8rem}
+  .cachot .kicker{font-size:.85rem;letter-spacing:.24em}
+  .cachot .lead-title{font-size:1.05rem;letter-spacing:.14em}
+  .cachot p.lettrine::first-letter{font-size:4.2rem}
+  .pl-t2{font-size:1.9rem}
+  .cachot .pfoot::before{top:-1.17rem;height:1.17rem;background-size:6.26rem 1.17rem}
 }
 
 /* ---- les neuf reliques trouvées : l'écusson s'illumine, comme avant ---- */
-body.icone .ce-bl{background:rgba(255,204,0,.12);box-shadow:0 0 1.6rem rgba(255,204,0,.95),inset 0 0 1rem rgba(255,204,0,.5)}
+body.icone .ce-bl{filter:drop-shadow(0 0 .7rem rgba(255,204,0,.95)) drop-shadow(0 0 .25rem #fff)}
 body.icone .ce-m-logo img{filter:drop-shadow(0 0 1rem rgba(255,204,0,.95)) drop-shadow(0 0 .4rem #fff)}
+
+/* mode calme (bouton en bas à gauche, ou réglage « réduire les animations » du système) : fumées, paillettes et chauves-souris se retirent */
+html.calme *,html.calme ::before,html.calme ::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001s!important;transition-delay:0s!important;scroll-behavior:auto!important}
+html.calme .cr-fumee,html.calme .cr-disco,html.calme .cr-chauve,html.calme .paillette,html.calme .cr-conf{display:none!important}

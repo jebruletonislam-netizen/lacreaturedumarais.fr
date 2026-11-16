@@ -118,7 +118,12 @@
     $('.lp-cur').textContent = fmt(pos);
     $('.lp-dur').textContent = dur > 0 ? fmt(dur) : '0:00';
   }
-  function pad() { document.body.style.paddingBottom = el && el.classList.contains('on') ? (el.offsetHeight + 28) + 'px' : ''; }
+  function pad() {
+    var on = el && el.classList.contains('on');
+    document.body.style.paddingBottom = on ? (el.offsetHeight + 28) + 'px' : '';
+    /* les boutons de coin (coins.js) remontent au-dessus du lecteur */
+    document.documentElement.style.setProperty('--lc-h', on ? (el.offsetHeight + 14) + 'px' : '0px');
+  }
 
   function mk() {
     if (el) return;

@@ -2,13 +2,14 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<script>(function(){var c=false;try{var v=localStorage.getItem("lcdm-calme");c=v?v==="1":matchMedia("(prefers-reduced-motion:reduce)").matches}catch(e){}window.CALME=c;if(c)document.documentElement.classList.add("calme")})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Mode Putride · Territoire | La Créature du Marais</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/charte.css?v=1">
-<link rel="stylesheet" href="/putride.css?v=56">
+<link rel="stylesheet" href="/putride.css?v=57">
 <script>try{if(sessionStorage.getItem("lcm-slime")){document.documentElement.className+=" slx";setTimeout(function(){document.documentElement.classList.remove("slx")},3500)}}catch(e){}</script><link href="/images/favicon.png" rel="icon" type="image/png"><link href="/images/favicon.png" rel="apple-touch-icon">
 </head>
 <body>
@@ -56,8 +57,8 @@
 </main>
 <footer class="pfoot"><a class="mppp" aria-label="Archives PUANTEUR PUTRIDE Productions" href="/mode-putride/archives/"><img decoding="async" loading="lazy" width="1283" height="614" alt="PUANTEUR PUTRIDE Productions" src="/images/putride/logo-ppp-entete.webp?v=7"></a><img decoding="async" loading="lazy" width="1400" height="283" alt="La Créature du Marais — Cul-Pointu" class="sf-t" src="/images/pied-titre.webp"><p class="sf-c">© MMXXVI</p><a class="pup" href="/" data-slime="up" aria-label="Remonter à la surface : retour au site normal"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44"/><path d="M8 32h48M32 10v44"/><circle cx="26" cy="32" r="2"/><circle cx="38" cy="32" r="2"/></svg><span>↑ REMONTER À LA SURFACE</span></a></footer>
 </div>
-<script src="/lightbox.js?v=3"></script>
-<script src="/navdrag.js"></script>
+<script src="/lightbox.js?v=4"></script>
+<script src="/navdrag.js?v=1"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -86,7 +87,7 @@
     [['0','#0a060f',1],['.72','#050308',1],['.9','#000',.92],['1','#000',0]].forEach(function(t){el('stop',{offset:t[0],'stop-color':t[1],'stop-opacity':t[2]},g1);});
     [[150,150,104],[150,150,90],[108,135,70],[192,140,72],[124,188,68],[180,188,70],[150,104,64],[150,204,58],[94,166,58],[206,166,60],[100,114,54],[200,112,54],
      [66,140,46],[234,140,46],[150,66,46],[150,236,44],[108,230,44],[192,230,44],[76,190,42],[224,192,42],[82,98,40],[218,98,40],[150,150,60]].forEach(function(c){el('circle',{cx:c[0],cy:c[1],r:c[2],fill:'url(#ncg)'},svg);});
-    var low=(navigator.hardwareConcurrency||4)<=4,calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var low=(navigator.hardwareConcurrency||4)<=4,calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
     /* centre x, centre y, rayon x, rayon y, duree, taille, sens */
     var bats=[[150,150,70,42,9,2,1],[150,150,92,56,13,1.8,0],[150,140,56,32,7.5,1.7,1],[150,165,64,36,10,1.8,0],[150,150,90,66,16,1.9,1],[140,120,46,56,8,1.6,1],
       [160,110,50,38,11,1.7,0],[150,190,82,28,12,1.8,1],[130,150,56,66,9.5,1.6,0],[170,150,56,62,14,1.9,1],[150,95,88,32,15,1.5,0]];
@@ -110,7 +111,7 @@
     var rr=function(a,b){return a+(b-a)*rnd();};
     var f=function(x){return Math.round(x*10)/10;};
     var el=function(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
-    var low=(navigator.hardwareConcurrency||4)<=4,calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var low=(navigator.hardwareConcurrency||4)<=4,calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
     var an=function(p,a){return calm?null:el('animate',a,p);};
     var at=function(p,a){return calm?null:el('animateTransform',a,p);};
     var svg=el('svg',{viewBox:'0 0 400 400',preserveAspectRatio:'none','aria-hidden':'true',focusable:'false'}),defs=el('defs',{},svg);
@@ -249,7 +250,7 @@
     var rr=function(a,b){return a+(b-a)*rnd();};
     var f=function(x){return Math.round(x*10)/10;};
     var el=function(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
-    var low=(navigator.hardwareConcurrency||4)<=4,calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var low=(navigator.hardwareConcurrency||4)<=4,calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
     var an=function(p,a){return calm?null:el('animate',a,p);};
     var at=function(p,a){return calm?null:el('animateTransform',a,p);};
     var svg=el('svg',{viewBox:'0 0 400 400',preserveAspectRatio:'none','aria-hidden':'true',focusable:'false'}),defs=el('defs',{},svg);
@@ -339,7 +340,7 @@
     var rr=function(a,b){return a+(b-a)*rnd();};
     var f=function(x){return Math.round(x*10)/10;};
     var el=function(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
-    var low=(navigator.hardwareConcurrency||4)<=4,calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var low=(navigator.hardwareConcurrency||4)<=4,calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
     var an=function(p,a){return calm?null:el('animate',a,p);};
     var at=function(p,a){return calm?null:el('animateTransform',a,p);};
     var svg=el('svg',{viewBox:'0 0 400 300',preserveAspectRatio:'none','aria-hidden':'true',focusable:'false'}),defs=el('defs',{},svg);
@@ -417,7 +418,8 @@
   });
   m.on('click',function(){m.scrollWheelZoom.enable();});
 })();
-</script><script src="/slime.js?v=14"></script><script src="/lecteur.js?v=5"></script><script src="/putride.js?v=42"></script>
+</script><script src="/slime.js?v=15"></script><script src="/lecteur.js?v=6"></script><script src="/putride.js?v=43"></script>
 <script src="/apercu.js?v=2" defer></script>
+<script src="/coins.js?v=1" defer></script>
 </body>
 </html>

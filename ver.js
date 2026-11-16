@@ -5,11 +5,13 @@
      s'ouvre sur un bain de sang ; le ver y plonge, le couvercle se referme, et tout disparaît ;
    - soit vers la dame-jeanne : il entre par le goulot (le bouchon saute), son contenu tourne au sang et il y nage jusqu'à ce qu'on la brise ; alors
      le sang se déverse dans le fluide vert, le rougit, et le ver y nage à son tour avant de s'y dissoudre. Si on la laisse intacte, il s'y dissout seul.
+   Entre deux apparitions, il dort enroulé sur lui-même dans son trou, en bas à gauche, et c'est de là qu'il sort. Un clic sur le trou l'incarne :
+   il suit la souris (ou le doigt), puis rentre s'enrouler après six secondes sans mouvement, sur un nouveau clic ou avec Échap.
    Chargé à la demande par putride.js ; ne fait rien si l'on a demandé moins d'animations. */
 (function(){
   'use strict';
   if(window.Ver)return;
-  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
   var TAU=6.283185307,rnd=function(a,b){return a+Math.random()*(b-a);},clamp=function(v,a,b){return v<a?a:v>b?b:v;};
   var smooth=function(t){t=clamp(t,0,1);return t*t*(3-2*t);};
   var run=null,timer=0,vues=0,on=false,AC=null,ph0='',force='';
@@ -50,7 +52,7 @@
     var els=document.querySelectorAll('img,a,button,span,i,div,svg,b,em'),best=null,i,e,b,st,rad,w,h,n=0,ok;
     for(i=0;i<els.length&&n<2500;i++){
       e=els[i];n++;
-      if(e.closest&&e.closest('.ff-cv,.ff-hit,.ff-bulle,.fx-it,.eph-btn,.cro-btn,#drips,.ver-cv'))continue;
+      if(e.closest&&e.closest('.ff-cv,.ff-hit,.ff-bulle,.fx-it,.eph-btn,.cro-btn,#drips,.ver-cv,.ver-nid,.cn-b,.cn-p'))continue;
       b=e.getBoundingClientRect();w=b.width;h=b.height;
       if(w<36||w>420||h<36||h>420||w/h<.86||w/h>1.16||b.left<4||b.top<4||b.right>W-4||b.bottom>H-4)continue;
       st=getComputedStyle(e);rad=st.borderTopLeftRadius;
@@ -167,6 +169,77 @@
     }
   }
 
+  /* ---------- le nid : un trou en bas à gauche (au-dessus du bouton des effets), où il dort enroulé sur lui-même ---------- */
+  var nid=null,nidCv=null,ptr={x:0,y:0,t:0},NW=54,NH=62;
+  function creeNid(){
+    if(nid)return;
+    var st=document.createElement('style');
+    st.textContent='.ver-nid{position:fixed;left:9px;bottom:calc(64px + env(safe-area-inset-bottom,0px) + var(--lc-h,0px));z-index:84;width:54px;height:62px;margin:0;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}'
+      +'.ver-nid[hidden]{display:none}.ver-nid canvas{display:block;width:100%;height:100%;transform-origin:50% 72%;animation:ver-tic 11s ease-in-out 5s infinite}'
+      +'.ver-nid.vide canvas{animation:none}.ver-nid.nait canvas{animation:ver-nait .7s cubic-bezier(.3,1.6,.5,1)}'
+      +'.ver-nid:focus-visible{outline:2px solid #ff2430;outline-offset:2px;border-radius:14px}'
+      +'@keyframes ver-tic{0%,86%,100%{transform:none}89%{transform:rotate(-8deg) scale(1.06)}92%{transform:rotate(7deg)}95%{transform:rotate(-4deg)}}'
+      +'@keyframes ver-nait{0%{transform:scale(.15);opacity:0}100%{transform:none;opacity:1}}'
+      +'@media (max-width:560px){.ver-nid{left:5px;width:46px;height:53px;bottom:calc(58px + env(safe-area-inset-bottom,0px) + var(--lc-h,0px))}}'
+      +'@media print{.ver-nid{display:none!important}}';
+    document.head.appendChild(st);
+    nid=document.createElement('button');nid.type='button';nid.className='ver-nid';
+    nid.title='Le Ver du baptistère : cliquez pour l’incarner';
+    nid.setAttribute('aria-label','Le Ver du baptistère : le faire sortir de son trou (il suit la souris ou le doigt), ou l’y faire rentrer');
+    var k=Math.min(window.devicePixelRatio||1,2);
+    nidCv=document.createElement('canvas');nidCv.width=Math.round(NW*k);nidCv.height=Math.round(NH*k);nidCv.setAttribute('aria-hidden','true');
+    nid.appendChild(nidCv);document.body.appendChild(nid);
+    nid.addEventListener('animationend',function(e){if(e.animationName==='ver-nait')nid.classList.remove('nait');});
+    nid.addEventListener('click',clicNid);
+    var lit=function(e){var p=e.touches?e.touches[0]:e;if(!p)return;ptr.x=p.clientX;ptr.y=p.clientY;ptr.t=performance.now();};
+    addEventListener('pointermove',lit,{passive:true});addEventListener('pointerdown',lit,{passive:true});
+    addEventListener('touchstart',lit,{passive:true});addEventListener('touchmove',lit,{passive:true});
+    addEventListener('keydown',function(e){if(e.key==='Escape'&&run&&run.rentre)run.rentre();});
+    if(HI&&!HI.complete)HI.addEventListener('load',dessineNid);
+    dessineNid();
+  }
+  function dessineNid(){
+    if(!nidCv)return;
+    var c=nidCv.getContext('2d'),k=nidCv.width/NW,cx=NW/2,cy=NH*.72,g,i;
+    c.setTransform(k,0,0,k,0,0);c.clearRect(0,0,NW,NH);
+    /* le trou */
+    g=c.createRadialGradient(cx,cy,1,cx,cy,19);g.addColorStop(0,'#000');g.addColorStop(.6,'#12020a');g.addColorStop(1,'rgba(40,0,10,0)');
+    c.fillStyle=g;c.beginPath();c.ellipse(cx,cy,20,8.5,0,0,TAU);c.fill();
+    if(nid.classList.contains('vide')){
+      c.strokeStyle='rgba(255,70,90,.6)';c.lineWidth=1.3;c.beginPath();c.ellipse(cx,cy,15.5,5.6,0,0,Math.PI);c.stroke();
+      return;
+    }
+    /* le ver enroulé : des anneaux empilés qui rétrécissent en montant (la queue en bas, devant), puis le cou qui se dresse et la tête */
+    var pts=[],a,A=TAU*2.2,len=0,u,r,l;
+    for(a=0;a<=A+1e-6;a+=.08){u=a/A;r=15.5-8*u;pts.push({x:cx+Math.cos(a+1.3)*r,y:cy+3-u*15+Math.sin(a+1.3)*r*.38,b:0,ln:-1});}
+    l=pts[pts.length-1];
+    for(i=1;i<=6;i++)pts.push({x:l.x+(cx-l.x)*i/6*.7,y:l.y-i*1.9,b:0,ln:-1});
+    for(i=1;i<pts.length;i++)len+=Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);
+    var h=pts[pts.length-1];
+    dessineVer(c,pts,h.x,h.y,len,6.6,1.8,[],0);
+  }
+  function nidVide(v,anim){
+    if(!nid)return;
+    nid.classList.toggle('vide',!!v);nid.classList.remove('nait');
+    if(!v&&anim){void nid.offsetWidth;nid.classList.add('nait');}
+    nid.setAttribute('aria-pressed',v?'true':'false');
+    dessineNid();
+  }
+  /* le centre du trou, à l'écran (et sa demi-largeur, pour cacher ce qui est dedans) */
+  function nidCentre(){
+    if(!nid||nid.hidden)return null;
+    var b=nid.getBoundingClientRect();if(!b.width)return null;
+    return {x:b.left+b.width/2,y:b.top+b.height*.72,rx:b.width*.36};
+  }
+  function clicNid(){
+    if(run){
+      if(run.rentre&&run.rentre())return;
+      if(run.incarne)run.incarne();
+      return;
+    }
+    passe('suit');
+  }
+
   /* ---------- la dame-jeanne : le ver entre par le goulot, le contenu tourne au sang, il y nage ; brisée, tout se vide dans le fluide vert ---------- */
   function fx(){return window.PutrideFx||null;}
   function jarLue(){var f=fx();return f&&f.cro&&!f.cro.gone?f.cro:null;}
@@ -180,13 +253,14 @@
   function jp(o,lx,ly){var k=o.h/100*o.sc,c=Math.cos(o.rot),s=Math.sin(o.rot);return [o.x+(lx*c-ly*s)*k,o.y+(lx*s+ly*c)*k];}
 
   /* ---------- l'apparition ---------- */
-  function passe(){
+  function passe(m){
+    var suit=m==='suit';
     if(run||document.hidden||calm)return;
     charge();
     var W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,1.5),s=W<900?.72:1,TH=16*s,sp=4.6*s,hdr=document.querySelector('header'),hb=hdr?hdr.getBoundingClientRect().bottom:0;
-    var jo=jarLibre(hb,W,H),mode=(jo&&(force==='jar'||(force!=='bap'&&Math.random()<.5)))?'jar':'bap';force='';
-    if(mode==='bap'&&!pret()){BI.addEventListener('load',function(){if(!run&&on)passe();},{once:true});return;}
-    var all=lignes(W,H,hb),ls=[],cir=null,i,choisi=false;
+    var jo=suit?null:jarLibre(hb,W,H),mode=(jo&&(force==='jar'||(force!=='bap'&&Math.random()<.5)))?'jar':'bap';force='';
+    if(!suit&&mode==='bap'&&!pret()){BI.addEventListener('load',function(){if(!run&&on)passe();},{once:true});return;}
+    var all=suit?[]:lignes(W,H,hb),ls=[],cir=null,i,choisi=false;
     if(all.length){
       var l1=all[(Math.random()*all.length)|0];ls.push(l1);
       if(Math.random()<.5){
@@ -212,9 +286,24 @@
       return fallback;
     }
     function ln(k){var q=ls[k],dy=sy0-scrollY,dx=sx0-scrollX;return {l:q.l+dx,t:q.t+dy,w:q.w,h:q.h};}
-    var side=Math.random()<.5?-1:1,hx=side<0?-30*s:W+30*s,hy=rnd(hb+50,H-60),th=side<0?0:Math.PI,L=200*s,pts=[{x:hx,y:hy,b:0,ln:-1}],last={x:hx,y:hy};
+    var side=Math.random()<.5?-1:1,hx=side<0?-30*s:W+30*s,hy=rnd(hb+50,H-60),th=side<0?0:Math.PI,L=(suit?170:200)*s;
+    /* il sort de son trou s'il y est (la tête d'abord, cachée sous la margelle), sinon d'un bord de l'écran */
+    var nc0=nidCentre(),parc=0,sorti=0,phx=0,phy=0;
+    if(nc0){hx=nc0.x;hy=nc0.y+34*s;th=-Math.PI/2;nidVide(true);}
+    var pts=[{x:hx,y:hy,b:0,ln:-1}],last={x:hx,y:hy};phx=hx;phy=hy;
     var ph='in',pt=0,t=0,li=0,u=0,dir=1,uMax=0,x0=0,A=0,lam=64*s,ang=0,trav=0,rr=0,rip=[],drops=[],rippled=0,clipsL=[],bform=0,open=0,blood=0,film=0,sc=1,balpha=0,splashed=false,lastT=performance.now();
-    var R={cv:cv,raf:0,ph:function(){return ph;},mode:function(){return mode;},dbg:function(){return {hx:hx,hy:hy,L:L,TH:TH,n:pts.length,al:alpha,tg:ftg,Lin:Lin};}};run=R;
+    var R={cv:cv,raf:0,ph:function(){return ph;},mode:function(){return suit?'suit':mode;},dbg:function(){return {hx:hx,hy:hy,L:L,TH:TH,n:pts.length,al:alpha,tg:ftg,Lin:Lin};}};run=R;
+    /* l'incarner : il quitte ce qu'il faisait (tant qu'il n'a pas commencé son baptistère) et suit la souris ou le doigt */
+    R.libre=function(){return ph==='suit'||ph==='retour'||ph==='plonge'||(ph==='sort'&&apres==='suit');};
+    R.incarne=function(){
+      if(ph==='sort'){apres='suit';}
+      else if(ph==='in'||ph==='wrap'||ph==='trans'||(ph==='flee'&&!choisi&&mode!=='jar')){ph='suit';pt=0;}
+      else return false;
+      suit=true;L=Math.max(L,170*s);ptr.x=hx+rnd(-60,60)*s;ptr.y=hy-rnd(60,120)*s;ptr.t=performance.now();
+      return true;
+    };
+    R.rentre=function(){if(ph==='suit'||(ph==='sort'&&apres==='suit')){ph='retour';pt=0;return true;}return false;};
+    if(suit){ptr.x=hx+90*s;ptr.y=hy-190*s;ptr.t=performance.now();}
 
     /* --- dans la dame-jeanne : le ver dans le repère du verre --- */
     var J=null,yl=-66,ipts=[],ihx=0,ihy=0,ith=Math.PI/2,Lin=0,iT={x:0,y:20,t:0},swimEnd=0,vx=0,vy=0,ftg=null,fat=0,alpha=1;
@@ -280,14 +369,34 @@
       return Math.hypot(tx-hx,ty-hy);
     }
     function push(b,lnk){var d=Math.hypot(hx-last.x,hy-last.y);if(d>=1.4){pts.push({x:hx,y:hy,b:b,ln:lnk});last={x:hx,y:hy};if(pts.length>1100)pts.splice(0,400);}}
-    if(!ls.length)ph='flee';else{startWrap(0);}
+    var apres=suit?'suit':(ls.length?'in':'flee');
+    if(ls.length)startWrap(0);
+    ph=nc0?'sort':apres;
     function frame(now){
       if(run!==R)return;
       var dt=Math.min(.05,(now-lastT)/1000);lastT=now;
       if(document.hidden){R.raf=requestAnimationFrame(frame);return;}
       t+=dt;pt+=dt;
       var b=0,lk=-1,cc=choisi?centre():{x:0,y:0},e,a,o=null,f=fx(),kk=1,clipJ=null;
-      if(ph==='in'){
+      if(ph==='sort'){
+        hy-=150*s*dt;th=-Math.PI/2;
+        if(hy<nc0.y-30*s){ph=apres;pt=0;}
+      }else if(ph==='suit'){
+        /* la tête file vers le pointeur ; arrivée, elle tourne autour en attendant */
+        var tx=ptr.x,ty=ptr.y,dd=Math.hypot(tx-hx,ty-hy);
+        if(dd<30*s){var ao=Math.atan2(hy-ty,hx-tx)+.9;steer(tx+Math.cos(ao)*26*s,ty+Math.sin(ao)*26*s,85*s,dt,1.2);}
+        else steer(tx,ty,clamp(dd*3,120*s,780*s),dt,2.6);
+        if(now-ptr.t>6000)R.rentre();
+      }else if(ph==='retour'){
+        var nr=nidCentre();
+        if(!nr){fin();return;}
+        nc0=nr;e=Math.hypot(nr.x-hx,nr.y-30*s-hy);
+        if(e>9*s)steer(nr.x,nr.y-30*s,clamp(e*3,130*s,700*s),dt,.5);
+        else{ph='plonge';pt=0;parc=0;}
+      }else if(ph==='plonge'){
+        hx+=(nc0.x-hx)*Math.min(1,dt*10);th=Math.PI/2;hy+=150*s*dt;parc+=150*s*dt;
+        if(parc>L+44*s){fin(true);return;}
+      }else if(ph==='in'){
         var q0=ln(li);e=steer(x0,q0.t+q0.h/2,150*s,dt,1.8);
         if(e<12*s){ph='wrap';pt=0;}
       }else if(ph==='wrap'){
@@ -407,6 +516,9 @@
       var cl=[];for(i=0;i<ls.length;i++)cl.push(ln(i));
       if(L>3&&ph!=='splash'&&ph!=='swim'&&ph!=='leave'){
         c.save();
+        /* ce qui est encore (ou déjà) dans le trou ne se voit pas */
+        sorti+=Math.hypot(hx-phx,hy-phy);phx=hx;phy=hy;
+        if(nc0&&(ph==='sort'||ph==='retour'||ph==='plonge'||sorti<L+60*s)){var PN=new Path2D();PN.rect(-5,-5,1e5,1e5);PN.rect(nc0.x-nc0.rx,nc0.y,nc0.rx*2,Math.max(10,H+80-nc0.y));c.clip(PN,'evenodd');}
         if(ph==='enter'&&J){
           /* la part du ver déjà dans le goulot est cachée : elle est dessinée dans le verre */
           o=J;clipJ=new Path2D();clipJ.rect(-5,-5,1e5,1e5);
@@ -434,10 +546,12 @@
     }
     R.raf=requestAnimationFrame(frame);
   }
-  function fin(){
+  function fin(rentre){
     if(!run)return;
     cancelAnimationFrame(run.raf);run.cv.remove();run=null;
     var o=jarLue();if(o){if(o.vcasse&&o.vcasse.name==='spill')o.vcasse=null;o.vin=null;o.vbT=0;}
+    /* rentré par le trou, il y est déjà ; sinon (baptistère, dame-jeanne, page quittée) il y renaît */
+    nidVide(false,!rentre);
   }
 
   /* quand reparaît-il ? rarement, jamais deux effets à la fois */
@@ -453,9 +567,12 @@
   }
   function go(){
     if(calm)return;
-    charge();stopFx();on=true;if(!vues)plan(rnd(22000,45000));else plan(rnd(30000,70000));
+    charge();creeNid();nid.hidden=false;
+    /* incarné, il suit le visiteur d'une page à l'autre */
+    if(run&&run.libre&&run.libre())clearTimeout(timer);else stopFx();
+    on=true;if(!vues)plan(rnd(22000,45000));else plan(rnd(30000,70000));
   }
   function stopFx(){clearTimeout(timer);fin();}
-  function stop(){on=false;stopFx();}
-  window.Ver={go:go,stop:stop,show:function(m){on=true;fin();force=m||'';passe();},actif:function(){return !!run;},phase:function(){return run?run.ph():'';},mode:function(){return run?run.mode():'';},dbg:function(){return run?run.dbg():null;}};
+  function stop(){on=false;stopFx();if(nid)nid.hidden=true;}
+  window.Ver={go:go,stop:stop,show:function(m){on=true;fin();if(m==='suit'){passe('suit');return;}force=m||'';passe();},incarne:clicNid,actif:function(){return !!run;},phase:function(){return run?run.ph():'';},mode:function(){return run?run.mode():'';},dbg:function(){return run?run.dbg():null;}};
 })();

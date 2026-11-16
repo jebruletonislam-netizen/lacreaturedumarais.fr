@@ -229,7 +229,7 @@ main{position:relative}
 .rt .pf{aspect-ratio:1}.rt .pf img{width:100%;height:100%;object-fit:cover}
 .perso .pf.eph{aspect-ratio:1;border:0;cursor:inherit;background:radial-gradient(circle at 50% 45%,#1a0836,#030007 75%)}
 .gal.tall .pf{aspect-ratio:3/4}.fiche2 .pf.tall{aspect-ratio:3/4}
-.pfoot{margin-top:0;border-top:.5rem solid var(--g);background:#000;text-align:center}.pfoot p{margin:0;font-size:2.2rem;line-height:1.1}.pup{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;padding:.3rem .8rem;border:.12rem dashed var(--g);color:var(--g);text-decoration:none;font:400 1.1rem "Bebas Neue",sans-serif;letter-spacing:.06em;opacity:.7;transition:.3s}.pup svg{width:1.4rem;height:1.4rem;fill:none;stroke:currentColor;stroke-width:3}.pup:hover,.pup:focus-visible{opacity:1;color:#fc0;border-color:#fc0;box-shadow:0 0 1rem rgba(255,204,0,.6)}
+.pfoot{margin-top:0;border-top:.5rem solid var(--g);background:#000;text-align:center}.pfoot p{margin:0;font-size:2.2rem;line-height:1.1}.pup{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;padding:.3rem .8rem;border:.12rem dashed var(--g);color:var(--g);text-decoration:none;font:400 1.1rem "Bebas Neue",sans-serif;letter-spacing:.06em;opacity:.7;transition:.3s}.pup svg{width:1.4rem;height:1.4rem;fill:none;stroke:currentColor;stroke-width:3}.pup:hover,.pup:focus-visible{opacity:1;color:#fc0;border-color:#fc0;box-shadow:0 0 1rem rgba(255,204,0,.6)}.pfoot .pup svg{display:none}
 .vid{display:inline-block;margin-left:.5rem;padding:0 .4rem;border:.12rem solid #fc0;color:#fc0;font:400 1rem "Bebas Neue",sans-serif;text-decoration:none;letter-spacing:.04em}
 .vid:hover{background:#fc0;color:#000}
 .disc{list-style:none;margin:0 auto;padding:0;max-width:62rem;display:grid;gap:1rem}
@@ -737,3 +737,6 @@ main :where(.fiche2>div:first-child:has(:is(.pf,.eph,.map)),.rfig,.rtfig){positi
 /* fiches v2 (nov. 2026) : photo de texte flottante, ni trop petite ni envahissante ; le titre suivant se place dessous */
 @media (min-width:900px){.rfig.rf-s{width:min(32%,17rem)}}
 .rsec h2.cl{clear:both}
+/* mode calme (bouton en bas à gauche, ou réglage « réduire les animations » du système) : plus rien ne bouge ni ne coule */
+html.calme *,html.calme ::before,html.calme ::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001s!important;transition-delay:0s!important;scroll-behavior:auto!important}
+html.calme #drips,html.calme #mpool,html.calme #mobj,html.calme .ver-cv,html.calme .ver-nid,html.calme .pb-flash{display:none!important}

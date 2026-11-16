@@ -6,7 +6,7 @@
 (function(){
   'use strict';
   if(window.Fourolle)return;
-  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var calm=(window.CALME!=null?window.CALME:window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
   var FICHE='/mode-putride/bestiaire/la-fourolle/';
   var TEXTES={
     chyren:'Feu-follet normand : c’est elle qui, en 2023, a ouvert à la Créature l’arrière-pays des prophéties.',

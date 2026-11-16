@@ -67,5 +67,7 @@
 
   /* lien direct vers un titre : /discographie/confiteor/#titre-3 */
   var h = location.hash.match(/^#titre-(\d+)$/);
-  if (h) { var d = document.getElementById('titre-' + h[1]); if (d) { d.open = true; setTimeout(function () { d.scrollIntoView({ block: 'center' }); }, 300); } }
+  /* au retour (historique) ou au rechargement, le navigateur remet déjà la page à sa hauteur : on n'y touche pas */
+  var nt = ''; try { nt = performance.getEntriesByType('navigation')[0].type; } catch (e) {}
+  if (h) { var d = document.getElementById('titre-' + h[1]); if (d) { d.open = true; if (nt !== 'back_forward' && nt !== 'reload') setTimeout(function () { d.scrollIntoView({ block: 'center' }); }, 300); } }
 })();

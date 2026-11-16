@@ -1,65 +1,150 @@
 # Tous les robots, y compris les IA, sont les bienvenus sur les pages publiques.
+# Les images des pages non référencées restent hors des moteurs d'images.
 User-agent: *
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: GPTBot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Claude-User
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Applebot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: DuckDuckBot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: CCBot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Meta-ExternalAgent
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: Amazonbot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: cohere-ai
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: MistralAI-User
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 User-agent: YouBot
 Allow: /
+Disallow: /images/cachot/
+Disallow: /images/putride/
+Disallow: /images/retard-tinables/
+Disallow: /images/rouen/
 
 Sitemap: https://lacreaturedumarais.fr/sitemap.xml
