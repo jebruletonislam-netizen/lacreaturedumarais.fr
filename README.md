@@ -17,7 +17,9 @@ la session de l'onglet. Sans activation explicite de l'IA, aucun échange n'est 
 
 Le générateur conserve les permaliens, les libellés, les titres des morceaux,
 les données de parution, les descriptions d'images et les paroles publiées des
-compagnons. Les coupures de presse numérisées sont transcrites à la main dans
+compagnons. Les paragraphes sont indexés séparément : garder les expressions
+caractéristiques et leur contexte dans le même paragraphe pour qu'ils soient
+transmis ensemble. Les coupures de presse numérisées sont transcrites à la main dans
 `_outils/transcriptions.json` (clé = adresse de l'image liée par la page) ; une
 transcription orpheline fait échouer la génération. `_outils/reperes.json` ajoute
 des repères de culture générale sur les références que le site cite, rattachés à

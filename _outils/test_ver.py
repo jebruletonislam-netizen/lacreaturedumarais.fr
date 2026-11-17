@@ -93,6 +93,16 @@ def dialogue_ia(browser, width):
     question(page, "Christophe Chevanne a fait quoi en dehors des Retard-Tinables ?")
     textes = [corpus["e"][i][3] for i in envois[-1]["ids"]]
     assert any("File au lavabo" in t for t in textes), textes
+    for query, slug, expressions in [
+        ("Quelles expressions de Quermite parlent du jean bleu et du prisonnier ?",
+         "herve-martin", ("foto ti jeans bleu", "ti jean au casso", "la robe roje")),
+        ("Quelles expressions emploie JPH dans ses premières vidéos ?",
+         "jean-pierre-herlant", ("Arrêtez de triquiter", "Faisez-nous des trucs", "Disez-moi-la")),
+    ]:
+        question(page, query)
+        textes = [corpus["e"][i][3] for i in envois[-1]["ids"]
+                  if corpus["p"][corpus["e"][i][0]][1] == f"/mode-putride/bestiaire/{slug}/"]
+        assert any(all(expression in t for expression in expressions) for t in textes), (query, textes)
     etat["mode"] = "quota"
     assert "quota gratuit" in question(page, "Question qui échoue")
     assert "via Cloudflare" in page.locator(".cn-h small").inner_text()
