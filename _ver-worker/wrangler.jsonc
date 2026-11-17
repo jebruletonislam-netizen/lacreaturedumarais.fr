@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "le-ver",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-17",
+  "workers_dev": true,
+  "ai": {"binding": "AI"},
+  "ratelimits": [
+    {"name": "PAR_VISITEUR", "namespace_id": "17301", "simple": {"limit": 6, "period": 60}},
+    {"name": "GLOBAL", "namespace_id": "17302", "simple": {"limit": 30, "period": 60}}
+  ],
+  "vars": {
+    "ORIGINES": "https://lacreaturedumarais.fr,https://www.lacreaturedumarais.fr"
+  },
+  "observability": {"enabled": false}
+}

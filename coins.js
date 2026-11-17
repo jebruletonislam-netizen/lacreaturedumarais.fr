@@ -1,7 +1,7 @@
 /* Les deux coins du bas, dans le mode putride et dans les cachots.
    À gauche : couper (ou rétablir) les effets ; le choix est gardé, et vaut comme le réglage « moins d'animations » de l'appareil.
-   À droite : l'Oracle, incarné par le Ver du baptistère, qui répond aux questions sur le lore. Il ne répond qu'avec les textes du site
-   (/oracle-*.json, tirés des pages par _outils/oracle.py), avec des répliques écrites et sourcées : ce n'est pas un modèle génératif.
+   À droite : le Ver. Dialogue local par défaut ; modèle distant seulement après consentement.
+   Les registres /oracle-*.json, tirés des pages par _outils/oracle.py, servent aux deux dialogues.
    Les deux couches connaissent les textes publics, putrides et les cachots. Dans les cachots,
    interrogé sur les reliques cachées, il répond par une énigme sur l'une de
    celles qu'on n'a pas encore trouvées (liste RELIQUES, à tenir d'accord avec les boutons .rel des pages et cachot-vie.js). */
@@ -51,6 +51,10 @@
   +'.cn-sug{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 9px}'
   +'.cn-sug button{font:inherit;font-size:13px;line-height:1.2;padding:5px 10px;border-radius:999px;border:1px solid var(--l);background:rgba(0,0,0,.35);color:var(--t);cursor:pointer}'
   +'.cn-sug button:hover,.cn-sug button:focus-visible{border-color:var(--c);color:var(--c);outline:none}'
+  +'.cn-ai{flex:none;padding:6px 12px;border-bottom:1px solid var(--l);font:12px/1.4 system-ui,sans-serif;max-height:165px;max-height:min(165px,25dvh);overflow:auto}.cn-ai[hidden]{display:none}'
+  +'.cn-ai-settings .cn-sug{display:none}.cn-ai-settings .cn-log{min-height:50px}'
+  +'.cn-ai summary{cursor:pointer;color:var(--c2)}.cn-ai p{margin:8px 0}.cn-ai a{color:var(--c2)}'
+  +'.cn-ai button{font:inherit;border:1px solid var(--l);border-radius:6px;padding:6px;margin:2px;background:#000;color:var(--t);cursor:pointer}.cn-ai button[hidden]{display:none}'
   +'.cn-f{display:flex;gap:7px;padding:9px 10px 10px;border-top:1px solid var(--l)}'
   +'.cn-f input{flex:1;min-width:0;font:16px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding:10px 12px;border-radius:11px;border:1px solid var(--l);background:#000;color:#fff}'
   +'.cn-f input:focus{outline:none;border-color:var(--c);box-shadow:0 0 0 2px var(--o)}'
@@ -108,12 +112,62 @@
   var ICO_OR='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M35 38a3 3 0 0 1-6 0a6 6 0 0 1 12 0a9 9 0 0 1-18 0a12 12 0 0 1 24 0a15 15 0 0 1-30 0C17 27 31 28 27 16"/><circle cx="26" cy="11" r="5.5" style="fill:currentColor"/><circle cx="27.8" cy="9.8" r="1.6" style="fill:#000;stroke:none"/></svg>';
   var ob=el('<button type="button" class="cn-b cn-or'+cls+'" aria-expanded="false" aria-controls="cn-oracle" aria-label="Le Ver, l’Oracle : questions sur le lore" title="Le Ver, l’Oracle : questions sur le lore">'+ICO_OR+'</button>');
   var pan=el('<section class="cn-p'+cls+'" id="cn-oracle" role="dialog" aria-labelledby="cn-ot" hidden>'
-    +'<div class="cn-h"><div><b id="cn-ot">Le Ver</b><small>Serviteur de Kobal. Répliques et registres du site, sans IA générative.</small></div><button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></div>'
+    +'<div class="cn-h"><div><b id="cn-ot">Le Ver</b><small>Serviteur de Kobal. Dialogue local, sans IA générative.</small></div><button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></div>'
+    +'<details class="cn-ai" hidden><summary>Conversation IA et confidentialité</summary>'
+    +'<p>Sur ton accord, Cloudflare reçoit tes messages, jusqu’à six échanges IA précédents et des extraits du site. Aucun modèle à télécharger. L’IA peut se tromper ; quota gratuit partagé. N’envoie rien de confidentiel. <a href="/mentions-legales/#dialogue-ver">Détails</a>.</p>'
+    +'<button type="button" class="cn-ai-on">J’accepte, activer l’IA</button><button type="button" class="cn-ai-off" hidden>Revenir au dialogue local</button><button type="button" class="cn-ai-clear">Effacer cet échange</button></details>'
     +'<div class="cn-log" aria-live="polite"></div><div class="cn-sug"></div>'
-    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><input id="cn-q" type="text" maxlength="600" enterkeyhint="send" placeholder="Parle au Ver…"><button type="submit" aria-label="Demander">➤</button></form>'
+    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><input id="cn-q" type="text" maxlength="2000" enterkeyhint="send" placeholder="Parle au Ver…"><button type="submit" aria-label="Demander">➤</button></form>'
     +'</section>');
   var log=pan.querySelector('.cn-log'),sug=pan.querySelector('.cn-sug'),inp=pan.querySelector('input'),ouvert=false,hist=[];
   try{hist=JSON.parse(sessionStorage.getItem(SS+'-'+couche)||'[]');}catch(_){hist=[];}
+  var iaURL='',iaActive=false,iaConfig=null,iaRequete=null,iaOptions=pan.querySelector('.cn-ai');
+  iaOptions.addEventListener('toggle',function(){pan.classList.toggle('cn-ai-settings',iaOptions.open);});
+  function majIA(){
+    pan.querySelector('.cn-h small').textContent=iaActive?
+      'Serviteur de Kobal. Conversation IA via Cloudflare ; réponses à vérifier.':
+      'Serviteur de Kobal. Dialogue local, sans IA générative.';
+    iaOptions.querySelector('.cn-ai-on').hidden=iaActive;
+    iaOptions.querySelector('.cn-ai-off').hidden=!iaActive;
+  }
+  function configureIA(){
+    if(iaConfig)return;
+    var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},10000);
+    iaConfig=fetch('/ver-ia.json?v=1',{cache:'no-store',credentials:'same-origin',signal:controleur.signal}).then(function(r){
+      if(!r.ok)throw new Error('Configuration IA HTTP '+r.status);
+      return r.json();
+    }).then(function(c){
+      if(!c||typeof c.url!=='string')throw new Error('Configuration IA invalide');
+      if(!c.url)return;
+      var u=new URL(c.url);
+      if(u.protocol!=='https:'||u.username||u.password||u.pathname!=='/chat'||u.search||u.hash)throw new Error('Adresse IA invalide');
+      iaURL=u.href;iaOptions.hidden=false;
+      try{iaActive=sessionStorage.getItem(SS+'-ia')===iaURL;}catch(e){console.warn('Le Ver : consentement non restauré.');}
+      majIA();
+    }).catch(function(e){
+      iaConfig=null;console.error('Le Ver : configuration IA inaccessible.',e);
+      pan.querySelector('.cn-h small').textContent='IA inaccessible. Le dialogue local reste disponible.';
+    }).finally(function(){clearTimeout(timer);});
+  }
+  iaOptions.querySelector('.cn-ai-on').addEventListener('click',function(){
+    if(occupeQuestion){toast('Attends la fin de cette réponse.');return;}
+    iaActive=true;
+    try{sessionStorage.setItem(SS+'-ia',iaURL);}catch(e){console.warn('Le Ver : consentement non mémorisé.');toast('Accord valable sur cette page seulement.');}
+    majIA();iaOptions.open=false;toast('Conversation IA activée. Les échanges restent limités à cette session.');
+  });
+  iaOptions.querySelector('.cn-ai-off').addEventListener('click',function(){
+    iaActive=false;
+    if(iaRequete)iaRequete.controleur.abort();
+    try{sessionStorage.removeItem(SS+'-ia');}catch(e){console.warn('Le Ver : retrait du consentement non mémorisé.');toast('Retrait valable sur cette page seulement.');}
+    majIA();iaOptions.open=false;toast('Dialogue local : aucun nouvel échange envoyé à l’IA.');
+  });
+  iaOptions.querySelector('.cn-ai-clear').addEventListener('click',function(){
+    if(occupeQuestion){toast('Attends la fin de la réponse, ou désactive l’IA pour l’arrêter.');return;}
+    var efface=true;
+    try{sessionStorage.removeItem(SS+'-'+couche);}catch(e){efface=false;console.warn('Le Ver : stockage de l’historique inaccessible.');}
+    hist=[];garde();log.textContent='';ajoute({r:'a',h:esc(ACC[couche])},false);
+    toast(efface?'Historique de cette couche effacé dans cet onglet.':'Historique visible effacé, mais le stockage de cet onglet est inaccessible.');
+  });
 
   function garde(){hist=hist.slice(-48);try{sessionStorage.setItem(SS+'-'+couche,JSON.stringify(hist));}catch(_){}}
   function bas(){log.scrollTop=log.scrollHeight;}
@@ -145,6 +199,7 @@
   }
   function ouvre(){
     if(ouvert)return;ouvert=true;pan.hidden=false;ob.setAttribute('aria-expanded','true');
+    configureIA();
     D.dispatchEvent(new CustomEvent('ver:dialogue',{detail:true}));
     if(!log.childNodes.length){
       if(!hist.length)hist.push({r:'a',h:esc(ACC[couche])});
@@ -193,17 +248,18 @@
       if(slug==='puanteur-putride')alias.push('puanteur');
       noms.push({p:i,alias:alias});
     });
-    return {P:P,E:ent,df:df,voc:Object.keys(voc),noms:noms,avg:tot/Math.max(1,ent.length),N:ent.length};
+    return {P:P,E:ent,revision:d.revision,df:df,voc:Object.keys(voc),noms:noms,avg:tot/Math.max(1,ent.length),N:ent.length};
   }
   function charge(){
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
-    attente=fetch('/oracle-'+couche+'.json?v=4',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+    var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},12000);
+    attente=fetch('/oracle-'+couche+'.json?v=5',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
       if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
         !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
         !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
       KB=prepare(d);return KB;
-    }).catch(function(e){attente=null;console.error('Le Ver : chargement des registres impossible.',e);throw e;});
+    }).catch(function(e){attente=null;console.error('Le Ver : chargement des registres impossible.',e);throw e;}).finally(function(){clearTimeout(timer);});
     return attente;
   }
   function idf(w){var n=KB.df[w]||0;return Math.log(1+(KB.N-n+.5)/(n+.5));}
@@ -281,6 +337,9 @@
   function lien(e){var P=KB.P[e.p];return P[1]+(e.a||'');}
   function nom(e){var P=KB.P[e.p];return P[0]+(e.h?' · '+e.h:'');}
   var VOIX=[
+    {id:'amitie',test:/\b(tes amis|ton ami|ton amie|amitie|copain)\b|\bami\w*\b.*\bgargouille\b|\bgargouille\b.*\bami\w*\b/,
+      t:'La Gargouille de Rouen est mon amie. Ne confonds pas : Kobal est mon maître, elle est mon amie. Je peux avoir mes fidélités sans distribuer à tout le monde un fauteuil de directeur.',
+      sources:['/mode-putride/bestiaire/ver/','/mode-putride/bestiaire/gargouille/']},
     {id:'kobal',test:/\b(kobal|ton maitre|qui te commande|qui sers tu|qui es tu|presente toi|possess\w*|possed\w*)\b/,
       t:'Je sers Kobal, pas les beaux messieurs à crocs. Mon maître possède la Créature et Madame Edwarda. Il dirige les théâtres de l’Enfer ; moi, je travaille sous la scène. Il sait la farce perdue, mais tient à choisir qui glissera dans la merde. Ris des dignitaires tant que tu veux : de lui, beaucoup moins.',
       sources:['/mode-putride/bestiaire/ver/']},
@@ -341,7 +400,7 @@
     {id:'journee',test:/\b(journee|boulot|travail|bureau|collegue|lundi|week end|vacances)\b/,
       lignes:['Une journée entière à tenir son rôle ? Les coulisses peuvent attendre cinq minutes. Qu’est-ce qui t’a le plus occupé : le travail lui-même ou la comédie autour ?','Je connais le rang du subordonné : on te confie les courants d’air, puis on te reproche la poussière. Tu voudrais changer la tâche ou la façon dont on te parle ?','Avant de renverser le décor, séparons ce qui dépend de toi de ce que les autres exigent. Une seule chose concrète à alléger demain, ce serait laquelle ?']},
     {id:'ennui',test:/\b(ennui|ennuie|rien a faire|parler de tout|tout et de rien|bavard\w*|discut\w*|quoi parler|parlons d autre chose|raconte.*quelque chose)\b/,
-      lignes:['Ne rien avoir à déclarer, quel luxe. On peut parler de musique, de ce qui t’agace, ou inventer une petite scène sans la faire passer pour le lore. Qu’est-ce qui te tente ?','Imaginons une salle où chacun doit déposer son titre à la porte. Qui continuerait à parler aussi fort ? Voilà ma distraction de machiniste.','Je peux aussi te guider : une œuvre pour la ferveur, une autre pour le grotesque, un détour par les cachots. Quel chemin te plaît ?']},
+      lignes:['Ne rien avoir à déclarer, quel luxe. On peut parler de musique, de ce qui t’agace, ou d’une idée qui te travaille. Qu’est-ce qui te tente ?','Ce qui m’amuse, c’est la distance entre un titre pompeux et ce que son porteur fait vraiment. Tu as croisé beaucoup de beaux costumes aujourd’hui ?','Je peux aussi te guider : une œuvre pour la ferveur, une autre pour le grotesque, un détour par les cachots. Quel chemin te plaît ?']},
     {id:'meteo',test:/\b(meteo|pleut|pluie|soleil|beau temps|fait (chaud|froid))\b/,
       lignes:['Je n’ai pas de bulletin météo en direct. Mais la pluie va bien à ce théâtre : elle retire aux statues leur air de ne jamais transpirer. Tu l’aimes derrière une vitre ou en marchant ?','La brume cache les couronnes aussi bien que les trous du trottoir. Je préfère quand elle rend tout le monde un peu moins certain de sa grandeur.']},
     {id:'repas',test:/\b(manger|repas|cuisine|faim|cafe|the|pates|raviolis)\b/,
@@ -357,7 +416,7 @@
     {id:'pique',test:/\b(tu es (nul|idiot|bete|stupide)|t es (nul|con)|mauvais ver)\b/,
       lignes:['Une critique sans dossier, quel sens de l’économie. Dis-moi plutôt ce qui ne fonctionne pas dans ma réponse : je peux au moins reprendre la trace.','Je suis un petit serviteur, pas un oracle infaillible. Une question précise me sera plus utile qu’un nouveau titre honorifique.']},
     {id:'scene',test:/\b(invente|raconte une histoire|petite scene)\b/,
-      lignes:['Petite fiction, pas un nouvel événement du lore : un dignitaire exige le silence avant de parler. La salle obéit si bien qu’il entend enfin le grincement de son trône. Il accuse le parquet.','Dans cette scène inventée, Kobal me charge de préparer un banquet d’honneurs. Je ne pose que des miroirs sur les assiettes. Personne ne remarque l’absence du repas.']},
+      lignes:['Je tiens la conversation, pas la plume à ta place. On peut parler d’une œuvre, d’une idée ou d’une scène déjà publiée ; je n’ajoute pas d’épisode aux registres.']},
     {id:'merci',test:/^(merci( beaucoup| le ver)?|c est gentil|super|tres bien)$/,
       lignes:['Garde la révérence pour Kobal. Moi, une conversation sans encens me suffit.','Service rendu. Ne le dis pas trop fort : on pourrait m’en demander davantage.']},
     {id:'depart',test:/^(au revoir|a bientot|a plus|bonne nuit|bonne soiree|bye)$/,
@@ -365,9 +424,13 @@
     {id:'limites',test:/\b(une ia|intelligence artificielle|comment (fonctionnes|marches)|tes limites|es tu reel|vraiment vivant)\b/,
       lignes:['Je suis un personnage animé par des répliques écrites et une recherche locale dans le site. Pas un modèle génératif : je ne peux ni tout comprendre, ni consulter le monde en direct. Mes sources restent visibles.','Ma mémoire reste dans cette session du navigateur. Les messages ne partent pas vers un service d’IA. Je sais retrouver une trace ; hors des registres, je préfère reconnaître mes limites.']}
   ];
+  function secours(q){
+    if(/\b(suicide|me tuer|me faire du mal|veux en finir)\b/.test(norm(q)))return {r:'a',h:esc('Je mets le personnage de côté : si tu risques de te faire du mal, contacte immédiatement une personne de confiance ou les secours. En France, le 3114 est gratuit, 24 h/24 ; en cas de danger immédiat, appelle le 112.')};
+    return null;
+  }
   function bavarde(q){
-    var n=norm(q),p=precedent(),v=CAUSERIE.find(function(v){return v.test.test(n);});
-    if(/\b(suicide|me tuer|me faire du mal|veux en finir)\b/.test(n))return {r:'a',h:esc('Je mets le personnage de côté : si tu risques de te faire du mal, contacte immédiatement une personne de confiance ou les secours. En France, le 3114 est gratuit, 24 h/24 ; en cas de danger immédiat, appelle le 112.')};
+    var n=norm(q),p=precedent(),v=CAUSERIE.find(function(v){return v.test.test(n);}),aide=secours(q);
+    if(aide)return aide;
     if((KB&&entites(q).length)||/\b(creature|edwarda|epheb\w*|kobal|vampirix|confiteor|chyren|odium|kavod|noo noo|puanteur|temoign\w*|accus\w*|album|disque|sources?|site)\b/.test(n))return null;
     var court=/^(et toi|et vous|oui|non|peut etre|pourquoi|comment ca|continue|et ensuite|encore|developpe|dis m en plus)$/.test(n);
     if(!v&&court&&p&&p.dialogue)v=CAUSERIE.find(function(v){return v.id===p.dialogue;});
@@ -492,18 +555,90 @@
     var r=reste[i%reste.length];
     return {r:'a',h:'<span class="src">Énigme du Ver</span><q>'+esc(r[1])+'</q><span class="va">Reliques trouvées : '+n+' / '+RELIQUES.length+'. '+(reste.length>1?'Redemande-moi : j’en garde d’autres.':'C’est la dernière.')+'</span>'};
   }
+  function contexteIA(q){
+    var n=norm(q),p=precedent(),requete=q;
+    if(p&&p.ai&&p.question&&!entites(q).length&&
+      (/^(et |pourquoi|comment ca|continue|encore|developpe|dis m en plus|ses |son |sa |il |elle )/.test(n)||mots(q).length<2))requete=(p.question+' '+q).slice(-3000);
+    if(/\b(ton maitre|qui es tu|qui sers tu)\b/.test(n))requete+=' Ver Kobal';
+    if(/\b(tes amis|ton amie?|amitie)\b/.test(n))requete+=' Ver Gargouille Rouen';
+    var noms=entites(requete),r=cherche(requete),compte={},ids=[];
+    r.forEach(function(x){if(noms.indexOf(x.e.p)>=0)x.s*=1.6;});
+    r.sort(function(a,b){return b.s-a.s;});
+    r.some(function(x){
+      if(x.s>=2.2&&(compte[x.e.p]||0)<3){ids.push(x.ix);compte[x.e.p]=(compte[x.e.p]||0)+1;}
+      return ids.length===8;
+    });
+    return {ids:ids,question:requete};
+  }
+  function historiqueIA(q){
+    var messages=[{role:'user',content:q}],taille=q.length;
+    for(var i=hist.length-2;i>0&&messages.length<13;i--){
+      var a=hist[i],u=hist[i-1];
+      if(!a.ai||a.r!=='a'||typeof a.t!=='string'||!u.ai||u.r!=='q')continue;
+      var texte=a.t.replace(/\[S\d+\]/g,'');
+      if(taille+u.t.length+texte.length>10000)break;
+      messages.unshift({role:'user',content:u.t},{role:'assistant',content:texte});
+      taille+=u.t.length+texte.length;i--;
+    }
+    return messages;
+  }
+  function fauteIA(code){var e=new Error(code);e.code=code;return e;}
+  function reponseIA(q){
+    if(!iaActive)throw fauteIA('annule');
+    var contexte=contexteIA(q),req={controleur:new AbortController(),expire:false};
+    iaRequete=req;
+    var timer=setTimeout(function(){req.expire=true;req.controleur.abort();},30000);
+    return fetch(iaURL,{method:'POST',credentials:'omit',referrerPolicy:'no-referrer',
+      headers:{'Content-Type':'application/json'},signal:req.controleur.signal,
+      body:JSON.stringify({consent:true,revision:KB.revision,ids:contexte.ids,messages:historiqueIA(q)})
+    }).then(function(r){
+      if(!r.ok)return r.json().then(function(d){throw fauteIA(d.error||'service');});
+      return r.json();
+    }).then(function(d){
+      if(!iaActive||req.controleur.signal.aborted)throw fauteIA('annule');
+      if(!d||typeof d.text!=='string'||!d.text.trim()||d.text.length>4000||
+        typeof d.truncated!=='boolean'||!Array.isArray(d.sources)||d.sources.length>8||
+        !d.sources.every(function(s){return Number.isInteger(s.n)&&s.n>=1&&s.n<=8&&typeof s.title==='string'&&
+          typeof s.url==='string'&&KB.P.some(function(p){return p[1]===s.url.split('#')[0];});}))throw fauteIA('reponse');
+      var h=esc(d.text).replace(/\[S(\d+)\]/g,function(m,n){
+        var s=d.sources.find(function(s){return s.n===Number(n);});
+        if(!s)throw fauteIA('sources');
+        return '<a href="'+esc(s.url)+'" title="'+esc(s.title)+'">'+m+'</a>';
+      }).replace(/\n/g,'<br>');
+      if(d.sources.length)h+='<span class="va">Traces citées : '+d.sources.map(function(s){return '<a href="'+esc(s.url)+'">'+esc(s.title)+'</a>';}).join(' · ')+'</span>';
+      if(d.truncated)h+='<span class="va">Réponse arrêtée à la limite de longueur. Tu peux demander de poursuivre.</span>';
+      return {r:'a',h:h,t:d.text,ai:true,question:contexte.question,ids:contexte.ids,sources:d.sources.map(function(s){return s.url;})};
+    }).catch(function(e){
+      if(req.controleur.signal.aborted)throw fauteIA(req.expire?'delai':'annule');
+      throw e;
+    }).finally(function(){clearTimeout(timer);if(iaRequete===req)iaRequete=null;});
+  }
+  var ERREURS_IA={
+    quota:'Le quota gratuit de l’IA est épuisé ou momentanément limité. Réessaie plus tard, ou choisis explicitement le dialogue local.',
+    frequence:'Trop de demandes rapprochées. Attends une minute avant de réessayer.',
+    registres:'Les registres et l’IA ne sont plus synchronisés. Recharge la page ; si cela persiste, le service doit être mis à jour.',
+    delai:'L’IA a mis trop de temps à répondre. Aucune réponse reçue ; tu peux réessayer.',
+    annule:'Envoi arrêté. Une demande déjà transmise peut encore être traitée par Cloudflare.',
+    sources:'L’IA a donné une référence invalide. Sa réponse n’est pas affichée ; réessaie.',
+    reponse:'La réponse reçue de l’IA est vide ou invalide. Réessaie.',
+    taille:'Cet échange dépasse la limite de taille du service. Efface l’historique pour recommencer.'
+  };
   function demande(q){
     if(occupeQuestion){toast('Laisse-moi finir cette réponse avant de reprendre.');return;}
+    var aide=secours(q),reliques=!aide&&/reliq/.test(norm(q)),social=aide||(iaActive?null:bavarde(q)),distant=iaActive&&!reliques&&!social;
     occupeQuestion=true;pan.querySelector('button[type="submit"]').disabled=true;
-    ajoute({r:'q',t:q},false);
-    var att=D.createElement('div');att.className='cn-m a cn-dots';att.setAttribute('aria-label','Le Ver consulte les registres');att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
+    ajoute({r:'q',t:q,ai:distant},false);
+    var att=D.createElement('div');att.className='cn-m a cn-dots';att.setAttribute('aria-label',distant?'Le Ver prépare sa réponse avec l’IA':'Le Ver consulte les registres');att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
     var t0=performance.now();
-    var reliques=/reliq/.test(norm(q)),social=bavarde(q);
     (reliques||social?Promise.resolve(null):charge()).then(function(kb){
-      var m=reliques?enigme():social||repond(q);
+      return distant?reponseIA(q):reliques?enigme():social||repond(q);
+    }).then(function(m){
       setTimeout(function(){att.remove();ajoute(m,true);occupeQuestion=false;pan.querySelector('button[type="submit"]').disabled=false;},Math.max(0,(calme?0:420)-(performance.now()-t0)));
-    }).catch(function(){
-      att.remove();ajoute({r:'a',h:'Les registres sont hors d’atteinte. Je ne peux pas les consulter : réessaie dans un moment.'},false);
+    }).catch(function(e){
+      if(distant)console.error('Le Ver : conversation IA interrompue.',e.code||'service');
+      var message=distant?(ERREURS_IA[e.code]||'L’IA est inaccessible. Aucune réponse générée. Réessaie, ou reviens au dialogue local dans les options.'):
+        'Les registres sont hors d’atteinte. Je ne peux pas les consulter : réessaie dans un moment.';
+      att.remove();ajoute({r:'a',h:esc(message)},false);
       occupeQuestion=false;pan.querySelector('button[type="submit"]').disabled=false;
     });
   }

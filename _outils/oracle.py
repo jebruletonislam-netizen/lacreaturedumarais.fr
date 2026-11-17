@@ -6,6 +6,7 @@ Relancer après avoir modifié le contenu de ces pages :  python _outils/oracle.
 """
 from html.parser import HTMLParser
 from pathlib import Path
+from hashlib import sha256
 import json
 import re
 
@@ -178,7 +179,10 @@ def construit():
     for texte, date, _ in lignes:
         ent.append([len(pages) - 1, 'Parole publiée' + (' · ' + json.loads(date) if date else ''),
                     '', json.loads(texte), 2])
-    contenu = json.dumps({'v': 2, 'p': pages, 'e': ent}, ensure_ascii=False, separators=(',', ':'))
+    donnees = {'v': 2, 'p': pages, 'e': ent}
+    empreinte = json.dumps(donnees, ensure_ascii=False, separators=(',', ':'))
+    donnees['revision'] = sha256(empreinte.encode('utf-8')).hexdigest()[:16]
+    contenu = json.dumps(donnees, ensure_ascii=False, separators=(',', ':'))
     for nom in SORTIES:
         sortie = RACINE / nom
         sortie.write_text(contenu, encoding='utf-8')

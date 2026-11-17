@@ -1,9 +1,11 @@
 """Tests du dialogue, du cycle réel et du portrait sur un serveur de prévisualisation.
 
 python _outils/test_ver.py http://127.0.0.1:8851
+Ajouter --ia pour ne vérifier que le transport IA simulé.
 Nécessite Playwright Python et Microsoft Edge.
 """
 import sys
+import json
 
 from playwright.sync_api import sync_playwright
 
@@ -22,9 +24,110 @@ def question(page, text):
     return page.locator(".cn-log .a").last.inner_text()
 
 
+def dialogue_ia(browser, width):
+    """Vérifie le transport et le consentement avec un service simulé, pas le modèle."""
+    context = browser.new_context(viewport={"width": width, "height": 844})
+    context.add_init_script("localStorage.setItem('lcdm-calme','1')")
+    endpoint = "https://ver-tests.workers.dev/chat"
+    context.route("**/ver-ia.json*", lambda route: route.fulfill(
+        content_type="application/json", body=json.dumps({"url": endpoint})))
+    envois, erreurs_js, attentes = [], [], []
+    etat = {"mode": "ok"}
+
+    def service(route):
+        headers = {"Access-Control-Allow-Origin": BASE,
+                   "Access-Control-Allow-Methods": "POST",
+                   "Access-Control-Allow-Headers": "Content-Type"}
+        if route.request.method == "OPTIONS":
+            route.fulfill(status=204, headers=headers)
+            return
+        envois.append(route.request.post_data_json)
+        assert "referer" not in route.request.headers
+        if etat["mode"] == "attente":
+            attentes.append(route)
+            return
+        if etat["mode"] == "quota":
+            route.fulfill(status=429, headers=headers, content_type="application/json",
+                          body='{"error":"quota"}')
+            return
+        contenu = "La Gargouille est mon amie. [S1]\n<img src=x onerror=alert(1)>"
+        route.fulfill(headers=headers, content_type="application/json", body=json.dumps({
+            "text": contenu, "truncated": False,
+            "sources": [{"n": 1, "title": "La Gargouille de Rouen",
+                         "url": "/mode-putride/bestiaire/gargouille/"}],
+        }))
+
+    context.route(endpoint, service)
+    page = context.new_page()
+    page.on("pageerror", lambda e: erreurs_js.append(str(e)))
+    page.goto(BASE + "/mode-putride/bestiaire/ver/")
+    page.locator(".cn-or").click()
+    page.wait_for_selector(".cn-ai")
+    assert "Gargouille" in question(page, "Tu es ami avec la Gargouille ?")
+    assert not envois
+    page.locator(".cn-ai summary").click()
+    page.get_by_role("button", name="J’accepte, activer l’IA").click()
+    question(page, "Qui sont tes amis ?")
+    assert len(envois) == 1
+    assert envois[0]["consent"] is True
+    assert len(envois[0]["revision"]) == 16
+    assert envois[0]["ids"] and len(envois[0]["ids"]) <= 8
+    corpus = page.request.get(BASE + "/oracle-putride.json").json()
+    textes = [corpus["e"][i][3] for i in envois[0]["ids"]]
+    assert any("ami" in t and "Gargouille" in t for t in textes), textes
+    assert envois[0]["messages"] == [{"role": "user", "content": "Qui sont tes amis ?"}]
+    assert page.locator(".cn-log img").count() == 0
+    assert page.locator(".cn-log .a").last.locator("a[href='/mode-putride/bestiaire/gargouille/']").count() == 2
+    question(page, "Je préfère le piano. Et toi ?")
+    assert len(envois[-1]["messages"]) == 3
+    assert "[S1]" not in envois[-1]["messages"][1]["content"]
+    etat["mode"] = "quota"
+    assert "quota gratuit" in question(page, "Question qui échoue")
+    assert "via Cloudflare" in page.locator(".cn-h small").inner_text()
+    etat["mode"] = "ok"
+    question(page, "Reprenons")
+    assert all(m["content"] != "Question qui échoue" for m in envois[-1]["messages"])
+    for i in range(6):
+        question(page, f"Suite numéro {i}")
+    assert len(envois[-1]["messages"]) == 13
+    assert sum(len(m["content"]) for m in envois[-1]["messages"]) <= 10000
+    page.reload()
+    page.locator(".cn-or").click()
+    page.wait_for_function("document.querySelector('.cn-h small').textContent.includes('via Cloudflare')")
+    page.locator(".cn-ai summary").click()
+    page.set_viewport_size({"width": width, "height": 560})
+    assert page.locator(".cn-f").bounding_box()["y"] + page.locator(".cn-f").bounding_box()["height"] <= 560
+    page.get_by_role("button", name="Effacer cet échange").click()
+    assert page.locator(".cn-log .cn-m").count() == 1
+    page.set_viewport_size({"width": width, "height": 844})
+    page.locator(".cn-ai summary").click()
+    etat["mode"] = "attente"
+    count = len(envois)
+    page.locator("#cn-q").fill("Une réponse en attente")
+    with page.expect_request(lambda r: r.url == endpoint and r.method == "POST"):
+        page.locator(".cn-f button").click()
+    page.locator(".cn-ai summary").click()
+    page.get_by_role("button", name="Revenir au dialogue local").click()
+    page.wait_for_function("!document.querySelector('.cn-f button').disabled")
+    assert "Envoi arrêté" in page.locator(".cn-log .a").last.inner_text()
+    assert "sans IA générative" in page.locator(".cn-h small").inner_text()
+    assert "Kobal" in question(page, "Qui est ton maître ?")
+    assert len(envois) == count + 1
+    for route in attentes:
+        route.abort()
+    assert not erreurs_js, erreurs_js
+    context.close()
+    print(f"IA simulée : consentement, historique, citations, quota et retrait {width}px OK", flush=True)
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch(channel="msedge", args=["--mute-audio"])
     errors = []
+    if "--ia" in sys.argv:
+        for width in (1366, 390):
+            dialogue_ia(browser, width)
+        browser.close()
+        sys.exit(0)
     for width in (1366, 390):
         context = browser.new_context(
             viewport={"width": width, "height": 844},
@@ -108,6 +211,9 @@ with sync_playwright() as p:
             page.keyboard.press("Escape")
         context.close()
         print(f"Dialogue, contexte, fautes, historique et portrait : {width}px OK", flush=True)
+
+    for width in (1366, 390):
+        dialogue_ia(browser, width)
 
     context = browser.new_context(viewport={"width": 1366, "height": 844})
     context.add_init_script("""document.addEventListener('coins:pret', () => {
