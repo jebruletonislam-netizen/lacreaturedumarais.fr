@@ -71,7 +71,7 @@ def dialogue_ia(browser, width):
     assert len(envois) == 1
     assert envois[0]["consent"] is True
     assert len(envois[0]["revision"]) == 16
-    assert envois[0]["ids"] and len(envois[0]["ids"]) <= 8
+    assert envois[0]["ids"] and len(envois[0]["ids"]) <= 10
     corpus = page.request.get(BASE + "/oracle-putride.json").json()
     textes = [corpus["e"][i][3] for i in envois[0]["ids"]]
     assert any("ami" in t and "Gargouille" in t for t in textes), textes
@@ -93,6 +93,14 @@ def dialogue_ia(browser, width):
     question(page, "Christophe Chevanne a fait quoi en dehors des Retard-Tinables ?")
     textes = [corpus["e"][i][3] for i in envois[-1]["ids"]]
     assert any("File au lavabo" in t for t in textes), textes
+    if width < 560:
+        assert page.locator(".cn-sug").bounding_box()["height"] < 44
+    question(page, "Quoi de neuf en ce moment ?")
+    ids = envois[-1]["ids"]
+    assert [corpus["p"][corpus["e"][i][0]][1] for i in ids[:3]] == ["/nouvelles/"] * 3, ids
+    question(page, "Que penserait Kobal du père Kitz-Latouch ?")
+    pages = {corpus["p"][corpus["e"][i][0]][1] for i in envois[-1]["ids"]}
+    assert {"/mode-putride/bestiaire/ver/", "/mode-putride/bestiaire/pere-kitz-latouch/"} <= pages, pages
     for query, slug, expressions in [
         ("Quelles expressions de Quermite parlent du jean bleu et du prisonnier ?",
          "herve-martin", ("foto ti jeans bleu", "ti jean au casso", "la robe roje")),

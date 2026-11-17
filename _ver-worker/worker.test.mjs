@@ -39,8 +39,8 @@ test('corpus deploye, contexte borne et citations verifiees', async () => {
   const d = await r.json();
   assert.equal(d.sources[0].url, '/mode-putride/bestiaire/ver/');
   assert.equal(d.truncated, false);
-  const prepared = prepareDialogue({...donnees(), ids: Array.from({length: 8}, (_, i) => i)});
-  assert.ok(prepared.sources.reduce((n, s) => n + s.text.length, 0) <= 12000);
+  const prepared = prepareDialogue({...donnees(), ids: Array.from({length: 10}, (_, i) => i)});
+  assert.ok(prepared.sources.reduce((n, s) => n + s.text.length, 0) <= 15000);
 });
 
 test('consentement, revision, roles et taille controles avant inference', async () => {

@@ -51,6 +51,10 @@
   +'.cn-sug{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 9px}'
   +'.cn-sug button{font:inherit;font-size:13px;line-height:1.2;padding:5px 10px;border-radius:999px;border:1px solid var(--l);background:rgba(0,0,0,.35);color:var(--t);cursor:pointer}'
   +'.cn-sug button:hover,.cn-sug button:focus-visible{border-color:var(--c);color:var(--c);outline:none}'
+  /* téléphone ou fenêtre basse : une seule rangée de suggestions, qui défile au doigt */
+  +'@media (max-width:560px),(max-height:640px){.cn-sug{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding-bottom:7px;'
+  +'-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}.cn-sug::-webkit-scrollbar{display:none}.cn-sug::after{content:"";flex:none;width:28px}'
+  +'.cn-sug button{flex:none;white-space:nowrap;font-size:12.5px;padding:4px 9px}}'
   +'.cn-ai{flex:none;padding:6px 12px;border-bottom:1px solid var(--l);font:12px/1.4 system-ui,sans-serif;max-height:165px;max-height:min(165px,25dvh);overflow:auto}.cn-ai[hidden]{display:none}'
   +'.cn-ai-settings .cn-sug{display:none}.cn-ai-settings .cn-log{min-height:50px}'
   +'.cn-ai summary{cursor:pointer;color:var(--c2)}.cn-ai p{margin:8px 0}.cn-ai a{color:var(--c2)}'
@@ -266,7 +270,7 @@
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
     var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},12000);
-    attente=fetch('/oracle-'+couche+'.json?v=13',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+    attente=fetch('/oracle-'+couche+'.json?v=14',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
       if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
         !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
         !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
@@ -578,7 +582,13 @@
       (/^(et |pourquoi|comment ca|continue|encore|developpe|dis m en plus|ses |son |sa |il |elle )/.test(n)||mots(q).length<2))requete=(p.question+' '+q).slice(-3000);
     if(/\b(ton maitre|qui es tu|qui sers tu)\b/.test(n))requete+=' Ver Kobal';
     if(/\b(tes amis|ton amie?|amitie)\b/.test(n))requete+=' Ver Gargouille Rouen';
+    if(/\bkobal\b/.test(n)&&!/\bver\b/.test(n))requete+=' Ver farces';
     var noms=entites(requete),r=cherche(requete),compte={},ids=[];
+    /* l'actualité vient des derniers articles de /nouvelles/, rangés du plus récent au plus ancien */
+    if(/\b(quoi de neuf|actu|actus|actualites?|nouvelles|news|recemment|en ce moment|derniere?s? (sortie|sorties|nouvelle|nouvelles|clip|single|album|news))\b/.test(n)){
+      var pn=KB.P.findIndex(function(p){return p[1]==='/nouvelles/';});
+      KB.E.forEach(function(e,ix){if(e.p===pn&&e.h&&ids.length<3)ids.push(ix);});
+    }
     /* un personnage nommé apporte sa fiche, même si la question n'en reprend pas les mots */
     noms.slice(0,2).forEach(function(p){
       var f=KB.E.findIndex(function(e){return e.p===p&&e.k===1;});
@@ -592,12 +602,12 @@
     r.sort(function(a,b){return b.s-a.s;});
     r.some(function(x){
       if(x.s>=2.2&&(compte[x.e.p]||0)<(noms.indexOf(x.e.p)>=0?4:3)&&ids.indexOf(x.ix)<0){ids.push(x.ix);compte[x.e.p]=(compte[x.e.p]||0)+1;}
-      return ids.length===8;
+      return ids.length===10;
     });
     /* une accusation part toujours avec la contestation publiée de la direction */
     if(ids.some(function(i){return /ames-exsangues/.test(KB.E[i].a);})){
       var contestation=KB.E.findIndex(function(e){return /ames-exsangues/.test(e.a)&&/réponse de la direction/i.test(e.h)&&/conteste/.test(e.t);});
-      if(contestation>=0&&ids.indexOf(contestation)<0){if(ids.length===8)ids.pop();ids.push(contestation);}
+      if(contestation>=0&&ids.indexOf(contestation)<0){if(ids.length===10)ids.pop();ids.push(contestation);}
     }
     return {ids:ids,question:requete};
   }
