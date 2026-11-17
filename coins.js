@@ -584,6 +584,9 @@
       var f=KB.E.findIndex(function(e){return e.p===p&&e.k===1;});
       if(f<0)f=KB.E.findIndex(function(e){return e.p===p;});
       if(f>=0){ids.push(f);compte[p]=1;}
+      /* un disque nommé apporte aussi sa présentation (sort, disponibilité), que la question ne reprend jamais mot pour mot */
+      var l=KB.E.findIndex(function(e){return e.p===p&&e.k===0&&!e.h&&e.t.length>=150;});
+      if(l>=0&&ids.indexOf(l)<0){ids.push(l);compte[p]=(compte[p]||0)+1;}
     });
     r.forEach(function(x){if(noms.indexOf(x.e.p)>=0)x.s*=1.6;});
     r.sort(function(a,b){return b.s-a.s;});
