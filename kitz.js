@@ -1,4 +1,4 @@
-/* Le père Kitz-Latouch, vampire de Rouen centre et supérieur d'Éphébus, surgit vampiriquement dans son tricycle, avec ses enfants de chœur.
+/* Le père Kitz-Latouch, vampire titulaire de Rouen centre (Archevêché) et supérieur d'Éphébus, surgit vampiriquement dans son tricycle, avec ses enfants de chœur.
    Quand on ouvre « Misérables » sur la page d'In Odium Fidei (le clip, c'est le tournage qu'il a perturbé), son ombre traverse le bas de
    l'écran, pédale, sonne, et disparaît : un clin d'œil furtif. Chargé à la demande par putride.js ; ne fait rien si l'on a demandé moins d'animations. */
 (function(){
