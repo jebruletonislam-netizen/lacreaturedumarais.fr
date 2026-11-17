@@ -266,7 +266,7 @@
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
     var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},12000);
-    attente=fetch('/oracle-'+couche+'.json?v=9',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+    attente=fetch('/oracle-'+couche+'.json?v=10',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
       if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
         !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
         !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
