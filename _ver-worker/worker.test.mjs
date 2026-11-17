@@ -109,6 +109,41 @@ test('pas de succes pour une reponse vide, filtree ou une fausse citation', asyn
   assert.equal((await (await worker.fetch(requete(), env)).json()).truncated, true);
 });
 
+test('vocabulaire du lore hors citations, noms propres et histoire epargnes', async () => {
+  const env = environnement();
+  env.AI.run = async () => ({choices: [{message: {content:
+    'Interdiction d’approcher de la paroisse [S1]. La paroisse du Vampirium, cette paroisse, ' +
+    'le chaos paroissial, plusieurs paroissiens interrogés, un paroissien. ' +
+    'La presse écrit « sa paroisse rouennaise ». La paroisse Saint-Maclou, La Beste Paroissiale.'},
+    finish_reason: 'stop'}]});
+  const d = await (await worker.fetch(requete(), env)).json();
+  assert.equal(d.text,
+    'Interdiction d’approcher du Vampirium [S1]. Le Vampirium, ce Vampirium, ' +
+    'le chaos du Vampirium, plusieurs membres du Vampirium interrogés, un membre du Vampirium. ' +
+    'La presse écrit « sa paroisse rouennaise ». La paroisse Saint-Maclou, La Beste Paroissiale.');
+});
+
+test('marqueurs groupes separes pour rester des liens', async () => {
+  const env = environnement();
+  env.AI.run = async () => ({choices: [{message: {content: 'Kobal et la Gargouille [S1, S2].'}, finish_reason: 'stop'}]});
+  const d = await (await worker.fetch(requete({...donnees(), ids: [id, id + 1]}), env)).json();
+  assert.equal(d.text, 'Kobal et la Gargouille [S1][S2].');
+  assert.deepEqual(d.sources.map(s => s.n), [1, 2]);
+});
+
+test('nature des extraits : site, transcription de piece et repere culturel', () => {
+  const premier = k => corpus.e.findIndex(e => e[4] === k);
+  const ids = [id, premier(4), premier(3)];
+  assert.ok(ids.every(i => i >= 0));
+  const {messages, sources} = prepareDialogue({...donnees(), ids});
+  assert.deepEqual(sources.map(s => s.nature), ['site', 'transcription', 'repere']);
+  assert.match(sources[1].title, /Transcription/);
+  assert.match(messages[0].content, /"nature":"repere"/);
+  assert.match(messages[0].content, /condamne qu'elles decrivent est la Créature/);
+  assert.doesNotMatch(prepareDialogue(donnees()).messages[0].content, /RAPPEL POUR CES PIECES/);
+  assert.doesNotMatch(messages[0].content, /OCR/);
+});
+
 test('historique normalise sans parametres du client injectes dans les options', () => {
   const input = {...donnees(), model: 'autre', max_tokens: 999999, messages: [
     {role: 'user', content: 'Je prefere le piano', tool_calls: ['non']},

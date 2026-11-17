@@ -239,6 +239,7 @@
     });
     var noms=[];
     P.forEach(function(p,i){
+      if(/^Repère /.test(p[0]))return;
       if(!/^\/(?:mode-putride\/bestiaire|mode-putride\/discographie|cachot)\/[^/]+\/$/.test(p[1]))return;
       if(/\/(?:archives|respects)\/$/.test(p[1]))return;
       var slug=p[1].split('/').filter(Boolean).pop(),alias=[norm(slug),norm(p[0])];
@@ -254,7 +255,7 @@
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
     var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},12000);
-    attente=fetch('/oracle-'+couche+'.json?v=5',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+    attente=fetch('/oracle-'+couche+'.json?v=6',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
       if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
         !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
         !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
@@ -287,7 +288,8 @@
     ['parent','mere','pere','enfant'],['enfant','fils','fille'],['mari','epoux','compagnon'],
     ['foi','croyance'],['pouvoir','autorite'],['musique','album','disque'],
     ['prison','cachot'],['farce','humour','rire'],['philosophie','demarche','partisanisme'],
-    ['peine','condamnation','sursis'],['dossier','presse','piece'],['annee','date','parution']
+    ['peine','condamnation','sursis'],['dossier','presse','piece'],['annee','date','parution'],
+    ['juge','jugee','jugement','proces','tribunal','verdict','prevenu','coupable'],['creature','tancrede']
   ];
   function termesDe(q){
     var vu={},termes=[];
@@ -324,6 +326,7 @@
       s*=1+.6*(touche-1);
       if(e.k===1&&titre)s*=1.45;
       if(e.k===2)s*=.6;
+      if(e.k===3)s*=.85;
       res.push({e:e,s:s,ix:ix,touche:touche});
     });
     res.sort(function(a,b){return b.s-a.s;});
@@ -522,7 +525,9 @@
     var amorces=['Les grands discours sont moins solides quand on regarde leurs coutures. Voici le passage.','Je garde la trace ; à toi de juger le costume.','Pas besoin d’inventer une révélation : les registres ont déjà de quoi faire grincer la scène.'];
     var intro=amorces[hist.filter(function(m){return m.r==='q';}).length%amorces.length];
     if(/temoign|accus|ames exsangues/.test(norm(e.h+' '+q)))intro='Ici, je distingue les témoignages rapportés, leur contestation et le lore. Le site rapporte ce passage ; ma farce ne vaut pas vérification indépendante.';
-    if(/dossiers-compromettants/.test(lien(e)))intro='Cette pièce est publiée en image. Je connais son titre, sa description et sa légende, pas une transcription intégrale. Ouvre la pièce pour vérifier le détail.';
+    if(e.k===4)intro='Voici le texte de la pièce, transcrit de l’image publiée. C’est ce que rapporte la presse ; ouvre la pièce pour vérifier.';
+    else if(/dossiers-compromettants/.test(lien(e)))intro='Cette pièce est publiée en image ; j’en garde aussi le texte transcrit. Ouvre-la pour vérifier le détail.';
+    if(e.k===3)intro='Ça, c’est un repère de culture générale, pas un texte du site. La trace mène à la page qui cite la référence.';
     var h=esc(intro)+'<span class="src">'+esc(nom(e))+'</span><q>'+esc(txt)+'</q><br><a class="lire" href="'+esc(lien(e))+'">Suivre la trace →</a>';
     if(noms.length>1){
       var second=r.find(function(x){return x.e.p!==e.p;});
@@ -562,12 +567,23 @@
     if(/\b(ton maitre|qui es tu|qui sers tu)\b/.test(n))requete+=' Ver Kobal';
     if(/\b(tes amis|ton amie?|amitie)\b/.test(n))requete+=' Ver Gargouille Rouen';
     var noms=entites(requete),r=cherche(requete),compte={},ids=[];
+    /* un personnage nommé apporte sa fiche, même si la question n'en reprend pas les mots */
+    noms.slice(0,2).forEach(function(p){
+      var f=KB.E.findIndex(function(e){return e.p===p&&e.k===1;});
+      if(f<0)f=KB.E.findIndex(function(e){return e.p===p;});
+      if(f>=0){ids.push(f);compte[p]=1;}
+    });
     r.forEach(function(x){if(noms.indexOf(x.e.p)>=0)x.s*=1.6;});
     r.sort(function(a,b){return b.s-a.s;});
     r.some(function(x){
-      if(x.s>=2.2&&(compte[x.e.p]||0)<3){ids.push(x.ix);compte[x.e.p]=(compte[x.e.p]||0)+1;}
+      if(x.s>=2.2&&(compte[x.e.p]||0)<3&&ids.indexOf(x.ix)<0){ids.push(x.ix);compte[x.e.p]=(compte[x.e.p]||0)+1;}
       return ids.length===8;
     });
+    /* une accusation part toujours avec la contestation publiée de la direction */
+    if(ids.some(function(i){return /ames-exsangues/.test(KB.E[i].a);})){
+      var contestation=KB.E.findIndex(function(e){return /ames-exsangues/.test(e.a)&&/réponse de la direction/i.test(e.h)&&/conteste/.test(e.t);});
+      if(contestation>=0&&ids.indexOf(contestation)<0){if(ids.length===8)ids.pop();ids.push(contestation);}
+    }
     return {ids:ids,question:requete};
   }
   function historiqueIA(q){

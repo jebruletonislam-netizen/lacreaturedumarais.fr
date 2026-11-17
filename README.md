@@ -17,8 +17,13 @@ la session de l'onglet. Sans activation explicite de l'IA, aucun échange n'est 
 
 Le générateur conserve les permaliens, les libellés, les titres des morceaux,
 les données de parution, les descriptions d'images et les paroles publiées des
-compagnons. Il ne transcrit ni les coupures de presse numérisées, ni l'audio ou les
-films : pour ces documents, le Ver renvoie aux pièces et aux descriptions existantes.
+compagnons. Les coupures de presse numérisées sont transcrites à la main dans
+`_outils/transcriptions.json` (clé = adresse de l'image liée par la page) ; une
+transcription orpheline fait échouer la génération. `_outils/reperes.json` ajoute
+des repères de culture générale sur les références que le site cite, rattachés à
+la page qui les cite : ce ne sont pas des affirmations du site et aucune page n'est
+modifiée. L'audio et les films ne sont pas transcrits : le Ver renvoie aux pièces
+et aux descriptions existantes.
 Le dialogue local ne comprend pas librement tous les sujets comme un modèle
 génératif. Une question sans trace fiable reçoit une réponse d'incertitude.
 
@@ -42,7 +47,11 @@ sans bascule automatique vers des répliques locales présentées comme de l'IA.
 
 La personnalité distingue le personnage, la légende, l'interprétation et les faits
 sourcés. Elle discute et analyse, mais ne sert pas à commander des œuvres, du code
-ou de nouveaux épisodes du lore. Pas de recherche web, de transcription ni d'OCR.
+ou de nouveaux épisodes du lore. Pas de recherche web ni de transcription audio.
+Chaque extrait envoyé porte sa nature (texte du site, transcription de pièce, repère
+culturel). Hors citation, le Worker remplace aussi « paroisse », « paroissien » et
+« paroissial » par le vocabulaire du Vampirium (minuscules seulement, la « paroisse
+Saint-… » historique et les noms propres restent intacts).
 La mémoire n'est ni permanente ni exhaustive. Les consignes réduisent les inventions,
 sans les rendre impossibles.
 
@@ -68,8 +77,12 @@ npm run deploy
 
 Se connecter au compte du propriétaire, vérifier qu'il reste sur **Free**, puis
 mettre l'URL HTTPS `https://le-ver.<sous-domaine>.workers.dev/chat` obtenue dans
-`ver-ia.json`. Une URL vide conserve seulement le dialogue local ; aucune IA
-n'est alors active. Aucune clé ni aucun identifiant secret ne va dans le dépôt.
+`ver-ia.json`. Service actuel : `https://le-ver.vampirium.workers.dev/chat`. Un
+premier déploiement exige un sous-domaine workers.dev choisi dans le tableau de bord ;
+juste après, un 404 (10007) de propagation se règle en redéployant. Les URL
+d'aperçu sont désactivées (`preview_urls: false`). Une URL vide conserve seulement
+le dialogue local ; aucune IA n'est alors active. Aucune clé ni aucun identifiant
+secret ne va dans le dépôt.
 Le site reste sur GitHub Pages ; aucun changement DNS n'est nécessaire.
 
 Après chaque changement éditorial : régénérer les corpus, incrémenter leur version

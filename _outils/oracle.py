@@ -2,7 +2,9 @@
 
 Le Ver cite ces extraits et les relie à des répliques écrites dans coins.js.
 Les deux couches consultent désormais les mêmes connaissances, sur choix du propriétaire.
-Relancer après avoir modifié le contenu de ces pages :  python _outils/oracle.py
+S'y ajoutent les transcriptions des pièces publiées en image (transcriptions.json)
+et des repères culturels sur les références citées (reperes.json).
+Relancer après avoir modifié ces pages ou ces fichiers :  python _outils/oracle.py
 """
 from html.parser import HTMLParser
 from pathlib import Path
@@ -11,6 +13,7 @@ import json
 import re
 
 RACINE = Path(__file__).resolve().parent.parent
+OUTILS = Path(__file__).resolve().parent
 SORTIES = ('oracle-putride.json', 'oracle-cachot.json')
 BLOCS = {'p', 'li', 'blockquote', 'dd', 'dt', 'figcaption', 'summary', 'button', 'h1', 'h2', 'h3', 'h4'}
 IGNORES = {'script', 'style', 'svg', 'button', 'nav', 'noscript', 'template', 'select', 'form'}
@@ -154,8 +157,28 @@ def url_page(chemin):
     return '/' if parent == '.' else '/' + parent + '/'
 
 
+def pieces_transcrites(html_txt, transcrites):
+    """Pièces que la page ouvre en grand (lien vers l'image) et dont le texte est transcrit, dans l'ordre de la page."""
+    liens = dict.fromkeys(re.findall(r'href="(/images/[^"?#]+)(?:[?#][^"]*)?"', html_txt))
+    return [(img, transcrites[img]) for img in liens if img in transcrites]
+
+
+def ajoute_reperes(pages, ent, reperes):
+    """Chaque repère devient une entrée à part, liée à la page du site qui cite la référence."""
+    urls = {u for _, u in pages}
+    for r in reperes:
+        chemin, _, ancre = r['page'].partition('#')
+        if chemin not in urls:
+            raise ValueError(f'Repère « {r["titre"]} » : page inconnue {r["page"]}')
+        pages.append(['Repère culturel · ' + r['titre'], chemin])
+        ent.append([len(pages) - 1, '', '#' + ancre if ancre else '', propre(r['texte']), 3])
+
+
 def construit():
     pages, ent = [], []
+    transcrites = {k: v for k, v in json.loads((OUTILS / 'transcriptions.json').read_text(encoding='utf-8')).items()
+                   if not k.startswith('_')}
+    utilisees = set()
     fichiers = sorted(
         p for p in RACINE.rglob('index.html')
         if not any(x.startswith(('.', '_')) or x == 'node_modules'
@@ -164,11 +187,20 @@ def construit():
     for f in fichiers:
         url = url_page(f)
         titre, ex = extraits(f)
-        if not ex:
+        pieces = pieces_transcrites(f.read_text(encoding='utf-8'), transcrites)
+        if not ex and not pieces:
             continue
         pages.append([titre, url])
         for h, a, t, l in ex:
             ent.append([len(pages) - 1, h, a, t, l])
+        # 4 : texte transcrit d'une pièce publiée en image
+        for img, piece in pieces:
+            utilisees.add(img)
+            for t in piece['texte']:
+                ent.append([len(pages) - 1, 'Transcription · ' + piece['piece'], '', propre(t), 4])
+    orphelines = sorted(set(transcrites) - utilisees)
+    if orphelines:
+        raise ValueError('Transcriptions sans page qui ouvre la pièce : ' + ', '.join(orphelines))
     # Les paroles déjà publiées par les compagnons sont des citations, pas des faits à extrapoler.
     paroles = (RACINE / 'cachot-paroles.js').read_text(encoding='utf-8')
     chaine = r'"(?:\\.|[^"\\])*"'
@@ -179,6 +211,8 @@ def construit():
     for texte, date, _ in lignes:
         ent.append([len(pages) - 1, 'Parole publiée' + (' · ' + json.loads(date) if date else ''),
                     '', json.loads(texte), 2])
+    # 3 : repère de culture générale, jamais présenté comme un texte du site
+    ajoute_reperes(pages, ent, json.loads((OUTILS / 'reperes.json').read_text(encoding='utf-8'))['reperes'])
     donnees = {'v': 2, 'p': pages, 'e': ent}
     empreinte = json.dumps(donnees, ensure_ascii=False, separators=(',', ':'))
     donnees['revision'] = sha256(empreinte.encode('utf-8')).hexdigest()[:16]

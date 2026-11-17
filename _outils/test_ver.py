@@ -75,12 +75,18 @@ def dialogue_ia(browser, width):
     corpus = page.request.get(BASE + "/oracle-putride.json").json()
     textes = [corpus["e"][i][3] for i in envois[0]["ids"]]
     assert any("ami" in t and "Gargouille" in t for t in textes), textes
+    pages = {corpus["p"][corpus["e"][i][0]][1] for i in envois[0]["ids"]}
+    assert "/mode-putride/bestiaire/gargouille/" in pages, pages
     assert envois[0]["messages"] == [{"role": "user", "content": "Qui sont tes amis ?"}]
     assert page.locator(".cn-log img").count() == 0
     assert page.locator(".cn-log .a").last.locator("a[href='/mode-putride/bestiaire/gargouille/']").count() == 2
     question(page, "Je préfère le piano. Et toi ?")
     assert len(envois[-1]["messages"]) == 3
     assert "[S1]" not in envois[-1]["messages"][1]["content"]
+    question(page, "Et la Créature, elle a été jugée pour quoi ?")
+    ids = envois[-1]["ids"]
+    assert any(corpus["e"][i][4] == 4 for i in ids), ids
+    assert "/mode-putride/bestiaire/createur/" in {corpus["p"][corpus["e"][i][0]][1] for i in ids}, ids
     etat["mode"] = "quota"
     assert "quota gratuit" in question(page, "Question qui échoue")
     assert "via Cloudflare" in page.locator(".cn-h small").inner_text()

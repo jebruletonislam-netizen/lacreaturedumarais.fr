@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from oracle import extraits, url_page
+from oracle import ajoute_reperes, extraits, pieces_transcrites, url_page
 
 
 class OracleExtractionTests(unittest.TestCase):
@@ -74,6 +74,22 @@ class OracleExtractionTests(unittest.TestCase):
         self.assertIn('2018', texts)
         self.assertIn('Casso', texts)
         self.assertNotIn('Tout écouter', texts)
+
+    def test_transcription_suit_la_page_qui_ouvre_la_piece(self):
+        transcrites = {'/images/a.webp': {'piece': 'A', 'texte': ['x']}, '/images/b.webp': {'piece': 'B', 'texte': ['y']}}
+        carte = '<a href="/dossier/"><img src="/images/a.webp" alt=""></a>'
+        dossier = ('<a href="/images/b.webp" data-lb="B"><img src="/images/b.webp"></a>'
+                   '<a href="/images/a.webp?v=2" data-lb="A"><img src="/images/a.webp"></a>')
+        self.assertEqual(pieces_transcrites(carte, transcrites), [])
+        self.assertEqual([img for img, _ in pieces_transcrites(dossier, transcrites)], ['/images/b.webp', '/images/a.webp'])
+
+    def test_repere_lie_a_une_page_existante(self):
+        pages, ent = [['Biographie', '/biographie/']], []
+        ajoute_reperes(pages, ent, [{'titre': 'Villon', 'page': '/biographie/#debut', 'texte': ' Poète  parisien. '}])
+        self.assertEqual(pages[-1], ['Repère culturel · Villon', '/biographie/'])
+        self.assertEqual(ent[-1], [1, '', '#debut', 'Poète parisien.', 3])
+        with self.assertRaises(ValueError):
+            ajoute_reperes(pages, ent, [{'titre': 'X', 'page': '/inconnue/', 'texte': 't'}])
 
 
 if __name__ == "__main__":
