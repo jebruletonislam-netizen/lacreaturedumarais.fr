@@ -266,8 +266,12 @@ export default {
           !['stop', 'length'].includes(choix.finish_reason))
         throw new Refus(502, 'reponse');
       // [S1, S3] devient [S1][S3] : le site ne relie que les marqueurs simples.
-      const texte = vocabulaireLore(brut.replace(/\[S(\d+(?:\s*[,;]\s*S?\d+)+)\]/g,
-        (_, liste) => liste.split(/\s*[,;]\s*S?/).map(n => `[S${n}]`).join('')));
+      // Le modele ecrit parfois [1][4] : un numero de source valide devient [S1],
+      // un numero inconnu disparait au lieu de rester en crochets bruts.
+      const texte = vocabulaireLore(brut
+        .replace(/\[(S?\d+(?:\s*[,;]\s*S?\d+)+)\]/g,
+          (_, liste) => liste.split(/\s*[,;]\s*/).map(n => `[${n}]`).join(''))
+        .replace(/\[(\d+)\]/g, (_, n) => sources.some(source => source.n === Number(n)) ? `[S${n}]` : ''));
       const cites = new Set([...texte.matchAll(/\[S(\d+)\]/g)].map(m => Number(m[1])));
       const valides = sources.filter(source => cites.has(source.n));
       if ([...cites].some(n => !sources.some(source => source.n === n)))

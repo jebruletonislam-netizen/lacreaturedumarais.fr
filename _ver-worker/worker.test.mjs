@@ -131,6 +131,14 @@ test('marqueurs groupes separes pour rester des liens', async () => {
   assert.deepEqual(d.sources.map(s => s.n), [1, 2]);
 });
 
+test('numeros nus convertis en marqueurs ou retires', async () => {
+  const env = environnement();
+  env.AI.run = async () => ({choices: [{message: {content: 'Tricycle [1][7], farce [2, 9].'}, finish_reason: 'stop'}]});
+  const d = await (await worker.fetch(requete({...donnees(), ids: [id, id + 1]}), env)).json();
+  assert.equal(d.text, 'Tricycle [S1], farce [S2].');
+  assert.deepEqual(d.sources.map(s => s.n), [1, 2]);
+});
+
 test('nature des extraits : site, transcription de piece et repere culturel', () => {
   const premier = k => corpus.e.findIndex(e => e[4] === k);
   const ids = [id, premier(4), premier(3)];
