@@ -237,7 +237,18 @@
       tot+=ws.length;
       return {p:e[0],h:e[1],a:e[2],t:e[3],k:e[4],tf:tf,tt:tt,n:ws.length};
     });
-    var noms=[];
+    /* les surnoms d'une fiche désignent son personnage, mais seulement à l'identique (« sermons » n'est pas Sermions) */
+    var noms=[],surnoms={};
+    E.forEach(function(e){
+      if(e[1]!=='Surnom')return;
+      String(e[3]).replace(/^Surnom\s*:\s*/,'').replace(/\([^)]*\)/g,'').split(/\s*[·\/]\s*/).forEach(function(s){
+        s=norm(s);if(s.length>=3)(surnoms[e[0]]=surnoms[e[0]]||[]).push(s);
+      });
+    });
+    /* un surnom d'un seul mot vaut le titre de la fiche (« JPH » touche tous les passages de Jean-Pierre Herlant) */
+    ent.forEach(function(e){
+      (surnoms[e.p]||[]).forEach(function(s){if(s.indexOf(' ')<0)e.tt[rac(s)]=1;});
+    });
     P.forEach(function(p,i){
       if(/^Repère /.test(p[0]))return;
       if(!/^\/(?:mode-putride\/bestiaire|mode-putride\/discographie|cachot)\/[^/]+\/$/.test(p[1]))return;
@@ -247,7 +258,7 @@
       if(slug==='ver')alias=['le ver','ver du baptistere'];
       if(slug==='kavod-tinkiwizkhi')alias.push('kavod');
       if(slug==='puanteur-putride')alias.push('puanteur');
-      noms.push({p:i,alias:alias});
+      noms.push({p:i,alias:alias,exact:surnoms[i]||[]});
     });
     return {P:P,E:ent,revision:d.revision,df:df,voc:Object.keys(voc),noms:noms,avg:tot/Math.max(1,ent.length),N:ent.length};
   }
@@ -255,7 +266,7 @@
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
     var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},12000);
-    attente=fetch('/oracle-'+couche+'.json?v=6',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+    attente=fetch('/oracle-'+couche+'.json?v=7',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
       if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
         !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
         !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
@@ -289,7 +300,8 @@
     ['foi','croyance'],['pouvoir','autorite'],['musique','album','disque'],
     ['prison','cachot'],['farce','humour','rire'],['philosophie','demarche','partisanisme'],
     ['peine','condamnation','sursis'],['dossier','presse','piece'],['annee','date','parution'],
-    ['juge','jugee','jugement','proces','tribunal','verdict','prevenu','coupable'],['creature','tancrede']
+    ['juge','jugee','jugement','proces','tribunal','verdict','prevenu','coupable'],['creature','tancrede'],
+    ['hors','dehors'],['surnom','surnomme','appelle','alias','pseudo']
   ];
   function termesDe(q){
     var vu={},termes=[];
@@ -462,7 +474,7 @@
   function entites(q){
     var n=' '+norm(q)+' ',ws=mots(q);
     return KB.noms.filter(function(e){
-      return e.alias.some(function(a){
+      return e.exact.some(function(a){return n.indexOf(' '+a+' ')>=0;})||e.alias.some(function(a){
         if(n.indexOf(' '+a+' ')>=0)return true;
         var ts=mots(a);
         return ts.length===1&&ts[0].length>=5&&ws.some(function(w){return proche(w,ts[0]);});
@@ -576,7 +588,7 @@
     r.forEach(function(x){if(noms.indexOf(x.e.p)>=0)x.s*=1.6;});
     r.sort(function(a,b){return b.s-a.s;});
     r.some(function(x){
-      if(x.s>=2.2&&(compte[x.e.p]||0)<3&&ids.indexOf(x.ix)<0){ids.push(x.ix);compte[x.e.p]=(compte[x.e.p]||0)+1;}
+      if(x.s>=2.2&&(compte[x.e.p]||0)<(noms.indexOf(x.e.p)>=0?4:3)&&ids.indexOf(x.ix)<0){ids.push(x.ix);compte[x.e.p]=(compte[x.e.p]||0)+1;}
       return ids.length===8;
     });
     /* une accusation part toujours avec la contestation publiée de la direction */

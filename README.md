@@ -90,6 +90,9 @@ dans `coins.js`, **redéployer le Worker avec le même corpus**, puis publier le
 Un décalage de révision renvoie 409 plutôt que de citer un autre passage.
 Après toute modification de `coins.js`, incrémenter ses références sur toutes les
 pages. Pour revenir au dialogue local uniquement, vider `url` dans `ver-ia.json`.
+Le Ver reconnaît un personnage par le titre de sa fiche et par le champ « Surnom »
+(variantes séparées par `·` ou `/`). Un surnom ne s'y reconnaît qu'à l'identique ;
+seuls les surnoms d'un seul mot valent le titre de la fiche dans la recherche.
 
 `npm test` et `npm run check` dans `_ver-worker` ne prouvent pas une vraie inférence :
 tester aussi le service déployé et le consentement dans le navigateur. Le endpoint

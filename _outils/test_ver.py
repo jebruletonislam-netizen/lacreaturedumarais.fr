@@ -87,6 +87,12 @@ def dialogue_ia(browser, width):
     ids = envois[-1]["ids"]
     assert any(corpus["e"][i][4] == 4 for i in ids), ids
     assert "/mode-putride/bestiaire/createur/" in {corpus["p"][corpus["e"][i][0]][1] for i in ids}, ids
+    question(page, "Sermions, on l’appelle comment aussi ?")
+    textes = [corpus["e"][i][3] for i in envois[-1]["ids"]]
+    assert any(t.startswith("Surnom") and "Patrick Mions" in t for t in textes), textes
+    question(page, "Christophe Chevanne a fait quoi en dehors des Retard-Tinables ?")
+    textes = [corpus["e"][i][3] for i in envois[-1]["ids"]]
+    assert any("File au lavabo" in t for t in textes), textes
     etat["mode"] = "quota"
     assert "quota gratuit" in question(page, "Question qui échoue")
     assert "via Cloudflare" in page.locator(".cn-h small").inner_text()
