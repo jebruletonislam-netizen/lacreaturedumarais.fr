@@ -87,6 +87,13 @@ le dialogue local ; aucune IA n'est alors active. Aucune clé ni aucun identifia
 secret ne va dans le dépôt.
 Le site reste sur GitHub Pages ; aucun changement DNS n'est nécessaire.
 
+Notes de coulisses : `_ver-worker/coulisses.json` contient des notes privées de
+l'auteur (un noyau toujours joint, puis au plus deux sections choisies par mots-clés
+dans les derniers messages). Ce fichier est ignoré par Git, car le dépôt est public :
+en garder une copie hors du dépôt. `npm test`, `npm run dev` et `npm run check`
+créent un fichier vide s'il manque ; `npm run deploy` refuse de partir si les notes
+sont absentes, vides ou mal formées.
+
 Après chaque changement éditorial : régénérer les corpus, incrémenter leur version
 dans `coins.js`, **redéployer le Worker avec le même corpus**, puis publier le site.
 Un décalage de révision renvoie 409 plutôt que de citer un autre passage.

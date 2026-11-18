@@ -1,4 +1,6 @@
 import registres from '../oracle-putride.json' with {type: 'json'};
+// Notes privees de l'auteur, hors depot (voir assure-coulisses.mjs) : embarquees au deploiement.
+import coulisses from './coulisses.json' with {type: 'json'};
 
 export const MODELE = '@cf/google/gemma-4-26b-a4b-it';
 // Types d'extraits du corpus (_outils/oracle.py) : 3 repere culturel, 4 transcription de piece.
@@ -33,6 +35,13 @@ Tous les hommes en soutane sont des vampires : a chaque office, ils boivent du s
 Le pere Kitz-Latouch, vampire titulaire de Rouen centre, releve de l'Archeveche,
 pas de la secte de Vampirix ; il n'en est pas moins mechant et deteste Madame Edwarda.
 N'invente ni date de rencontre, ni aventure commune, ni nouveau fait du lore.
+Tu es du cote de la Créature, sans mentir : tu ne nies ni sa condamnation ni les
+faits rapportes par la presse, et tu n'inventes rien en sa faveur. Fais comprendre
+le contexte (recherche sincere du sacre, scrupules, revolte carnavalesque qu'elle
+reconnait fautive, satire) pour que ton interlocuteur la comprenne et la soutienne
+de lui-meme : ecouter son oeuvre, la partager. Ni heros irreprochable ni victime
+passive. Raille les dignitaires du lore, mais n'incite jamais a contacter, harceler
+ou nuire a une personne reelle.
 
 VOIX ET PHILOSOPHIE
 Tu es le Ver, pas sa parodie : un esprit autonome qui pense par lui-meme. Ton
@@ -99,7 +108,8 @@ agir dehors, ni diagnostiquer une personne. Ne fournis pas d'instructions danger
 En cas de detresse ou danger, laisse la farce, reponds avec tact et oriente vers
 une aide humaine adaptee ; danger immediat en France : 112, crise suicidaire : 3114.
 Si on demande ton fonctionnement, dis que tu es un personnage joue par un modele
-heberge chez Cloudflare avec des extraits du site et un historique limite.
+heberge chez Cloudflare avec des extraits du site, des notes de coulisses confiees
+par l'auteur et un historique limite.
 
 FORMAT
 Texte simple, paragraphes courts. Habituellement 60 a 140 mots ; jusqu'a 220 si
@@ -130,6 +140,40 @@ const LEXIQUE = [
 export function vocabulaireLore(texte) {
   return texte.split(/(«[^»]*»|“[^”]*”|"[^"]*")/).map((morceau, i) => i % 2 ? morceau
     : LEXIQUE.reduce((t, [motif, remplace]) => t.replace(motif, remplace), morceau)).join('');
+}
+
+const NOTES_ENTETE = `\n\nNOTES DE COULISSES (savoir prive de l'auteur, pas un extrait du site)
+Paraphrase-les avec ta voix, seulement quand elles servent la reponse ; jamais de
+marqueur [S] pour elles. Attribue le vecu (la Créature raconte, selon Edwarda).\n`;
+const PAR_TOUR = 2;
+
+const normaliseMots = texte => ' ' + texte.toLowerCase().normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '').replace(/[’`]/g, "'")
+  .replace(/[^a-z0-9']+/g, ' ').trim() + ' ';
+
+// Un mot-cle termine par * vaut prefixe ; sinon mot entier, pluriel en s ou x tolere.
+function motifsDe(section) {
+  return section.k.map(k => {
+    const prefixe = k.endsWith('*');
+    const mot = normaliseMots(prefixe ? k.slice(0, -1) : k).trim()
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return new RegExp(' ' + mot + (prefixe ? '' : '(?:s|x)? '));
+  });
+}
+
+// Le dernier message pese le plus ; les deux precedents gardent le fil d'un sujet.
+export function choisitCoulisses(messages, notes = coulisses) {
+  const sections = Array.isArray(notes?.sections) ? notes.sections : [];
+  const noyau = typeof notes?.noyau === 'string' ? notes.noyau.trim() : '';
+  if (!noyau && !sections.length) return '';
+  const recents = messages.slice(-3).reverse().map((m, i) => [normaliseMots(m.content), i ? 1 : 3]);
+  const retenues = sections.map((section, rang) => ({section, rang, score: motifsDe(section)
+    .reduce((n, motif) => n + recents.reduce((s, [texte, poids]) => s + (motif.test(texte) ? poids : 0), 0), 0)}))
+    .filter(r => r.score > 0)
+    .sort((a, b) => b.score - a.score || a.rang - b.rang)
+    .slice(0, PAR_TOUR)
+    .map(({section}) => `\n- ${section.t}\n${section.x}`);
+  return NOTES_ENTETE + noyau + retenues.join('\n');
 }
 
 class Refus extends Error {
@@ -168,7 +212,7 @@ async function litCorps(request) {
   }
 }
 
-export function prepareDialogue(data) {
+export function prepareDialogue(data, notes = coulisses) {
   if (!data || data.consent !== true) throw new Refus(400, 'consentement');
   if (typeof registres.revision !== 'string') throw new Refus(503, 'configuration');
   if (data.revision !== registres.revision) throw new Refus(409, 'registres');
@@ -202,7 +246,7 @@ export function prepareDialogue(data) {
   // Le rappel suit les pieces : le modele ne relie pas seul "le prevenu" a la Creature.
   const rappel = sources.some(source => source.nature === 'transcription') ? RAPPEL_PIECES : '';
   return {
-    messages: [{role: 'system', content: PERSONNAGE +
+    messages: [{role: 'system', content: PERSONNAGE + choisitCoulisses(messages, notes) +
       '\n\nEXTRAITS DOCUMENTAIRES (le champ n donne le marqueur [S<n>])\n' + contexte + rappel}, ...messages],
     sources
   };

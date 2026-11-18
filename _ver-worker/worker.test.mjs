@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {prepareDialogue, MODELE} from './worker.mjs';
+import worker, {prepareDialogue, choisitCoulisses, MODELE} from './worker.mjs';
 import corpus from '../oracle-putride.json' with {type: 'json'};
 
 const origine = 'https://lacreaturedumarais.fr';
@@ -161,4 +161,34 @@ test('historique normalise sans parametres du client injectes dans les options',
   const p = prepareDialogue(input);
   assert.deepEqual(p.messages.slice(1), input.messages.map(({role, content}) => ({role, content})));
   assert.equal(p.messages.filter(m => m.role === 'system').length, 1);
+});
+
+const notes = {noyau: 'NOYAU-TEST', sections: [
+  {t: 'Ail', k: ['ail', 'clenche'], x: 'X-AIL'},
+  {t: 'Costume', k: ['costume*', 'diva'], x: 'X-COSTUME'},
+  {t: 'Tags', k: ['fecalmaster*', 'sainte-catherine'], x: 'X-TAGS'},
+  {t: 'Proces', k: ['proces'], x: 'X-PROCES'}
+]};
+const dit = (...contenus) => contenus.map((content, i) => ({role: i % 2 ? 'assistant' : 'user', content}));
+
+test('coulisses : noyau toujours, sections par mots-cles, deux au plus', () => {
+  const ail = choisitCoulisses(dit("Pourquoi le collier d'AIL sur la clenche ?"), notes);
+  assert.match(ail, /NOTES DE COULISSES/);
+  assert.ok(ail.includes('NOYAU-TEST') && ail.includes('X-AIL') && !ail.includes('X-COSTUME'));
+  const vide = choisitCoulisses(dit('Tu vas ailleurs ?'), notes);
+  assert.ok(vide.includes('NOYAU-TEST') && !vide.includes('X-AIL'));
+  assert.match(choisitCoulisses(dit('Le procès, les costumes'), notes), /X-PROCES[\s\S]*X-COSTUME|X-COSTUME[\s\S]*X-PROCES/);
+  assert.match(choisitCoulisses(dit('Sainte Catherine'), notes), /X-TAGS/);
+  const trois = choisitCoulisses(dit('ail clenche, costume diva, procès'), notes);
+  assert.ok(trois.includes('X-AIL') && trois.includes('X-COSTUME') && !trois.includes('X-PROCES'));
+  const suite = choisitCoulisses(dit('Parle-moi du costume', 'Volontiers.', 'Et ensuite ?'), notes);
+  assert.ok(suite.includes('X-COSTUME'));
+  assert.equal(choisitCoulisses(dit('ail'), {noyau: '', sections: []}), '');
+});
+
+test('coulisses injectees dans le seul message systeme, avant les extraits', () => {
+  const contenu = prepareDialogue(donnees(), notes).messages[0].content;
+  assert.ok(contenu.indexOf('NOYAU-TEST') < contenu.indexOf('EXTRAITS DOCUMENTAIRES'));
+  assert.doesNotMatch(prepareDialogue(donnees(), {noyau: '', sections: []}).messages[0].content,
+    /NOTES DE COULISSES/);
 });

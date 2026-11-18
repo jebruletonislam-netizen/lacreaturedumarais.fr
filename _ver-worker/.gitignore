@@ -2,3 +2,6 @@ node_modules/
 .wrangler/
 .dev.vars
 .env
+# Notes privees de l'auteur : jamais dans le depot public.
+coulisses.json
+coulisses-source.md

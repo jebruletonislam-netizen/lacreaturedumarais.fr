@@ -3,9 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "pretest": "node assure-coulisses.mjs",
     "test": "node --test",
+    "predev": "node assure-coulisses.mjs",
     "dev": "wrangler dev",
+    "precheck": "node assure-coulisses.mjs",
     "check": "wrangler deploy --dry-run",
+    "predeploy": "node assure-coulisses.mjs deploiement",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {
