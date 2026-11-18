@@ -429,6 +429,7 @@ header{overflow:visible}
 .alp .ah>img{width:100%;aspect-ratio:1;object-fit:contain;background:#000;border:.15rem solid var(--g)}
 .alp .ah h1{margin:0 0 .5rem}
 .alp .am{margin:.2rem 0 1rem;color:#e8dcff;font-size:1.1em}
+.alp .aa{margin:0 0 .2rem;color:#e8dcff;font-size:1.1em}
 .alp .abt{display:flex;flex-wrap:wrap;gap:.2rem}
 .alp .abt .btn,.alp .abt button.btn{font-size:1.5rem;padding:.3rem 1rem;cursor:pointer;font-family:"Bebas Neue",sans-serif;margin:0 .5rem .5rem 0}
 .alp .lostnote{color:#e8dcff}

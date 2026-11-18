@@ -25,16 +25,16 @@
     var b=ev.target.closest&&ev.target.closest('.lyb');
     if(!b)return;
     ev.preventDefault();
-    var row=b.closest('.trw'),nx=row.nextElementSibling;
+    var row=b.closest('.trw'),after=row.nextElementSibling&&row.nextElementSibling.classList.contains('trn')?row.nextElementSibling:row,nx=after.nextElementSibling;
     if(nx&&nx.classList.contains('lyw')){nx.remove();return;}
     var w=document.createElement('div');w.className='lyw';
-    var g={id:b.dataset.g,url:b.dataset.gu},t=b.dataset.t;
+    var al=b.closest('.alp'),ar=(al&&al.dataset.artist)||'Les Retard-Tinables';
+    var g={id:b.dataset.g,url:b.dataset.gu},t=b.dataset.t,esc=function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');};
     var f=document.createElement('iframe');f.className='lyf';f.title='Paroles de '+t;f.loading='lazy';
-    f.srcdoc="<!doctype html><html><head><meta charset='utf-8'><base target='_blank'><style>html,body{margin:0;padding:0;background:#fff;color:#000;color-scheme:light}body{padding:.5rem;font:16px/1.4 Arial,sans-serif}</style></head><body><div id='rg_embed_link_"+g.id+"' class='rg_embed_link' data-song-id='"+g.id+"'><a href='"+g.url+"'>Paroles de \u201C"+t.replace(/&/g,'&amp;')+"\u201D \u2014 Les Retard-Tinables</a></div><script crossorigin src='https://genius.com/songs/"+g.id+"/embed.js'><\/script></body></html>";
+    f.srcdoc="<!doctype html><html><head><meta charset='utf-8'><base target='_blank'><style>html,body{margin:0;padding:0;background:#fff;color:#000;color-scheme:light}body{padding:.5rem;font:16px/1.4 Arial,sans-serif}</style></head><body><div id='rg_embed_link_"+g.id+"' class='rg_embed_link' data-song-id='"+g.id+"'><a href='"+g.url+"'>Paroles de \u201C"+esc(t)+"\u201D \u2014 "+esc(ar)+"</a></div><script crossorigin src='https://genius.com/songs/"+g.id+"/embed.js'><\/script></body></html>";
     var fit=function(){try{var h=f.contentDocument.documentElement.scrollHeight;if(h>40)f.style.height=h+'px';}catch(e){}};
     f.addEventListener('load',function(){fit();var n=0,iv=setInterval(function(){fit();if(++n>40||!f.isConnected)clearInterval(iv);},500);});
     w.appendChild(f);
-    var after=row.nextElementSibling&&row.nextElementSibling.classList.contains('trn')?row.nextElementSibling:row;
     after.after(w);
   });
   function lyrics(b,t){
