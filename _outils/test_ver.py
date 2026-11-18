@@ -20,8 +20,12 @@ def question(page, text):
         "(n) => document.querySelectorAll('.cn-log .a:not(.cn-dots)').length > n",
         arg=count,
     )
-    page.wait_for_function("!document.querySelector('.cn-f button').disabled")
+    libre(page)
     return page.locator(".cn-log .a").last.inner_text()
+
+
+def libre(page):
+    page.wait_for_function("!document.querySelector('#cn-oracle').hasAttribute('aria-busy')")
 
 
 def dialogue_ia(browser, width):
@@ -50,7 +54,7 @@ def dialogue_ia(browser, width):
             route.fulfill(status=429, headers=headers, content_type="application/json",
                           body='{"error":"quota"}')
             return
-        contenu = "La Gargouille est mon amie. [S1]\n<img src=x onerror=alert(1)>"
+        contenu = "La Gargouille est mon **amie**. [S1]\n- *Rouen* veille\n<img src=x onerror=alert(1)>"
         route.fulfill(headers=headers, content_type="application/json", body=json.dumps({
             "text": contenu, "truncated": False,
             "sources": [{"n": 1, "title": "La Gargouille de Rouen",
@@ -58,6 +62,7 @@ def dialogue_ia(browser, width):
         }))
 
     context.route(endpoint, service)
+    context.grant_permissions(["clipboard-read", "clipboard-write"], origin=BASE)
     page = context.new_page()
     page.on("pageerror", lambda e: erreurs_js.append(str(e)))
     page.goto(BASE + "/mode-putride/bestiaire/ver/")
@@ -83,6 +88,33 @@ def dialogue_ia(browser, width):
     question(page, "Je préfère le piano. Et toi ?")
     assert len(envois[-1]["messages"]) == 3
     assert "[S1]" not in envois[-1]["messages"][1]["content"]
+    derniere = page.locator(".cn-log .cn-wa").last
+    assert derniere.locator(".cn-m strong").count() == 1 and derniere.locator(".cn-m em").count() == 1
+    derniere.get_by_role("button", name="Copier la réponse").click()
+    page.wait_for_function("document.querySelectorAll('.cn-log .cn-ic.ok').length === 1")
+    copie = page.evaluate("navigator.clipboard.readText()")
+    assert "Gargouille est mon amie" in copie and "[S1]" not in copie and "**" not in copie, copie
+    questions, count = page.locator(".cn-log .cn-m.q").count(), len(envois)
+    derniere.get_by_role("button", name="Autre réponse").click()
+    libre(page)
+    assert len(envois) == count + 1
+    assert envois[-1]["messages"][-1]["content"] == "Je préfère le piano. Et toi ?"
+    assert page.locator(".cn-log .cn-m.q").count() == questions
+    page.locator(".cn-log .cn-wq").last.get_by_role("button", name="Modifier cette question").click()
+    assert page.locator("#cn-q").input_value() == "Je préfère le piano. Et toi ?"
+    assert page.locator(".cn-ed").is_visible()
+    page.locator("#cn-q").fill("ligne 1")
+    page.locator("#cn-q").press("Shift+Enter")
+    assert page.locator("#cn-q").input_value() == "ligne 1\n" and len(envois) == count + 1
+    page.locator("#cn-q").fill("Je préfère l’orgue. Et toi ?")
+    page.locator("#cn-q").press("Enter")
+    libre(page)
+    assert len(envois) == count + 2 and len(envois[-1]["messages"]) == 3
+    assert envois[-1]["messages"][-1]["content"] == "Je préfère l’orgue. Et toi ?"
+    assert page.locator(".cn-log .cn-m.q").count() == questions
+    assert "piano" not in page.locator(".cn-log").inner_text()
+    assert not page.locator(".cn-ed").is_visible()
+    assert page.locator(".cn-sug").bounding_box()["height"] < 44
     question(page, "Et la Créature, elle a été jugée pour quoi ?")
     ids = envois[-1]["ids"]
     assert any(corpus["e"][i][4] == 4 for i in ids), ids
@@ -93,8 +125,6 @@ def dialogue_ia(browser, width):
     question(page, "Christophe Chevanne a fait quoi en dehors des Retard-Tinables ?")
     textes = [corpus["e"][i][3] for i in envois[-1]["ids"]]
     assert any("File au lavabo" in t for t in textes), textes
-    if width < 560:
-        assert page.locator(".cn-sug").bounding_box()["height"] < 44
     question(page, "Quoi de neuf en ce moment ?")
     ids = envois[-1]["ids"]
     assert [corpus["p"][corpus["e"][i][0]][1] for i in ids[:3]] == ["/nouvelles/"] * 3, ids
@@ -132,13 +162,20 @@ def dialogue_ia(browser, width):
     page.set_viewport_size({"width": width, "height": 844})
     page.locator(".cn-ai summary").click()
     etat["mode"] = "attente"
+    page.locator("#cn-q").fill("Une réponse à arrêter")
+    with page.expect_request(lambda r: r.url == endpoint and r.method == "POST"):
+        page.locator("#cn-q").press("Enter")
+    page.get_by_role("button", name="Arrêter la réponse").click()
+    libre(page)
+    assert "Envoi arrêté" in page.locator(".cn-log .a").last.inner_text()
+    assert page.locator(".cn-log .cn-wa").last.get_by_role("button", name="Réessayer").count() == 1
     count = len(envois)
     page.locator("#cn-q").fill("Une réponse en attente")
     with page.expect_request(lambda r: r.url == endpoint and r.method == "POST"):
         page.locator(".cn-f button").click()
     page.locator(".cn-ai summary").click()
     page.get_by_role("button", name="Revenir au dialogue local").click()
-    page.wait_for_function("!document.querySelector('.cn-f button').disabled")
+    libre(page)
     assert "Envoi arrêté" in page.locator(".cn-log .a").last.inner_text()
     assert "sans IA générative" in page.locator(".cn-h small").inner_text()
     assert "Kobal" in question(page, "Qui est ton maître ?")

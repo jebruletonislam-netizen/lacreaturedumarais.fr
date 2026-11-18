@@ -41,28 +41,39 @@
   +'.cn-x:hover,.cn-x:focus-visible{border-color:var(--c);color:var(--c);outline:none}'
   +'.cn-log{flex:1;min-height:90px;overflow:auto;overscroll-behavior:contain;padding:12px;display:flex;flex-direction:column;gap:9px;scrollbar-width:thin;scrollbar-color:var(--c) transparent}'
   +'.cn-m{max-width:94%;padding:8px 11px;border-radius:13px;overflow-wrap:anywhere}'
-  +'.cn-m.q{align-self:flex-end;background:var(--qb);color:#fff;border-bottom-right-radius:4px}'
+  +'.cn-m.q{align-self:flex-end;background:var(--qb);color:#fff;border-bottom-right-radius:4px;white-space:pre-wrap}'
   +'.cn-m.a{align-self:flex-start;background:rgba(255,255,255,.045);border:1px solid var(--l);border-bottom-left-radius:4px}'
+  /* chaque bulle a ses gestes : copier la réponse, modifier la question, demander une autre réponse */
+  +'.cn-w{display:flex;max-width:100%}.cn-wq{justify-content:flex-end;align-items:flex-end;gap:3px}.cn-wa{flex-direction:column;align-items:flex-start}'
+  +'.cn-wq .cn-m{max-width:calc(100% - 30px)}.cn-wa .cn-m{max-width:94%}'
+  +'.cn-w.cn-edit .cn-m{outline:2px dashed var(--c);outline-offset:2px}'
+  +'.cn-act{display:flex;gap:2px;margin-top:2px}'
+  +'.cn-ic{flex:none;display:grid;place-items:center;width:27px;height:27px;margin:0;padding:0;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--t);opacity:.55;cursor:pointer;-webkit-tap-highlight-color:transparent}'
+  +'.cn-ic svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}'
+  +'@media (hover:hover) and (pointer:fine){.cn-wq .cn-ic{opacity:0}.cn-wq:hover .cn-ic{opacity:.6}}'
+  +'.cn-w .cn-ic:hover,.cn-w .cn-ic:focus-visible,.cn-w .cn-ic.ok{opacity:1;color:var(--c);border-color:var(--l);outline:none}'
   +'.cn-m .src{display:block;margin-bottom:3px;font:400 14px/1.15 "Bebas Neue",Impact,sans-serif;letter-spacing:.09em;color:var(--c)}'
   +'.cn-m q{quotes:"« " " »"}.cn-m q::before,.cn-m q::after{color:var(--c)}'
   +'.cn-m a{color:var(--c2);text-decoration:underline;text-decoration-color:var(--c);text-underline-offset:2px}'
   +'.cn-m .va{display:block;margin-top:6px;font-size:.88em;opacity:.9}'
   +'.cn-m .lire{display:inline-block;margin-top:6px;font-weight:600}'
-  +'.cn-sug{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 9px}'
-  +'.cn-sug button{font:inherit;font-size:13px;line-height:1.2;padding:5px 10px;border-radius:999px;border:1px solid var(--l);background:rgba(0,0,0,.35);color:var(--t);cursor:pointer}'
+  /* une seule rangée de suggestions, qui défile au doigt, à la molette ou au clavier */
+  +'.cn-sug{display:flex;flex-wrap:nowrap;gap:6px;padding:0 12px 8px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;'
+  +'-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}'
+  +'.cn-sug.fin{-webkit-mask-image:none;mask-image:none}.cn-sug::-webkit-scrollbar{display:none}.cn-sug::after{content:"";flex:none;width:28px}'
+  +'.cn-sug button{flex:none;white-space:nowrap;font:inherit;font-size:12.5px;line-height:1.2;padding:4px 9px;border-radius:999px;border:1px solid var(--l);background:rgba(0,0,0,.35);color:var(--t);cursor:pointer}'
   +'.cn-sug button:hover,.cn-sug button:focus-visible{border-color:var(--c);color:var(--c);outline:none}'
-  /* téléphone ou fenêtre basse : une seule rangée de suggestions, qui défile au doigt */
-  +'@media (max-width:560px),(max-height:640px){.cn-sug{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding-bottom:7px;'
-  +'-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}.cn-sug::-webkit-scrollbar{display:none}.cn-sug::after{content:"";flex:none;width:28px}'
-  +'.cn-sug button{flex:none;white-space:nowrap;font-size:12.5px;padding:4px 9px}}'
   +'.cn-ai{flex:none;padding:6px 12px;border-bottom:1px solid var(--l);font:12px/1.4 system-ui,sans-serif;max-height:165px;max-height:min(165px,25dvh);overflow:auto}.cn-ai[hidden]{display:none}'
   +'.cn-ai-settings .cn-sug{display:none}.cn-ai-settings .cn-log{min-height:50px}'
   +'.cn-ai summary{cursor:pointer;color:var(--c2)}.cn-ai p{margin:8px 0}.cn-ai a{color:var(--c2)}'
   +'.cn-ai button{font:inherit;border:1px solid var(--l);border-radius:6px;padding:6px;margin:2px;background:#000;color:var(--t);cursor:pointer}.cn-ai button[hidden]{display:none}'
-  +'.cn-f{display:flex;gap:7px;padding:9px 10px 10px;border-top:1px solid var(--l)}'
-  +'.cn-f input{flex:1;min-width:0;font:16px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding:10px 12px;border-radius:11px;border:1px solid var(--l);background:#000;color:#fff}'
-  +'.cn-f input:focus{outline:none;border-color:var(--c);box-shadow:0 0 0 2px var(--o)}'
-  +'.cn-f button{flex:none;width:44px;border-radius:11px;border:1px solid var(--c);background:var(--c);color:#000;font:700 18px/1 Arial,sans-serif;cursor:pointer}'
+  +'.cn-ed{display:flex;align-items:center;gap:8px;padding:6px 10px 0 14px;font-size:12.5px;line-height:1.3;color:var(--c2)}.cn-ed[hidden]{display:none}.cn-ed span{flex:1}'
+  +'.cn-ed button{font:inherit;border:1px solid var(--l);border-radius:8px;background:transparent;color:var(--t);padding:3px 9px;cursor:pointer}.cn-ed button:hover,.cn-ed button:focus-visible{border-color:var(--c);color:var(--c);outline:none}'
+  +'.cn-f{display:flex;align-items:flex-end;gap:7px;padding:9px 10px 10px;border-top:1px solid var(--l)}'
+  +'.cn-f textarea{flex:1;min-width:0;box-sizing:border-box;height:43px;max-height:140px;resize:none;overflow-y:auto;font:16px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding:10px 12px;border-radius:11px;border:1px solid var(--l);background:#000;color:#fff;scrollbar-width:thin}'
+  +'.cn-f textarea:focus{outline:none;border-color:var(--c);box-shadow:0 0 0 2px var(--o)}'
+  +'.cn-f button{flex:none;width:44px;height:43px;border-radius:11px;border:1px solid var(--c);background:var(--c);color:#000;font:700 18px/1 Arial,sans-serif;cursor:pointer}'
+  +'.cn-f button:disabled{opacity:.55;cursor:default}.cn-f button.cn-stop{background:transparent;color:var(--c);font-size:15px}'
   +'.cn-dots i{display:inline-block;width:6px;height:6px;margin:0 2px;border-radius:50%;background:var(--c);animation:cn-dot 1s infinite}.cn-dots i:nth-child(2){animation-delay:.15s}.cn-dots i:nth-child(3){animation-delay:.3s}'
   +'@keyframes cn-dot{50%{opacity:.25;transform:translateY(-3px)}}'
   +'.cn-toast{position:fixed;left:50%;bottom:calc(74px + env(safe-area-inset-bottom,0px) + var(--lc-h,0px));z-index:97;max-width:min(30rem,calc(100vw - 32px));padding:9px 15px;transform:translateX(-50%);'
@@ -121,9 +132,10 @@
     +'<p>Sur ton accord, Cloudflare reçoit tes messages, jusqu’à six échanges IA précédents et des extraits du site. Aucun modèle à télécharger. L’IA peut se tromper ; quota gratuit partagé. N’envoie rien de confidentiel. <a href="/mentions-legales/#dialogue-ver">Détails</a>.</p>'
     +'<button type="button" class="cn-ai-on">J’accepte, activer l’IA</button><button type="button" class="cn-ai-off" hidden>Revenir au dialogue local</button><button type="button" class="cn-ai-clear">Effacer cet échange</button></details>'
     +'<div class="cn-log" aria-live="polite"></div><div class="cn-sug"></div>'
-    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><input id="cn-q" type="text" maxlength="2000" enterkeyhint="send" placeholder="Parle au Ver…"><button type="submit" aria-label="Demander">➤</button></form>'
+    +'<div class="cn-ed" hidden><span>Tu modifies ta question : les réponses suivantes seront remplacées.</span><button type="button">Annuler</button></div>'
+    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><textarea id="cn-q" rows="1" maxlength="2000" enterkeyhint="send" placeholder="Parle au Ver…" title="Entrée pour envoyer, Maj+Entrée pour aller à la ligne"></textarea><button type="submit" aria-label="Demander">➤</button></form>'
     +'</section>');
-  var log=pan.querySelector('.cn-log'),sug=pan.querySelector('.cn-sug'),inp=pan.querySelector('input'),ouvert=false,hist=[];
+  var log=pan.querySelector('.cn-log'),sug=pan.querySelector('.cn-sug'),inp=pan.querySelector('textarea'),envoyer=pan.querySelector('.cn-f button'),ed=pan.querySelector('.cn-ed'),ouvert=false,hist=[];
   try{hist=JSON.parse(sessionStorage.getItem(SS+'-'+couche)||'[]');}catch(_){hist=[];}
   var iaURL='',iaActive=false,iaConfig=null,iaRequete=null,iaOptions=pan.querySelector('.cn-ai');
   iaOptions.addEventListener('toggle',function(){pan.classList.toggle('cn-ai-settings',iaOptions.open);});
@@ -169,47 +181,143 @@
     if(occupeQuestion){toast('Attends la fin de la réponse, ou désactive l’IA pour l’arrêter.');return;}
     var efface=true;
     try{sessionStorage.removeItem(SS+'-'+couche);}catch(e){efface=false;console.warn('Le Ver : stockage de l’historique inaccessible.');}
-    hist=[];garde();log.textContent='';ajoute({r:'a',h:esc(ACC[couche])},false);
+    hist=[];garde();annuleEdition(true);log.textContent='';ajoute({r:'a',h:esc(ACC[couche]),ac:1},false);majRelance();
     toast(efface?'Historique de cette couche effacé dans cet onglet.':'Historique visible effacé, mais le stockage de cet onglet est inaccessible.');
   });
 
+  var IC={
+    copie:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>',
+    ok:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',
+    edite:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+    relance:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>'
+  };
+  function icone(nom,label,fn){
+    var b=D.createElement('button');b.type='button';b.className='cn-ic';b.innerHTML=IC[nom];
+    b.setAttribute('aria-label',label);b.title=label;
+    b.addEventListener('click',function(e){e.stopPropagation();fn(b);});
+    return b;
+  }
+  /* le défilement suit la réponse, sauf si on est remonté relire plus haut */
+  var colle=true;
+  log.addEventListener('scroll',function(){colle=log.scrollHeight-log.scrollTop-log.clientHeight<48;},{passive:true});
   function garde(){hist=hist.slice(-48);try{sessionStorage.setItem(SS+'-'+couche,JSON.stringify(hist));}catch(_){}}
-  function bas(){log.scrollTop=log.scrollHeight;}
+  function bas(){log.scrollTop=log.scrollHeight;colle=true;}
   function bulle(m,anim){
+    var w=D.createElement('div');w.className='cn-w cn-w'+m.r;w._m=m;
     var d=D.createElement('div');d.className='cn-m '+m.r;
-    if(m.r==='q'){d.textContent=m.t;log.appendChild(d);bas();return;}
-    log.appendChild(d);
+    if(m.r==='q'){
+      d.textContent=m.t;
+      w.appendChild(icone('edite','Modifier cette question',function(){edite(w);}));
+      w.appendChild(d);log.appendChild(w);bas();return;
+    }
+    w.appendChild(d);
+    if(!m.ac){var act=D.createElement('div');act.className='cn-act';act.appendChild(icone('copie','Copier la réponse',function(b){copie(d,b);}));w.appendChild(act);}
+    log.appendChild(w);
     var corps=m.h;
     if(!anim||calme){d.innerHTML=corps;bas();return;}
+    bas();
     /* l'écriture à la main : le texte de la citation apparaît lettre à lettre, les liens à la fin */
     var tmp=D.createElement('div');tmp.innerHTML=corps;
-    var noeuds=[],w=D.createTreeWalker(tmp,NodeFilter.SHOW_TEXT,null),n;
-    while((n=w.nextNode()))noeuds.push([n,n.nodeValue]);
+    var noeuds=[],tw=D.createTreeWalker(tmp,NodeFilter.SHOW_TEXT,null),n;
+    while((n=tw.nextNode()))noeuds.push([n,n.nodeValue]);
     noeuds.forEach(function(x){x[0].nodeValue='';});
     d.appendChild(tmp);
     var total=noeuds.reduce(function(a,x){return a+x[1].length;},0),pas=Math.max(2,Math.ceil(total/70)),i=0,k=0;
     (function tape(){
       var r=pas;
       while(r>0&&i<noeuds.length){var x=noeuds[i],reste=x[1].length-x[0].nodeValue.length,p=Math.min(r,reste);x[0].nodeValue=x[1].slice(0,x[0].nodeValue.length+p);r-=p;if(x[0].nodeValue.length>=x[1].length)i++;}
-      bas();if(i<noeuds.length&&++k<400)setTimeout(tape,16);else noeuds.forEach(function(x){x[0].nodeValue=x[1];});
+      if(colle)bas();if(i<noeuds.length&&++k<400)setTimeout(tape,16);else noeuds.forEach(function(x){x[0].nodeValue=x[1];});
     })();
   }
   function ajoute(m,anim){hist.push(m);garde();bulle(m,anim);if(m.r==='a')suggestions();}
+  function rendu(){log.textContent='';hist.forEach(function(m){bulle(m,false);});suggestions();majRelance();bas();}
+  function dernierQ(){for(var i=hist.length-1;i>=0;i--)if(hist[i].r==='q')return i;return -1;}
+  /* « Autre réponse » sur la dernière réponse de l'IA, « Réessayer » après un échec */
+  function majRelance(){
+    var v=log.querySelector('.cn-relance');if(v)v.remove();
+    if(occupeQuestion)return;
+    var ws=log.querySelectorAll('.cn-wa'),w=ws[ws.length-1];if(!w)return;
+    var m=w._m,i=hist.indexOf(m),act=w.querySelector('.cn-act');
+    if(!act||i<1||i!==hist.length-1||hist[i-1].r!=='q'||!(m.ai||m.err))return;
+    var b=icone('relance',m.err?'Réessayer':'Autre réponse',relance);b.classList.add('cn-relance');act.appendChild(b);
+  }
+  function relance(){
+    if(occupeQuestion)return;
+    var i=dernierQ();if(i<0)return;
+    var q=hist[i].t;annuleEdition(true);hist=hist.slice(0,i);garde();rendu();demande(q);
+  }
+  function copie(d,b){
+    var t=(d.innerText||d.textContent).replace(/[ \t]*\[S\d+\]/g,'').replace(/\n{3,}/g,'\n\n').trim();
+    function ok(){
+      b.classList.add('ok');b.innerHTML=IC.ok;b.setAttribute('aria-label','Copié');b.title='Copié';
+      setTimeout(function(){b.classList.remove('ok');b.innerHTML=IC.copie;b.setAttribute('aria-label','Copier la réponse');b.title='Copier la réponse';},1600);
+    }
+    function repli(){
+      var ta=D.createElement('textarea'),r=false;ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
+      pan.appendChild(ta);ta.select();try{r=D.execCommand('copy');}catch(_){}ta.remove();try{b.focus({preventScroll:true});}catch(_){}
+      if(r)ok();else toast('Copie impossible : sélectionne le texte à la main.');
+    }
+    if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,repli);else repli();
+  }
+  /* modifier une question : elle revient dans le champ ; à l'envoi, l'échange reprend depuis elle */
+  var edition=null,brouillon='';
+  function hauteur(){
+    if(!inp.value||pan.hidden){inp.style.height='';return;}
+    inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight+2,140)+'px';
+  }
+  function edite(w){
+    if(occupeQuestion){toast('Attends la fin de cette réponse.');return;}
+    if(hist.indexOf(w._m)<0){toast('Cette question est trop ancienne pour être modifiée.');return;}
+    if(!edition)brouillon=inp.value;
+    edition=w._m;ed.hidden=false;
+    var x=log.querySelector('.cn-edit');if(x)x.classList.remove('cn-edit');w.classList.add('cn-edit');
+    try{w.scrollIntoView({block:'nearest'});}catch(_){}
+    inp.value=w._m.t;hauteur();
+    try{inp.focus({preventScroll:true});inp.setSelectionRange(inp.value.length,inp.value.length);}catch(_){}
+  }
+  function annuleEdition(rendre){
+    if(!edition)return;
+    edition=null;ed.hidden=true;
+    var x=log.querySelector('.cn-edit');if(x)x.classList.remove('cn-edit');
+    if(rendre){inp.value=brouillon;hauteur();}
+    brouillon='';
+  }
+  ed.querySelector('button').addEventListener('click',function(){annuleEdition(true);inp.focus();});
+  function envoi(){
+    if(occupeQuestion){toast('Laisse-moi finir cette réponse avant de reprendre.');return;}
+    var q=inp.value.trim();if(!q)return;
+    if(edition){
+      var i=hist.indexOf(edition);annuleEdition();
+      if(i>=0){hist=hist.slice(0,i);garde();rendu();}
+    }
+    inp.value='';hauteur();demande(q);
+  }
+  inp.addEventListener('input',hauteur);
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();envoi();}
+    else if(e.key==='Escape'&&edition){e.preventDefault();e.stopPropagation();annuleEdition(true);}
+  });
+  function finSug(){sug.classList.toggle('fin',sug.scrollLeft+sug.clientWidth>=sug.scrollWidth-30);}
+  sug.addEventListener('scroll',finSug,{passive:true});
+  sug.addEventListener('wheel',function(e){
+    if(Math.abs(e.deltaY)>Math.abs(e.deltaX)&&sug.scrollWidth>sug.clientWidth){sug.scrollLeft+=e.deltaY;e.preventDefault();}
+  },{passive:false});
   function suggestions(){
     sug.innerHTML='';
     var p=precedent(),choix=p&&p.dialogue?['Et toi ?','Pourquoi ?','Qui est ton maître ?']:
       p&&p.sujet?['Dis-m’en plus','Quelles sont tes sources ?','Parlons d’autre chose']:SUG[couche];
     choix.forEach(function(q){var b=D.createElement('button');b.type='button';b.textContent=q;b.addEventListener('click',function(){demande(q);});sug.appendChild(b);});
+    sug.scrollLeft=0;finSug();
   }
   function ouvre(){
     if(ouvert)return;ouvert=true;pan.hidden=false;ob.setAttribute('aria-expanded','true');
     configureIA();
     D.dispatchEvent(new CustomEvent('ver:dialogue',{detail:true}));
     if(!log.childNodes.length){
-      if(!hist.length)hist.push({r:'a',h:esc(ACC[couche])});
-      hist.forEach(function(m){bulle(m,false);});
-    }
-    suggestions();bas();
+      if(!hist.length)hist.push({r:'a',h:esc(ACC[couche]),ac:1});
+      rendu();
+    }else{suggestions();bas();}
+    hauteur();
     if(matchMedia('(pointer:fine)').matches)setTimeout(function(){try{inp.focus({preventScroll:true});}catch(_){}},60);
   }
   function ferme(){if(!ouvert)return;ouvert=false;pan.hidden=true;ob.setAttribute('aria-expanded','false');D.dispatchEvent(new CustomEvent('ver:dialogue',{detail:false}));}
@@ -217,7 +325,12 @@
   pan.querySelector('.cn-x').addEventListener('click',function(){ferme();ob.focus();});
   D.addEventListener('keydown',function(e){if(e.key==='Escape'&&ouvert){ferme();ob.focus();}});
   D.addEventListener('pointerdown',function(e){if(ouvert&&!pan.contains(e.target)&&!ob.contains(e.target))ferme();},true);
-  pan.querySelector('form').addEventListener('submit',function(e){e.preventDefault();var q=inp.value.trim();if(q){inp.value='';demande(q);}});
+  /* pendant une réponse de l'IA, le bouton d'envoi devient « Arrêter » */
+  pan.querySelector('form').addEventListener('submit',function(e){
+    e.preventDefault();
+    if(envoyer.classList.contains('cn-stop')){if(iaRequete)iaRequete.controleur.abort();return;}
+    envoi();
+  });
   /* un lien de l'Oracle mène à sa page : il se referme (le mode putride change de page sans recharger) */
   log.addEventListener('click',function(e){if(e.target.closest('a'))setTimeout(ferme,30);});
   D.addEventListener('putride:page',ferme);
@@ -641,7 +754,10 @@
         typeof d.truncated!=='boolean'||!Array.isArray(d.sources)||d.sources.length>8||
         !d.sources.every(function(s){return Number.isInteger(s.n)&&s.n>=1&&s.n<=8&&typeof s.title==='string'&&
           typeof s.url==='string'&&KB.P.some(function(p){return p[1]===s.url.split('#')[0];});}))throw fauteIA('reponse');
-      var h=esc(d.text).replace(/\[S(\d+)\]/g,function(m,n){
+      /* mise en forme légère : listes, **gras** et *italique* du modèle */
+      var h=esc(d.text).replace(/^[-*] /gm,'• ').replace(/\*\*(?!\s)([^*\n]+?)\*\*/g,'<strong>$1</strong>')
+        .replace(/(^|[\s(«'’])\*(?!\s)([^*\n]+?)\*(?=[\s).,;:!?»'’]|$)/gm,'$1<em>$2</em>')
+        .replace(/\[S(\d+)\]/g,function(m,n){
         var s=d.sources.find(function(s){return s.n===Number(n);});
         if(!s)throw fauteIA('sources');
         return '<a href="'+esc(s.url)+'" title="'+esc(s.title)+'">'+m+'</a>';
@@ -664,23 +780,35 @@
     reponse:'La réponse reçue de l’IA est vide ou invalide. Réessaie.',
     taille:'Cet échange dépasse la limite de taille du service. Efface l’historique pour recommencer.'
   };
+  /* pendant une réponse : une seule question à la fois ; l'IA distante peut être arrêtée */
+  function occupe(on,distant){
+    occupeQuestion=on;
+    if(on)pan.setAttribute('aria-busy','true');else pan.removeAttribute('aria-busy');
+    var stop=on&&!!distant;
+    envoyer.disabled=on&&!distant;
+    envoyer.classList.toggle('cn-stop',stop);
+    envoyer.textContent=stop?'■':'➤';
+    envoyer.setAttribute('aria-label',stop?'Arrêter la réponse':'Demander');
+    envoyer.title=stop?'Arrêter la réponse':'';
+    if(on){var v=log.querySelector('.cn-relance');if(v)v.remove();}else majRelance();
+  }
   function demande(q){
     if(occupeQuestion){toast('Laisse-moi finir cette réponse avant de reprendre.');return;}
     var aide=secours(q),reliques=!aide&&/reliq/.test(norm(q)),social=aide||(iaActive?null:bavarde(q)),distant=iaActive&&!reliques&&!social;
-    occupeQuestion=true;pan.querySelector('button[type="submit"]').disabled=true;
+    occupe(true,distant);
     ajoute({r:'q',t:q,ai:distant},false);
     var att=D.createElement('div');att.className='cn-m a cn-dots';att.setAttribute('aria-label',distant?'Le Ver prépare sa réponse avec l’IA':'Le Ver consulte les registres');att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
     var t0=performance.now();
     (reliques||social?Promise.resolve(null):charge()).then(function(kb){
       return distant?reponseIA(q):reliques?enigme():social||repond(q);
     }).then(function(m){
-      setTimeout(function(){att.remove();ajoute(m,true);occupeQuestion=false;pan.querySelector('button[type="submit"]').disabled=false;},Math.max(0,(calme?0:420)-(performance.now()-t0)));
+      setTimeout(function(){att.remove();ajoute(m,true);occupe(false);},Math.max(0,(calme?0:420)-(performance.now()-t0)));
     }).catch(function(e){
       if(distant)console.error('Le Ver : conversation IA interrompue.',e.code||'service');
       var message=distant?(ERREURS_IA[e.code]||'L’IA est inaccessible. Aucune réponse générée. Réessaie, ou reviens au dialogue local dans les options.'):
         'Les registres sont hors d’atteinte. Je ne peux pas les consulter : réessaie dans un moment.';
-      att.remove();ajoute({r:'a',h:esc(message)},false);
-      occupeQuestion=false;pan.querySelector('button[type="submit"]').disabled=false;
+      att.remove();ajoute({r:'a',h:esc(message),err:true},false);
+      occupe(false);
     });
   }
 
