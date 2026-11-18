@@ -1,4 +1,28 @@
-Site officiel de La Créature du Marais — version visuelle basée sur le fichier index.html fourni. Conserver le dossier images/ existant du dépôt lors du remplacement des fichiers HTML/CSS.
+# La Créature du Marais
+
+Site officiel de [lacreaturedumarais.fr](https://lacreaturedumarais.fr), publié par
+GitHub Pages (Jekyll). Trois couches :
+
+- **mode normal** : accueil `index.html` et pages publiques indexées (`discographie/`,
+  `nouvelles/`, `biographie/`, `presse/`, `faq/`…), la plupart sur le gabarit
+  `_layouts/seo-page.html` ;
+- **mode putride** (`mode-putride/`) : bestiaire, discographie d'archives, lore,
+  pages en `noindex` ;
+- **les cachots** (`cachot/`) : troisième couche, également en `noindex`.
+
+Les images vivent dans `images/` (et `SECTIONS/` pour les anciennes) ; une photo de
+galerie s'affiche en vignette `X.th.webp` (grand côté ≤ 900 px) et ouvre la version
+complète. Les scripts et styles partagés sont chargés avec `?v=N` : après une
+modification, incrémenter `N` dans **toutes** les pages qui les chargent, accueil et
+`_layouts/seo-page.html` compris. Jekyll, Ruby et Docker ne tournent pas sur le poste
+local : prévisualiser avec un serveur statique (`python -m http.server`), en sachant
+que les pages en `layout: seo-page` et les routes déclarées seulement par
+`permalink` ne s'y affichent pas comme en production.
+
+`apercu.js` affiche l'aperçu d'un lien interne au survol (souris seulement). L'image
+retenue est, dans l'ordre : `og:image` de la page visée, portrait de sa fiche
+(`.fiche2 [data-lb-src]`), puis la première image de contenu, en ignorant décors,
+icônes, ailes, auras et en-têtes.
 
 ## Le Ver
 
@@ -29,6 +53,21 @@ et aux descriptions existantes.
 Le dialogue local ne comprend pas librement tous les sujets comme un modèle
 génératif. Une question sans trace fiable reçoit une réponse d'incertitude.
 
+### Interface du dialogue
+
+- **Entrée** envoie, **Maj+Entrée** va à la ligne (champ multiligne, 2 000 caractères).
+- Chaque réponse a un bouton **Copier** (texte brut, sans les marqueurs `[S1]`).
+- Le crayon d'une question la remet dans le champ : à l'envoi, l'échange reprend
+  depuis elle et les réponses suivantes sont remplacées (Échap ou « Annuler » pour
+  renoncer). Seules les questions encore dans l'historique de 48 messages se modifient.
+- La dernière réponse de l'IA propose **Autre réponse** ; après une erreur,
+  **Réessayer** renvoie la même question.
+- Pendant une requête IA, le bouton d'envoi devient **Arrêter la réponse**.
+- Les relances proposées tiennent sur une seule ligne défilante (molette ou glissé).
+- Les réponses de l'IA rendent `**gras**`, `*italique*` et les listes à tirets ;
+  tout le reste est échappé.
+- Le panneau porte `aria-busy="true"` tant qu'une réponse est en cours.
+
 ### Conversation IA facultative
 
 `_ver-worker/worker.mjs` branche Cloudflare Workers AI, avec
@@ -40,15 +79,17 @@ ou d'intelligence équivalente aux plus grands assistants. Qwen3-30B-A3B a été
 
 L'accord est lié à l'adresse du service et à la session de l'onglet. Les messages
 locaux antérieurs ne sont pas transmis. Le navigateur envoie le message courant,
-au plus six paires question/réponse IA et huit indices d'extraits. Le Worker vérifie
+au plus six paires question/réponse IA et dix indices d'extraits. Le Worker vérifie
 la révision du corpus et prend les textes dans sa propre copie, jamais dans un
 texte documentaire fourni par le visiteur. Limites : 10 000 caractères d'historique,
-12 000 de contexte documentaire, 640 tokens de sortie. Les seules citations
+15 000 de contexte documentaire (2 200 par extrait), 640 tokens de sortie. Les seules citations
 cliquables sont des liens du corpus. Les erreurs et réponses tronquées sont visibles,
 sans bascule automatique vers des répliques locales présentées comme de l'IA.
 
 La personnalité distingue le personnage, la légende, l'interprétation et les faits
-sourcés. Elle discute et analyse, mais ne sert pas à commander des œuvres, du code
+sourcés. Le Ver n'est pas une parodie : farceur attachant au service de Kobal, il
+pense par lui-même, propose des pistes et suit l'actualité de la Créature. Il
+discute et analyse, mais ne sert pas à commander des œuvres, du code
 ou de nouveaux épisodes du lore. Pas de recherche web ni de transcription audio.
 Chaque extrait envoyé porte sa nature (texte du site, transcription de pièce, repère
 culturel). Hors citation, le Worker remplace aussi « paroisse », « paroissien » et
@@ -123,7 +164,9 @@ promenade. Incrémenter les versions des scripts dans tous leurs chargeurs.
 
 Tests ciblés : `python -m unittest discover -s _outils -p test_oracle.py`, puis
 `python _outils/test_ver.py http://127.0.0.1:8851` avec Playwright Python et Edge.
-Le second test mesure le cycle en temps réel et vérifie le dialogue et les gestes.
+Le second test mesure le cycle en temps réel et vérifie le dialogue et les gestes,
+ainsi que la copie, la modification, la relance et l'arrêt avec une IA simulée
+(`--ia` pour ne lancer que cette partie).
 
 ## Collants et fil de l'araignée
 
