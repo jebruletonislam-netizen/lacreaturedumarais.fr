@@ -136,7 +136,8 @@ créent un fichier vide s'il manque ; `npm run deploy` refuse de partir si les n
 sont absentes, vides ou mal formées.
 
 Après chaque changement éditorial : régénérer les corpus, incrémenter leur version
-dans `coins.js`, **redéployer le Worker avec le même corpus**, puis publier le site.
+dans `coins.js`, publier le site, attendre que le corpus en ligne porte la nouvelle
+révision, puis **redéployer le Worker avec ce même corpus**.
 Un décalage de révision renvoie 409 plutôt que de citer un autre passage.
 Après toute modification de `coins.js`, incrémenter ses références sur toutes les
 pages. Pour revenir au dialogue local uniquement, vider `url` dans `ver-ia.json`.
@@ -203,13 +204,30 @@ ne sont pas des pages à forcer dans l'index.
 Une sortie datée se prépare sur une branche dédiée (par exemple
 `sortie-monsieur-clerge`) : pages, galeries, sitemap (avec `lastmod` à la date de
 sortie) et `llms.txt`. Le workflow `.github/workflows/sortie-monsieur-clerge.yml`
-fusionne cette branche dans `main` le 30 novembre 2026 à 18 h (Paris), puis demande
-un build GitHub Pages : un push fait avec `GITHUB_TOKEN` n'en déclenche pas. Si l'API
-refuse ce jeton, créer un secret `PAGES_TOKEN` (jeton à accès fin, droit « Pages » en
-écriture). Le workflow peut aussi être lancé à la main depuis l'onglet Actions.
+prépare la fusion, construit le site et vérifie son SEO avant de pousser dans
+`main`. La publication est interdite avant le **30 novembre 2026 à 18 h (Paris,
+17 h UTC)**, y compris lors d'un lancement manuel. Le cron démarre en avance et
+attend cette heure ; un second passage est prévu à 18 h 20. GitHub peut retarder
+les tâches et le build Pages prend du temps : 18 h est l'heure de déclenchement
+visée, pas une garantie de visibilité à la seconde près.
 
-- Si `main` avance avant la date, rebaser la branche de sortie pour éviter un conflit
-  de fusion.
+Depuis Actions, lancer le workflow sur `main` avec **verification = true**
+(valeur par défaut) pour répéter la fusion et le build **sans pousser la sortie**.
+Le contrôle SEO emploie explicitement `--as-of 2026-11-30` pour cette simulation ;
+sans cette option, il continue à refuser les dates futures. Le rendu HTML, les
+photos et les SHA contrôlés sont conservés dans l'artefact
+`verification-monsieur-clerge` pendant 30 jours.
+
+Les deux modes demandent ensuite un vrai build de **main** par l'API Pages avec
+`GITHUB_TOKEN` et le droit `pages: write`, puis attendent le statut `built` du SHA
+attendu. La vérification reconstruit donc uniquement le site déjà public.
+La publication peut être relancée avec **verification = false** après l'heure
+prévue : même si la branche est déjà fusionnée, la demande Pages est réessayée.
+Une branche introuvable, un conflit, un refus API ou un build échoué fait échouer
+le workflow au lieu de signaler un faux succès.
+
+- Si `main` avance avant la date, relancer la vérification ; en cas de conflit,
+  fusionner `main` dans la branche de sortie et résoudre le conflit avant la date.
 - La branche ne régénère pas `oracle-putride.json` : un corpus d'une autre révision
   ferait répondre 409 au Worker du Ver. Après la sortie, régénérer les corpus,
   incrémenter les versions concernées, synchroniser, attendre que le site publie la
