@@ -11,7 +11,7 @@
 
   var st = document.createElement('style');
   st.textContent =
-    '.ap{position:fixed;left:0;top:0;z-index:99990;width:250px;max-width:calc(100vw - 24px);background:linear-gradient(180deg,rgba(14,0,0,.97),rgba(0,0,0,.98));color:#fff;border:1px solid ' + ACC + ';border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.75),0 0 12px ' + GLOW + ';text-shadow:0 1px 2px #000;pointer-events:none;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(5px);transition:opacity .16s,transform .16s,visibility 0s .16s;text-align:left;font:400 13px/1.35 "Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-variant:normal;letter-spacing:0;text-transform:none}' +
+    '.ap{position:fixed;left:0;top:0;z-index:99990;width:250px;max-width:calc(100vw - 24px);background:linear-gradient(180deg,#0e0000,#000);color:#fff;border:1px solid ' + ACC + ';border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.75),0 0 12px ' + GLOW + ';text-shadow:0 1px 2px #000;pointer-events:none;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(5px);transition:opacity .16s,transform .16s,visibility 0s .16s;text-align:left;font:400 13px/1.35 "Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-variant:normal;letter-spacing:0;text-transform:none}' +
     '.ap.on{opacity:1;visibility:visible;transform:none;transition:opacity .16s,transform .16s}' +
     '.ap-i{display:block;width:100%;height:auto;max-height:110px;object-fit:contain;background:#000}' +
     '.ap-b{padding:9px 12px 10px}' +
@@ -119,10 +119,17 @@
     if (am && txt(am)) return txt(am) + (ln && txt(ln) ? ' · ' + txt(ln) : '');
     return firstP(main, false);
   }
+  var IMGEXT = /\.(jpe?g|png|webp|gif|avif)(\?|$)/i;
+  // Les fiches du mode putride superposent des calques (fond flou, ailes, sang) : le portrait complet est dans data-lb-src.
+  function portrait(root, base) {
+    var f = root.querySelector('.fiche2 [data-lb-src]'), s = f ? f.getAttribute('data-lb-src') : '';
+    if (!s || !IMGEXT.test(s)) return '';
+    try { return new URL(s, base).href; } catch (e) { return ''; }
+  }
   function pickImg(root, base) {
     var imgs = root.querySelectorAll('img'), i, s;
     for (i = 0; i < imgs.length; i++) {
-      if (/\b(aur|bl|ico)\b/.test(imgs[i].className)) continue;
+      if (/\b(aur|bl|ico|bgz|wing|wg|sang|sf-t)\b/.test(imgs[i].className) || imgs[i].closest('.pfoot,header,nav')) continue;
       s = imgs[i].getAttribute('src') || imgs[i].getAttribute('data-src') || '';
       if (!s || /^data:/.test(s)) continue;
       try { return new URL(s, base).href; } catch (e) { }
@@ -151,7 +158,7 @@
     if (!img) {
       var og = d.querySelector('meta[property="og:image"]');
       var s = og && og.content ? og.content.replace(PROD, location.origin) : '';
-      img = s || pickImg(main, base);
+      img = s || portrait(main, base) || pickImg(main, base);
     }
     return { kind: kind || 'APERÇU · PAGE', title: title || '', text: cut(text || '', 190), img: img, foot: '' };
   }
