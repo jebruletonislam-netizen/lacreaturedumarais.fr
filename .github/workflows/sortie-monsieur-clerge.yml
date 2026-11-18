@@ -1,0 +1,70 @@
+name: Sortie programmée — Monsieur Clergé
+
+# Fusionne la branche sortie-monsieur-clerge dans main le 30 novembre 2026
+# à 18 h, heure de Paris (17 h UTC), puis demande un build GitHub Pages.
+# Les déclenchements cron des Actions peuvent avoir du retard : le premier
+# démarre en avance et attend 17 h UTC, le second sert de filet de sécurité.
+
+on:
+  schedule:
+    - cron: "30 16 30 11 *"
+    - cron: "20 17 30 11 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: sortie-monsieur-clerge
+  cancel-in-progress: false
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Attendre 18 h (Paris)
+        if: github.event_name == 'schedule'
+        run: |
+          cible=$(date -u -d '2026-11-30 17:00:00' +%s)
+          maintenant=$(date -u +%s)
+          if [ "$maintenant" -lt "$cible" ]; then sleep $((cible - maintenant)); fi
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fusionner la branche de sortie
+        id: fusion
+        run: |
+          if ! git fetch origin sortie-monsieur-clerge; then
+            echo "Branche absente : rien à publier."; echo "fait=non" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if git merge-base --is-ancestor origin/sortie-monsieur-clerge HEAD; then
+            echo "Déjà publiée."; echo "fait=non" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git merge --no-edit origin/sortie-monsieur-clerge
+          python3 -m unittest discover -s _outils -p test_oracle.py
+          git push origin HEAD:main
+          echo "fait=oui" >> "$GITHUB_OUTPUT"
+
+      # Un push fait avec GITHUB_TOKEN ne déclenche pas de build Pages :
+      # on le demande explicitement (secret PAGES_TOKEN en secours).
+      - name: Demander le build GitHub Pages
+        if: steps.fusion.outputs.fait == 'oui'
+        env:
+          GH_TOKEN: ${{ secrets.PAGES_TOKEN || github.token }}
+        run: |
+          sha=$(git rev-parse HEAD)
+          gh api -X POST "repos/${{ github.repository }}/pages/builds"
+          for i in $(seq 1 40); do
+            sleep 30
+            ligne=$(gh api "repos/${{ github.repository }}/pages/builds/latest" --jq '.commit + " " + .status' || true)
+            echo "Build Pages : $ligne"
+            [ "$ligne" = "$sha built" ] && exit 0
+            [ "$ligne" = "$sha errored" ] && exit 1
+          done
+          exit 1

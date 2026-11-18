@@ -197,3 +197,20 @@ Après synchronisation et publication, soumettre ou relire
 `https://lacreaturedumarais.fr/sitemap.xml` dans Google Search Console et Bing
 Webmaster Tools. Les exclusions volontaires (`noindex`, doublons avec canonical)
 ne sont pas des pages à forcer dans l'index.
+
+## Sorties programmées
+
+Une sortie datée se prépare sur une branche dédiée (par exemple
+`sortie-monsieur-clerge`) : pages, galeries, sitemap (avec `lastmod` à la date de
+sortie) et `llms.txt`. Le workflow `.github/workflows/sortie-monsieur-clerge.yml`
+fusionne cette branche dans `main` le 30 novembre 2026 à 18 h (Paris), puis demande
+un build GitHub Pages : un push fait avec `GITHUB_TOKEN` n'en déclenche pas. Si l'API
+refuse ce jeton, créer un secret `PAGES_TOKEN` (jeton à accès fin, droit « Pages » en
+écriture). Le workflow peut aussi être lancé à la main depuis l'onglet Actions.
+
+- Si `main` avance avant la date, rebaser la branche de sortie pour éviter un conflit
+  de fusion.
+- La branche ne régénère pas `oracle-putride.json` : un corpus d'une autre révision
+  ferait répondre 409 au Worker du Ver. Après la sortie, régénérer les corpus,
+  incrémenter les versions concernées, synchroniser, attendre que le site publie la
+  nouvelle révision, puis redéployer le Worker (`npm run deploy` dans `_ver-worker`).
