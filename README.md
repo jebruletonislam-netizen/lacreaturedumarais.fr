@@ -219,8 +219,11 @@ photos et les SHA contrôlés sont conservés dans l'artefact
 `verification-monsieur-clerge` pendant 30 jours.
 
 Les deux modes demandent ensuite un vrai build de **main** par l'API Pages avec
-`GITHUB_TOKEN` et le droit `pages: write`, puis attendent le statut `built` du SHA
-attendu. La vérification reconstruit donc uniquement le site déjà public.
+`GITHUB_TOKEN` et le droit `pages: write`, puis suivent le **nouveau** workflow
+`pages build and deployment` jusqu'à son succès, pour le SHA attendu
+(`actions: read`). Le statut de `/pages/builds/latest` n'est pas utilisé : il peut
+rester sur un ancien build annulé du même SHA. Aucun secret `PAGES_TOKEN` n'est
+nécessaire. La vérification reconstruit uniquement le site déjà public.
 La publication peut être relancée avec **verification = false** après l'heure
 prévue : même si la branche est déjà fusionnée, la demande Pages est réessayée.
 Une branche introuvable, un conflit, un refus API ou un build échoué fait échouer

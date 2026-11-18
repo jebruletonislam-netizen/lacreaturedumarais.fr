@@ -17,6 +17,7 @@ on:
         default: true
 
 permissions:
+  actions: read
   contents: write
   pages: write
 
@@ -126,17 +127,28 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           SHA: ${{ steps.mode.outputs.valeur == 'verification' && steps.fusion.outputs.main || steps.fusion.outputs.sortie }}
         run: |
+          api="repos/${{ github.repository }}"
+          precedent=$(gh api "$api/actions/runs?head_sha=$SHA&per_page=10" \
+            --jq '[.workflow_runs[] | select(.path == "dynamic/pages/pages-build-deployment") | .id] | max // 0')
           gh api -X POST "repos/${{ github.repository }}/pages/builds"
+          run=""
           for i in $(seq 1 40); do
             sleep 30
-            ligne=$(gh api "repos/${{ github.repository }}/pages/builds/latest" --jq '.commit + " " + .status')
-            echo "Build Pages : $ligne"
-            if [ "$ligne" = "$SHA built" ]; then
-              echo "Pages : $SHA construit avec GITHUB_TOKEN." >> "$GITHUB_STEP_SUMMARY"
+            if [ -z "$run" ]; then
+              run=$(gh api "$api/actions/runs?head_sha=$SHA&per_page=10" \
+                --jq ".workflow_runs | map(select(.path == \"dynamic/pages/pages-build-deployment\" and .head_sha == \"$SHA\" and .id > $precedent)) | sort_by(.id) | last | .id // empty")
+              [ -z "$run" ] && continue
+            fi
+            # /pages/builds/latest peut décrire un ancien build annulé du même SHA.
+            # Suivre le nouveau workflow, qui inclut le déploiement, et pas ce statut.
+            etat=$(gh api "$api/actions/runs/$run" --jq '.status + " " + (.conclusion // "")')
+            echo "Pages $run : $etat"
+            if [ "$etat" = "completed success" ]; then
+              echo "Pages : $SHA déployé avec GITHUB_TOKEN. https://github.com/${{ github.repository }}/actions/runs/$run" >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
-            if [ "$ligne" = "$SHA errored" ]; then
-              echo "::error::Le build Pages a échoué."; exit 1
+            if [[ "$etat" == completed* ]]; then
+              echo "::error::Le workflow Pages $run a échoué : $etat"; exit 1
             fi
           done
           echo "::error::Le build Pages attendu n'a pas terminé dans le délai."
