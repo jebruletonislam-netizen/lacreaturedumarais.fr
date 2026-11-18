@@ -7,7 +7,7 @@ Site officiel : https://lacreaturedumarais.fr/
 ## Pages
 - [Accueil](https://lacreaturedumarais.fr/) : dernier méfait, nouvelles, archives
 - [La Créature du Marais](https://lacreaturedumarais.fr/la-creature-du-marais/) : identité du projet et profils officiels
-- [Biographie](https://lacreaturedumarais.fr/biographie/) : parcours artistique, des Machines Infernales à Misérables
+- [Biographie](https://lacreaturedumarais.fr/biographie/) : parcours artistique, des Machines Infernales à Monsieur Clergé
 - [Discographie](https://lacreaturedumarais.fr/discographie/) : albums et singles
 - [Nouvelles](https://lacreaturedumarais.fr/nouvelles/) : sorties, clips, tournages
 - [Vidéos](https://lacreaturedumarais.fr/videos/) : clips officiels
@@ -23,6 +23,7 @@ Site officiel : https://lacreaturedumarais.fr/
 - Cul-Pointu : le nom d'artiste sous lequel les disques sont publiés
 
 ## Sorties
+- [Monsieur Clergé](https://lacreaturedumarais.fr/discographie/monsieur-clerge/) : single (30 novembre 2026), troisième extrait d'In Odium Fidei
 - [Misérables](https://lacreaturedumarais.fr/discographie/miserables/) : single (31 octobre 2026), second extrait d'In Odium Fidei, avec son [clip](https://lacreaturedumarais.fr/video/clip-miserables/)
 - [Jubilé](https://lacreaturedumarais.fr/discographie/jubile/) : single (6 décembre 2025), premier extrait d'In Odium Fidei
 - [In Odium Fidei](https://lacreaturedumarais.fr/discographie/in-odium-fidei/) : prochain album
@@ -34,6 +35,7 @@ Site officiel : https://lacreaturedumarais.fr/
 
 ## Photos et visuels
 - Pochettes : en tête de chaque page album ou single de la [Discographie](https://lacreaturedumarais.fr/discographie/), en haute définition sur la page [Presse](https://lacreaturedumarais.fr/presse/)
+- Photos de Monsieur Clergé : [Monsieur Clergé : troisième single d’In Odium Fidei](https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-troisieme-single-d-in-odium-fidei/)
 - Photos du tournage de Misérables (Rouen) : [Il y a des choses qui puent à Rouen](https://lacreaturedumarais.fr/nouvelles/il-y-a-des-choses-qui-puent-a-rouen/) et [page du clip](https://lacreaturedumarais.fr/video/clip-miserables/)
 - Photos du tournage des autres clips : [Chimaera Rothomagensis](https://lacreaturedumarais.fr/video/clip-chimaera/), [La côte Sainte-Catherine](https://lacreaturedumarais.fr/video/clip-cote-sainte-catherine/), [La Chute](https://lacreaturedumarais.fr/video/clip-la-chute/), [Dis, ferme un instant les yeux](https://lacreaturedumarais.fr/video/clip-dis-ferme-un-instant-les-yeux/)
 - Visuels d'Omerta434 (pochette, disque, un visuel par titre) : [Omerta434](https://lacreaturedumarais.fr/discographie/omerta434/)

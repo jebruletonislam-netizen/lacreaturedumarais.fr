@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-  <url><loc>https://lacreaturedumarais.fr/</loc><lastmod>2026-11-16</lastmod>
+  <url><loc>https://lacreaturedumarais.fr/</loc><lastmod>2026-11-30</lastmod>
+    <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-monsieur-clerge.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-miserables.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/odium-fidei.jpg</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-confiteor.webp</image:loc></image:image>
@@ -13,7 +14,7 @@
     <image:image><image:loc>https://lacreaturedumarais.fr/images/creature.webp</image:loc></image:image>
   </url>
   <url><loc>https://lacreaturedumarais.fr/biographie/</loc><lastmod>2026-11-01</lastmod></url>
-  <url><loc>https://lacreaturedumarais.fr/discographie/</loc><lastmod>2026-11-16</lastmod>
+  <url><loc>https://lacreaturedumarais.fr/discographie/</loc><lastmod>2026-11-30</lastmod>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/odium-fidei.jpg</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-confiteor.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-omerta434-chyren.webp</image:loc></image:image>
@@ -54,15 +55,41 @@
   <url><loc>https://lacreaturedumarais.fr/discographie/jubile/</loc><lastmod>2026-11-16</lastmod>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-jubile.webp</image:loc></image:image>
   </url>
-  <url><loc>https://lacreaturedumarais.fr/discographie/miserables/</loc><lastmod>2026-11-16</lastmod>
+  <url><loc>https://lacreaturedumarais.fr/discographie/miserables/</loc><lastmod>2026-11-30</lastmod>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-miserables.webp</image:loc></image:image>
   </url>
-  <url><loc>https://lacreaturedumarais.fr/discographie/in-odium-fidei/</loc><lastmod>2026-11-16</lastmod>
+  <url><loc>https://lacreaturedumarais.fr/discographie/monsieur-clerge/</loc><lastmod>2026-11-30</lastmod>
+    <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-monsieur-clerge.webp</image:loc></image:image>
+  </url>
+  <url><loc>https://lacreaturedumarais.fr/discographie/in-odium-fidei/</loc><lastmod>2026-11-30</lastmod>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/odium-fidei.jpg</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-jubile.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-miserables.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-monsieur-clerge.webp</image:loc></image:image>
   </url>
-  <url><loc>https://lacreaturedumarais.fr/nouvelles/</loc><lastmod>2026-11-01</lastmod></url>
+  <url><loc>https://lacreaturedumarais.fr/nouvelles/</loc><lastmod>2026-11-30</lastmod></url>
+  <url><loc>https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-troisieme-single-d-in-odium-fidei/</loc><lastmod>2026-11-30</lastmod>
+    <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-monsieur-clerge.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-monsieur.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-theses.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-baptistere.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-fonts1.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-fonts2.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ephebus-hitler.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-colombages.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-rosace.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-accent.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ver.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-clysteres.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-rumeurs.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ordination.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-saints.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-cendre.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-dictionnaire.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-anneau.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ciel.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-mains.webp</image:loc></image:image>
+  </url>
   <url><loc>https://lacreaturedumarais.fr/nouvelles/miserables-le-clip-est-sorti/</loc><lastmod>2026-11-01</lastmod></url>
   <url><loc>https://lacreaturedumarais.fr/nouvelles/jubile-premier-single-d-in-odium-fidei/</loc><lastmod>2025-12-06</lastmod></url>
   <url><loc>https://lacreaturedumarais.fr/nouvelles/il-y-a-des-choses-qui-puent-a-rouen/</loc><lastmod>2026-11-16</lastmod>
@@ -230,8 +257,8 @@
     <image:image><image:loc>https://lacreaturedumarais.fr/images/rigole.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/rigole2.webp</image:loc></image:image>
   </url>
-  <url><loc>https://lacreaturedumarais.fr/faq/</loc><lastmod>2026-11-01</lastmod></url>
-  <url><loc>https://lacreaturedumarais.fr/presse/</loc><lastmod>2026-11-16</lastmod>
+  <url><loc>https://lacreaturedumarais.fr/faq/</loc><lastmod>2026-11-30</lastmod></url>
+  <url><loc>https://lacreaturedumarais.fr/presse/</loc><lastmod>2026-11-30</lastmod>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/creature.jpg</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-confiteor.jpg</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-omerta434-chyren.jpg</image:loc></image:image>
@@ -239,6 +266,7 @@
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-machines-infernales.jpg</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-jubile.jpg</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-miserables.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-monsieur-clerge.jpg</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/odium-fidei.jpg</image:loc></image:image>
   </url>
   <url><loc>https://lacreaturedumarais.fr/droits-d-utilisation/</loc><lastmod>2026-11-16</lastmod></url>
