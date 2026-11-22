@@ -2,6 +2,7 @@
 
 python _outils/controle_seo.py _site
 python _outils/controle_seo.py --base-url http://127.0.0.1:8851
+python _outils/controle_seo.py _site --as-of 2026-11-30
 """
 import argparse
 from datetime import date
@@ -67,7 +68,9 @@ def objects(value):
             yield from objects(child)
 
 
-def controle(site, base_url=None):
+def controle(site, base_url=None, as_of=None):
+    today = as_of if as_of is not None else date.today()
+
     def read(path):
         if base_url:
             with urlopen(base_url.rstrip("/") + path, timeout=20) as response:
@@ -103,7 +106,7 @@ def controle(site, base_url=None):
                 if not robots.can_fetch(bot, url):
                     raise ValueError(f"Page bloquée pour {bot}")
             lastmod = item.findtext("s:lastmod", namespaces=NS)
-            if lastmod and date.fromisoformat(lastmod[:10]) > date.today():
+            if lastmod and date.fromisoformat(lastmod[:10]) > today:
                 raise ValueError("lastmod dans le futur")
             page = Page(read(path))
             if page.canonicals != [url]:
@@ -153,5 +156,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("site", nargs="?", type=Path, default=Path(__file__).resolve().parent.parent)
     parser.add_argument("--base-url", help="Serveur de pages rendues ; images vérifiées dans le dossier site.")
+    parser.add_argument("--as-of", type=date.fromisoformat,
+                        help="Date ISO simulée pour vérifier une sortie future, sans la publier.")
     args = parser.parse_args()
-    controle(args.site, args.base_url)
+    controle(args.site, args.base_url, args.as_of)

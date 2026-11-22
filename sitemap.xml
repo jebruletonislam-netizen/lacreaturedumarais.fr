@@ -90,6 +90,9 @@
     <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ciel.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-mains.webp</image:loc></image:image>
   </url>
+  <url><loc>https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-rendez-vous-le-30-novembre/</loc><lastmod>2026-11-23</lastmod>
+    <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-monsieur-clerge.webp</image:loc></image:image>
+  </url>
   <url><loc>https://lacreaturedumarais.fr/nouvelles/miserables-le-clip-est-sorti/</loc><lastmod>2026-11-01</lastmod></url>
   <url><loc>https://lacreaturedumarais.fr/nouvelles/jubile-premier-single-d-in-odium-fidei/</loc><lastmod>2025-12-06</lastmod></url>
   <url><loc>https://lacreaturedumarais.fr/nouvelles/il-y-a-des-choses-qui-puent-a-rouen/</loc><lastmod>2026-11-16</lastmod>
@@ -128,7 +131,35 @@
     <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/poubelle.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/poubelle1.webp</image:loc></image:image>
   </url>
-  <url><loc>https://lacreaturedumarais.fr/videos/</loc><lastmod>2026-11-01</lastmod></url>
+  <url><loc>https://lacreaturedumarais.fr/videos/</loc><lastmod>2026-11-30</lastmod></url>
+  <url><loc>https://lacreaturedumarais.fr/video/clip-monsieur-clerge/</loc><lastmod>2026-11-30</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://img.youtube.com/vi/riifgy4VB2A/maxresdefault.jpg</video:thumbnail_loc>
+      <video:title>Monsieur Clergé</video:title>
+      <video:description>Clip officiel de Monsieur Clergé, troisième single d’In Odium Fidei : une charge carnavalesque contre les hypocrisies du milieu clérical.</video:description>
+      <video:player_loc>https://www.youtube.com/embed/riifgy4VB2A</video:player_loc>
+      <video:publication_date>2026-11-30T18:30:00+01:00</video:publication_date>
+    </video:video>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-monsieur.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-theses.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-baptistere.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-fonts1.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-fonts2.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ephebus-hitler.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-colombages.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-rosace.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-accent.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ver.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-clysteres.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-rumeurs.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ordination.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-saints.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-cendre.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-dictionnaire.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-anneau.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-ciel.webp</image:loc></image:image>
+    <image:image><image:loc>https://lacreaturedumarais.fr/SECTIONS/actu/clerge-mains.webp</image:loc></image:image>
+  </url>
   <url><loc>https://lacreaturedumarais.fr/video/clip-miserables/</loc><lastmod>2026-11-16</lastmod>
     <video:video>
       <video:thumbnail_loc>https://img.youtube.com/vi/7K6sEj3D5BQ/maxresdefault.jpg</video:thumbnail_loc>

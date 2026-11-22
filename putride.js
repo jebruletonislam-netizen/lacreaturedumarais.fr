@@ -1,6 +1,6 @@
 (function(){
   /* Pages d'album : lecture et paroles */
-  var CLIPS={'Chimaera Rothomagensis':'A_SfjREwRWI','La côte Sainte-Catherine':'bThq8uPYgFA','La Chute':'34-C5ls5eWM','Dis, ferme un instant les yeux':'65E0wA7msv4','Jubilé':'btnbqG0_kc0','Misérables':'7K6sEj3D5BQ'};
+  var CLIPS={'Monsieur Clergé':'riifgy4VB2A','Chimaera Rothomagensis':'A_SfjREwRWI','La côte Sainte-Catherine':'bThq8uPYgFA','La Chute':'34-C5ls5eWM','Dis, ferme un instant les yeux':'65E0wA7msv4','Jubilé':'btnbqG0_kc0','Misérables':'7K6sEj3D5BQ'};
   function cfg(s,i,t){
     var o={index:i,title:t||s.dataset.title,artist:s.dataset.artist,art:s.dataset.art};
     if(s.dataset.sc)o.sc=s.dataset.sc;else o.section=s.dataset.sec;
@@ -64,7 +64,7 @@
     var t=d.dataset.t,i=Array.prototype.indexOf.call(d.parentNode.children,d);
     if(window.LCMPlayer&&!muet)LCMPlayer.play(cfg(s,i,t));
     var go=function(){if(d.open&&d.dataset.l)lyrics(b,t);};
-    if(window.LCM_G)go();else loadScript('/putride-genius.js?v=2').then(go);
+    if(window.LCM_G)go();else loadScript('/putride-genius.js?v=3').then(go);
   },true);
 
   /* Modale vidéo YouTube */

@@ -136,7 +136,8 @@ créent un fichier vide s'il manque ; `npm run deploy` refuse de partir si les n
 sont absentes, vides ou mal formées.
 
 Après chaque changement éditorial : régénérer les corpus, incrémenter leur version
-dans `coins.js`, **redéployer le Worker avec le même corpus**, puis publier le site.
+dans `coins.js`, publier le site, attendre que le corpus en ligne porte la nouvelle
+révision, puis **redéployer le Worker avec ce même corpus**.
 Un décalage de révision renvoie 409 plutôt que de citer un autre passage.
 Après toute modification de `coins.js`, incrémenter ses références sur toutes les
 pages. Pour revenir au dialogue local uniquement, vider `url` dans `ver-ia.json`.
@@ -197,3 +198,55 @@ Après synchronisation et publication, soumettre ou relire
 `https://lacreaturedumarais.fr/sitemap.xml` dans Google Search Console et Bing
 Webmaster Tools. Les exclusions volontaires (`noindex`, doublons avec canonical)
 ne sont pas des pages à forcer dans l'index.
+
+## Sorties programmées
+
+Un nouveau single reprend la présentation habituelle des titres : même gabarit
+discographique, lecteur Genius, bouton clip, page vidéo et liens entre ces pages.
+Son statut de nouveauté se signale dans les actualités et la promotion, pas par une
+présentation particulière dans la discographie. Les liens et lecteurs restent sur
+la branche datée jusqu'à leur publication.
+
+Une sortie datée se prépare sur une branche dédiée (par exemple
+`sortie-monsieur-clerge`) : pages, galeries, sitemap (avec `lastmod` à la date de
+sortie) et `llms.txt`. Le workflow `.github/workflows/sortie-monsieur-clerge.yml`
+prépare la fusion, construit le site et vérifie son SEO avant de pousser dans
+`main`. Deux étapes sont prévues, y compris lors d'un lancement manuel :
+
+- **Annonce** : branche `annonce-monsieur-clerge`, le **23 novembre 2026 à 15 h
+  (Paris, 14 h UTC)**. Pochette et texte court seulement, sans paroles ni galerie.
+- **Sortie** : branche `sortie-monsieur-clerge`, le **30 novembre 2026 à 18 h 30
+  (Paris, 17 h 30 UTC)**. Clip, paroles Genius, description complète et photos.
+
+La publication de chaque étape est interdite avant son heure cible. Les crons
+démarrent trente minutes en avance et attendent ; chaque étape dispose d'un second
+passage vingt minutes après l'heure cible. GitHub peut retarder les tâches et le
+build Pages prend du temps : ces horaires ne garantissent pas une visibilité à la
+seconde près.
+
+Depuis Actions, choisir **etape = annonce** ou **etape = sortie** sur `main`, avec **verification = true**
+(valeur par défaut) pour répéter la fusion et le build **sans pousser la sortie**.
+Le contrôle SEO emploie explicitement `--as-of` avec la date de l'étape pour cette simulation ;
+sans cette option, il continue à refuser les dates futures. Le rendu HTML, les
+photos et les SHA contrôlés sont conservés dans l'artefact
+`verification-annonce-monsieur-clerge` ou `verification-sortie-monsieur-clerge` pendant 30 jours.
+
+Les deux modes demandent ensuite un vrai build de **main** par l'API Pages avec
+`GITHUB_TOKEN` et le droit `pages: write`, puis suivent le **nouveau** workflow
+`pages build and deployment` jusqu'à son succès, pour le SHA attendu
+(`actions: read`). Le statut de `/pages/builds/latest` n'est pas utilisé : il peut
+rester sur un ancien build annulé du même SHA. Aucun secret `PAGES_TOKEN` n'est
+nécessaire. La vérification reconstruit uniquement le site déjà public.
+La publication peut être relancée avec **verification = false** après l'heure
+prévue : même si la branche est déjà fusionnée, la demande Pages est réessayée.
+Une branche introuvable, un conflit, un refus API ou un build échoué fait échouer
+le workflow au lieu de signaler un faux succès.
+
+- Si `main` avance avant la date, relancer la vérification ; en cas de conflit,
+  fusionner `main` dans la branche de sortie et résoudre le conflit avant la date.
+- Intégrer aussi la branche d'annonce dans la branche de sortie : le 30, la brève
+  du 23 reste dans les archives, mais son encart promotionnel disparaît de l'accueil.
+- La branche ne régénère pas `oracle-putride.json` : un corpus d'une autre révision
+  ferait répondre 409 au Worker du Ver. Après la sortie, régénérer les corpus,
+  incrémenter les versions concernées, synchroniser, attendre que le site publie la
+  nouvelle révision, puis redéployer le Worker (`npm run deploy` dans `_ver-worker`).
