@@ -190,6 +190,8 @@ const CORPUS_PUBLIC = 'https://lacreaturedumarais.fr/oracle-putride.json';
 const RELECTURE_MS = 60000;
 let corpusPublic = null;
 let derniereLecture = -Infinity;
+let lectureEnCours = null;
+let erreurLecture = null;
 
 const corpusValide = c => !!c && typeof c.revision === 'string' &&
   Array.isArray(c.p) && Array.isArray(c.e) &&
@@ -197,21 +199,37 @@ const corpusValide = c => !!c && typeof c.revision === 'string' &&
   c.e.every(x => Array.isArray(x) && Number.isInteger(x[0]) && x[0] >= 0 && x[0] < c.p.length &&
     typeof x[1] === 'string' && typeof x[2] === 'string' && typeof x[3] === 'string');
 
+async function litCorpusPublic() {
+  let r, lu;
+  try {
+    r = await fetch(CORPUS_PUBLIC, {cache: 'no-store', headers: {Accept: 'application/json'},
+      signal: AbortSignal.timeout(4000)});
+    if (r.ok) lu = await r.json();
+  } catch {
+    throw new Refus(503, 'service');
+  }
+  if (!r.ok || !corpusValide(lu)) throw new Refus(503, 'service');
+  return lu;
+}
+
 // Une lecture par minute au plus : une revision inventee ne declenche pas de rafale.
 export async function corpusPour(revision) {
   if (revision === registres.revision) return registres;
   if (corpusPublic && revision === corpusPublic.revision) return corpusPublic;
-  if (typeof revision !== 'string' || !/^[0-9a-f]{16}$/.test(revision) ||
-      Date.now() - derniereLecture < RELECTURE_MS) throw new Refus(409, 'registres');
-  derniereLecture = Date.now();
-  let lu = null;
-  try {
-    const r = await fetch(CORPUS_PUBLIC, {cache: 'no-store', headers: {Accept: 'application/json'}});
-    if (r.ok) lu = await r.json();
-  } catch {
-    lu = null;
+  if (typeof revision !== 'string' || !/^[0-9a-f]{16}$/.test(revision))
+    throw new Refus(409, 'registres');
+  if (!lectureEnCours && Date.now() - derniereLecture >= RELECTURE_MS) {
+    derniereLecture = Date.now();
+    lectureEnCours = litCorpusPublic().then(lu => {
+      corpusPublic = lu;
+      erreurLecture = null;
+    }).catch(error => {
+      erreurLecture = error;
+      throw error;
+    }).finally(() => { lectureEnCours = null; });
   }
-  if (corpusValide(lu)) corpusPublic = lu;
+  if (lectureEnCours) await lectureEnCours;
+  if (erreurLecture) throw erreurLecture;
   if (corpusPublic?.revision !== revision) throw new Refus(409, 'registres');
   return corpusPublic;
 }

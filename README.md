@@ -139,9 +139,13 @@ sont absentes, vides ou mal formées.
 Après chaque changement éditorial : régénérer les corpus, incrémenter leur version
 dans `coins.js`, puis publier le site. Quand un visiteur envoie une révision que le
 Worker n'embarque pas, il relit `https://lacreaturedumarais.fr/oracle-putride.json`
-(au plus une lecture par minute et par instance) : publier sans redéployer ne casse
-plus le Ver. Redéployer reste utile pour aligner la copie embarquée, et obligatoire
-après un changement de `worker.mjs` ou des notes de coulisses.
+(au plus une lecture par minute et par instance). Les demandes simultanées
+partagent cette lecture, limitée à quatre secondes. Si le fichier est accessible
+et valide, le Ver utilise cette révision sans redéploiement. Une lecture impossible
+renvoie une erreur de service explicite (503), sans utiliser les mauvais extraits ;
+un nouvel essai est possible après une minute. Redéployer reste utile pour aligner
+la copie embarquée, et obligatoire après un changement de `worker.mjs` ou des notes
+de coulisses.
 Une révision ni embarquée ni publiée renvoie 409 plutôt que de citer un autre passage.
 Après toute modification de `coins.js`, incrémenter ses références sur toutes les
 pages. Pour revenir au dialogue local uniquement, vider `url` dans `ver-ia.json`.

@@ -223,3 +223,78 @@ test('corpus public relu apres publication sans redeploiement, sans rafale', asy
     globalThis.fetch = origineFetch;
   }
 });
+
+test('demandes simultanees partageant la lecture du nouveau corpus', async t => {
+  const {default: instance} = await import('./worker.mjs?lecture-simultanee');
+  const publie = {...corpus, revision: 'a1b2c3d4e5f60718'};
+  let terminer, commencer, appels = 0;
+  const commence = new Promise(resolve => { commencer = resolve; });
+  t.mock.method(globalThis, 'fetch', () => {
+    appels++;
+    commencer();
+    return new Promise(resolve => { terminer = resolve; });
+  });
+  const data = {...donnees(), revision: publie.revision};
+  const premiere = instance.fetch(requete(data), environnement());
+  await commence;
+  const seconde = instance.fetch(requete(data), environnement());
+  await new Promise(resolve => setImmediate(resolve));
+  terminer(new Response(JSON.stringify(publie)));
+  assert.deepEqual((await Promise.all([premiere, seconde])).map(r => r.status), [200, 200]);
+  assert.equal(appels, 1);
+});
+
+test('lecture publique indisponible : erreur explicite, pause puis reprise', async t => {
+  const pannes = [
+    () => { throw new TypeError('reseau indisponible'); },
+    () => new Response('', {status: 503}),
+    () => new Response('{'),
+    () => new Response(JSON.stringify({revision: 'a1b2c3d4e5f60718', p: [], e: [[9, '', '', 'invalide']]}))
+  ];
+  for (const [index, panne] of pannes.entries()) {
+    await t.test(String(index), async st => {
+      const {default: instance} = await import(`./worker.mjs?panne-corpus=${index}`);
+      const publie = {...corpus, revision: 'a1b2c3d4e5f60718'};
+      let horloge = 1000, appels = 0, disponible = false;
+      st.mock.method(Date, 'now', () => horloge);
+      st.mock.method(globalThis, 'fetch', async () => {
+        appels++;
+        return disponible ? new Response(JSON.stringify(publie)) : panne();
+      });
+      const data = {...donnees(), revision: publie.revision};
+      const env = environnement();
+      env.AI.run = () => assert.fail('Pas de modele sans le corpus demande');
+      for (let n = 0; n < 2; n++) {
+        const reponse = await instance.fetch(requete(data), env);
+        assert.equal(reponse.status, 503);
+        assert.deepEqual(await reponse.json(), {error: 'service'});
+      }
+      assert.equal(appels, 1);
+      assert.equal((await instance.fetch(requete(), environnement())).status, 200);
+      disponible = true;
+      horloge += 60000;
+      assert.equal((await instance.fetch(requete(data), environnement())).status, 200);
+      assert.equal(appels, 2);
+    });
+  }
+});
+
+test('lecture publique bloquee annulee avant le delai du dialogue', async t => {
+  const {default: instance} = await import('./worker.mjs?lecture-bloquee');
+  t.mock.method(globalThis, 'fetch', (_, {signal}) => new Promise((resolve, reject) => {
+    signal.addEventListener('abort', () => reject(signal.reason), {once: true});
+  }));
+  let timer;
+  try {
+    const reponse = await Promise.race([
+      instance.fetch(requete({...donnees(), revision: 'a1b2c3d4e5f60718'}), environnement()),
+      new Promise((resolve, reject) => {
+        timer = setTimeout(() => reject(new Error('Lecture encore bloquee apres cinq secondes')), 5000);
+      })
+    ]);
+    assert.equal(reponse.status, 503);
+    assert.deepEqual(await reponse.json(), {error: 'service'});
+  } finally {
+    clearTimeout(timer);
+  }
+});
