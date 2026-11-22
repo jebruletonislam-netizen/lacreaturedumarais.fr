@@ -427,7 +427,7 @@ body.icone .cachot .pfoot p.rel-cpt,body.icone .pfoot p.rel-cpt{color:var(--jaun
 .cr-bulle.on{opacity:1;transform:none}
 .cr-bulle .cb-k{font:400 11px/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ff1736;opacity:.9;margin-bottom:6px}
 .cr-bulle .cb-k a{color:inherit;text-decoration:none}.cr-bulle .cb-k a:hover{text-decoration:underline}
-.cr-bulle .cb-t{display:block;quotes:"« " " »";white-space:pre-line;color:#e6e6e6}
+.cr-bulle .cb-t{display:block;quotes:"« " " »";white-space:pre-line;color:#e6e6e6;font-family:"Bebas Neue",Impact,sans-serif}
 @media (prefers-reduced-motion:reduce){.cr-bulle,.cr-bulle.on{transition:none;transform:none}}
 
 /* ================= refonte v3 : polices des deux autres modes, feuillets, arcades, vitraux, lettrines ================= */
