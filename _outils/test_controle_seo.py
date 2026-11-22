@@ -1,3 +1,4 @@
+from collections import Counter
 import contextlib
 from datetime import date, timedelta
 import io
@@ -6,8 +7,21 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 
-from controle_seo import ORIGIN, controle
+from controle_seo import NS, ORIGIN, controle
+
+SOURCE_SITEMAP = Path(__file__).resolve().parent.parent / "sitemap.xml"
+
+
+class SourceSitemapTests(unittest.TestCase):
+    # Runs on the source file, without Jekyll, so a merge that duplicates a URL fails before the build.
+    def test_source_sitemap_lists_each_url_once(self):
+        root = ET.parse(SOURCE_SITEMAP).getroot()
+        urls = [(loc.text or "").strip() for loc in root.findall("s:url/s:loc", NS)]
+        self.assertTrue(urls, "Le sitemap source ne contient aucune URL.")
+        repeated = sorted(url for url, count in Counter(urls).items() if count > 1)
+        self.assertEqual(repeated, [], "URL répétées dans sitemap.xml")
 
 
 class ScheduledSeoTests(unittest.TestCase):

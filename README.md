@@ -214,6 +214,8 @@ cinq clips. Garder les dates `lastmod` fidèles aux modifications réelles ; les
 couches cachées conservent leur `noindex` et restent hors du sitemap.
 
 La CI contrôle le rendu Jekyll avec `python _outils/controle_seo.py _site`.
+Avant le build, `python -m unittest discover -s _outils -p "test_*seo.py"`
+rejette aussi toute URL répétée dans le `sitemap.xml` source.
 Pour un serveur local qui rend déjà les gabarits :
 `python _outils/controle_seo.py --base-url http://127.0.0.1:8851`.
 Le contrôle vérifie les URL, les canoniques, les directives robots, les images,
