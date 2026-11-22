@@ -169,6 +169,18 @@ Le second test mesure le cycle en temps réel et vérifie le dialogue et les ges
 ainsi que la copie, la modification, la relance et l'arrêt avec une IA simulée
 (`--ia` pour ne lancer que cette partie).
 
+## Citations des compagnons
+
+Les cachots et le mode putride partagent les tweets de `cachot-paroles.js`.
+Conserver le texte original. Pour une archive fournie sans date ni permalien,
+utiliser `d:"Archives"` et ne pas inventer d’adresse : la bulle renvoie au compte.
+
+Le workflow **Veille des citations X** vérifie le widget public chaque dimanche à
+08 h 17 UTC, ou sur lancement manuel. Son résumé liste les liens du compte visibles
+à cet instant, sans publier ni modifier le site. Le widget n’est pas un historique
+exhaustif. Un refus de X, une limitation HTTP 429 ou un fil illisible fait échouer
+le contrôle ; cela ne signifie pas que le compte n’a rien publié.
+
 ## Collants et fil de l'araignée
 
 Tirer les collants conserve leur attache ; déplacer le corps d'Éphébito déplace

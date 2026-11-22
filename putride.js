@@ -597,7 +597,7 @@
     var PROFIL='https://x.com/TancredeCharon',pool=[],sac=[],last=-1,bulle=null,tb=0,tc=0,PA=null;
     function charger(cb){
       if(window.CR_PAROLES){cb();return;}
-      var sc=document.createElement('script');sc.src='/cachot-paroles.js?v=3';sc.onload=cb;sc.onerror=cb;document.head.appendChild(sc);
+      var sc=document.createElement('script');sc.src='/cachot-paroles.js?v=4';sc.onload=cb;sc.onerror=cb;document.head.appendChild(sc);
     }
     function tire(){
       if(!pool.length){
