@@ -80,7 +80,8 @@ ou d'intelligence équivalente aux plus grands assistants. Qwen3-30B-A3B a été
 L'accord est lié à l'adresse du service et à la session de l'onglet. Les messages
 locaux antérieurs ne sont pas transmis. Le navigateur envoie le message courant,
 au plus six paires question/réponse IA et dix indices d'extraits. Le Worker vérifie
-la révision du corpus et prend les textes dans sa propre copie, jamais dans un
+la révision du corpus et prend les textes dans sa propre copie ou dans le corpus
+publié par le site, jamais dans un
 texte documentaire fourni par le visiteur. Limites : 10 000 caractères d'historique,
 15 000 de contexte documentaire (2 200 par extrait), 640 tokens de sortie. Les seules citations
 cliquables sont des liens du corpus. Les erreurs et réponses tronquées sont visibles,
@@ -136,9 +137,12 @@ créent un fichier vide s'il manque ; `npm run deploy` refuse de partir si les n
 sont absentes, vides ou mal formées.
 
 Après chaque changement éditorial : régénérer les corpus, incrémenter leur version
-dans `coins.js`, publier le site, attendre que le corpus en ligne porte la nouvelle
-révision, puis **redéployer le Worker avec ce même corpus**.
-Un décalage de révision renvoie 409 plutôt que de citer un autre passage.
+dans `coins.js`, puis publier le site. Quand un visiteur envoie une révision que le
+Worker n'embarque pas, il relit `https://lacreaturedumarais.fr/oracle-putride.json`
+(au plus une lecture par minute et par instance) : publier sans redéployer ne casse
+plus le Ver. Redéployer reste utile pour aligner la copie embarquée, et obligatoire
+après un changement de `worker.mjs` ou des notes de coulisses.
+Une révision ni embarquée ni publiée renvoie 409 plutôt que de citer un autre passage.
 Après toute modification de `coins.js`, incrémenter ses références sur toutes les
 pages. Pour revenir au dialogue local uniquement, vider `url` dans `ver-ia.json`.
 Le Ver reconnaît un personnage par le titre de sa fiche et par le champ « Surnom »
@@ -263,7 +267,6 @@ le workflow au lieu de signaler un faux succès.
   fusionner `main` dans la branche de sortie et résoudre le conflit avant la date.
 - Intégrer aussi la branche d'annonce dans la branche de sortie : le 30, la brève
   du 23 reste dans les archives, mais son encart promotionnel disparaît de l'accueil.
-- La branche ne régénère pas `oracle-putride.json` : un corpus d'une autre révision
-  ferait répondre 409 au Worker du Ver. Après la sortie, régénérer les corpus,
-  incrémenter les versions concernées, synchroniser, attendre que le site publie la
-  nouvelle révision, puis redéployer le Worker (`npm run deploy` dans `_ver-worker`).
+- La branche ne régénère pas `oracle-putride.json` : le corpus se régénère sur
+  `main` après la sortie. Régénérer alors les corpus, incrémenter les versions
+  concernées et synchroniser ; le Worker relit la révision publiée.

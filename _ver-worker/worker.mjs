@@ -184,6 +184,38 @@ class Refus extends Error {
   }
 }
 
+// Le site publie le meme corpus que celui embarque : apres une publication sans
+// redeploiement, le Ver relit la version publique au lieu de renvoyer 409.
+const CORPUS_PUBLIC = 'https://lacreaturedumarais.fr/oracle-putride.json';
+const RELECTURE_MS = 60000;
+let corpusPublic = null;
+let derniereLecture = -Infinity;
+
+const corpusValide = c => !!c && typeof c.revision === 'string' &&
+  Array.isArray(c.p) && Array.isArray(c.e) &&
+  c.p.every(x => Array.isArray(x) && typeof x[0] === 'string' && typeof x[1] === 'string') &&
+  c.e.every(x => Array.isArray(x) && Number.isInteger(x[0]) && x[0] >= 0 && x[0] < c.p.length &&
+    typeof x[1] === 'string' && typeof x[2] === 'string' && typeof x[3] === 'string');
+
+// Une lecture par minute au plus : une revision inventee ne declenche pas de rafale.
+export async function corpusPour(revision) {
+  if (revision === registres.revision) return registres;
+  if (corpusPublic && revision === corpusPublic.revision) return corpusPublic;
+  if (typeof revision !== 'string' || !/^[0-9a-f]{16}$/.test(revision) ||
+      Date.now() - derniereLecture < RELECTURE_MS) throw new Refus(409, 'registres');
+  derniereLecture = Date.now();
+  let lu = null;
+  try {
+    const r = await fetch(CORPUS_PUBLIC, {cache: 'no-store', headers: {Accept: 'application/json'}});
+    if (r.ok) lu = await r.json();
+  } catch {
+    lu = null;
+  }
+  if (corpusValide(lu)) corpusPublic = lu;
+  if (corpusPublic?.revision !== revision) throw new Refus(409, 'registres');
+  return corpusPublic;
+}
+
 async function litCorps(request) {
   if (!/^application\/json(?:;|$)/i.test(request.headers.get('Content-Type') || ''))
     throw new Refus(415, 'format');
@@ -212,12 +244,12 @@ async function litCorps(request) {
   }
 }
 
-export function prepareDialogue(data, notes = coulisses) {
+export function prepareDialogue(data, notes = coulisses, corpus = registres) {
   if (!data || data.consent !== true) throw new Refus(400, 'consentement');
-  if (typeof registres.revision !== 'string') throw new Refus(503, 'configuration');
-  if (data.revision !== registres.revision) throw new Refus(409, 'registres');
+  if (typeof corpus.revision !== 'string') throw new Refus(503, 'configuration');
+  if (data.revision !== corpus.revision) throw new Refus(409, 'registres');
   if (!Array.isArray(data.ids) || data.ids.length > 10 ||
-      !data.ids.every(id => Number.isInteger(id) && id >= 0 && id < registres.e.length) ||
+      !data.ids.every(id => Number.isInteger(id) && id >= 0 && id < corpus.e.length) ||
       new Set(data.ids).size !== data.ids.length) throw new Refus(400, 'extraits');
   if (!Array.isArray(data.messages) || !data.messages.length ||
       data.messages.length > 13 || data.messages.length % 2 !== 1)
@@ -235,8 +267,8 @@ export function prepareDialogue(data, notes = coulisses) {
   // Les indices viennent du navigateur ; les textes viennent du corpus deploye.
   let budget = 15000;
   const sources = data.ids.map((id, i) => {
-    const [p, section, ancre, texte, type] = registres.e[id];
-    const [titre, url] = registres.p[p];
+    const [p, section, ancre, texte, type] = corpus.e[id];
+    const [titre, url] = corpus.p[p];
     const extrait = texte.slice(0, Math.min(2200, budget));
     budget -= extrait.length;
     return {n: i + 1, nature: NATURES[type] || 'site', title: titre + (section ? ' - ' + section : ''),
@@ -283,7 +315,8 @@ export default {
     if (request.method !== 'POST') return refuse(405, 'methode');
     if (!env.AI || !env.PAR_VISITEUR || !env.GLOBAL) return refuse(503, 'configuration');
     try {
-      const {messages, sources} = prepareDialogue(await litCorps(request));
+      const data = await litCorps(request);
+      const {messages, sources} = prepareDialogue(data, coulisses, await corpusPour(data?.revision));
       const ip = request.headers.get('CF-Connecting-IP');
       if (!ip) throw new Refus(400, 'visiteur');
       const individuel = await env.PAR_VISITEUR.limit({key: ip});
