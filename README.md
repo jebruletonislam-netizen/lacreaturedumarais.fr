@@ -238,16 +238,18 @@ sortie) et `llms.txt`. Le workflow `.github/workflows/sortie-monsieur-clerge.yml
 prépare la fusion, construit le site et vérifie son SEO avant de pousser dans
 `main`. Deux étapes sont prévues, y compris lors d'un lancement manuel :
 
-- **Annonce** : branche `annonce-monsieur-clerge`, le **23 novembre 2026 à 15 h
-  (Paris, 14 h UTC)**. Pochette et texte court seulement, sans paroles ni galerie.
+- **Annonce** : branche `annonce-monsieur-clerge`, publiée par anticipation le
+  **22 novembre 2026** sur demande ; horaire prévu initialement : 23 novembre à
+  15 h (Paris, 14 h UTC). Pochette et texte court seulement, sans paroles ni galerie.
 - **Sortie** : branche `sortie-monsieur-clerge`, le **30 novembre 2026 à 18 h 30
   (Paris, 17 h 30 UTC)**. Clip, paroles Genius, description complète et photos.
 
-La publication de chaque étape est interdite avant son heure cible. Les crons
-démarrent trente minutes en avance et attendent ; chaque étape dispose d'un second
-passage vingt minutes après l'heure cible. GitHub peut retarder les tâches et le
-build Pages prend du temps : ces horaires ne garantissent pas une visibilité à la
-seconde près.
+La sortie reste interdite avant son heure cible. Sur demande expresse, l'annonce
+peut être publiée plus tôt depuis Actions avec `publication_anticipee = true` ;
+cette option est refusée pour la sortie. Les crons démarrent trente minutes en
+avance et attendent ; chaque étape dispose d'un second passage vingt minutes après
+l'heure cible. GitHub peut retarder les tâches et le build Pages prend du temps :
+ces horaires ne garantissent pas une visibilité à la seconde près.
 
 Depuis Actions, choisir **etape = annonce** ou **etape = sortie** sur `main`, avec **verification = true**
 (valeur par défaut) pour répéter la fusion et le build **sans pousser la sortie**.

@@ -24,6 +24,10 @@ on:
         description: "Vérifier le candidat et reconstruire main sans publier l'étape"
         type: boolean
         default: true
+      publication_anticipee:
+        description: "Publier immédiatement l'annonce (sans effet sur la sortie)"
+        type: boolean
+        default: false
 
 permissions:
   actions: read
@@ -43,6 +47,7 @@ jobs:
         id: mode
         env:
           VERIFICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.verification }}
+          PUBLICATION_ANTICIPEE: ${{ github.event_name == 'workflow_dispatch' && inputs.publication_anticipee }}
           EVENT: ${{ github.event_name }}
           ETAPE: ${{ inputs.etape }}
           SCHEDULE: ${{ github.event.schedule }}
@@ -84,7 +89,12 @@ jobs:
           fi
           cible=$(date -u -d "$jour $heure" +%s)
           maintenant=$(date -u +%s)
-          if [ "$maintenant" -lt "$cible" ]; then
+          if [ "$PUBLICATION_ANTICIPEE" = "true" ]; then
+            if [ "$EVENT" != "workflow_dispatch" ] || [ "$ETAPE" != "annonce" ]; then
+              echo "::error::L'avance manuelle s'applique uniquement à l'annonce."; exit 1
+            fi
+            echo "::notice::Publication anticipée de l'annonce demandée manuellement."
+          elif [ "$maintenant" -lt "$cible" ]; then
             if [ "$EVENT" != "schedule" ]; then
               echo "::error::Publication interdite avant le $limite."; exit 1
             fi
