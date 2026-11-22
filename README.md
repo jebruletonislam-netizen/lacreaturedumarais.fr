@@ -201,22 +201,35 @@ ne sont pas des pages à forcer dans l'index.
 
 ## Sorties programmées
 
+Un nouveau single reprend la présentation habituelle des titres : même gabarit
+discographique, lecteur Genius, bouton clip, page vidéo et liens entre ces pages.
+Son statut de nouveauté se signale dans les actualités et la promotion, pas par une
+présentation particulière dans la discographie. Les liens et lecteurs restent sur
+la branche datée jusqu'à leur publication.
+
 Une sortie datée se prépare sur une branche dédiée (par exemple
 `sortie-monsieur-clerge`) : pages, galeries, sitemap (avec `lastmod` à la date de
 sortie) et `llms.txt`. Le workflow `.github/workflows/sortie-monsieur-clerge.yml`
 prépare la fusion, construit le site et vérifie son SEO avant de pousser dans
-`main`. La publication est interdite avant le **30 novembre 2026 à 18 h (Paris,
-17 h UTC)**, y compris lors d'un lancement manuel. Le cron démarre en avance et
-attend cette heure ; un second passage est prévu à 18 h 20. GitHub peut retarder
-les tâches et le build Pages prend du temps : 18 h est l'heure de déclenchement
-visée, pas une garantie de visibilité à la seconde près.
+`main`. Deux étapes sont prévues, y compris lors d'un lancement manuel :
 
-Depuis Actions, lancer le workflow sur `main` avec **verification = true**
+- **Annonce** : branche `annonce-monsieur-clerge`, le **23 novembre 2026 à 15 h
+  (Paris, 14 h UTC)**. Pochette et texte court seulement, sans paroles ni galerie.
+- **Sortie** : branche `sortie-monsieur-clerge`, le **30 novembre 2026 à 18 h 30
+  (Paris, 17 h 30 UTC)**. Clip, paroles Genius, description complète et photos.
+
+La publication de chaque étape est interdite avant son heure cible. Les crons
+démarrent trente minutes en avance et attendent ; chaque étape dispose d'un second
+passage vingt minutes après l'heure cible. GitHub peut retarder les tâches et le
+build Pages prend du temps : ces horaires ne garantissent pas une visibilité à la
+seconde près.
+
+Depuis Actions, choisir **etape = annonce** ou **etape = sortie** sur `main`, avec **verification = true**
 (valeur par défaut) pour répéter la fusion et le build **sans pousser la sortie**.
-Le contrôle SEO emploie explicitement `--as-of 2026-11-30` pour cette simulation ;
+Le contrôle SEO emploie explicitement `--as-of` avec la date de l'étape pour cette simulation ;
 sans cette option, il continue à refuser les dates futures. Le rendu HTML, les
 photos et les SHA contrôlés sont conservés dans l'artefact
-`verification-monsieur-clerge` pendant 30 jours.
+`verification-annonce-monsieur-clerge` ou `verification-sortie-monsieur-clerge` pendant 30 jours.
 
 Les deux modes demandent ensuite un vrai build de **main** par l'API Pages avec
 `GITHUB_TOKEN` et le droit `pages: write`, puis suivent le **nouveau** workflow
@@ -231,6 +244,8 @@ le workflow au lieu de signaler un faux succès.
 
 - Si `main` avance avant la date, relancer la vérification ; en cas de conflit,
   fusionner `main` dans la branche de sortie et résoudre le conflit avant la date.
+- Intégrer aussi la branche d'annonce dans la branche de sortie : le 30, la brève
+  du 23 reste dans les archives, mais son encart promotionnel disparaît de l'accueil.
 - La branche ne régénère pas `oracle-putride.json` : un corpus d'une autre révision
   ferait répondre 409 au Worker du Ver. Après la sortie, régénérer les corpus,
   incrémenter les versions concernées, synchroniser, attendre que le site publie la

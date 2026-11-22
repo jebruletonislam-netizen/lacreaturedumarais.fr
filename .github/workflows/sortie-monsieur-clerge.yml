@@ -1,18 +1,27 @@
-name: Sortie programmée — Monsieur Clergé
+name: Annonce et sortie programmées — Monsieur Clergé
 
-# Fusionne la branche sortie-monsieur-clerge dans main le 30 novembre 2026
-# à partir de 18 h, heure de Paris (17 h UTC), puis demande un build GitHub Pages.
+# Fusionne la branche d'annonce le 23 novembre 2026 à partir de 15 h (Paris),
+# puis la branche de sortie le 30 novembre à partir de 18 h 30 (17 h 30 UTC).
 # Les déclenchements cron des Actions peuvent avoir du retard : le premier
-# démarre en avance et attend 17 h UTC, le second sert de filet de sécurité.
+# démarre en avance et attend l'heure cible, le second sert de filet de sécurité.
 
 on:
   schedule:
-    - cron: "30 16 30 11 *"
-    - cron: "20 17 30 11 *"
+    - cron: "30 13 23 11 *"
+    - cron: "20 14 23 11 *"
+    - cron: "0 17 30 11 *"
+    - cron: "50 17 30 11 *"
   workflow_dispatch:
     inputs:
+      etape:
+        description: "Étape à vérifier ou publier"
+        type: choice
+        options:
+          - annonce
+          - sortie
+        default: sortie
       verification:
-        description: "Vérifier la sortie et reconstruire main sans publier le morceau"
+        description: "Vérifier le candidat et reconstruire main sans publier l'étape"
         type: boolean
         default: true
 
@@ -35,22 +44,49 @@ jobs:
         env:
           VERIFICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.verification }}
           EVENT: ${{ github.event_name }}
+          ETAPE: ${{ inputs.etape }}
+          SCHEDULE: ${{ github.event.schedule }}
         run: |
           if [ "$GITHUB_REF" != "refs/heads/main" ]; then
             echo "::error::Lancer ce workflow depuis main."; exit 1
           fi
+          if [ "$EVENT" = "schedule" ]; then
+            case "$SCHEDULE" in
+              "30 13 23 11 *"|"20 14 23 11 *") ETAPE=annonce ;;
+              "0 17 30 11 *"|"50 17 30 11 *") ETAPE=sortie ;;
+              *) echo "::error::Déclenchement inconnu."; exit 1 ;;
+            esac
+          fi
+          case "$ETAPE" in
+            annonce)
+              jour=2026-11-23
+              heure=14:00:00
+              branche=annonce-monsieur-clerge
+              limite="23 novembre 2026 à 15 h (Paris)"
+              ;;
+            sortie)
+              jour=2026-11-30
+              heure=17:30:00
+              branche=sortie-monsieur-clerge
+              limite="30 novembre 2026 à 18 h 30 (Paris)"
+              ;;
+            *) echo "::error::Étape inconnue."; exit 1 ;;
+          esac
+          echo "branche=$branche" >> "$GITHUB_OUTPUT"
+          echo "jour=$jour" >> "$GITHUB_OUTPUT"
+          echo "etape=$ETAPE" >> "$GITHUB_OUTPUT"
           if [ "$VERIFICATION" = "true" ]; then
             echo "valeur=verification" >> "$GITHUB_OUTPUT"; exit 0
           fi
-          if [ "$EVENT" = "schedule" ] && [ "$(date -u +%F)" != "2026-11-30" ]; then
-            echo "::notice::La date de cette sortie est passée."
+          if [ "$EVENT" = "schedule" ] && [ "$(date -u +%F)" != "$jour" ]; then
+            echo "::notice::Ce déclenchement ne correspond pas à la date de l'étape."
             echo "valeur=ignore" >> "$GITHUB_OUTPUT"; exit 0
           fi
-          cible=$(date -u -d '2026-11-30 17:00:00' +%s)
+          cible=$(date -u -d "$jour $heure" +%s)
           maintenant=$(date -u +%s)
           if [ "$maintenant" -lt "$cible" ]; then
             if [ "$EVENT" != "schedule" ]; then
-              echo "::error::Publication interdite avant le 30 novembre 2026 à 18 h (Paris)."; exit 1
+              echo "::error::Publication interdite avant le $limite."; exit 1
             fi
             sleep $((cible - maintenant))
           fi
@@ -65,13 +101,16 @@ jobs:
       - name: Préparer la fusion sans la publier
         if: steps.mode.outputs.valeur != 'ignore'
         id: fusion
+        env:
+          BRANCHE: ${{ steps.mode.outputs.branche }}
         run: |
           echo "main=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          git fetch origin sortie-monsieur-clerge
+          git fetch origin "$BRANCHE"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git merge --no-edit origin/sortie-monsieur-clerge
+          git merge --no-edit "origin/$BRANCHE"
           echo "sortie=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "branche=$(git rev-parse "origin/$BRANCHE")" >> "$GITHUB_OUTPUT"
 
       - name: Tester et construire le candidat
         if: steps.mode.outputs.valeur != 'ignore'
@@ -86,17 +125,20 @@ jobs:
         if: steps.mode.outputs.valeur != 'ignore'
         env:
           MODE: ${{ steps.mode.outputs.valeur }}
+          JOUR: ${{ steps.mode.outputs.jour }}
+          ETAPE: ${{ steps.mode.outputs.etape }}
         run: |
           if [ "$MODE" = "verification" ]; then
-            python3 _outils/controle_seo.py _site --as-of 2026-11-30
+            python3 _outils/controle_seo.py _site --as-of "$JOUR"
           else
             python3 _outils/controle_seo.py _site
           fi
           {
             echo "Mode : $MODE"
+            echo "Étape : $ETAPE"
             echo "Main : ${{ steps.fusion.outputs.main }}"
             echo "Candidat : ${{ steps.fusion.outputs.sortie }}"
-            echo "Branche : $(git rev-parse origin/sortie-monsieur-clerge)"
+            echo "Branche : ${{ steps.fusion.outputs.branche }}"
             echo "Run : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           } > _site/verification-sortie.txt
 
@@ -104,7 +146,7 @@ jobs:
         if: steps.mode.outputs.valeur != 'ignore'
         uses: actions/upload-artifact@v4
         with:
-          name: verification-monsieur-clerge
+          name: verification-${{ steps.mode.outputs.etape }}-monsieur-clerge
           retention-days: 30
           path: |
             _site/**/*.html
