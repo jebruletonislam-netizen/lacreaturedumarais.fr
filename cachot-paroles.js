@@ -5,6 +5,11 @@
    Les archives sans date fournies par l’auteur gardent leur texte et renvoient à son profil. */
 window.CR_PAROLES={
   tweets:[
+    {t:"Il avait validé sa position auprès des grands émissaires",d:"22 nov. 2026",u:"https://x.com/TancredeCharon/status/2124418979565326349"},
+    {t:"Soumis mais pas martyr",d:"21 nov. 2026",u:"https://x.com/TancredeCharon/status/2124229505627639992"},
+    {t:"Fascinés par la race et le non consentement",d:"19 nov. 2026",u:"https://x.com/TancredeCharon/status/2123398548553183557"},
+    {t:"Le libre arbitre l'avait condamné",d:"17 nov. 2026",u:"https://x.com/TancredeCharon/status/2122629308652933501"},
+    {t:"Il vivait au gré de ses pulsions",d:"17 nov. 2026",u:"https://x.com/TancredeCharon/status/2122629191497658620"},
     {t:"La vengeance remplace leur dignité"},
     {t:"De l'Orient à l'Occident ils veulent m'envoyer en psychiatrie",d:"23 oct. 2026"},
     {t:"On est plus proches d'Asselineau que de Hitler",d:"22 oct. 2026"},
