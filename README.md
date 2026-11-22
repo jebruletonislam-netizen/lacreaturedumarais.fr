@@ -80,7 +80,8 @@ ou d'intelligence équivalente aux plus grands assistants. Qwen3-30B-A3B a été
 L'accord est lié à l'adresse du service et à la session de l'onglet. Les messages
 locaux antérieurs ne sont pas transmis. Le navigateur envoie le message courant,
 au plus six paires question/réponse IA et dix indices d'extraits. Le Worker vérifie
-la révision du corpus et prend les textes dans sa propre copie, jamais dans un
+la révision du corpus et prend les textes dans sa propre copie ou dans le corpus
+publié par le site, jamais dans un
 texte documentaire fourni par le visiteur. Limites : 10 000 caractères d'historique,
 15 000 de contexte documentaire (2 200 par extrait), 640 tokens de sortie. Les seules citations
 cliquables sont des liens du corpus. Les erreurs et réponses tronquées sont visibles,
@@ -136,9 +137,16 @@ créent un fichier vide s'il manque ; `npm run deploy` refuse de partir si les n
 sont absentes, vides ou mal formées.
 
 Après chaque changement éditorial : régénérer les corpus, incrémenter leur version
-dans `coins.js`, publier le site, attendre que le corpus en ligne porte la nouvelle
-révision, puis **redéployer le Worker avec ce même corpus**.
-Un décalage de révision renvoie 409 plutôt que de citer un autre passage.
+dans `coins.js`, puis publier le site. Quand un visiteur envoie une révision que le
+Worker n'embarque pas, il relit `https://lacreaturedumarais.fr/oracle-putride.json`
+(au plus une lecture par minute et par instance). Les demandes simultanées
+partagent cette lecture, limitée à quatre secondes. Si le fichier est accessible
+et valide, le Ver utilise cette révision sans redéploiement. Une lecture impossible
+renvoie une erreur de service explicite (503), sans utiliser les mauvais extraits ;
+un nouvel essai est possible après une minute. Redéployer reste utile pour aligner
+la copie embarquée, et obligatoire après un changement de `worker.mjs` ou des notes
+de coulisses.
+Une révision ni embarquée ni publiée renvoie 409 plutôt que de citer un autre passage.
 Après toute modification de `coins.js`, incrémenter ses références sur toutes les
 pages. Pour revenir au dialogue local uniquement, vider `url` dans `ver-ia.json`.
 Le Ver reconnaît un personnage par le titre de sa fiche et par le champ « Surnom »
@@ -230,16 +238,18 @@ sortie) et `llms.txt`. Le workflow `.github/workflows/sortie-monsieur-clerge.yml
 prépare la fusion, construit le site et vérifie son SEO avant de pousser dans
 `main`. Deux étapes sont prévues, y compris lors d'un lancement manuel :
 
-- **Annonce** : branche `annonce-monsieur-clerge`, le **23 novembre 2026 à 15 h
-  (Paris, 14 h UTC)**. Pochette et texte court seulement, sans paroles ni galerie.
+- **Annonce** : branche `annonce-monsieur-clerge`, publiée par anticipation le
+  **22 novembre 2026** sur demande ; horaire prévu initialement : 23 novembre à
+  15 h (Paris, 14 h UTC). Pochette et texte court seulement, sans paroles ni galerie.
 - **Sortie** : branche `sortie-monsieur-clerge`, le **30 novembre 2026 à 18 h 30
   (Paris, 17 h 30 UTC)**. Clip, paroles Genius, description complète et photos.
 
-La publication de chaque étape est interdite avant son heure cible. Les crons
-démarrent trente minutes en avance et attendent ; chaque étape dispose d'un second
-passage vingt minutes après l'heure cible. GitHub peut retarder les tâches et le
-build Pages prend du temps : ces horaires ne garantissent pas une visibilité à la
-seconde près.
+La sortie reste interdite avant son heure cible. Sur demande expresse, l'annonce
+peut être publiée plus tôt depuis Actions avec `publication_anticipee = true` ;
+cette option est refusée pour la sortie. Les crons démarrent trente minutes en
+avance et attendent ; chaque étape dispose d'un second passage vingt minutes après
+l'heure cible. GitHub peut retarder les tâches et le build Pages prend du temps :
+ces horaires ne garantissent pas une visibilité à la seconde près.
 
 Depuis Actions, choisir **etape = annonce** ou **etape = sortie** sur `main`, avec **verification = true**
 (valeur par défaut) pour répéter la fusion et le build **sans pousser la sortie**.
@@ -263,7 +273,6 @@ le workflow au lieu de signaler un faux succès.
   fusionner `main` dans la branche de sortie et résoudre le conflit avant la date.
 - Intégrer aussi la branche d'annonce dans la branche de sortie : le 30, la brève
   du 23 reste dans les archives, mais son encart promotionnel disparaît de l'accueil.
-- La branche ne régénère pas `oracle-putride.json` : un corpus d'une autre révision
-  ferait répondre 409 au Worker du Ver. Après la sortie, régénérer les corpus,
-  incrémenter les versions concernées, synchroniser, attendre que le site publie la
-  nouvelle révision, puis redéployer le Worker (`npm run deploy` dans `_ver-worker`).
+- La branche ne régénère pas `oracle-putride.json` : le corpus se régénère sur
+  `main` après la sortie. Régénérer alors les corpus, incrémenter les versions
+  concernées et synchroniser ; le Worker relit la révision publiée.
