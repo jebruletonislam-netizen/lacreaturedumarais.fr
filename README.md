@@ -175,11 +175,16 @@ Les cachots et le mode putride partagent les tweets de `cachot-paroles.js`.
 Conserver le texte original. Pour une archive fournie sans date ni permalien,
 utiliser `d:"Archives"` et ne pas inventer d’adresse : la bulle renvoie au compte.
 
-Le workflow **Veille des citations X** vérifie le widget public chaque dimanche à
-08 h 17 UTC, ou sur lancement manuel. Son résumé liste les liens du compte visibles
-à cet instant, sans publier ni modifier le site. Le widget n’est pas un historique
-exhaustif. Un refus de X, une limitation HTTP 429 ou un fil illisible fait échouer
-le contrôle ; cela ne signifie pas que le compte n’a rien publié.
+Le workflow **Veille des citations X** ouvre le profil public chaque dimanche à
+08 h 17 UTC, ou sur lancement manuel, dans un navigateur neuf, sans clé ni session.
+Il capture les publications du compte visibles des huit derniers jours. L’artefact
+GitHub Actions conserve pendant 30 jours les PNG et un relevé JSON (texte, date,
+permalien). Les captures ne sont pas publiées automatiquement sur le site.
+Sans connexion, X peut limiter la liste : le relevé n’est pas exhaustif. Un refus
+ou un fil illisible fait échouer le contrôle, au lieu d’annoncer zéro publication.
+
+Dans le Territoire, « Sur la carte » situe le Délycium sans déclencher la fête.
+Seul le zoom maximal sur l’épingle souffle les cierges ; ils se rallument un à un.
 
 ## Collants et fil de l'araignée
 

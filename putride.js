@@ -597,7 +597,7 @@
     var PROFIL='https://x.com/TancredeCharon',pool=[],sac=[],last=-1,bulle=null,tb=0,tc=0,PA=null;
     function charger(cb){
       if(window.CR_PAROLES){cb();return;}
-      var sc=document.createElement('script');sc.src='/cachot-paroles.js?v=4';sc.onload=cb;sc.onerror=cb;document.head.appendChild(sc);
+      var sc=document.createElement('script');sc.src='/cachot-paroles.js?v=5';sc.onload=cb;sc.onerror=cb;document.head.appendChild(sc);
     }
     function tire(){
       if(!pool.length){
@@ -1521,7 +1521,7 @@
 
   /* Clins d'œil furtifs, chargés seulement sur leur page : la Fourolle (Chyren, Confiteor), le père Kitz-Latouch en tricycle (In Odium Fidei), la fête du Délycium (Territoire), le Ver du baptistère (un peu partout) */
   (function(){
-    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=4'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=2'],[/^\/mode-putride\/territoire\/?$/,'Fete','/fete.js?v=3'],[/^\/mode-putride\/(?!archives\/ordures)/,'Ver','/ver.js?v=6']],charge={};
+    var CLINS=[[/^\/mode-putride\/discographie\/(chyren|confiteor)\/?$/,'Fourolle','/fourolle.js?v=4'],[/^\/mode-putride\/in-odium-fidei\/?$/,'Kitz','/kitz.js?v=2'],[/^\/mode-putride\/territoire\/?$/,'Fete','/fete.js?v=4'],[/^\/mode-putride\/(?!archives\/ordures)/,'Ver','/ver.js?v=6']],charge={};
     function verif(){
       CLINS.forEach(function(q){
         if(q[0].test(location.pathname)){

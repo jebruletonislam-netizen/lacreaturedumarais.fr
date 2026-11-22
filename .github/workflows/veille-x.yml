@@ -11,10 +11,20 @@ permissions:
 jobs:
   veille:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Vérifier le fil public sans clé
-        run: python3 _outils/veille_x.py "$GITHUB_STEP_SUMMARY"
+      - name: Installer le navigateur de capture
+        run: |
+          python3 -m pip install playwright==1.64.1
+          python3 -m playwright install --with-deps chromium
+      - name: Capturer les publications publiques récentes
+        run: python3 _outils/veille_x.py "$RUNNER_TEMP/veille-x" --resume "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: veille-x-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/veille-x
+          retention-days: 30
+          if-no-files-found: error
