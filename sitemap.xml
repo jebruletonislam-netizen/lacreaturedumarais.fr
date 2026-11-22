@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-  <url><loc>https://lacreaturedumarais.fr/</loc><lastmod>2026-11-23</lastmod>
+  <url><loc>https://lacreaturedumarais.fr/</loc><lastmod>2026-11-22</lastmod>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-monsieur-clerge.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-miserables.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/odium-fidei.jpg</image:loc></image:image>
@@ -63,8 +63,8 @@
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-jubile.webp</image:loc></image:image>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-miserables.webp</image:loc></image:image>
   </url>
-  <url><loc>https://lacreaturedumarais.fr/nouvelles/</loc><lastmod>2026-11-23</lastmod></url>
-  <url><loc>https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-rendez-vous-le-30-novembre/</loc><lastmod>2026-11-23</lastmod>
+  <url><loc>https://lacreaturedumarais.fr/nouvelles/</loc><lastmod>2026-11-22</lastmod></url>
+  <url><loc>https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-rendez-vous-le-30-novembre/</loc><lastmod>2026-11-22</lastmod>
     <image:image><image:loc>https://lacreaturedumarais.fr/images/pochette-monsieur-clerge.webp</image:loc></image:image>
   </url>
   <url><loc>https://lacreaturedumarais.fr/nouvelles/miserables-le-clip-est-sorti/</loc><lastmod>2026-11-01</lastmod></url>
