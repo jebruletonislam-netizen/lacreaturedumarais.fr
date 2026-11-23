@@ -1,6 +1,7 @@
-/* Les deux coins du bas, dans le mode putride et dans les cachots.
+/* Les deux coins du bas, dans le mode putride et dans les cachots ; sur le site normal, seulement Tristana.
    À gauche : couper (ou rétablir) les effets ; le choix est gardé, et vaut comme le réglage « moins d'animations » de l'appareil.
-   À droite : le Ver. Dialogue local par défaut ; modèle distant seulement après consentement.
+   À droite : le Ver (Tristana, attachée de presse du label, sur le site normal, qui ne lit que les pages publiques).
+   Dialogue local par défaut ; modèle distant seulement après consentement.
    Les registres /oracle-*.json, tirés des pages par _outils/oracle.py, servent aux deux dialogues.
    Les deux couches connaissent les textes publics, putrides et les cachots. Dans les cachots,
    interrogé sur les reliques cachées, il répond par une énigme sur l'une de
@@ -9,12 +10,15 @@
   'use strict';
   if(window.Coins)return;
   var D=document,H=D.documentElement,LS='lcdm-calme',SS='lcdm-oracle';
-  var couche=/^\/cachot\//.test(location.pathname)?'cachot':'putride';
+  var couche=/^\/cachot\//.test(location.pathname)?'cachot':/^\/mode-putride\//.test(location.pathname)?'putride':'normal';
+  var normal=couche==='normal',NOM=normal?'Tristana':'le Ver';
   var calme=window.CALME!=null?!!window.CALME:!!(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
   var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 
   var css=''
   +'.cn-b,.cn-p,.cn-toast,.cn-sel{--c:#39ff6a;--c2:#d6b0ff;--o:rgba(122,45,214,.55);--l:rgba(57,255,106,.28);--bg:linear-gradient(180deg,#110020,#05000a);--t:#f1e8ff;--qb:#3b1170;--tf:"Bebas Neue",Impact,sans-serif}'
+  +'.cn-normal{--c:#fc0;--c2:#ff5a5a;--o:rgba(255,0,0,.45);--l:rgba(255,204,0,.3);--bg:linear-gradient(180deg,#00005e,#000016);--t:#fff;--qb:#600000}'
+  +'.cn-b img{width:34px;height:34px;display:block;pointer-events:none}.cn-or.cn-normal[aria-expanded="true"] img{filter:invert(1)}.cn-sel img{width:18px;height:18px}'
   +'.cn-cachot{--c:#ff1736;--c2:#ffe23f;--o:rgba(225,0,25,.5);--l:rgba(255,23,54,.32);--bg:linear-gradient(180deg,#120002,#000);--t:#ffe9a8;--qb:#5a0010;--tf:"UnifrakturCook","Bebas Neue",serif}'
   +'.cn-b{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom,0px) + var(--lc-h,0px));z-index:85;width:48px;height:48px;display:grid;place-items:center;margin:0;padding:0;border:2px solid var(--c);border-radius:50%;'
   +'background:radial-gradient(circle at 50% 32%,#222,#000 72%);color:var(--c);cursor:pointer;-webkit-tap-highlight-color:transparent;'
@@ -101,7 +105,7 @@
   +'@media print{.cn-b,.cn-p,.cn-toast,.cn-sel{display:none!important}}';
   var st=D.createElement('style');st.textContent=css;D.head.appendChild(st);
 
-  var cls=couche==='cachot'?' cn-cachot':'';
+  var cls=couche==='cachot'?' cn-cachot':normal?' cn-normal':'';
   function el(h){var t=D.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;}
 
   /* ---------- à gauche : les effets ---------- */
@@ -134,37 +138,43 @@
   /* ---------- à droite : l'Oracle, c'est-à-dire le Ver ---------- */
   var ACC={
     putride:'Approche de la margelle. Je suis le Ver du baptistère, serviteur de Kobal. Les vampires ont leurs grands airs ; moi, leurs dessous. Parle-moi de la Créature, de ses disques ou de ce qui fermente au Vampirium.',
+    normal:'Bonjour. Tristana, attachée de presse et archiviste de PUANTEUR PUTRIDE Productions. Je tiens les communiqués, les dates et les cartons du label. Demandez-moi un disque, un clip, une date… ou ce que le marais garde pour lui.',
     cachot:'Baisse la voix. Je suis le Ver du baptistère. Ici, les murs ont plus de mémoire que les vivants : les prisonniers, les fonds, la Gazette… Et quelques reliques que je ne livrerai pas toutes mâchées.'
   };
   var SUG={
     putride:['Comment vas-tu ?','Qu’est-ce qui te fait rire ?','Quelle est la philosophie de la Créature ?','Les témoignages sur Vampirix','Qui est Madame Edwarda ?','Par quel album commencer ?'],
+    normal:['Par quel disque commencer ?','Quoi de neuf ?','Que cache le marais ?','Qui est la Créature du Marais ?','Où écouter Cul-Pointu ?','Comment suivre les sorties ?'],
     cachot:['Comment vas-tu ?','Qui est Kavod TinkiWizkhi ?','Qui est Noo-Noo ?','Pourquoi PUANTEUR PUTRIDE est-il au cachot ?','La Gazette du Prisonnier','Les reliques cachées']
   };
   var ICO_OR='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M35 38a3 3 0 0 1-6 0a6 6 0 0 1 12 0a9 9 0 0 1-18 0a12 12 0 0 1 24 0a15 15 0 0 1-30 0C17 27 31 28 27 16"/><circle cx="26" cy="11" r="5.5" style="fill:currentColor"/><circle cx="27.8" cy="9.8" r="1.6" style="fill:#000;stroke:none"/></svg>';
-  var ob=el('<button type="button" class="cn-b cn-or'+cls+'" aria-expanded="false" aria-controls="cn-oracle" aria-label="Le Ver, l’Oracle : questions sur le lore" title="Le Ver, l’Oracle : questions sur le lore">'+ICO_OR+'</button>');
+  var ICO_PP='<img src="/images/cachot/logo-pp-blanc.webp" alt="" width="34" height="34" decoding="async">';
+  if(normal)ICO_OR=ICO_PP;
+  var TITRE_OB=normal?'Tristana, attachée de presse de PUANTEUR PUTRIDE Productions : questions sur la Créature':'Le Ver, l’Oracle : questions sur le lore';
+  var ROLE=normal?'Presse et archives de PUANTEUR PUTRIDE.':'Serviteur de Kobal.';
+  var ob=el('<button type="button" class="cn-b cn-or'+cls+'" aria-expanded="false" aria-controls="cn-oracle" aria-label="'+TITRE_OB+'" title="'+TITRE_OB+'">'+ICO_OR+'</button>');
   var pan=el('<section class="cn-p'+cls+'" id="cn-oracle" role="dialog" aria-labelledby="cn-ot" hidden>'
-    +'<div class="cn-h"><div><b id="cn-ot">Le Ver</b><small>Serviteur de Kobal. Dialogue local, sans IA générative.</small></div><span class="cn-hb">'
+    +'<div class="cn-h"><div><b id="cn-ot">'+(normal?'Tristana':'Le Ver')+'</b><small>'+ROLE+' Dialogue local, sans IA générative.</small></div><span class="cn-hb">'
     +'<button type="button" class="cn-hx cn-new" aria-label="Nouvelle conversation" title="Nouvelle conversation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M12 7.5v6M9 10.5h6"/></svg></button>'
     +'<button type="button" class="cn-hx cn-gr" aria-pressed="false"></button>'
-    +'<button type="button" class="cn-x" aria-label="Fermer l’Oracle">×</button></span></div>'
+    +'<button type="button" class="cn-x" aria-label="Fermer la conversation">×</button></span></div>'
     +'<details class="cn-ai" hidden><summary>Conversation IA et confidentialité</summary>'
-    +'<p>Sur ton accord, Cloudflare reçoit tes messages, jusqu’à six échanges IA précédents, l’adresse de la page consultée, les passages que tu soumets au Ver et des extraits du site. Aucun modèle à télécharger. L’IA peut se tromper ; quota gratuit partagé. N’envoie rien de confidentiel. <a href="/mentions-legales/#dialogue-ver">Détails</a>.</p>'
+    +'<p>Sur ton accord, Cloudflare reçoit tes messages, jusqu’à six échanges IA précédents, l’adresse de la page consultée, les passages que tu soumets '+(normal?'à Tristana':'au Ver')+' et des extraits '+(normal?'publics ':'')+'du site. Aucun modèle à télécharger. L’IA peut se tromper ; quota gratuit partagé. N’envoie rien de confidentiel. <a href="/mentions-legales/#dialogue-ver">Détails</a>.</p>'
     +'<button type="button" class="cn-ai-on">J’accepte, activer l’IA</button><button type="button" class="cn-ai-off" hidden>Revenir au dialogue local</button></details>'
     +'<div class="cn-lw"><div class="cn-log" aria-live="polite"></div><button type="button" class="cn-bas" hidden aria-label="Revenir en bas" title="Revenir en bas">↓</button></div><div class="cn-sug"></div>'
     +'<div class="cn-ed" hidden><span>Tu modifies ta question : les réponses suivantes seront remplacées.</span><button type="button">Annuler</button></div>'
-    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question au Ver</label><textarea id="cn-q" rows="1" maxlength="2000" enterkeyhint="send" placeholder="Parle au Ver…" title="Entrée pour envoyer, Maj+Entrée pour aller à la ligne"></textarea>'
+    +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question '+(normal?'à Tristana':'au Ver')+'</label><textarea id="cn-q" rows="1" maxlength="2000" enterkeyhint="send" placeholder="'+(normal?'Écrire à Tristana…':'Parle au Ver…')+'" title="Entrée pour envoyer, Maj+Entrée pour aller à la ligne"></textarea>'
     +'<button type="button" class="cn-mic" hidden aria-pressed="false" aria-label="Dicter ta question" title="Dicter ta question (service vocal du navigateur)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></button>'
     +'<button type="submit" aria-label="Demander">➤</button></form>'
     +'</section>');
   var log=pan.querySelector('.cn-log'),sug=pan.querySelector('.cn-sug'),inp=pan.querySelector('textarea'),envoyer=pan.querySelector('.cn-f button[type=submit]'),ed=pan.querySelector('.cn-ed'),ouvert=false,hist=[];
   var basB=pan.querySelector('.cn-bas'),grandB=pan.querySelector('.cn-gr'),mic=pan.querySelector('.cn-mic');
   try{hist=JSON.parse(sessionStorage.getItem(SS+'-'+couche)||'[]');}catch(_){hist=[];}
-  var iaURL='',iaActive=false,iaConfig=null,iaRequete=null,iaOptions=pan.querySelector('.cn-ai');
+  var IA_CLE=SS+'-ia'+(normal?'-normal':''),iaURL='',iaActive=false,iaConfig=null,iaRequete=null,iaOptions=pan.querySelector('.cn-ai');
   iaOptions.addEventListener('toggle',function(){pan.classList.toggle('cn-ai-settings',iaOptions.open);});
   function majIA(){
     pan.querySelector('.cn-h small').textContent=iaActive?
-      'Serviteur de Kobal. Conversation IA via Cloudflare ; réponses à vérifier.':
-      'Serviteur de Kobal. Dialogue local, sans IA générative.';
+      ROLE+' Conversation IA via Cloudflare ; réponses à vérifier.':
+      ROLE+' Dialogue local, sans IA générative.';
     iaOptions.querySelector('.cn-ai-on').hidden=iaActive;
     iaOptions.querySelector('.cn-ai-off').hidden=!iaActive;
     majRelance();
@@ -181,7 +191,7 @@
       var u=new URL(c.url);
       if(u.protocol!=='https:'||u.username||u.password||u.pathname!=='/chat'||u.search||u.hash)throw new Error('Adresse IA invalide');
       iaURL=u.href;iaOptions.hidden=false;
-      try{iaActive=sessionStorage.getItem(SS+'-ia')===iaURL;}catch(e){console.warn('Le Ver : consentement non restauré.');}
+      try{iaActive=sessionStorage.getItem(IA_CLE)===iaURL;}catch(e){console.warn('Le Ver : consentement non restauré.');}
       majIA();
     }).catch(function(e){
       iaConfig=null;console.error('Le Ver : configuration IA inaccessible.',e);
@@ -191,13 +201,13 @@
   iaOptions.querySelector('.cn-ai-on').addEventListener('click',function(){
     if(occupeQuestion){toast('Attends la fin de cette réponse.');return;}
     iaActive=true;
-    try{sessionStorage.setItem(SS+'-ia',iaURL);}catch(e){console.warn('Le Ver : consentement non mémorisé.');toast('Accord valable sur cette page seulement.');}
+    try{sessionStorage.setItem(IA_CLE,iaURL);}catch(e){console.warn('Le Ver : consentement non mémorisé.');toast('Accord valable sur cette page seulement.');}
     majIA();iaOptions.open=false;toast('Conversation IA activée. Les échanges restent limités à cette session.');
   });
   iaOptions.querySelector('.cn-ai-off').addEventListener('click',function(){
     iaActive=false;
     if(iaRequete)iaRequete.controleur.abort();
-    try{sessionStorage.removeItem(SS+'-ia');}catch(e){console.warn('Le Ver : retrait du consentement non mémorisé.');toast('Retrait valable sur cette page seulement.');}
+    try{sessionStorage.removeItem(IA_CLE);}catch(e){console.warn('Le Ver : retrait du consentement non mémorisé.');toast('Retrait valable sur cette page seulement.');}
     majIA();iaOptions.open=false;toast('Dialogue local : aucun nouvel échange envoyé à l’IA.');
   });
   pan.querySelector('.cn-new').addEventListener('click',function(){
@@ -226,7 +236,8 @@
     copie:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>',
     ok:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',
     edite:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
-    relance:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>'
+    relance:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>',
+    partage:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>'
   };
   function icone(nom,label,fn){
     var b=D.createElement('button');b.type='button';b.className='cn-ic';b.innerHTML=IC[nom];
@@ -250,7 +261,9 @@
       w.appendChild(d);log.appendChild(w);bas();return;
     }
     w.appendChild(d);
-    if(!m.ac){var act=D.createElement('div');act.className='cn-act';act.appendChild(icone('copie','Copier la réponse',function(b){copie(d,b);}));w.appendChild(act);}
+    if(!m.ac){var act=D.createElement('div');act.className='cn-act';act.appendChild(icone('copie','Copier la réponse',function(b){copie(d,b);}));
+      if(!m.err&&window.HTMLCanvasElement)act.appendChild(icone('partage','Partager en image',function(b){partage(w,b);}));
+      w.appendChild(act);}
     log.appendChild(w);
     var corps=m.h;
     if(!anim||calme){d.innerHTML=corps;bas();return;}
@@ -309,6 +322,86 @@
     }
     if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,repli);else repli();
   }
+  /* partager une réponse : une image 1080×1350 aux couleurs de la couche, pour les réseaux */
+  var TEINTES={
+    putride:{fond:['#1a0033','#05000a'],c:'#39ff6a',c2:'#d6b0ff',t:'#f1e8ff'},
+    cachot:{fond:['#2a0006','#000'],c:'#ff1736',c2:'#ffe23f',t:'#ffe9a8'},
+    normal:{fond:['#000080','#00001a'],c:'#fc0',c2:'#ff3b3b',t:'#fff'}
+  };
+  function lignes(ctx,texte,large){
+    var r=[];
+    texte.split('\n').forEach(function(par){
+      var l='';
+      par.split(/\s+/).forEach(function(w){
+        if(!w)return;
+        var x=l?l+' '+w:w;
+        if(ctx.measureText(x).width>large&&l){r.push(l);l=w;}else l=x;
+      });
+      r.push(l);
+    });
+    return r;
+  }
+  function textePartage(h){
+    var t=D.createElement('template');t.innerHTML=h;var c=t.content;
+    Array.prototype.forEach.call(c.querySelectorAll('.va,a.lire,br'),function(x){x.replaceWith(x.tagName==='BR'?'\n':'');});
+    Array.prototype.forEach.call(c.querySelectorAll('.src,q'),function(x){x.prepend('\n');x.append('\n');});
+    return c.textContent.replace(/[ \t]*\[S\d+\]/g,'').replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{2,}/g,'\n').trim();
+  }
+  function dessine(question,texte,logo){
+    var W=1080,Hh=1350,M=90,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche];
+    cv.width=W;cv.height=Hh;
+    var g=ctx.createLinearGradient(0,0,0,Hh);g.addColorStop(0,T.fond[0]);g.addColorStop(1,T.fond[1]);
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,Hh);
+    ctx.strokeStyle=T.c;ctx.lineWidth=6;ctx.strokeRect(36,36,W-72,Hh-72);
+    ctx.textBaseline='top';ctx.fillStyle=T.c2;ctx.font='96px "Bebas Neue",Impact,sans-serif';
+    var titre=normal?'TRISTANA':'LE VER',y=M;
+    if(logo){ctx.drawImage(logo,M,y-4,104,104);ctx.fillText(titre,M+128,y);}else ctx.fillText(titre,M,y);
+    y+=104;ctx.fillStyle=T.t;ctx.globalAlpha=.75;ctx.font='34px "Bebas Neue",Impact,sans-serif';
+    ctx.fillText(normal?'ATTACHÉE DE PRESSE · PUANTEUR PUTRIDE PRODUCTIONS':'SERVITEUR DE KOBAL · LE VAMPIRIUM',logo?M+128:M,y-14);
+    ctx.globalAlpha=1;y+=60;
+    var large=W-2*M,fin=Hh-M-120;
+    if(question){
+      ctx.fillStyle=T.c;ctx.font='italic 40px Georgia,serif';
+      var lq=lignes(ctx,'« '+question.replace(/\s+/g,' ').slice(0,220)+' »',large).slice(0,3);
+      lq.forEach(function(l){ctx.fillText(l,M,y);y+=52;});y+=30;
+    }
+    /* la taille du texte s'adapte ; au plus petit, la fin est coupée net avec « … » */
+    var taille=64,ls;
+    for(;;){
+      ctx.font=taille+'px Georgia,serif';ls=lignes(ctx,texte,large);
+      if(y+ls.length*taille*1.38<=fin||taille<=30)break;
+      taille-=2;
+    }
+    var max=Math.floor((fin-y)/(taille*1.38));
+    if(ls.length>max){ls=ls.slice(0,Math.max(1,max));ls[ls.length-1]=ls[ls.length-1].replace(/\s*\S*$/,'')+' …';}
+    else y+=Math.max(0,(fin-y-ls.length*taille*1.38)/3);
+    ctx.fillStyle=T.t;ls.forEach(function(l){ctx.fillText(l,M,y);y+=taille*1.38;});
+    ctx.fillStyle=T.c;ctx.fillRect(M,Hh-M-70,large,4);
+    ctx.font='58px "Bebas Neue",Impact,sans-serif';ctx.fillText('LACREATUREDUMARAIS.FR',M,Hh-M-46);
+    return cv;
+  }
+  function partage(w,b){
+    var i=hist.indexOf(w._m),q='',texte=textePartage(w._m.h||'');
+    for(var j=i-1;j>=0;j--)if(hist[j].r==='q'){q=hist[j].t;break;}
+    if(/^Explique ce passage/i.test(q))q='';
+    if(!texte){toast('Rien à partager dans cette réponse.');return;}
+    b.disabled=true;
+    var polices=D.fonts&&D.fonts.load?Promise.all([D.fonts.load('96px "Bebas Neue"'),D.fonts.load('46px Georgia')]).catch(function(){}):Promise.resolve();
+    var logo=normal?new Promise(function(ok){var im=new Image();im.onload=function(){ok(im);};im.onerror=function(){ok(null);};im.src='/images/cachot/logo-pp-blanc.webp';}):Promise.resolve(null);
+    Promise.all([polices,logo]).then(function(r){
+      var cv=dessine(q,texte,r[1]);
+      return new Promise(function(ok,ko){cv.toBlob(function(bl){bl?ok(bl):ko(new Error('image'));},'image/png');});
+    }).then(function(bl){
+      var nomF=(normal?'tristana':'le-ver')+'-lacreaturedumarais.png',f=null;
+      try{f=new File([bl],nomF,{type:'image/png'});}catch(_){}
+      if(f&&navigator.canShare&&navigator.canShare({files:[f]}))
+        return navigator.share({files:[f],title:'La Créature du Marais',text:'https://lacreaturedumarais.fr/'}).catch(function(e){if(e&&e.name!=='AbortError')throw e;});
+      var a=D.createElement('a'),u=URL.createObjectURL(bl);a.href=u;a.download=nomF;D.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(u);},4000);
+      toast(normal?'Image enregistrée : publiez-la où vous voulez.':'Image enregistrée : publie-la où tu veux.');
+    }).catch(function(e){console.error('Partage en image impossible.',e);toast('Image impossible à créer sur cet appareil.');})
+      .finally(function(){b.disabled=false;});
+  }
   /* modifier une question : elle revient dans le champ ; à l'envoi, l'échange reprend depuis elle */
   var edition=null,brouillon='';
   function hauteur(){
@@ -360,13 +453,27 @@
       vu[k]=1;choix.push(q);
     }
     if(p&&Array.isArray(p.suites))p.suites.forEach(function(q){pousse(q);});
-    if(p&&p.dialogue)['Et toi ?','Pourquoi ?','Qui est ton maître ?'].forEach(function(q){pousse(q,2);});
+    if(p&&p.dialogue)(normal?['Et vous ?','Pourquoi ?','Que gardent vos archives ?']:['Et toi ?','Pourquoi ?','Qui est ton maître ?']).forEach(function(q){pousse(q,2);});
+    sortie().forEach(function(q){pousse(q,choix.length+2);});
     if(KB){
       n0=choix.length;suitesSujet(p).forEach(function(q){pousse(q,n0+2);});
       n0=choix.length;suitesPage(p).forEach(function(q){pousse(q,n0+2);});
     }
     SUG[couche].forEach(function(q){pousse(q);});
     choix.forEach(function(q){var b=D.createElement('button');b.type='button';b.textContent=q;b.addEventListener('click',function(){demande(q);});sug.appendChild(b);});
+  }
+  /* sorties annoncées : des amorces propres à leurs pages, et avant la date, une invitation sur le site normal */
+  var SORTIES=[{page:/monsieur-clerge/,date:Date.parse('2026-11-30T17:30:00Z'),
+    avant:['Que se passe-t-il le 30 novembre ?'],
+    page_normal:['Qui est Monsieur Clergé ?','Où écouter Monsieur Clergé ?','Que raconte le clip ?'],
+    page_autre:['Qui est Monsieur Clergé ?','Monsieur Clergé, c’est qui au Vampirium ?']}];
+  function sortie(){
+    var r=[],t=Date.now();
+    SORTIES.forEach(function(s){
+      if(s.page.test(location.pathname))r=r.concat(normal?s.page_normal:s.page_autre);
+      else if(normal&&t<s.date)r=r.concat(s.avant);
+    });
+    return r;
   }
   function pageDe(url){
     if(!KB||typeof url!=='string')return -1;url=url.split('#')[0];
@@ -483,7 +590,7 @@
   }
 
   /* ---------- « Demander au Ver » sur un passage surligné de la page ---------- */
-  var selB=el('<button type="button" class="cn-sel'+cls+'" hidden>'+ICO_OR+'<span>Demander au Ver</span></button>'),choisi='',selT=0;
+  var selB=el('<button type="button" class="cn-sel'+cls+'" hidden>'+ICO_OR+'<span>'+(normal?'Demander à Tristana':'Demander au Ver')+'</span></button>'),choisi='',selT=0;
   function passageChoisi(){
     var s=window.getSelection&&getSelection();
     if(!s||s.isCollapsed||!s.rangeCount)return null;
@@ -529,7 +636,10 @@
   function mots(s,garder){var r=[];norm(s).split(' ').forEach(function(w){if(!w||(!garder&&(STOPS[w]||w.length<2)))return;r.push(rac(w));});return r;}
   function prepare(d){
     var P=d.p,E=d.e,df={},voc={},tot=0;
+    /* sur le site normal, les entrées cachées gardent leur rang (l'IA les désigne par indice) mais restent vides */
+    var cache=function(e){return normal&&/^\/(?:mode-putride|cachot)\//.test(P[e[0]][1]);};
     var ent=E.map(function(e){
+      if(cache(e))return {p:e[0],h:'',a:'',t:'',k:e[4],tf:{},tt:{},n:0};
       var tf={},ws=mots(e[3]),tt={};
       ws.forEach(function(w){tf[w]=(tf[w]||0)+1;});
       mots(P[e[0]][0]+' '+e[1]).forEach(function(w){tt[w]=1;});
@@ -541,7 +651,7 @@
     /* les surnoms d'une fiche désignent son personnage, mais seulement à l'identique (« sermons » n'est pas Sermions) */
     var noms=[],surnoms={};
     E.forEach(function(e){
-      if(e[1]!=='Surnom')return;
+      if(e[1]!=='Surnom'||cache(e))return;
       String(e[3]).replace(/^Surnom\s*:\s*/,'').replace(/\([^)]*\)/g,'').split(/\s*[·\/]\s*/).forEach(function(s){
         s=norm(s);if(s.length>=3)(surnoms[e[0]]=surnoms[e[0]]||[]).push(s);
       });
@@ -552,10 +662,10 @@
     });
     P.forEach(function(p,i){
       if(/^Repère /.test(p[0]))return;
-      if(!/^\/(?:mode-putride\/bestiaire|mode-putride\/discographie|cachot)\/[^/]+\/$/.test(p[1]))return;
+      if(!(normal?/^\/(?:discographie|video)\/[^/]+\/$|^\/la-creature-du-marais\/$/:/^\/(?:mode-putride\/bestiaire|mode-putride\/discographie|cachot)\/[^/]+\/$/).test(p[1]))return;
       if(/\/(?:archives|respects)\/$/.test(p[1]))return;
       var slug=p[1].split('/').filter(Boolean).pop(),alias=[norm(slug),norm(p[0])];
-      if(slug==='createur')alias=['la creature','creature du marais','cul pointu','tancrede'];
+      if(slug==='createur'||slug==='la-creature-du-marais')alias=['la creature','creature du marais','cul pointu','tancrede'];
       if(slug==='ver')alias=['le ver','ver du baptistere'];
       if(slug==='kavod-tinkiwizkhi')alias.push('kavod');
       if(slug==='puanteur-putride')alias.push('puanteur');
@@ -567,7 +677,7 @@
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
     var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},12000);
-    attente=fetch('/oracle-'+couche+'.json?v=27',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+    attente=fetch('/oracle-'+(normal?'putride':couche)+'.json?v=27',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
       if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
         !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
         !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
@@ -740,16 +850,51 @@
     {id:'limites',test:/\b(une ia|intelligence artificielle|comment (fonctionnes|marches)|tes limites|es tu reel|vraiment vivant)\b/,
       lignes:['Je suis un personnage animé par des répliques écrites et une recherche locale dans le site. Pas un modèle génératif : je ne peux ni tout comprendre, ni consulter le monde en direct. Mes sources restent visibles.','Ma mémoire reste dans cette session du navigateur. Les messages ne partent pas vers un service d’IA. Je sais retrouver une trace ; hors des registres, je préfère reconnaître mes limites.']}
   ];
+  var CAUSERIE_T=[
+    {id:'salut',test:/^(salut|bonjour|bonsoir|coucou|hello|hey)( a (toi|vous))?( tristana)?$/,
+      lignes:['Bonjour. Le bureau de presse est ouvert, les archives aussi, à quelques cartons près. Vous cherchez un disque, une date, ou simplement à bavarder ?','Rebonjour. J’ai rangé deux communiqués et perdu une agrafe : journée ordinaire. Que puis-je pour vous ?']},
+    {id:'identite',test:/\b(qui es tu|qui etes vous|presente toi|presentez vous|ton nom|votre nom|qui est tristana|ton role|votre role|ton metier|votre metier)\b/,
+      lignes:['Tristana : « triste » et « tana », un prénom qui annonce la couleur. Je suis l’attachée de presse et l’archiviste de PUANTEUR PUTRIDE Productions, le label de la Créature du Marais. Je rédige les annonces, je classe les sorties, je réponds aux curieux. Certaines boîtes, en revanche, restent fermées.','Communiqués, pochettes, coupures de presse, dates de sortie : je connais le catalogue par cœur. Ce qui dort dans la réserve du fond, je le connais aussi ; ce n’est simplement pas mon rayon de le raconter.']},
+    {id:'humeur',test:/\b(comment (vas tu|allez vous|ca va|tu vas)|ca va( et (toi|vous))?|tu vas bien|vous allez bien)\b/,
+      lignes:['Mélancolique, mais à jour dans mon classement : c’est mon état normal. Et vous, votre journée ?','Assez bien pour une archiviste : il pleut sur Rouen, les cartons sont secs. Vous venez pour la musique ?']},
+    {id:'indice',test:/\b(secrets?|cach\w*|myster\w*|dessous|envers|autre (mode|site|cote|face|monde)|cartons?|reserve|fond du marais|egouts?|vase|lore|easter egg|passage secret|sous sol|caves?|cote obscur|interdit\w*)\b/,
+      lignes:['Il y a des cartons que je n’ouvre pas pendant les heures de bureau. Ils sentent la vase, et leurs étiquettes sont écrites d’une main qui tremble. Je ne vous dirai pas ce qu’ils contiennent ; seulement qu’un site, comme un marais, a un fond.','Regardez tout en bas des pages, là où quelque chose suinte. Je n’en dis pas plus : certaines choses se trouvent mieux qu’elles ne se racontent.','Les disques publiés ici ne racontent qu’une moitié de l’histoire. L’autre se lit plus bas, dans l’humidité, avec d’autres visages et d’autres noms. Moi, je reste à la surface : c’est mon métier.','Si vous avez trouvé le passage, vous savez déjà que je ne peux pas vous y accompagner. Sinon : penchez-vous davantage.']},
+    {id:'ailleurs',test:/\b(le ver|kobal|vampir\w*|edwarda|epheb\w*|gargouille|cachots?)\b/,
+      lignes:['Ce nom-là n’est pas dans mes communiqués. Il circule peut-être dans les étages inférieurs ; je n’y descends pas, et je ne vous y conduirai pas par la main.','Vous avez de bonnes lectures, ou de mauvaises fréquentations. Dans les deux cas, ce dossier n’est pas classé à la surface.']},
+    {id:'suivre',test:/\b(abonne\w*|newsletter|rss|flux|prevenir|previens|alertes?|suivre les sorties|etre au courant)\b/,
+      lignes:['Le plus sûr, sans algorithme : le flux RSS des Nouvelles, lacreaturedumarais.fr/flux.xml. Ajoutez-le à votre lecteur de flux ; chaque sortie et chaque annonce y passent. Les réseaux de la Créature sont en bas de page.']},
+    {id:'presse',test:/\b(contacter|contact|journalist\w*|concerts?|booking|interview|programmat\w*|visuels?|photos? presse|kit presse)\b/,
+      lignes:['Pour une interview, un concert ou une demande particulière : la page Contact. Les visuels et leurs conditions sont sur la page Presse et dans les Droits d’utilisation, avec le crédit « © PUANTEUR PUTRIDE Productions ».']},
+    {id:'rire',test:/\b(blague|fais moi rire|humour|plaisanterie|drole|farce)\b/,
+      lignes:['Mon humour est rangé entre « deuil » et « dossier de presse » : il est sec. La Créature, elle, préfère la farce : sacré et trivial, ferveur et grotesque. C’est souvent là que ses titres mordent.']},
+    {id:'ennui',test:/\b(ennui|ennuie|rien a faire|parler de tout|tout et de rien|bavard\w*|discut\w*|quoi parler|parlons d autre chose)\b/,
+      lignes:['Parlons musique, alors. Je peux vous conseiller un disque selon votre humeur : quelque chose de fervent, de grinçant ou de franchement malpoli. Qu’est-ce qui vous tente ?','Je peux aussi vous raconter une sortie, un clip, une coupure de presse. Ou vous laisser chercher ce que le marais garde au fond : c’est plus amusant, je vous assure.']},
+    {id:'tristesse',test:/\b(triste|tristesse|seul|solitude|malheureux|ca ne va pas|vais mal|moral|fatigue|epuise)\b/,
+      lignes:['Je connais la tristesse de près : elle est dans mon prénom. Vous pouvez en parler ici sans faire de belle phrase. Si cela pèse trop ou dure, parlez-en aussi à quelqu’un de confiance ; je reste un personnage.']},
+    {id:'desaccord',test:/\b(pas d accord|tu as tort|vous avez tort|n importe quoi|c est faux|tu mens|vous mentez)\b/,
+      lignes:['Reprenons alors : quelle phrase contestez-vous ? Mes archives font foi, pas mon ton.']},
+    {id:'pique',test:/\b((tu es|vous etes) (nulle?|idiote?|bete|stupide)|t es (nulle?|conne?))\b/,
+      lignes:['Je classe aussi les critiques. Dites-moi ce qui cloche dans ma réponse, je reprendrai le dossier.']},
+    {id:'scene',test:/\b(invente|raconte une histoire|ecris (moi )?(une|un) (chanson|poeme))\b/,
+      lignes:['Je tiens les archives, pas la plume de l’artiste : je n’écris ni chansons ni épisodes sur commande. Parlons plutôt d’une œuvre publiée.']},
+    {id:'merci',test:/^(merci( beaucoup| tristana)?|c est gentil|super|tres bien)$/,
+      lignes:['Avec plaisir. Le bureau reste ouvert.','Je vous en prie. Partagez un titre, si le cœur vous en dit : c’est ce qui aide le plus un artiste indépendant.']},
+    {id:'depart',test:/^(au revoir|a bientot|a plus|bonne nuit|bonne soiree|bye)$/,
+      lignes:['Au revoir. Suivez le flux des Nouvelles : je préviens toujours quand quelque chose sort.','Bonne soirée. Et si un soir vous entendez quelque chose suinter en bas de page… vous saurez.']},
+    {id:'limites',test:/\b(une ia|intelligence artificielle|comment (fonctionnes|fonctionnez|marches)|tes limites|vos limites|es tu reelle?|etes vous reelle?)\b/,
+      lignes:['Je suis un personnage animé par des répliques écrites et une recherche dans les pages publiques du site. Sans votre accord pour l’IA, rien ne part vers un service extérieur.']}
+  ];
   function secours(q){
     if(/\b(suicide|me tuer|me faire du mal|veux en finir)\b/.test(norm(q)))return {r:'a',h:esc('Je mets le personnage de côté : si tu risques de te faire du mal, contacte immédiatement une personne de confiance ou les secours. En France, le 3114 est gratuit, 24 h/24 ; en cas de danger immédiat, appelle le 112.')};
     return null;
   }
   function bavarde(q){
-    var n=norm(q),p=precedent(),v=CAUSERIE.find(function(v){return v.test.test(n);}),aide=secours(q);
+    var n=norm(q),p=precedent(),CA=normal?CAUSERIE_T:CAUSERIE,v=CA.find(function(v){return v.test.test(n);}),aide=secours(q);
     if(aide)return aide;
+    if(normal&&v&&/^(indice|ailleurs|suivre|presse|identite)$/.test(v.id))return {r:'a',h:esc(v.lignes[hist.filter(function(m){return m.dialogue===v.id;}).length%v.lignes.length]),dialogue:v.id};
     if((KB&&entites(q).length)||/\b(creature|edwarda|epheb\w*|kobal|vampirix|confiteor|chyren|odium|kavod|noo noo|puanteur|temoign\w*|accus\w*|album|disque|sources?|site)\b/.test(n))return null;
     var court=/^(et toi|et vous|oui|non|peut etre|pourquoi|comment ca|continue|et ensuite|encore|developpe|dis m en plus)$/.test(n);
-    if(!v&&court&&p&&p.dialogue)v=CAUSERIE.find(function(v){return v.id===p.dialogue;});
+    if(!v&&court&&p&&p.dialogue)v=CA.find(function(v){return v.id===p.dialogue;});
     if(!v)return null;
     var tours=hist.filter(function(m){return m.dialogue===v.id;}).length;
     return {r:'a',h:esc(v.lignes[tours%v.lignes.length]),dialogue:v.id};
@@ -761,6 +906,7 @@
     }).filter(Boolean).join(' · ');
   }
   function parole(q){
+    if(normal)return null;
     var n=norm(q);
     var v=VOIX.find(function(v){return v.test.test(n);});
     /* Un nom ou un titre précis prime sur une réponse thématique générale. */
@@ -832,12 +978,12 @@
   function explique(t){
     var ix=localise(t);
     if(ix<0)return {r:'a',h:esc('Ce passage n’est pas dans mes registres, ou trop morcelé pour que j’en retrouve la trace. Pose-moi plutôt une question sur ce qu’il évoque.')};
-    var e=KB.E[ix],s=KB.E[ix+1],h=esc('Je te dis d’où sort ce passage et ce qui l’entoure.')+'<span class="src">'+esc(nom(e))+'</span>';
+    var e=KB.E[ix],s=KB.E[ix+1],h=esc(normal?'Voici d’où vient ce passage et ce qui l’entoure.':'Je te dis d’où sort ce passage et ce qui l’entoure.')+'<span class="src">'+esc(nom(e))+'</span>';
     if(s&&s.p===e.p&&s.k!==2&&norm(t).indexOf(norm(s.t).slice(0,40))<0)h+='<q>'+esc(coupe(s.t,420))+'</q><span class="va">C’est ce qui suit sur la page.</span>';
     var ns=entites(t).filter(function(i){return i!==e.p;}).slice(0,3);
     if(ns.length)h+='<span class="va">Il convoque : '+ns.map(function(i){return '<a href="'+esc(KB.P[i][1])+'">'+esc(KB.P[i][0])+'</a>';}).join(' · ')+'</span>';
     h+='<a class="lire" href="'+esc(lien(e))+'">Suivre la trace →</a>';
-    if(iaURL&&!iaActive)h+='<span class="va">Pour une explication rédigée, active la conversation IA dans les options du Ver.</span>';
+    if(iaURL&&!iaActive)h+='<span class="va">Pour une explication rédigée, active la conversation IA dans les options'+(normal?' de Tristana':' du Ver')+'.</span>';
     return {r:'a',h:h,sujet:KB.P[e.p][1],sources:[lien(e)],ix:ix,question:nom(e)};
   }
   function repond(q){
@@ -848,7 +994,7 @@
     var sc=sectionCitee(q,[pageDe(p&&p.sujet),pc].filter(function(i){return i>=0;}));
     if(sc>=0&&mots(q.replace(/[«“"][^»”"]*[»”"]/,'')).length<=2)return extrait(sc,'Voici la section.',KB.P[KB.E[sc].p][0]+' '+KB.E[sc].h);
     if(p&&p.sujet&&/^(et toi|tu en penses quoi|qu en penses tu|ton avis)$/.test(n)){
-      var avis=AVIS[p.voix]||'Moi, je regarde ce que cette trace révèle des rôles et des contradictions. Je ne prétends pas connaître les pensées privées des personnages ou de leur auteur.';
+      var avis=AVIS[p.voix]||(normal?'Mon avis d’archiviste : écoutez les sorties dans l’ordre, chacune répond à la précédente. Pour le reste, je laisse l’œuvre parler.':'Moi, je regarde ce que cette trace révèle des rôles et des contradictions. Je ne prétends pas connaître les pensées privées des personnages ou de leur auteur.');
       return {r:'a',h:esc(avis),sujet:p.sujet,sources:p.sources,voix:p.voix,question:p.question,ix:p.ix};
     }
     if(p&&p.sujet&&/\b(sources?|preuves?)\b/.test(n)&&!entites(q).length){
@@ -860,7 +1006,7 @@
     var contextuel=!noms.length&&p&&p.sujet&&(suiteDemandee||/^(et |pourquoi (il|elle)|ses |son |sa |il |elle |ils |elles |quelles preuves|les sources|d ou)/.test(n));
     var pageP=contextuel?KB.P.findIndex(function(x){return x[1]===p.sujet;}):-1;
     var requete=(suiteDemandee&&p&&p.question?p.question:q).replace(/\bmme\b/gi,'Madame');
-    if(/\b(ton histoire|tes lieux|ou (habites|vis) tu)\b/.test(n)&&!noms.length&&!contextuel)requete+=' Ver baptistère';
+    if(!normal&&/\b(ton histoire|tes lieux|ou (habites|vis) tu)\b/.test(n)&&!noms.length&&!contextuel)requete+=' Ver baptistère';
     if(pageP>=0)requete+=' '+KB.P[pageP][0];
     var r=cherche(requete);
     if(noms.length)r=r.filter(function(x){return noms.indexOf(x.e.p)>=0;});
@@ -877,6 +1023,7 @@
       r=r.filter(function(x){return /temoign|accus|emprise/.test(norm(x.e.h+' '+x.e.t));});
     }
     if(!r.length||r[0].s<2.2){
+      if(normal)return {r:'a',h:'Rien d’assez sûr dans mes archives publiques pour vous répondre. Donnez-moi un titre, une date ou un clip ; certains dossiers, eux, ne sont pas de mon ressort.'};
       return {r:'a',h:'Je ne vais pas te vendre de la vase pour une révélation. Je n’ai pas de passage assez sûr pour te répondre. Donne-moi un nom, un lieu ou un disque ; si tu reprends une question, précise lequel.'};
     }
     var b=r[0],e=b.e,autres=[],pages={};pages[e.p]=1;
@@ -888,7 +1035,7 @@
       txt=coupe(com>=a.length*.6?suite.t:e.t+' '+suite.t,650);
     }
     for(var i=1;i<r.length&&autres.length<2;i++){if(!pages[r[i].e.p]&&r[i].s>b.s*.42){pages[r[i].e.p]=1;autres.push(r[i].e);}}
-    var amorces=['Les grands discours sont moins solides quand on regarde leurs coutures. Voici le passage.','Je garde la trace ; à toi de juger le costume.','Pas besoin d’inventer une révélation : les registres ont déjà de quoi faire grincer la scène.'];
+    var amorces=normal?['Voici ce que disent les archives.','Le dossier est classé ici.','Extrait des archives du label, sans retouche.']:['Les grands discours sont moins solides quand on regarde leurs coutures. Voici le passage.','Je garde la trace ; à toi de juger le costume.','Pas besoin d’inventer une révélation : les registres ont déjà de quoi faire grincer la scène.'];
     var intro=amorces[hist.filter(function(m){return m.r==='q';}).length%amorces.length];
     if(/temoign|accus|ames exsangues/.test(norm(e.h+' '+q)))intro='Ici, je distingue les témoignages rapportés, leur contestation et le lore. Le site rapporte ce passage ; ma farce ne vaut pas vérification indépendante.';
     if(e.k===4)intro='Voici le texte de la pièce, transcrit de l’image publiée. C’est ce que rapporte la presse ; ouvre la pièce pour vérifier.';
@@ -940,9 +1087,11 @@
       }
       prend(sectionCitee(q,[pageDe(p&&(p.sujet||(p.sources&&p.sources[0]))),pageCourante()].filter(function(i){return i>=0;})));
     }
-    if(/\b(ton maitre|qui es tu|qui sers tu)\b/.test(n))requete+=' Ver Kobal';
-    if(/\b(tes amis|ton amie?|amitie)\b/.test(n))requete+=' Ver Gargouille Rouen';
-    if(/\bkobal\b/.test(n)&&!/\bver\b/.test(n))requete+=' Ver farces';
+    if(!normal){
+      if(/\b(ton maitre|qui es tu|qui sers tu)\b/.test(n))requete+=' Ver Kobal';
+      if(/\b(tes amis|ton amie?|amitie)\b/.test(n))requete+=' Ver Gargouille Rouen';
+      if(/\bkobal\b/.test(n)&&!/\bver\b/.test(n))requete+=' Ver farces';
+    }
     var noms=entites(requete),r=cherche(requete);
     /* l'actualité vient des derniers articles de /nouvelles/, rangés du plus récent au plus ancien */
     if(/\b(quoi de neuf|actu|actus|actualites?|nouvelles|news|recemment|en ce moment|derniere?s? (sortie|sorties|nouvelle|nouvelles|clip|single|album|news))\b/.test(n)){
@@ -1005,6 +1154,7 @@
     var corps={consent:true,revision:KB.revision,ids:contexte.ids,messages:historiqueIA(q),stream:true};
     if(pc>=0)corps.page=KB.P[pc][1];
     if(forme)corps.forme=forme;
+    if(normal)corps.persona='tristana';
     return fetch(iaURL,{method:'POST',credentials:'omit',referrerPolicy:'no-referrer',
       headers:{'Content-Type':'application/json'},signal:req.controleur.signal,body:JSON.stringify(corps)
     }).then(function(r){
@@ -1081,7 +1231,7 @@
     sug.innerHTML='';
     occupe(true,distant);
     ajoute({r:'q',t:q,ai:distant},false);
-    var att=D.createElement('div'),vu=false;att.className='cn-m a cn-dots';att.setAttribute('aria-label',distant?'Le Ver prépare sa réponse avec l’IA':'Le Ver consulte les registres');att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
+    var att=D.createElement('div'),vu=false;att.className='cn-m a cn-dots';att.setAttribute('aria-label',(normal?'Tristana ':'Le Ver ')+(distant?'prépare sa réponse avec l’IA':'consulte les registres'));att.innerHTML='<i></i><i></i><i></i>';log.appendChild(att);bas();
     /* la réponse de l'IA s'écrit à mesure ; la région annoncée attend la version finale */
     function vivant(t){
       if(!vu){vu=true;att.className='cn-m a cn-live';att.removeAttribute('aria-label');att.setAttribute('aria-hidden','true');}
@@ -1112,7 +1262,7 @@
   }
 
   function pose(){
-    D.body.appendChild(fx);D.body.appendChild(ob);D.body.appendChild(pan);D.body.appendChild(selB);D.dispatchEvent(new Event('coins:pret'));
+    if(!normal)D.body.appendChild(fx);D.body.appendChild(ob);D.body.appendChild(pan);D.body.appendChild(selB);D.dispatchEvent(new Event('coins:pret'));
     if(couche==='cachot'){
       var ver=D.createElement('script');ver.src='/ver.js?v=6';
       ver.onload=function(){window.Ver.go();};

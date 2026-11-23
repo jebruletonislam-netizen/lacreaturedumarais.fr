@@ -378,3 +378,18 @@ test('flux en lignes JSON : texte stable, relances retenues, fin validee', async
   env.AI.run = async () => ({choices: []});
   assert.equal((await worker.fetch(requete({...donnees(), stream: true}), env)).status, 502);
 });
+
+test('Tristana : persona du site normal, extraits et page publics seulement', () => {
+  const publique = corpus.e.findIndex(e => corpus.p[e[0]][1] === '/discographie/');
+  assert.ok(publique >= 0);
+  const base = {consent: true, revision: corpus.revision, persona: 'tristana', ids: [publique],
+    messages: [{role: 'user', content: 'Quel est le dernier disque ?'}]};
+  const {messages} = prepareDialogue({...base, page: '/discographie/'},
+    {noyau: 'Kobal secret', sections: []});
+  assert.match(messages[0].content, /Tu es Tristana/);
+  assert.doesNotMatch(messages[0].content, /Kobal|Vampirium|mode-putride|cachot/);
+  assert.throws(() => prepareDialogue({...base, ids: [id]}), {code: 'extraits'});
+  assert.throws(() => prepareDialogue({...base, page: '/mode-putride/bestiaire/ver/'}), {code: 'page'});
+  assert.throws(() => prepareDialogue({...base, persona: 'kobal'}), {code: 'persona'});
+  assert.match(prepareDialogue({...base, persona: undefined}).messages[0].content, /Ver du bapt/);
+});

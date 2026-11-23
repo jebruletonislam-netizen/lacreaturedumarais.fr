@@ -1,0 +1,35 @@
+<section class="rebours" aria-labelledby="rebours-t">
+<style>
+.rebours{display:flex;flex-wrap:wrap;gap:1.2rem 2rem;align-items:center;justify-content:center;margin:1.2rem 0 2rem;padding:1.2rem;border:var(--border-thin,.2rem) solid var(--c-red,#f00);background:rgba(0,0,0,.55);box-shadow:var(--shadow-glow-red,0 0 .7rem rgba(255,0,0,.55))}
+.rebours-texte{flex:1 1 300px;max-width:34rem;text-align:center}
+.rebours h2{margin:.2rem 0 .4rem}
+.rebours-n{display:flex;justify-content:center;gap:.6rem;margin:.8rem 0;font-family:var(--f-ui,"Bebas Neue",Impact,sans-serif);color:var(--c-yellow,#fc0)}
+.rebours-n span{min-width:3.6rem;padding:.3rem .2rem;border:.12rem solid currentColor;line-height:1}
+.rebours-n b{display:block;font-size:2.2rem;font-weight:400}
+.rebours-n small{font-size:.9rem;letter-spacing:.06em}
+.rebours-video{width:min(100%,260px);margin:0;container-type:inline-size}
+.rebours-video iframe{display:block;width:100%;height:calc(125cqw + 184px);border:0;background:#000}
+.rebours-video figcaption{margin-top:.4rem;font-size:.85rem;text-align:center}
+</style>
+<div class="rebours-texte">
+<p class="route-kicker">TROISIÈME SINGLE D’IN ODIUM FIDEI</p>
+<h2 id="rebours-t">Monsieur Clergé</h2>
+<p>Single et clip le <time datetime="2026-11-30T18:30:00+01:00">30 novembre 2026 à 18 h 30</time>.</p>
+<p class="rebours-n" data-fin="2026-11-30T18:30:00+01:00" role="timer" aria-label="Temps restant avant la sortie"><span><b>–</b><small>JOURS</small></span><span><b>–</b><small>HEURES</small></span><span><b>–</b><small>MIN</small></span><span><b>–</b><small>SEC</small></span></p>
+<p>Avant-goût : un sermon d’Halloween, une résurrection qui tourne mal, et deux âmes qui n’en reviennent pas tout à fait.</p>
+<p><a class="btn" href="/nouvelles/monsieur-clerge-rendez-vous-le-30-novembre/">LIRE L’ANNONCE</a><a class="btn" href="/flux.xml" type="application/rss+xml">ÊTRE PRÉVENU · RSS</a></p>
+</div>
+<figure class="rebours-video"><iframe loading="lazy" src="https://www.instagram.com/reel/DgCwYsRhW87/embed/" title="Teaser de Monsieur Clergé — Reel Instagram" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><figcaption><a href="https://www.instagram.com/reel/DgCwYsRhW87/" rel="noopener" target="_blank">Voir le teaser sur Instagram</a></figcaption></figure>
+<script>
+(function(){
+  var n=document.currentScript.parentNode.querySelector('.rebours-n'),fin=Date.parse(n.getAttribute('data-fin')),b=n.querySelectorAll('b');
+  function tic(){
+    var s=Math.floor((fin-Date.now())/1000);
+    if(s<=0){n.removeAttribute('role');n.textContent='C’est l’heure : Monsieur Clergé sort maintenant.';return;}
+    [Math.floor(s/86400),Math.floor(s/3600)%24,Math.floor(s/60)%60,s%60].forEach(function(v,i){b[i].textContent=(i&&v<10?'0':'')+v;});
+    setTimeout(tic,1000-Date.now()%1000);
+  }
+  tic();
+})();
+</script>
+</section>

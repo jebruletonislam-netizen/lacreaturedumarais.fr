@@ -47,6 +47,31 @@ leurs adresses existantes. L'historique reste limité à 48 messages par couche 
 la session de l'onglet. Sans activation explicite de l'IA, aucun échange n'est envoyé
 à un service d'IA. Le Ver est ami de la Gargouille de Rouen ; Kobal reste son maître.
 
+### Tristana (mode normal)
+
+Hors `/mode-putride/` et `/cachot/`, `coins.js` présente Tristana, attachée de presse
+et archiviste de PUANTEUR PUTRIDE Productions (bouton au logo PP, en bas à droite).
+Elle vouvoie, a ses propres répliques locales (`CAUSERIE_T`) et ne cite que des
+extraits publics : le client vide les entrées non publiques en gardant leurs indices,
+et le Worker refuse (`400`) une requête `persona: "tristana"` portant un extrait ou
+une page non publics. Elle n'a ni les notes de coulisses ni le personnage du Ver.
+Elle peut évoquer « les cartons du fond » et ce qui suinte en bas des pages, sans
+jamais nommer d'adresse, de personnage ou d'épisode du mode putride.
+
+Sur `/discographie/monsieur-clerge/`, les puces proposent « Qui est Monsieur Clergé ? »
+dès le 30 novembre 2026 à 18 h 30 (`SORTIES` dans `coins.js`) ; avant cette date,
+les pages normales proposent « Que se passe-t-il le 30 novembre ? ». Chaque réponse
+peut être **partagée en image** (PNG 1080×1350 dessiné localement aux couleurs de la
+couche, partage natif sinon téléchargement).
+
+### Compte à rebours et flux RSS
+
+`_includes/compte-a-rebours.html` (Nouvelles et Discographie) affiche le compte à
+rebours et le teaser Instagram jusqu'à la sortie ; le retirer sur la branche de sortie.
+`flux.xml` (RSS 2.0, annoncé dans `<head>`) liste les articles de `nouvelles/`, du plus
+récent au plus ancien : ajouter chaque nouvel article à la main, puis lancer
+`python -m unittest discover -s _outils -p test_flux.py`.
+
 Le générateur conserve les permaliens, les libellés, les titres des morceaux,
 les données de parution, les descriptions d'images et les paroles publiées des
 compagnons. Les paragraphes sont indexés séparément : garder les expressions

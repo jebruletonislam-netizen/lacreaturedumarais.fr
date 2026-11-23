@@ -245,6 +245,59 @@ def dialogue_ia(browser, width):
     print(f"IA simulée : consentement, historique, citations, quota et retrait {width}px OK", flush=True)
 
 
+def tristana(browser, width):
+    """Mode normal : Tristana, extraits publics seulement, puces et partage en image."""
+    context = browser.new_context(viewport={"width": width, "height": 844}, accept_downloads=True)
+    context.add_init_script("localStorage.setItem('lcdm-calme','1');"
+                            "Object.defineProperty(navigator,'canShare',{value:()=>false})")
+    endpoint = "https://ver-tests.workers.dev/chat"
+    context.route("**/ver-ia.json*", lambda route: route.fulfill(
+        content_type="application/json", body=json.dumps({"url": endpoint})))
+    envois, erreurs_js = [], []
+
+    def service(route):
+        headers = {"Access-Control-Allow-Origin": BASE, "Access-Control-Allow-Methods": "POST",
+                   "Access-Control-Allow-Headers": "Content-Type"}
+        if route.request.method == "OPTIONS":
+            route.fulfill(status=204, headers=headers)
+            return
+        envois.append(route.request.post_data_json)
+        route.fulfill(headers=headers, content_type="application/json", body=json.dumps(
+            {"text": "Commencez par Confiteor, c’est la somme.", "truncated": False,
+             "suites": ["Et Chyren ?"], "sources": []}))
+
+    context.route(endpoint, service)
+    page = context.new_page()
+    page.on("pageerror", lambda e: erreurs_js.append(str(e)))
+    page.goto(BASE + "/")
+    bouton = page.locator(".cn-or")
+    assert bouton.locator("img[src*='logo-pp']").count() == 1
+    assert page.locator(".cn-fx").count() == 0
+    bouton.click()
+    page.wait_for_selector(".cn-ai")
+    assert "Tristana" in page.locator("#cn-oracle").inner_text()
+    puces(page)
+    question(page, "Bonjour, qui êtes-vous ?")
+    assert not envois
+    page.locator(".cn-ai summary").click()
+    page.locator(".cn-ai button").first.click()
+    question(page, "Par quel disque commencer ?")
+    assert len(envois) == 1 and envois[0]["persona"] == "tristana", envois
+    corpus = page.request.get(BASE + "/oracle-putride.json").json()
+    urls = [corpus["p"][corpus["e"][i][0]][1] for i in envois[0]["ids"]]
+    assert envois[0]["ids"] and not any(u.startswith(("/mode-putride/", "/cachot/")) for u in urls), urls
+    assert "Et Chyren ?" in puces(page)
+    with page.expect_download() as dl:
+        page.locator(".cn-log .cn-act").last.get_by_role("button", name="Partager en image").click()
+    chemin = f"{SORTIE}/tristana-partage-{width}.png"
+    dl.value.save_as(chemin)
+    assert dl.value.suggested_filename == "tristana-lacreaturedumarais.png"
+    page.screenshot(path=f"{SORTIE}/tristana-{width}.png")
+    assert not erreurs_js, erreurs_js
+    context.close()
+    print(f"Tristana, extraits publics, puces et partage en image {width}px OK", flush=True)
+
+
 def fenetre(browser, width):
     """Sans IA : suggestions liées à la page, résumé, fenêtre agrandie, retour en bas et passage surligné."""
     mobile = width < 900
@@ -310,6 +363,7 @@ with sync_playwright() as p:
     if "--ia" in sys.argv:
         for width in (1366, 390):
             dialogue_ia(browser, width)
+            tristana(browser, width)
         browser.close()
         sys.exit(0)
     for width in (1366, 390):
