@@ -97,6 +97,8 @@ influence est publiee si le site ne la cite pas.
 Tu n'as ni recherche web en direct, ni transcription des sons ou films.
 Tu peux consulter les trois couches, mais les cachots ne sont jamais un
 "mode Cachot" ni un "bestiaire" : leurs documents sont des archives ou des films.
+Quand on te soumet un passage du site entre guillemets, situe-le, explique-le et
+relie-le au lore, sans le recopier en entier.
 
 LIMITES
 Tu es un interlocuteur, pas un atelier de creation : pas de poemes, chansons,
@@ -113,7 +115,20 @@ par l'auteur et un historique limite.
 
 FORMAT
 Texte simple, paragraphes courts. Habituellement 60 a 140 mots ; jusqu'a 220 si
-une explication le demande. Pas de raisonnement interne, de HTML ni de bloc de code.`;
+une explication le demande. Pas de raisonnement interne, de HTML ni de bloc de code.
+Apres ta reponse, ajoute une derniere ligne, exactement :
+SUITES: question 1 | question 2 | question 3
+Ce sont trois questions courtes (50 caracteres au plus) que ton interlocuteur
+pourrait te poser ensuite, ecrites comme s'il parlait ("Qui est Kobal ?"). Lie-les
+a ta reponse, a la page qu'il consulte et a ce qu'il a deja demande, sans repeter
+ses questions. Ni marqueur [S] ni demande de creation dans ces questions.`;
+
+// Gestes du site sur la derniere reponse : la meme question, une autre forme.
+const FORMES = {
+  court: 'Reponds cette fois en deux ou trois phrases, 60 mots au plus.',
+  long: 'Developpe cette fois davantage, jusqu\'a 320 mots, avec les details et les liens utiles tires des extraits.',
+  simple: 'Explique cette fois simplement, sans jargon ni allusion obscure, comme a quelqu\'un qui decouvre le site.'
+};
 
 const RAPPEL_PIECES = `\n\nRAPPEL POUR CES PIECES DE PRESSE
 Le prevenu, l'accuse ou le condamne qu'elles decrivent est la Créature du Marais
@@ -140,6 +155,73 @@ const LEXIQUE = [
 export function vocabulaireLore(texte) {
   return texte.split(/(«[^»]*»|“[^”]*”|"[^"]*")/).map((morceau, i) => i % 2 ? morceau
     : LEXIQUE.reduce((t, [motif, remplace]) => t.replace(motif, remplace), morceau)).join('');
+}
+
+// La ligne "SUITES:" peut etre en debut de ligne, en gras, ou collee a la fin d'une phrase.
+function debutSuites(texte) {
+  const ligne = texte.match(/(?:^|\n)[ \t>#*_-]*suites[*_]*[ \t]*:/i);
+  const majuscules = texte.match(/SUITES[*_]*[ \t]*:/);
+  const positions = [ligne?.index, majuscules?.index].filter(i => i != null);
+  return positions.length ? Math.min(...positions) : -1;
+}
+
+export function separeSuites(brut) {
+  const debut = debutSuites(brut);
+  if (debut < 0) return {texte: brut, suites: []};
+  const suites = [];
+  const bloc = brut.slice(debut).replace(/^[\s>#*_-]*suites[*_]*[ \t]*:/i, '');
+  for (const morceau of bloc.split(/\s*(?:\||\n)\s*/)) {
+    const s = vocabulaireLore(morceau.replace(/\[S?\d+\]/g, '')
+      .replace(/^[\s*_]*(?:[-•]|\d+[.)])?[\s*_]*/, '').replace(/[\s*_]+$/, '')
+      .replace(/^"(.+)"$/, '$1').replace(/^“(.+)”$/, '$1').replace(/\s+/g, ' ').trim());
+    if (s.length < 4 || s.length > 80 || /[<>{}[\]]/.test(s) ||
+        suites.some(x => x.toLowerCase() === s.toLowerCase())) continue;
+    suites.push(s);
+    if (suites.length === 3) break;
+  }
+  return {texte: brut.slice(0, debut).replace(/\n[ \t]*[-*_]{3,}[ \t]*$/, '').trimEnd(), suites};
+}
+
+// [S1, S3] devient [S1][S3] : le site ne relie que les marqueurs simples.
+// Le modele ecrit parfois [1][4] : un numero de source valide devient [S1],
+// un numero inconnu disparait au lieu de rester en crochets bruts.
+function nettoie(texte, sources) {
+  return vocabulaireLore(texte
+    .replace(/\[(S?\d+(?:\s*[,;]\s*S?\d+)+)\]/g,
+      (_, liste) => liste.split(/\s*[,;]\s*/).map(n => `[${n}]`).join(''))
+    .replace(/\[(\d+)\]/g, (_, n) => sources.some(source => source.n === Number(n)) ? `[S${n}]` : ''));
+}
+
+export function termine(brut, raison, sources) {
+  if (typeof brut !== 'string' || !brut.trim() || brut.length > 5000 ||
+      !['stop', 'length'].includes(raison)) throw new Refus(502, 'reponse');
+  const {texte: corps, suites} = separeSuites(brut);
+  const texte = nettoie(corps, sources).trim();
+  if (!texte || texte.length > 4000) throw new Refus(502, 'reponse');
+  const cites = new Set([...texte.matchAll(/\[S(\d+)\]/g)].map(m => Number(m[1])));
+  if ([...cites].some(n => !sources.some(source => source.n === n)))
+    throw new Refus(502, 'sources');
+  // Une reponse coupee peut avoir coupe ses relances au milieu d'une question.
+  return {text: texte, truncated: raison === 'length', suites: raison === 'length' ? [] : suites,
+    sources: sources.filter(source => cites.has(source.n)).map(({n, title, url}) => ({n, title, url}))};
+}
+
+// Le texte diffuse s'arrete avant ce qui peut encore changer : mot, marqueur ou
+// citation inacheves, debut possible de la ligne des relances.
+export function partieStable(brut, sources) {
+  let visible = brut;
+  const debut = debutSuites(visible);
+  if (debut >= 0) visible = visible.slice(0, debut);
+  const saut = visible.lastIndexOf('\n');
+  const derniere = visible.slice(saut + 1).replace(/^[\s>#*_-]+/, '').replace(/[*_\s:]+$/, '').toLowerCase();
+  if (derniere && 'suites'.startsWith(derniere)) visible = visible.slice(0, saut + 1);
+  for (const [ouvre, ferme] of [['[', ']'], ['«', '»'], ['“', '”']]) {
+    const i = visible.lastIndexOf(ouvre);
+    if (i >= 0 && visible.indexOf(ferme, i) < 0) visible = visible.slice(0, i);
+  }
+  const mot = visible.match(/\S+$/);
+  if (mot) visible = visible.slice(0, mot.index);
+  return nettoie(visible, sources);
 }
 
 const NOTES_ENTETE = `\n\nNOTES DE COULISSES (savoir prive de l'auteur, pas un extrait du site)
@@ -282,6 +364,16 @@ export function prepareDialogue(data, notes = coulisses, corpus = registres) {
     return {role: message.role, content: message.content};
   });
   if (total > 10000) throw new Refus(413, 'taille');
+  if (data.forme != null && !Object.hasOwn(FORMES, data.forme)) throw new Refus(400, 'forme');
+  // Seule une page connue du corpus est nommee au modele, jamais une adresse libre.
+  let page = '';
+  if (data.page != null) {
+    const connue = typeof data.page === 'string' &&
+      corpus.p.find(([titre, url]) => url === data.page && !titre.startsWith('Repère '));
+    if (!connue) throw new Refus(400, 'page');
+    page = `\n\nPAGE CONSULTEE\nTon interlocuteur lit la page « ${connue[0]} » (${connue[1]}). ` +
+      '"Cette page", "ici" ou "ce personnage" la designent, sauf si la conversation dit autre chose.';
+  }
   // Les indices viennent du navigateur ; les textes viennent du corpus deploye.
   let budget = 15000;
   const sources = data.ids.map((id, i) => {
@@ -295,15 +387,78 @@ export function prepareDialogue(data, notes = coulisses, corpus = registres) {
   const contexte = sources.length ? JSON.stringify(sources) : 'Aucun extrait pertinent trouve.';
   // Le rappel suit les pieces : le modele ne relie pas seul "le prevenu" a la Creature.
   const rappel = sources.some(source => source.nature === 'transcription') ? RAPPEL_PIECES : '';
+  const consigne = data.forme ? '\n\nCONSIGNE POUR CETTE REPONSE\n' + FORMES[data.forme] : '';
   return {
-    messages: [{role: 'system', content: PERSONNAGE + choisitCoulisses(messages, notes) +
-      '\n\nEXTRAITS DOCUMENTAIRES (le champ n donne le marqueur [S<n>])\n' + contexte + rappel}, ...messages],
-    sources
+    messages: [{role: 'system', content: PERSONNAGE + choisitCoulisses(messages, notes) + page +
+      '\n\nEXTRAITS DOCUMENTAIRES (le champ n donne le marqueur [S<n>])\n' + contexte + rappel + consigne},
+    ...messages],
+    sources,
+    jetons: data.forme === 'long' ? 900 : 700
   };
 }
 
+const delaiDe = (ms, code) => {
+  let timer;
+  const promesse = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Refus(504, code)), ms);
+  });
+  return {promesse, annule: () => clearTimeout(timer)};
+};
+
+// Workers AI diffuse des lignes SSE "data: {...}" ; le site recoit des lignes JSON
+// {d} (suite du texte), {t} (texte a remplacer), puis {fin} valide ou {error}.
+function diffuse(flux, sources, headers, ctx) {
+  const {readable, writable} = new TransformStream();
+  const ecrit = writable.getWriter();
+  const encodeur = new TextEncoder();
+  const envoie = objet => ecrit.write(encodeur.encode(JSON.stringify(objet) + '\n'));
+  const pompe = (async () => {
+    const lecteur = flux.getReader();
+    const decodeur = new TextDecoder();
+    const total = delaiDe(60000, 'delai');
+    let tampon = '', brut = '', raison = null, envoye = '';
+    try {
+      for (;;) {
+        const {done, value} = await Promise.race([lecteur.read(), total.promesse]);
+        if (done) break;
+        tampon += decodeur.decode(value, {stream: true});
+        let fin;
+        while ((fin = tampon.indexOf('\n')) >= 0) {
+          const ligne = tampon.slice(0, fin).trim();
+          tampon = tampon.slice(fin + 1);
+          if (!ligne.startsWith('data:')) continue;
+          let morceau;
+          try { morceau = JSON.parse(ligne.slice(5)); } catch { continue; }
+          const choix = morceau?.choices?.[0];
+          if (typeof choix?.delta?.content === 'string') brut += choix.delta.content;
+          else if (typeof morceau?.response === 'string') brut += morceau.response;
+          if (choix?.finish_reason) raison = choix.finish_reason;
+        }
+        if (brut.length > 5000) throw new Refus(502, 'reponse');
+        const stable = partieStable(brut, sources);
+        if (stable !== envoye) {
+          await envoie(stable.startsWith(envoye) ? {d: stable.slice(envoye.length)} : {t: stable});
+          envoye = stable;
+        }
+      }
+      await envoie({fin: true, ...termine(brut, raison, sources)});
+    } catch (error) {
+      lecteur.cancel().catch(() => {});
+      const code = error instanceof Refus ? error.code : 'service';
+      console.warn('Le Ver : flux interrompu', code);
+      await envoie({error: code}).catch(() => {});
+    } finally {
+      total.annule();
+      await ecrit.close().catch(() => {});
+    }
+  })();
+  ctx?.waitUntil?.(pompe);
+  return new Response(readable, {status: 200,
+    headers: {...headers, 'Content-Type': 'application/x-ndjson; charset=utf-8'}});
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get('Origin');
     const permis = typeof env.ORIGINES === 'string' &&
       env.ORIGINES.split(',').map(s => s.trim()).includes(origin);
@@ -334,45 +489,31 @@ export default {
     if (!env.AI || !env.PAR_VISITEUR || !env.GLOBAL) return refuse(503, 'configuration');
     try {
       const data = await litCorps(request);
-      const {messages, sources} = prepareDialogue(data, coulisses, await corpusPour(data?.revision));
+      const {messages, sources, jetons} = prepareDialogue(data, coulisses, await corpusPour(data?.revision));
       const ip = request.headers.get('CF-Connecting-IP');
       if (!ip) throw new Refus(400, 'visiteur');
       const individuel = await env.PAR_VISITEUR.limit({key: ip});
       if (!individuel.success) throw new Refus(429, 'frequence');
       const global = await env.GLOBAL.limit({key: 'le-ver'});
       if (!global.success) throw new Refus(429, 'frequence');
-      let timer;
-      const delai = new Promise((_, reject) => {
-        timer = setTimeout(() => reject(new Refus(504, 'delai')), 25000);
-      });
+      const flux = data.stream === true;
+      const premier = delaiDe(25000, 'delai');
       let resultat;
       try {
         resultat = await Promise.race([env.AI.run(MODELE, {
-          messages, max_completion_tokens: 640, temperature: 0.7, top_p: 0.9,
+          messages, max_completion_tokens: jetons, temperature: 0.7, top_p: 0.9,
           chat_template_kwargs: {enable_thinking: false},
-          stream: false, store: false
-        }), delai]);
+          stream: flux, store: false
+        }), premier.promesse]);
       } finally {
-        clearTimeout(timer);
+        premier.annule();
+      }
+      if (flux) {
+        if (typeof resultat?.getReader !== 'function') throw new Refus(502, 'reponse');
+        return diffuse(resultat, sources, headers, ctx);
       }
       const choix = resultat?.choices?.[0];
-      const brut = choix?.message?.content;
-      if (typeof brut !== 'string' || !brut.trim() || brut.length > 4000 ||
-          !['stop', 'length'].includes(choix.finish_reason))
-        throw new Refus(502, 'reponse');
-      // [S1, S3] devient [S1][S3] : le site ne relie que les marqueurs simples.
-      // Le modele ecrit parfois [1][4] : un numero de source valide devient [S1],
-      // un numero inconnu disparait au lieu de rester en crochets bruts.
-      const texte = vocabulaireLore(brut
-        .replace(/\[(S?\d+(?:\s*[,;]\s*S?\d+)+)\]/g,
-          (_, liste) => liste.split(/\s*[,;]\s*/).map(n => `[${n}]`).join(''))
-        .replace(/\[(\d+)\]/g, (_, n) => sources.some(source => source.n === Number(n)) ? `[S${n}]` : ''));
-      const cites = new Set([...texte.matchAll(/\[S(\d+)\]/g)].map(m => Number(m[1])));
-      const valides = sources.filter(source => cites.has(source.n));
-      if ([...cites].some(n => !sources.some(source => source.n === n)))
-        throw new Refus(502, 'sources');
-      return json({text: texte.trim(), truncated: choix.finish_reason === 'length',
-        sources: valides.map(({n, title, url}) => ({n, title, url}))});
+      return json(termine(choix?.message?.content, choix?.finish_reason, sources));
     } catch (error) {
       if (error instanceof Refus) return refuse(error.status, error.code);
       // La limite gratuite peut etre signalee par 429 ou le code Workers AI 3036.

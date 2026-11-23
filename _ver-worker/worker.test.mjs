@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {prepareDialogue, choisitCoulisses, MODELE} from './worker.mjs';
+import worker, {prepareDialogue, choisitCoulisses, separeSuites, MODELE} from './worker.mjs';
 import corpus from '../oracle-putride.json' with {type: 'json'};
 
 const origine = 'https://lacreaturedumarais.fr';
@@ -23,7 +23,7 @@ test('corpus deploye, contexte borne et citations verifiees', async () => {
   const env = environnement();
   env.AI.run = async (model, options) => {
     assert.equal(model, MODELE);
-    assert.equal(options.max_completion_tokens, 640);
+    assert.equal(options.max_completion_tokens, 700);
     assert.equal(options.chat_template_kwargs.enable_thinking, false);
     assert.equal(options.store, false);
     assert.equal(options.messages[0].role, 'system');
@@ -297,4 +297,84 @@ test('lecture publique bloquee annulee avant le delai du dialogue', async t => {
   } finally {
     clearTimeout(timer);
   }
+});
+
+test('relances du modele separees du texte, nettoyees et bornees', async () => {
+  const env = environnement();
+  env.AI.run = async () => ({choices: [{message: {content: 'Je sers Kobal [S1].\n\n---\n**SUITES :** ' +
+    'Qui est Kobal ? | Et la paroisse ? [S1] | qui est kobal ? | ' + 'x'.repeat(90) + ' | Où vit-il ? | Pourquoi ?'},
+    finish_reason: 'stop'}]});
+  const d = await (await worker.fetch(requete(), env)).json();
+  assert.equal(d.text, 'Je sers Kobal [S1].');
+  assert.deepEqual(d.suites, ['Qui est Kobal ?', 'Et le Vampirium ?', 'Où vit-il ?']);
+  assert.deepEqual(separeSuites('Bonjour.\nSuites: - Qui es-tu ?\n- Que fais-tu ?').suites,
+    ['Qui es-tu ?', 'Que fais-tu ?']);
+  env.AI.run = async () => ({choices: [{message: {content: 'Coupe.\nSUITES: Qui est Ko'}, finish_reason: 'length'}]});
+  const coupe = await (await worker.fetch(requete(), env)).json();
+  assert.deepEqual([coupe.text, coupe.truncated, coupe.suites], ['Coupe.', true, []]);
+});
+
+test('page consultee et forme demandee transmises, valeurs inconnues refusees', async () => {
+  const env = environnement();
+  let options;
+  env.AI.run = async (model, o) => {
+    options = o;
+    return {choices: [{message: {content: 'Oui [S1].'}, finish_reason: 'stop'}]};
+  };
+  const r = await worker.fetch(requete({...donnees(), page: '/mode-putride/bestiaire/ver/', forme: 'long'}), env);
+  assert.equal(r.status, 200);
+  assert.match(options.messages[0].content,
+    /PAGE CONSULTEE\nTon interlocuteur lit la page « [^»]+ » \(\/mode-putride\/bestiaire\/ver\/\)/);
+  assert.match(options.messages[0].content, /CONSIGNE POUR CETTE REPONSE\nDeveloppe/);
+  assert.equal(options.max_completion_tokens, 900);
+  env.AI.run = () => assert.fail('Pas de modele');
+  for (const [champ, valeur] of [['page', '/ailleurs/'], ['page', 'https://autre.example/'],
+    ['page', 3], ['forme', 'poeme'], ['forme', 'toString']]) {
+    const refus = await worker.fetch(requete({...donnees(), [champ]: valeur}), env);
+    assert.equal(refus.status, 400);
+    assert.equal((await refus.json()).error, champ);
+  }
+});
+
+const sse = (...lignes) => new ReadableStream({start(c) {
+  const e = new TextEncoder();
+  for (const ligne of lignes) c.enqueue(e.encode(ligne));
+  c.close();
+}});
+const morceau = (content, finish_reason = null) =>
+  `data: ${JSON.stringify({choices: [{delta: {content}, finish_reason}]})}\n\n`;
+const lignesDe = async r => (await r.text()).trim().split('\n').map(l => JSON.parse(l));
+
+test('flux en lignes JSON : texte stable, relances retenues, fin validee', async () => {
+  const env = environnement();
+  env.AI.run = async (model, options) => {
+    assert.equal(options.stream, true);
+    return sse(morceau(''), morceau('Je sers Ko'), morceau('bal [S'), morceau('1]. La paroisse'),
+      morceau(' veille.\nSUI'), morceau('TES: Qui est Kobal ? | Où vit-il ?'), morceau('', 'stop'),
+      'data: {"choices":[]}\n\n', 'data: {"response":"","usage":{}}\n\n', 'data: [DONE]\n\n');
+  };
+  const attentes = [];
+  const r = await worker.fetch(requete({...donnees(), stream: true}), env, {waitUntil: p => attentes.push(p)});
+  assert.equal(r.status, 200);
+  assert.match(r.headers.get('Content-Type'), /^application\/x-ndjson/);
+  assert.equal(r.headers.get('Access-Control-Allow-Origin'), origine);
+  assert.equal(attentes.length, 1);
+  const lignes = await lignesDe(r);
+  const fin = lignes.pop();
+  let vu = '';
+  for (const ligne of lignes) {
+    vu = 'd' in ligne ? vu + ligne.d : ligne.t;
+    assert.doesNotMatch(vu, /SUI|\[S?$|\bKo$/);
+  }
+  assert.ok(lignes.some(ligne => 't' in ligne), 'la paroisse devenue Vampirium remplace le debut');
+  assert.equal(vu, 'Je sers Kobal [S1]. Le Vampirium ');
+  assert.equal(fin.fin, true);
+  assert.equal(fin.text, 'Je sers Kobal [S1]. Le Vampirium veille.');
+  assert.deepEqual(fin.suites, ['Qui est Kobal ?', 'Où vit-il ?']);
+  assert.deepEqual(fin.sources.map(s => s.n), [1]);
+  env.AI.run = async () => sse(morceau('Je cite [S9] et '), morceau('', 'stop'));
+  assert.deepEqual((await lignesDe(await worker.fetch(requete({...donnees(), stream: true}), env))).at(-1),
+    {error: 'sources'});
+  env.AI.run = async () => ({choices: []});
+  assert.equal((await worker.fetch(requete({...donnees(), stream: true}), env)).status, 502);
 });

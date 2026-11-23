@@ -70,8 +70,26 @@ génératif. Une question sans trace fiable reçoit une réponse d'incertitude.
   renoncer). Seules les questions encore dans l'historique de 48 messages se modifient.
 - La dernière réponse de l'IA propose **Autre réponse** ; après une erreur,
   **Réessayer** renvoie la même question.
-- Pendant une requête IA, le bouton d'envoi devient **Arrêter la réponse**.
-- Les relances proposées tiennent sur une seule ligne défilante (molette ou glissé).
+- Pendant une requête IA, le bouton d'envoi devient **Arrêter la réponse**. La
+  réponse s'affiche au fil de l'eau ; arrêtée ou coupée, sa partie reçue reste
+  visible avec une mention « Réponse arrêtée » ou « réponse incomplète ».
+- La dernière réponse de l'IA propose aussi **Plus court**, **Développer** et
+  **Plus simple** : la même question est renvoyée avec une consigne de forme.
+- Au plus trois relances, qui passent à la ligne au lieu de défiler. Ordre :
+  suites proposées par l'IA, puis relances du dialogue, du sujet en cours et de la
+  page lue (ses sous-sections), enfin questions générales. Une question déjà posée
+  n'est pas reproposée. Le corpus est chargé dès l'ouverture pour les préparer.
+- « Résume cette page », « Que dit cette page ? » ou le titre d'une sous-section
+  répondent localement à partir de la page lue.
+- Un passage sélectionné sur la page (3 à 700 caractères) fait apparaître
+  **Demander au Ver** : le Ver situe le passage, montre la suite et les entités
+  qu'il convoque ; avec l'IA, l'extrait correspondant accompagne la question.
+- Le micro dicte la question avec la reconnaissance vocale du navigateur, s'il
+  en a une (`fr-FR`) : le texte va dans le champ, jamais envoyé seul. Le premier
+  usage prévient que le navigateur peut passer par son propre service vocal.
+- Boutons d'en-tête : **Nouvelle conversation** (efface l'historique de la couche),
+  **Agrandir/Réduire** (mémorisé dans `localStorage`, clé `lcdm-ver-grand`). Une
+  flèche ramène au bas du fil quand on a remonté.
 - Les réponses de l'IA rendent `**gras**`, `*italique*` et les listes à tirets ;
   tout le reste est échappé.
 - Le panneau porte `aria-busy="true"` tant qu'une réponse est en cours.
@@ -87,11 +105,18 @@ ou d'intelligence équivalente aux plus grands assistants. Qwen3-30B-A3B a été
 
 L'accord est lié à l'adresse du service et à la session de l'onglet. Les messages
 locaux antérieurs ne sont pas transmis. Le navigateur envoie le message courant,
-au plus six paires question/réponse IA et dix indices d'extraits. Le Worker vérifie
+au plus six paires question/réponse IA, dix indices d'extraits, l'adresse de la
+page lue (`page`, refusée si elle n'est pas une page du corpus) et une forme
+facultative (`court`, `long`, `simple`). Avec `stream: true`, le Worker répond en
+NDJSON (`application/x-ndjson`) : lignes `{"d":…}` (texte), `{"t":…}` (attente),
+puis `{"fin":true,"text","truncated","suites","sources"}` ou `{"error":…}`. Sans
+`stream`, la réponse JSON reste celle d'avant. Le modèle termine par une ligne
+`SUITES: q1 | q2 | q3`, retirée du texte et renvoyée dans `suites`. Le Worker vérifie
 la révision du corpus et prend les textes dans sa propre copie ou dans le corpus
 publié par le site, jamais dans un
 texte documentaire fourni par le visiteur. Limites : 10 000 caractères d'historique,
-15 000 de contexte documentaire (2 200 par extrait), 640 tokens de sortie. Les seules citations
+15 000 de contexte documentaire (2 200 par extrait), 700 tokens de sortie (900 pour
+« Développer »). Les seules citations
 cliquables sont des liens du corpus. Les erreurs et réponses tronquées sont visibles,
 sans bascule automatique vers des répliques locales présentées comme de l'IA.
 
@@ -182,8 +207,10 @@ promenade. Incrémenter les versions des scripts dans tous leurs chargeurs.
 Tests ciblés : `python -m unittest discover -s _outils -p test_oracle.py`, puis
 `python _outils/test_ver.py http://127.0.0.1:8851` avec Playwright Python et Edge.
 Le second test mesure le cycle en temps réel et vérifie le dialogue et les gestes,
-ainsi que la copie, la modification, la relance et l'arrêt avec une IA simulée
-(`--ia` pour ne lancer que cette partie).
+ainsi que la copie, la modification, la relance, les formes, le flux NDJSON et
+l'arrêt avec une IA simulée (`--ia` pour ne lancer que cette partie). `--fenetre`
+ne vérifie que les relances, le résumé, l'agrandissement et le passage surligné.
+Les captures vont dans `VER_CAPTURES` (sinon le dossier temporaire).
 
 ## Citations des compagnons
 
