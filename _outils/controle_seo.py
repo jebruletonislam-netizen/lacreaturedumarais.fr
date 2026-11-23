@@ -144,6 +144,10 @@ def controle(site, base_url=None, as_of=None):
             path = "/" + file.relative_to(site).as_posix()
             path = path.removesuffix("index.html")
             page = Page(file.read_text(encoding="utf-8"))
+            if path.startswith(("/mode-putride", "/cachot")):
+                directives = page.meta.get("robots", "").lower().replace(",", " ").split()
+                if "noindex" not in directives:
+                    errors.append(f"Couche cachée sans noindex : {path}")
             if page.canonicals == [ORIGIN + path] and "noindex" not in page.meta.get("robots", ""):
                 if ORIGIN + path not in seen:
                     errors.append(f"Page canonique absente du sitemap : {path}")
