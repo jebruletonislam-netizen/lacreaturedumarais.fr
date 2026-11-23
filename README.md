@@ -220,6 +220,10 @@ Pour un serveur local qui rend déjà les gabarits :
 `python _outils/controle_seo.py --base-url http://127.0.0.1:8851`.
 Le contrôle vérifie les URL, les canoniques, les directives robots, les images,
 le JSON-LD et les champs vidéo. Il ne simule pas la décision d'indexation des moteurs.
+Sur le site construit, il vérifie également le `noindex` de chaque page putride
+ou des cachots, anciennes adresses comprises. Laisser ces pages explorables pour
+que les moteurs lisent la balise. Les registres JSON du Ver, sans balise HTML,
+sont exclus de l’exploration par `robots.txt`. Ces règles ne limitent pas l’accès par URL.
 
 Après synchronisation et publication, soumettre ou relire
 `https://lacreaturedumarais.fr/sitemap.xml` dans Google Search Console et Bing

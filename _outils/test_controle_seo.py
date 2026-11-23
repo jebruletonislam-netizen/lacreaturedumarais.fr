@@ -63,6 +63,18 @@ class ScheduledSeoTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("1 pages", result.stdout)
 
+    def test_hidden_pages_need_noindex_even_when_absent_from_sitemap(self):
+        for path in ("mode-putride/bestiaire/index.html", "cachot/index.html", "mode-putride-personnage.html"):
+            with self.subTest(path=path):
+                file = self.site / path
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_text("<title>Hors index</title>", encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "noindex"):
+                    controle(self.site, as_of=self.release)
+                file.write_text('<meta name="robots" content="noindex,nofollow">', encoding="utf-8")
+        with contextlib.redirect_stdout(io.StringIO()):
+            controle(self.site, as_of=self.release)
+
 
 if __name__ == "__main__":
     unittest.main()
