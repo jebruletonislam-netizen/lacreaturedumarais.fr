@@ -42,9 +42,8 @@ body.cachot header.ce::before{content:"";display:block;position:absolute;left:0;
 .ce-qd:hover,.ce-qd:focus-visible{background:rgba(255,204,0,.25);box-shadow:0 0 .8rem rgba(255,204,0,.95)}
 .ce-mob,.ce-bas{display:none}
 
-/* ================= le corps des cachots : la chapelle d'Éphébus en fond, la fonte noire de Notre-Dame-du-Travail,
-   titres gothiques (UnifrakturCook), texte courant lisible (EB Garamond) en jaune ================= */
-:root{--vh:4.4rem;--goth:"UnifrakturCook","Religath",Georgia,serif;--lisible:"EB Garamond",Garamond,Georgia,serif;--txt:#ffe23f}
+/* ================= le corps des cachots : la chapelle d'Éphébus en fond, la fonte noire de Notre-Dame-du-Travail ================= */
+:root{--vh:4.4rem;--goth:"Bebas Neue","Arial Narrow",Impact,sans-serif;--lisible:"Religath","Religath Ligatures","Cinzel",Georgia,serif;--txt:#ffe23f}
 /* le fond se répète comme le vitrail des deux autres couches : bleu nuit à gauche, sang à droite */
 .cachot main{padding:7.6rem 6.6rem 6.8rem;background-color:#06000a;
   background-image:url(/images/cachot/fonte-arcature.svg),url(/images/cachot/fonte-poutre.svg),
@@ -192,6 +191,7 @@ body.icone .ce-m-logo img{filter:drop-shadow(0 0 1rem rgba(255,204,0,.95))}
   .cachot nav{box-shadow:0 .6rem 1.4rem rgba(0,0,0,.75),inset 0 -.15rem 0 var(--jaune)}
 }
 .cachot main>.grav,.cachot p.lettrine::first-letter{color:#fff}
+.cachot :is(h1,h2),.cachot .fiche2 :is(h2,h3.sub),.pl-t,.pl-t2,.cachot p.lettrine::first-letter{font-weight:400}
 .cachot main :is(a:not(.btn),.lk):is(:hover,:focus-visible),
 .cachot .pl-l a:is(:hover,:focus-visible),
 .cachot .rub>a:is(:hover,:focus-visible) article h3{color:var(--jaune)}
