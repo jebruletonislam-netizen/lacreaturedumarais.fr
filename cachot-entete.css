@@ -130,3 +130,68 @@ body.icone .ce-m-logo img{filter:drop-shadow(0 0 1rem rgba(255,204,0,.95)) drop-
 /* mode calme (bouton en bas à gauche, ou réglage « réduire les animations » du système) : fumées, paillettes et chauves-souris se retirent */
 html.calme *,html.calme ::before,html.calme ::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001s!important;transition-delay:0s!important;scroll-behavior:auto!important}
 html.calme .cr-fumee,html.calme .cr-disco,html.calme .cr-chauve,html.calme .paillette,html.calme .cr-conf{display:none!important}
+/* ---- couleurs : texte blanc, texte cliquable jaune, filets jaunes (en-tête, barre latérale, titres, pied de page) ---- */
+.cachot main,.cachot main :is(p,li,dd,dt,figcaption,blockquote,td,th,b,i,em,strong){color:#fff}
+.cachot :is(.rsec,.fiche2) :is(p,li,dd){color:#fff}
+.cachot main :is(a:not(.btn),.lk){color:var(--jaune);text-decoration-color:var(--jaune)}
+.cachot main :is(a:not(.btn),.lk):hover,.cachot main :is(a:not(.btn),.lk):focus-visible{color:#fff}
+.cachot .btn{color:var(--jaune)}
+.cachot .pl-l a,.cachot .pl-l a b{color:var(--jaune)}
+.cachot .pl-l a:hover,.cachot .pl-l a:focus-visible{color:#fff;background:linear-gradient(90deg,rgba(255,204,0,.3),transparent)}
+.cachot .pl-l a[aria-current],.cachot .pl-l a[aria-current] b{color:#fff}
+.cachot .pl-l a[aria-current]{border-color:var(--jaune)}
+.cachot .rub>a article h3{color:var(--jaune)}
+.cachot .rub>a article p{color:#fff}
+.cachot .rub>a:hover article :is(h3,p){color:#fff}
+body.cachot header.ce::before{background:radial-gradient(circle at 50% 50%,#fff8d0 0 .07rem,#ffe066 .08rem .12rem,#7a5c00 .13rem .2rem,transparent .21rem) 0 0/1.6rem 100% repeat-x,linear-gradient(#fff0a0 0,#ffcc00 .12rem,#e6b800 45%,#b38f00 80%,#5c4700 100%);box-shadow:0 -.1rem .5rem rgba(255,204,0,.55)}
+.cachot h2{border-bottom-color:var(--jaune)}
+.cachot hr{border-color:var(--jaune);background:var(--jaune)}
+.cachot .pfoot{border-top-color:var(--jaune);box-shadow:0 -.3rem 1.2rem rgba(255,204,0,.35)}
+@media (min-width:900px){
+.cachot nav{border-right-color:var(--jaune);box-shadow:.3rem 0 1.2rem rgba(255,204,0,.3),.8rem 0 1.6rem rgba(0,0,0,.8)}
+}
+@media (max-width:899px){
+  body.cachot header.ce::before{background:linear-gradient(#fff0a0,#ffcc00 30%,#b38f00)}
+}
+
+/* ---- la chapelle : la photo sert de base à des zones à toucher ---- */
+.chap-aide{font-style:italic;opacity:.85}
+.chap{position:relative;margin:1.2rem 0 1.6rem;max-width:80rem;border:.15rem solid var(--jaune);background:#000}
+.chap-i>img{display:block;width:100%;height:auto}
+.chap-h{position:absolute;display:block;padding:0;margin:0;border:.12rem solid transparent;background:transparent;cursor:pointer;outline:0;transition:background .25s,border-color .25s,box-shadow .25s}
+.chap-h i{position:absolute;left:50%;top:50%;width:1.1rem;height:1.1rem;margin:-.55rem 0 0 -.55rem;border-radius:50%;background:var(--jaune);box-shadow:0 0 0 .2rem rgba(0,0,0,.7),0 0 1rem rgba(255,204,0,.9);animation:chap-p 2.4s ease-in-out infinite}
+.chap-h:hover,.chap-h:focus-visible,.chap-h.on{border-color:var(--jaune);background:rgba(255,204,0,.14);box-shadow:inset 0 0 1.6rem rgba(255,204,0,.35)}
+.chap figcaption{position:relative;padding:1.1rem 1.4rem;font-size:1.25em;line-height:1.5;color:#fff;background:rgba(0,0,0,.88);border-top:.15rem solid var(--jaune);min-height:4.2em}
+.chap.lu figcaption{background:rgba(20,14,0,.92)}
+@keyframes chap-p{0%,100%{transform:scale(.8);opacity:.7}50%{transform:scale(1.2);opacity:1}}
+
+/* mobile : le blason au centre, trois logos à gauche et quatre à droite, 30 % plus petits */
+@media (max-width:899px){
+  .ce-mob{justify-content:center;gap:.5rem}
+  .ce-m-logo{order:0}
+  .ce-soc{flex:1 1 0;gap:.2rem}
+  .ce-soc:first-child{justify-content:flex-end}
+  .ce-soc:last-child{justify-content:flex-start}
+  .ce-soc a{flex:0 1 1.68rem}
+}
+.chap-i{position:relative}
+body.cachot::after{background:radial-gradient(ellipse 120% 90% at 50% 30%,transparent 60%,rgba(0,0,0,.2) 100%)}
+
+/* Le blason de la bannière est isolé sur le dégradé de l'en-tête. */
+.ce-c{background:none}
+.ce-bl{left:10%;top:0;width:80%;height:100%;background:none;filter:none}
+.ce-crest{display:block;width:100%;height:100%;mix-blend-mode:screen}
+@media (max-width:899px){
+  .ce-m-logo svg{filter:drop-shadow(0 0 .35rem rgba(225,0,25,.85))}
+}
+body.icone .ce-m-logo svg{filter:drop-shadow(0 0 1rem rgba(255,204,0,.95))}
+.cachot h1,.cachot h2,.cachot h3,.pl-t,.pl-t2{color:#fff}
+.cachot .pl-l a[aria-current],.cachot .pl-l a[aria-current] b{color:var(--jaune)}
+.cachot .rsec::after,.cachot .fiche2::after{height:.15rem;background:var(--jaune);opacity:1}
+@media (max-width:899px){
+  .cachot nav{box-shadow:0 .6rem 1.4rem rgba(0,0,0,.75),inset 0 -.15rem 0 var(--jaune)}
+}
+.cachot main>.grav,.cachot p.lettrine::first-letter{color:#fff}
+.cachot main :is(a:not(.btn),.lk):is(:hover,:focus-visible),
+.cachot .pl-l a:is(:hover,:focus-visible),
+.cachot .rub>a:is(:hover,:focus-visible) article h3{color:var(--jaune)}
