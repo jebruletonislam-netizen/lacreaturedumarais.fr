@@ -24,6 +24,14 @@ retenue est, dans l'ordre : `og:image` de la page visée, portrait de sa fiche
 (`.fiche2 [data-lb-src]`), puis la première image de contenu, en ignorant décors,
 icônes, ailes, auras et en-têtes.
 
+Sur les fiches du bestiaire, les galeries d’au moins trois clips affichent trois
+clips par rangée dès 900 px et un seul en dessous. Les surnoms de Vampirix et
+d’Éphébus figurent sur leurs fiches respectives, pas dans l’index ni sur les pages d’album.
+
+Sur les fiches du bestiaire, Instagram conserve les proportions du Reel. La largeur
+de `.rt-video.reel` limite son encombrement ; `reel-instagram.js` ajuste la hauteur
+à celle que le lecteur annonce, commandes comprises, sans masquer de contenu.
+
 ## Le Ver
 
 Par défaut, le dialogue fonctionne localement, sans API ni modèle génératif. `coins.js` combine
@@ -38,6 +46,31 @@ Les deux fichiers `oracle-*.json` contiennent les mêmes registres, tout en cons
 leurs adresses existantes. L'historique reste limité à 48 messages par couche dans
 la session de l'onglet. Sans activation explicite de l'IA, aucun échange n'est envoyé
 à un service d'IA. Le Ver est ami de la Gargouille de Rouen ; Kobal reste son maître.
+
+### Tristana (mode normal)
+
+Hors `/mode-putride/` et `/cachot/`, `coins.js` présente Tristana, attachée de presse
+et archiviste de PUANTEUR PUTRIDE Productions (bouton au logo PP, en bas à droite).
+Elle vouvoie, a ses propres répliques locales (`CAUSERIE_T`) et ne cite que des
+extraits publics : le client vide les entrées non publiques en gardant leurs indices,
+et le Worker refuse (`400`) une requête `persona: "tristana"` portant un extrait ou
+une page non publics. Elle n'a ni les notes de coulisses ni le personnage du Ver.
+Elle peut évoquer « les cartons du fond » et ce qui suinte en bas des pages, sans
+jamais nommer d'adresse, de personnage ou d'épisode du mode putride.
+
+Sur `/discographie/monsieur-clerge/`, les puces proposent « Qui est Monsieur Clergé ? »
+dès le 30 novembre 2026 à 18 h 30 (`SORTIES` dans `coins.js`) ; avant cette date,
+les pages normales proposent « Que se passe-t-il le 30 novembre ? ». Chaque réponse
+peut être **partagée en image** (PNG 1080×1350 dessiné localement aux couleurs de la
+couche, partage natif sinon téléchargement).
+
+### Compte à rebours et flux RSS
+
+`_includes/compte-a-rebours.html` (Nouvelles et Discographie) affiche le compte à
+rebours et le teaser Instagram jusqu'à la sortie ; le retirer sur la branche de sortie.
+`flux.xml` (RSS 2.0, annoncé dans `<head>`) liste les articles de `nouvelles/`, du plus
+récent au plus ancien : ajouter chaque nouvel article à la main, puis lancer
+`python -m unittest discover -s _outils -p test_flux.py`.
 
 Le générateur conserve les permaliens, les libellés, les titres des morceaux,
 les données de parution, les descriptions d'images et les paroles publiées des
@@ -62,8 +95,26 @@ génératif. Une question sans trace fiable reçoit une réponse d'incertitude.
   renoncer). Seules les questions encore dans l'historique de 48 messages se modifient.
 - La dernière réponse de l'IA propose **Autre réponse** ; après une erreur,
   **Réessayer** renvoie la même question.
-- Pendant une requête IA, le bouton d'envoi devient **Arrêter la réponse**.
-- Les relances proposées tiennent sur une seule ligne défilante (molette ou glissé).
+- Pendant une requête IA, le bouton d'envoi devient **Arrêter la réponse**. La
+  réponse s'affiche au fil de l'eau ; arrêtée ou coupée, sa partie reçue reste
+  visible avec une mention « Réponse arrêtée » ou « réponse incomplète ».
+- La dernière réponse de l'IA propose aussi **Plus court**, **Développer** et
+  **Plus simple** : la même question est renvoyée avec une consigne de forme.
+- Au plus trois relances, qui passent à la ligne au lieu de défiler. Ordre :
+  suites proposées par l'IA, puis relances du dialogue, du sujet en cours et de la
+  page lue (ses sous-sections), enfin questions générales. Une question déjà posée
+  n'est pas reproposée. Le corpus est chargé dès l'ouverture pour les préparer.
+- « Résume cette page », « Que dit cette page ? » ou le titre d'une sous-section
+  répondent localement à partir de la page lue.
+- Un passage sélectionné sur la page (3 à 700 caractères) fait apparaître
+  **Demander au Ver** : le Ver situe le passage, montre la suite et les entités
+  qu'il convoque ; avec l'IA, l'extrait correspondant accompagne la question.
+- Le micro dicte la question avec la reconnaissance vocale du navigateur, s'il
+  en a une (`fr-FR`) : le texte va dans le champ, jamais envoyé seul. Le premier
+  usage prévient que le navigateur peut passer par son propre service vocal.
+- Boutons d'en-tête : **Nouvelle conversation** (efface l'historique de la couche),
+  **Agrandir/Réduire** (mémorisé dans `localStorage`, clé `lcdm-ver-grand`). Une
+  flèche ramène au bas du fil quand on a remonté.
 - Les réponses de l'IA rendent `**gras**`, `*italique*` et les listes à tirets ;
   tout le reste est échappé.
 - Le panneau porte `aria-busy="true"` tant qu'une réponse est en cours.
@@ -79,11 +130,18 @@ ou d'intelligence équivalente aux plus grands assistants. Qwen3-30B-A3B a été
 
 L'accord est lié à l'adresse du service et à la session de l'onglet. Les messages
 locaux antérieurs ne sont pas transmis. Le navigateur envoie le message courant,
-au plus six paires question/réponse IA et dix indices d'extraits. Le Worker vérifie
+au plus six paires question/réponse IA, dix indices d'extraits, l'adresse de la
+page lue (`page`, refusée si elle n'est pas une page du corpus) et une forme
+facultative (`court`, `long`, `simple`). Avec `stream: true`, le Worker répond en
+NDJSON (`application/x-ndjson`) : lignes `{"d":…}` (texte), `{"t":…}` (attente),
+puis `{"fin":true,"text","truncated","suites","sources"}` ou `{"error":…}`. Sans
+`stream`, la réponse JSON reste celle d'avant. Le modèle termine par une ligne
+`SUITES: q1 | q2 | q3`, retirée du texte et renvoyée dans `suites`. Le Worker vérifie
 la révision du corpus et prend les textes dans sa propre copie ou dans le corpus
 publié par le site, jamais dans un
 texte documentaire fourni par le visiteur. Limites : 10 000 caractères d'historique,
-15 000 de contexte documentaire (2 200 par extrait), 640 tokens de sortie. Les seules citations
+15 000 de contexte documentaire (2 200 par extrait), 700 tokens de sortie (900 pour
+« Développer »). Les seules citations
 cliquables sont des liens du corpus. Les erreurs et réponses tronquées sont visibles,
 sans bascule automatique vers des répliques locales présentées comme de l'IA.
 
@@ -174,8 +232,10 @@ promenade. Incrémenter les versions des scripts dans tous leurs chargeurs.
 Tests ciblés : `python -m unittest discover -s _outils -p test_oracle.py`, puis
 `python _outils/test_ver.py http://127.0.0.1:8851` avec Playwright Python et Edge.
 Le second test mesure le cycle en temps réel et vérifie le dialogue et les gestes,
-ainsi que la copie, la modification, la relance et l'arrêt avec une IA simulée
-(`--ia` pour ne lancer que cette partie).
+ainsi que la copie, la modification, la relance, les formes, le flux NDJSON et
+l'arrêt avec une IA simulée (`--ia` pour ne lancer que cette partie). `--fenetre`
+ne vérifie que les relances, le résumé, l'agrandissement et le passage surligné.
+Les captures vont dans `VER_CAPTURES` (sinon le dossier temporaire).
 
 ## Citations des compagnons
 

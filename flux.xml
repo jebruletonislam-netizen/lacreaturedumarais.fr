@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>La Créature du Marais — Nouvelles</title>
+<link>https://lacreaturedumarais.fr/nouvelles/</link>
+<atom:link href="https://lacreaturedumarais.fr/flux.xml" rel="self" type="application/rss+xml"/>
+<description>Sorties, clips et actualités de la Créature du Marais (Cul-Pointu), annoncés par PUANTEUR PUTRIDE Productions.</description>
+<language>fr-FR</language>
+<copyright>© PUANTEUR PUTRIDE Productions</copyright>
+<image><url>https://lacreaturedumarais.fr/images/favicon.png</url><title>La Créature du Marais — Nouvelles</title><link>https://lacreaturedumarais.fr/nouvelles/</link></image>
+<lastBuildDate>Mon, 30 Nov 2026 18:30:00 +0100</lastBuildDate>
+<item>
+<title>Monsieur Clergé : troisième single d’In Odium Fidei (30 novembre 2026)</title>
+<link>https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-troisieme-single-d-in-odium-fidei/</link>
+<guid isPermaLink="true">https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-troisieme-single-d-in-odium-fidei/</guid>
+<pubDate>Mon, 30 Nov 2026 18:30:00 +0100</pubDate>
+<description>« Monsieur Clergé », troisième single d’In Odium Fidei, est sorti le 30 novembre 2026 à 18 h 30 : une charge carnavalesque contre les hypocrisies du milieu clérical, entre confession grotesque et opéra scatologique.</description>
+</item>
+<item>
+<title>Monsieur Clergé : rendez-vous le 30 novembre</title>
+<link>https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-rendez-vous-le-30-novembre/</link>
+<guid isPermaLink="true">https://lacreaturedumarais.fr/nouvelles/monsieur-clerge-rendez-vous-le-30-novembre/</guid>
+<pubDate>Sun, 22 Nov 2026 12:00:00 +0100</pubDate>
+<description>Le 30 novembre à 18h30, « Monsieur Clergé » et son clip sortiront. Troisième single d’In Odium Fidei. Le clergé est prié de se délester de sa soutane.</description>
+</item>
+<item>
+<title>Misérables : le clip est sorti (31 octobre 2026)</title>
+<link>https://lacreaturedumarais.fr/nouvelles/miserables-le-clip-est-sorti/</link>
+<guid isPermaLink="true">https://lacreaturedumarais.fr/nouvelles/miserables-le-clip-est-sorti/</guid>
+<pubDate>Sat, 31 Oct 2026 19:15:00 +0100</pubDate>
+<description>Le clip de « Misérables », second single d’In Odium Fidei, est sorti le 31 octobre 2026 à 19 h 15 : une petite cour de gueux catholiques, revanchards et déclassés dans un « Moyen Âge 2 ».</description>
+</item>
+<item>
+<title>Il y a des choses qui puent à Rouen : photos du tournage de Misérables</title>
+<link>https://lacreaturedumarais.fr/nouvelles/il-y-a-des-choses-qui-puent-a-rouen/</link>
+<guid isPermaLink="true">https://lacreaturedumarais.fr/nouvelles/il-y-a-des-choses-qui-puent-a-rouen/</guid>
+<pubDate>Tue, 20 Oct 2026 12:00:00 +0200</pubDate>
+<description>Photos du tournage de « Misérables », second single d’In Odium Fidei : entre les fêtes Jeanne d’Arc et la misère naturelle, les néo-clodos festoient à Rouen.</description>
+</item>
+<item>
+<title>Jubilé : premier single d’In Odium Fidei (6 décembre 2025)</title>
+<link>https://lacreaturedumarais.fr/nouvelles/jubile-premier-single-d-in-odium-fidei/</link>
+<guid isPermaLink="true">https://lacreaturedumarais.fr/nouvelles/jubile-premier-single-d-in-odium-fidei/</guid>
+<pubDate>Sat, 06 Dec 2025 12:00:00 +0100</pubDate>
+<description>Avec « Jubilé », premier single d’In Odium Fidei (6 décembre 2025), la Créature du Marais ouvre une nouvelle phase de son œuvre : moins de confession éclatée, davantage de liturgie et de célébration.</description>
+</item>
+</channel>
+</rss>

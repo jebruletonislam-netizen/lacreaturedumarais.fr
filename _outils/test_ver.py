@@ -1,23 +1,28 @@
 """Tests du dialogue, du cycle réel et du portrait sur un serveur de prévisualisation.
 
 python _outils/test_ver.py http://127.0.0.1:8851
-Ajouter --ia pour ne vérifier que le transport IA simulé.
+Ajouter --ia pour ne vérifier que le transport IA simulé, --fenetre pour la fenêtre seule.
+Les captures vont dans VER_CAPTURES (dossier temporaire par défaut).
 Nécessite Playwright Python et Microsoft Edge.
 """
+import os
 import sys
 import json
+import tempfile
 
 from playwright.sync_api import sync_playwright
 
-BASE = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8851"
+BASE = next((a for a in sys.argv[1:] if not a.startswith("--")), "http://127.0.0.1:8851")
+SORTIE = os.environ.get("VER_CAPTURES", tempfile.gettempdir())
+SUITES_IA = ["Qui est Kobal ?", "Que garde la Gargouille ?"]
 
 
 def question(page, text):
-    count = page.locator(".cn-log .a:not(.cn-dots)").count()
+    count = page.locator(".cn-log .a:not(.cn-dots):not(.cn-live)").count()
     page.locator("#cn-q").fill(text)
-    page.locator(".cn-f button").click()
+    page.locator(".cn-f button[type=submit]").click()
     page.wait_for_function(
-        "(n) => document.querySelectorAll('.cn-log .a:not(.cn-dots)').length > n",
+        "(n) => document.querySelectorAll('.cn-log .a:not(.cn-dots):not(.cn-live)').length > n",
         arg=count,
     )
     libre(page)
@@ -26,6 +31,24 @@ def question(page, text):
 
 def libre(page):
     page.wait_for_function("!document.querySelector('#cn-oracle').hasAttribute('aria-busy')")
+
+
+def puces(page):
+    """Trois suggestions au plus, entièrement visibles dans le panneau, sans défilement horizontal."""
+    boites = page.locator(".cn-sug button")
+    assert 1 <= boites.count() <= 3, boites.all_inner_texts()
+    panneau = page.locator("#cn-oracle").bounding_box()
+    for b in boites.all():
+        r = b.bounding_box()
+        assert r["x"] >= panneau["x"] and r["x"] + r["width"] <= panneau["x"] + panneau["width"] + 0.5, (r, panneau)
+        assert b.evaluate("(b) => b.scrollWidth <= b.clientWidth + 1")
+    assert page.locator(".cn-sug").evaluate("(s) => s.scrollWidth <= s.clientWidth + 1")
+    assert page.locator(".cn-sug").bounding_box()["height"] < 110
+    return boites.all_inner_texts()
+
+
+def flux(lignes):
+    return "".join(json.dumps(l, ensure_ascii=False) + "\n" for l in lignes)
 
 
 def dialogue_ia(browser, width):
@@ -55,11 +78,15 @@ def dialogue_ia(browser, width):
                           body='{"error":"quota"}')
             return
         contenu = "La Gargouille est mon **amie**. [S1]\n- *Rouen* veille\n<img src=x onerror=alert(1)>"
-        route.fulfill(headers=headers, content_type="application/json", body=json.dumps({
-            "text": contenu, "truncated": False,
-            "sources": [{"n": 1, "title": "La Gargouille de Rouen",
-                         "url": "/mode-putride/bestiaire/gargouille/"}],
-        }))
+        fin = {"text": contenu, "truncated": False, "suites": SUITES_IA,
+               "sources": [{"n": 1, "title": "La Gargouille de Rouen",
+                            "url": "/mode-putride/bestiaire/gargouille/"}]}
+        if etat["mode"] == "json" or not route.request.post_data_json.get("stream"):
+            route.fulfill(headers=headers, content_type="application/json", body=json.dumps(fin))
+            return
+        route.fulfill(headers=headers, content_type="application/x-ndjson; charset=utf-8", body=flux([
+            {"d": "La Gargouille est "}, {"d": "mon **ami"}, {"t": "La Gargouille est mon **amie**."},
+            {"d": " [S1]\n- *Rouen* veille\n<img src=x onerror=alert(1)>"}, dict(fin, fin=True)]))
 
     context.route(endpoint, service)
     context.grant_permissions(["clipboard-read", "clipboard-write"], origin=BASE)
@@ -75,6 +102,8 @@ def dialogue_ia(browser, width):
     question(page, "Qui sont tes amis ?")
     assert len(envois) == 1
     assert envois[0]["consent"] is True
+    assert envois[0]["stream"] is True and "forme" not in envois[0]
+    assert envois[0]["page"] == "/mode-putride/bestiaire/ver/", envois[0].get("page")
     assert len(envois[0]["revision"]) == 16
     assert envois[0]["ids"] and len(envois[0]["ids"]) <= 10
     corpus = page.request.get(BASE + "/oracle-putride.json").json()
@@ -114,7 +143,17 @@ def dialogue_ia(browser, width):
     assert page.locator(".cn-log .cn-m.q").count() == questions
     assert "piano" not in page.locator(".cn-log").inner_text()
     assert not page.locator(".cn-ed").is_visible()
-    assert page.locator(".cn-sug").bounding_box()["height"] < 44
+    assert puces(page)[:2] == SUITES_IA
+    derniere = page.locator(".cn-log .cn-wa").last
+    assert derniere.locator(".cn-fo").all_inner_texts() == ["Plus court", "Développer", "Plus simple"]
+    derniere.get_by_role("button", name="Plus court").click()
+    libre(page)
+    assert envois[-1]["forme"] == "court" and len(envois) == count + 3
+    assert envois[-1]["messages"][-1]["content"] == "Je préfère l’orgue. Et toi ?"
+    assert page.locator(".cn-log .cn-wa").last.locator(".cn-fo").all_inner_texts() == ["Développer", "Plus simple"]
+    etat["mode"] = "json"
+    assert "Gargouille est mon amie" in question(page, "Réponse d’un service ancien")
+    etat["mode"] = "ok"
     question(page, "Et la Créature, elle a été jugée pour quoi ?")
     ids = envois[-1]["ids"]
     assert any(corpus["e"][i][4] == 4 for i in ids), ids
@@ -157,10 +196,29 @@ def dialogue_ia(browser, width):
     page.locator(".cn-ai summary").click()
     page.set_viewport_size({"width": width, "height": 560})
     assert page.locator(".cn-f").bounding_box()["y"] + page.locator(".cn-f").bounding_box()["height"] <= 560
-    page.get_by_role("button", name="Effacer cet échange").click()
+    page.get_by_role("button", name="Nouvelle conversation").click()
     assert page.locator(".cn-log .cn-m").count() == 1
     page.set_viewport_size({"width": width, "height": 844})
     page.locator(".cn-ai summary").click()
+    # un flux coupé en route : le début reste lisible, sans renvois
+    page.evaluate("""(url) => {
+      const original = window.fetch;
+      window.fetch = (u, o) => {
+        if (u !== url) return original(u, o);
+        window.fetch = original;
+        return Promise.resolve(new Response(new ReadableStream({start(c) {
+          c.enqueue(new TextEncoder().encode('{"d":"Début de **réponse** [S1]"}\\n'));
+          o.signal.addEventListener('abort', () => c.error(new DOMException('arrêt', 'AbortError')));
+        }}), {headers: {'Content-Type': 'application/x-ndjson'}}));
+      };
+    }""", endpoint)
+    page.locator("#cn-q").fill("Une réponse coupée")
+    page.locator("#cn-q").press("Enter")
+    page.wait_for_selector(".cn-log .cn-live strong")
+    page.get_by_role("button", name="Arrêter la réponse").click()
+    libre(page)
+    coupee = page.locator(".cn-log .a").last.inner_text()
+    assert "Début de réponse" in coupee and "Réponse arrêtée" in coupee and "[S1]" not in coupee, coupee
     etat["mode"] = "attente"
     page.locator("#cn-q").fill("Une réponse à arrêter")
     with page.expect_request(lambda r: r.url == endpoint and r.method == "POST"):
@@ -172,7 +230,7 @@ def dialogue_ia(browser, width):
     count = len(envois)
     page.locator("#cn-q").fill("Une réponse en attente")
     with page.expect_request(lambda r: r.url == endpoint and r.method == "POST"):
-        page.locator(".cn-f button").click()
+        page.locator(".cn-f button[type=submit]").click()
     page.locator(".cn-ai summary").click()
     page.get_by_role("button", name="Revenir au dialogue local").click()
     libre(page)
@@ -187,12 +245,130 @@ def dialogue_ia(browser, width):
     print(f"IA simulée : consentement, historique, citations, quota et retrait {width}px OK", flush=True)
 
 
+def tristana(browser, width):
+    """Mode normal : Tristana, extraits publics seulement, puces et partage en image."""
+    context = browser.new_context(viewport={"width": width, "height": 844}, accept_downloads=True)
+    context.add_init_script("localStorage.setItem('lcdm-calme','1');"
+                            "Object.defineProperty(navigator,'canShare',{value:()=>false})")
+    endpoint = "https://ver-tests.workers.dev/chat"
+    context.route("**/ver-ia.json*", lambda route: route.fulfill(
+        content_type="application/json", body=json.dumps({"url": endpoint})))
+    envois, erreurs_js = [], []
+
+    def service(route):
+        headers = {"Access-Control-Allow-Origin": BASE, "Access-Control-Allow-Methods": "POST",
+                   "Access-Control-Allow-Headers": "Content-Type"}
+        if route.request.method == "OPTIONS":
+            route.fulfill(status=204, headers=headers)
+            return
+        envois.append(route.request.post_data_json)
+        route.fulfill(headers=headers, content_type="application/json", body=json.dumps(
+            {"text": "Commencez par Confiteor, c’est la somme.", "truncated": False,
+             "suites": ["Et Chyren ?"], "sources": []}))
+
+    context.route(endpoint, service)
+    page = context.new_page()
+    page.on("pageerror", lambda e: erreurs_js.append(str(e)))
+    page.goto(BASE + "/")
+    bouton = page.locator(".cn-or")
+    assert bouton.locator("img[src*='logo-pp']").count() == 1
+    assert page.locator(".cn-fx").count() == 0
+    bouton.click()
+    page.wait_for_selector(".cn-ai")
+    assert "Tristana" in page.locator("#cn-oracle").inner_text()
+    puces(page)
+    question(page, "Bonjour, qui êtes-vous ?")
+    assert not envois
+    page.locator(".cn-ai summary").click()
+    page.locator(".cn-ai button").first.click()
+    question(page, "Par quel disque commencer ?")
+    assert len(envois) == 1 and envois[0]["persona"] == "tristana", envois
+    corpus = page.request.get(BASE + "/oracle-putride.json").json()
+    urls = [corpus["p"][corpus["e"][i][0]][1] for i in envois[0]["ids"]]
+    assert envois[0]["ids"] and not any(u.startswith(("/mode-putride/", "/cachot/")) for u in urls), urls
+    assert "Et Chyren ?" in puces(page)
+    with page.expect_download() as dl:
+        page.locator(".cn-log .cn-act").last.get_by_role("button", name="Partager en image").click()
+    chemin = f"{SORTIE}/tristana-partage-{width}.png"
+    dl.value.save_as(chemin)
+    assert dl.value.suggested_filename == "tristana-lacreaturedumarais.png"
+    page.screenshot(path=f"{SORTIE}/tristana-{width}.png")
+    assert not erreurs_js, erreurs_js
+    context.close()
+    print(f"Tristana, extraits publics, puces et partage en image {width}px OK", flush=True)
+
+
+def fenetre(browser, width):
+    """Sans IA : suggestions liées à la page, résumé, fenêtre agrandie, retour en bas et passage surligné."""
+    mobile = width < 900
+    context = browser.new_context(viewport={"width": width, "height": 844}, is_mobile=mobile, has_touch=mobile)
+    context.add_init_script("localStorage.setItem('lcdm-calme','1')")
+    erreurs = []
+    page = context.new_page()
+    page.on("pageerror", lambda e: erreurs.append(str(e)))
+    page.goto(BASE + "/mode-putride/bestiaire/vampirix/")
+    page.locator(".cn-or").click()
+    page.wait_for_function("[...document.querySelectorAll('.cn-sug button')].some(b => b.textContent === 'Résume cette page')")
+    puces(page)
+    assert page.locator(".cn-mic").is_visible()
+    form, panneau = page.locator(".cn-f").bounding_box(), page.locator("#cn-oracle").bounding_box()
+    assert form["x"] + form["width"] <= panneau["x"] + panneau["width"] + 0.5, (form, panneau)
+    resume = question(page, "Résume cette page")
+    assert "Au fil de la page" in resume, resume
+    choix = puces(page)
+    assert "Résume cette page" not in choix, choix
+    page.get_by_role("button", name="Agrandir la fenêtre").click()
+    page.wait_for_function("(w) => document.querySelector('#cn-oracle').getBoundingClientRect().width >= w",
+                           arg=width - 1 if mobile else 700)
+    grand = page.locator("#cn-oracle").bounding_box()
+    assert (grand["width"] >= width - 1 and grand["x"] <= 0.5) if mobile else grand["width"] >= 700, grand
+    assert page.evaluate("localStorage.getItem('lcdm-ver-grand')") == "1"
+    page.screenshot(path=f"{SORTIE}/ver-grand-{width}.png")
+    page.get_by_role("button", name="Réduire la fenêtre").click()
+    page.wait_for_function("(w) => document.querySelector('#cn-oracle').getBoundingClientRect().width < w",
+                           arg=width if mobile else 500)
+    for q in ("Qui est Vampirix ?", "Dis-m’en plus", "Et le Vampirium ?"):
+        question(page, q)
+    page.locator(".cn-log").evaluate("(l) => { l.scrollTop = 0; l.dispatchEvent(new Event('scroll')); }")
+    assert page.locator(".cn-bas").is_visible()
+    page.locator(".cn-bas").click()
+    assert page.locator(".cn-bas").is_hidden()
+    puces(page)
+    page.screenshot(path=f"{SORTIE}/ver-puces-{width}.png")
+    page.locator(".cn-x").click()
+    texte = page.evaluate("""() => {
+      const p = [...document.querySelectorAll('p')].find((p) => !p.closest('.cn-p') && p.offsetParent &&
+        p.innerText.trim().length > 120 && p.innerText.trim().length < 600);
+      p.scrollIntoView({block: 'center'});
+      const r = document.createRange(); r.selectNodeContents(p);
+      getSelection().removeAllRanges(); getSelection().addRange(r);
+      return p.innerText.trim();
+    }""")
+    page.wait_for_selector(".cn-sel:not([hidden])")
+    page.screenshot(path=f"{SORTIE}/ver-selection-{width}.png")
+    page.locator(".cn-sel").click()
+    page.wait_for_function("[...document.querySelectorAll('.cn-log .cn-m.q')].at(-1)?.textContent.startsWith('Explique ce passage')")
+    libre(page)
+    explication = page.locator(".cn-log .a").last.inner_text()
+    assert "d’où sort ce passage" in explication, (texte, explication)
+    assert page.locator(".cn-sel").is_hidden()
+    assert not erreurs, erreurs
+    context.close()
+    print(f"Fenêtre, puces, résumé de page et passage surligné {width}px OK", flush=True)
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch(channel="msedge", args=["--mute-audio"])
     errors = []
     if "--ia" in sys.argv:
         for width in (1366, 390):
             dialogue_ia(browser, width)
+            tristana(browser, width)
+        browser.close()
+        sys.exit(0)
+    for width in (1366, 390):
+        fenetre(browser, width)
+    if "--fenetre" in sys.argv:
         browser.close()
         sys.exit(0)
     for width in (1366, 390):
