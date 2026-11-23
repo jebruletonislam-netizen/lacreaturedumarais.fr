@@ -24,6 +24,10 @@ retenue est, dans l'ordre : `og:image` de la page visée, portrait de sa fiche
 (`.fiche2 [data-lb-src]`), puis la première image de contenu, en ignorant décors,
 icônes, ailes, auras et en-têtes.
 
+Sur les fiches du bestiaire, les galeries d’au moins trois clips affichent trois
+clips par rangée dès 900 px et un seul en dessous. Les surnoms de Vampirix et
+d’Éphébus figurent sur leurs fiches respectives, pas dans l’index ni sur les pages d’album.
+
 Sur les fiches du bestiaire, Instagram conserve les proportions du Reel. La largeur
 de `.rt-video.reel` limite son encombrement ; `reel-instagram.js` ajuste la hauteur
 à celle que le lecteur annonce, commandes comprises, sans masquer de contenu.
