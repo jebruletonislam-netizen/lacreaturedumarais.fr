@@ -442,7 +442,7 @@
     var W=1080,Hh=histoire?1920:1350,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche];
     cv.width=W;cv.height=Hh;
     fondCinema(ctx,W,Hh,T,pochette);
-    var c=histoire?820:680,x=(W-c)/2,y=186;
+    var c=histoire?820:(f.bandeau?636:680),x=(W-c)/2,y=f.bandeau&&!histoire?176:186;
     /* en story, le bloc pochette + titre est centré dans l'espace libre entre les mentions et le pied */
     if(histoire){var bloc=34+c+(f.bandeau?150:140)+(f.meta?70:0)+(f.appel?110:0);y=Math.max(190,Math.round(150+(Hh-420-bloc)/2+34));}
     ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.78;ctx.font='30px "Bebas Neue",Impact,sans-serif';
@@ -461,8 +461,9 @@
       ctx.fillStyle='#000';ctx.font=(histoire?78:68)+'px "Bebas Neue",Impact,sans-serif';
       espace(ctx,f.bandeau,W/2,by+bh*.78,f.bandeau.length>14?4:12,true);
     }
-    y+=c+(f.bandeau?(histoire?150:118):(histoire?140:104));
     ctx.fillStyle=T.c2;var tt=ajuste(ctx,f.titre.toUpperCase(),'#px "Bebas Neue",Impact,sans-serif',histoire?150:118,W-200);
+    /* le titre passe sous le bandeau, jamais dessous : bas du bandeau + hauteur des capitales + marge */
+    y+=f.bandeau?c+(histoire?104:90)*.45+tt*.74+(histoire?40:30):c+(histoire?140:104);
     ctx.shadowColor='rgba(0,0,0,.8)';ctx.shadowBlur=18;espace(ctx,f.titre.toUpperCase(),W/2,y,tt>80?6:3,true);ctx.shadowBlur=0;
     y+=histoire?70:56;
     if(f.meta){ctx.fillStyle=T.t;ctx.globalAlpha=.82;ajuste(ctx,f.meta.toUpperCase(),'#px "Bebas Neue",Impact,sans-serif',34,W-220);
@@ -518,7 +519,10 @@
     var jour=s?s.date:d&&d.m&&d.j?Date.UTC(d.a,d.m-1,d.j,12):0;
     if(jour&&t<jour){var dj=new Date(jour);bandeau=s&&s.libelle||'LE '+dj.getUTCDate()+' '+MOIS[dj.getUTCMonth()].toUpperCase();appel='Bientôt partout.';}
     else if(jour&&t-jour<15*864e5){bandeau='DISPONIBLE';appel='Disponible partout.';}
-    return {titre:h1.textContent.replace(/\s+/g,' ').trim(),meta:meta.split(' · ').slice(0,3).join(' · '),artiste:artiste,
+    /* ligne courte : on garde les mentions brèves (titres, durée, piste) et la date chiffrée */
+    var parts=meta.split(' · ').filter(function(x){return x&&x.length<=30&&!/\bsorti|parution|\b(19|20)\d\d\b/i.test(x);});
+    if(d&&d.j)parts.unshift(('0'+d.j).slice(-2)+'/'+('0'+d.m).slice(-2)+'/'+d.a);else if(d)parts.unshift(String(d.a));
+    return {titre:h1.textContent.replace(/\s+/g,' ').trim(),meta:parts.slice(0,3).join(' · '),artiste:artiste,
       annee:d?d.a:new Date().getFullYear(),pochette:img.currentSrc||img.src,bandeau:bandeau,appel:appel||(normal?'Écoutez sur toutes les plateformes.':'')};
   }
   function partageDisque(ah,b,histoire){
