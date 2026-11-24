@@ -71,13 +71,38 @@ les pages normales proposent « Que se passe-t-il le 30 novembre ? ». Chaque r�
 peut être **partagée en image** (PNG 1080×1350 dessiné localement aux couleurs de la
 couche, partage natif sinon téléchargement).
 
-Chaque page d'album ou de single (`/discographie/<titre>/`, normal et putride) reçoit
-sous les plateformes « Partager en image » (1080×1350) et « Format story »
-(1080×1920) : pochette, titre, date, aux couleurs de la couche. Avant une sortie de
-`SORTIES`, un bandeau porte la date ; pendant 15 jours après, « DISPONIBLE ». Crédit
-en bas : « © PUANTEUR PUTRIDE Productions, » suivi de l'année de publication du
-contenu en chiffres romains (date du JSON-LD ou de la page) ; en mode putride et dans
-les cachots, « Fourni par le Ver du Baptistère » en haut.
+Chaque page d'album ou de single (`/discographie/<titre>/`, normal et putride) et
+chaque fiche des Retard-Tinables (`/mode-putride/bestiaire/<nom>/` liée aux
+Retard-Tinables, et la page du collectif) reçoit sous les
+plateformes ou le texte d'accroche « Partager en image » (1080×1350) et
+« Format story » (1080×1920), dessinés localement aux couleurs de la pochette ou du
+personnage (`teinte()`), en Religath (texte) et Bebas (titres) :
+- disque : pochette, titre, date, avant-goût court (`AVANT`, sinon la description de
+  la page) et logos des plateformes trouvées dans les boutons de la page (Deezer,
+  Apple Music, Spotify, YouTube, Bandcamp, SoundCloud), sinon le logo du site ;
+- Retard-Tinable : détourage en ogive (ou bannière pour le collectif), surnoms et
+  attributs ;
+- mode normal seulement : QR code permanent vers l'adresse de la page, logo PP au
+  centre (`qrcode.min.js`, qrcode-generator MIT, chargé à la demande).
+
+Avant une sortie de `SORTIES`, un bandeau porte la date ; pendant 15 jours après,
+« DISPONIBLE ». Crédit en bas : « © PUANTEUR PUTRIDE Productions, » suivi de l'année
+de publication du contenu en chiffres romains (date du JSON-LD ou de la page) ; en
+mode putride et dans les cachots, « Fourni par le Ver du Baptistère » en haut, en
+petit. Les réponses de Tristana et du Ver se partagent aussi en post ou en story.
+Quand Tristana parle d'une sortie, sa bulle propose une fois l'inscription à
+l'infolettre (formulaire Buttondown, mode normal seulement).
+
+Les singles du mode normal portent leurs paroles en clair (`.tp-r .paroles`, sans
+`data-g`, donc sans lecteur Genius) et le JSON-LD `recordingOf` → `lyrics`.
+
+### Statistiques des questions
+
+Le Worker compte la première question de chaque conversation IA dans le KV `STATS`
+(clé `q:<tristana|ver>:<AAAA-MM>:<question normalisée, 80 caractères>`, sans IP,
+expirée après environ 13 mois). Lire les totaux :
+`npx wrangler kv key list --binding STATS --remote` puis
+`npx wrangler kv key get "<clé>" --binding STATS --remote` dans `_ver-worker`.
 
 ### Paroles des IA
 

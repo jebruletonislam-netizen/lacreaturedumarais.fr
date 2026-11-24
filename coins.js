@@ -58,6 +58,9 @@
   +'.cn-wq .cn-m{max-width:calc(100% - 30px)}.cn-wa .cn-m{max-width:94%}'
   +'.cn-w.cn-edit .cn-m{outline:2px dashed var(--c);outline-offset:2px}'
   +'.cn-act{display:flex;gap:2px;margin-top:2px}'
+  +'.cn-nl{margin:6px 0 2px;padding:8px 10px;max-width:94%;box-sizing:border-box;border:1px solid var(--c);border-radius:11px;background:rgba(0,0,0,.35);font-size:12.5px;line-height:1.3}'
+  +'.cn-nl div{display:flex;gap:6px;margin-top:6px}.cn-nl input[type=email]{flex:1;min-width:0;height:34px;padding:0 9px;border:1px solid var(--l);border-radius:8px;background:#000;color:#fff;font:inherit;font-size:14px}'
+  +'.cn-nl button{flex:none;height:34px;padding:0 10px;border:1px solid var(--c);border-radius:8px;background:var(--c);color:#000;font:400 16px/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.06em;cursor:pointer}'
   /* « Partager en image » des pages de disque, sous les plateformes, au style des boutons de la page */
   +'.cn-pdisque{display:flex;flex-wrap:wrap;gap:8px;flex-basis:100%;width:100%;margin-top:10px}.cn-pd{cursor:pointer;font:inherit}.cn-pd:disabled{opacity:.5;cursor:progress}.cn-pds{opacity:.78}'
   +'.cn-ic{flex:none;display:grid;place-items:center;width:27px;height:27px;margin:0;padding:0;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--t);opacity:.55;cursor:pointer;-webkit-tap-highlight-color:transparent}'
@@ -239,8 +242,23 @@
     ok:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',
     edite:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
     relance:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v5h-5"/></svg>',
-    partage:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>'
+    partage:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>',
+    story:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M10.5 18.5h3"/><circle cx="12" cy="10" r="2.6" stroke-dasharray="2.4 1.6"/></svg>'
   };
+  /* quand Tristana parle des sorties, l'infolettre est proposée sous sa réponse, une fois par conversation */
+  var RE_SORTIE=/\b(sortie|sortir|single|album|clip|infolettre|newsletter|abonn|prochain|bient[oô]t|monsieur clerg|in odium fidei|pr[eé]venu)/i;
+  function infolettreUtile(w){
+    if(log.querySelector('.cn-nl'))return false;
+    var i=hist.indexOf(w._m),q=i>0&&hist[i-1].r==='q'?hist[i-1].t:'';
+    return RE_SORTIE.test(q+' '+textePartage(w._m.h||''));
+  }
+  function infolettre(){
+    var f=D.createElement('form');f.className='cn-nl';f.method='post';f.target='_blank';
+    f.action='https://buttondown.com/api/emails/embed-subscribe/lacreaturedumarais';
+    f.innerHTML='<span>Être prévenu de chaque sortie, par e-mail :</span><div><input type="email" name="email" required autocomplete="email" placeholder="votre@adresse.fr" aria-label="Adresse e-mail"><input type="hidden" name="embed" value="1"><button type="submit">S’INSCRIRE</button></div>';
+    f.addEventListener('submit',function(){setTimeout(function(){f.innerHTML='<span>Merci : confirmez l’inscription dans l’e-mail reçu.</span>';},50);});
+    return f;
+  }
   function icone(nom,label,fn){
     var b=D.createElement('button');b.type='button';b.className='cn-ic';b.innerHTML=IC[nom];
     b.setAttribute('aria-label',label);b.title=label;
@@ -264,8 +282,12 @@
     }
     w.appendChild(d);
     if(!m.ac){var act=D.createElement('div');act.className='cn-act';act.appendChild(icone('copie','Copier la réponse',function(b){copie(d,b);}));
-      if(!m.err&&window.HTMLCanvasElement)act.appendChild(icone('partage','Partager en image',function(b){partage(w,b);}));
-      w.appendChild(act);}
+      if(!m.err&&window.HTMLCanvasElement){
+        act.appendChild(icone('partage','Partager en image',function(b){partage(w,b,false);}));
+        act.appendChild(icone('story','Partager en story (9:16)',function(b){partage(w,b,true);}));
+      }
+      w.appendChild(act);
+      if(normal&&!m.err&&infolettreUtile(w))w.appendChild(infolettre());}
     log.appendChild(w);
     var corps=m.h;
     if(!anim||calme){d.innerHTML=corps;bas();return;}
@@ -324,12 +346,48 @@
     }
     if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,repli);else repli();
   }
-  /* partager en image : une réponse, ou la fiche d'un disque, en 1080×1350 (ou 1080×1920 pour les stories),
-     aux couleurs de la couche ; crédit daté en chiffres romains de l'année de publication du contenu */
+  /* partager en image : une réponse, la fiche d'un disque ou d'un Retard-Tinable, en 1080×1350
+     (ou 1080×1920 pour les stories), aux couleurs de la couche et aux polices du site ;
+     crédit daté en chiffres romains de l'année de publication du contenu ;
+     en mode normal seulement, un QR code permanent vers la page, frappé du logo PP */
   var TEINTES={
     putride:{fond:['#14002a','#030007'],c:'#39ff6a',c2:'#d6b0ff',t:'#f1e8ff',lueur:'rgba(122,45,214,.55)'},
     cachot:{fond:['#220005','#000'],c:'#ff1736',c2:'#ffe23f',t:'#ffe9a8',lueur:'rgba(225,0,25,.45)'},
     normal:{fond:['#00006e','#000012'],c:'#fc0',c2:'#ff3b3b',t:'#fff',lueur:'rgba(255,0,0,.35)'}
+  };
+  var PT='"Religath","Religath Ligatures","Cinzel",Georgia,serif',PB='"Bebas Neue","Arial Narrow",Impact,sans-serif',SITE='https://lacreaturedumarais.fr';
+  /* avant-goûts : une phrase courte par disque, plutôt qu'une description */
+  var AVANT=normal?{
+    'chyren':'La cathédrale, la couronne et l’épée : une prophétie en vingt-six chants.',
+    'confiteor':'Deux heures de confession : le désir, la foi, la chute.',
+    'in-odium-fidei':'En haine de la foi : la Créature se relève.',
+    'jubile':'Revenu d’entre les morts, il fait de Rouen son jardin des Oliviers.',
+    'les-machines-infernales':'Le corps devient machine de souffrance. Premier laboratoire.',
+    'miserables':'Une cour de gueux catholiques festoie dans un Moyen Âge 2.',
+    'omerta434':'Un satyre, une errante, la nuit de Rouen : un conte noir.',
+    'monsieur-clerge':'Un sermon, une soutane, et quelque chose qui ne meurt pas.'
+  }:{
+    'ces-beau-cela':'Tu fais des progrès Jean-Marie ! Neuf titres sous les cigales.',
+    'chyren':'Le cercle catholique où tout est machination.',
+    'confiteor':'Le tribunal intérieur siège : le désir, la foi, la chute.',
+    'connasse':'À ma demande, puis son remake : la rancune en deux temps.',
+    'gemissements':'L’internement de 2015, reconstitué à partir des restes.',
+    'jarrive-en-tesla':'Les Retard-Tinables arrivent. En Tesla.',
+    'le-retour-de-la-couche':'Christophe revient, et la couche avec lui.',
+    'les-gamins-jleur-mets-la-puree':'Le collectif au complet, le Gaulois revient, la purée aussi.',
+    'lincontinence':'Le premier cri de la Créature : Christophe ne mourra jamais.',
+    'machines':'Le premier album au grand jour, laboratoire de chair et de fer.',
+    'mais-si-quest-vrai':'Ça déconne, puceau ! Deux titres retrouvés.',
+    'mauvaises-nouvelles-des-enfers-1':'Des enfers, les nouvelles ne sont pas bonnes. Tome I.',
+    'mauvaises-nouvelles-des-enfers-2':'Les Retard-Tinables sont putrides. Tome II.',
+    'mets-la-cam':'Bah mets la cam Hervé ! Titizebo filme.',
+    'oh-non-herve':'Camisole, cachot, et le juge : Hervé à l’Ossac.',
+    'oh-non-je-fais-appel':'Hervé conteste. Le tribunal n’a pas fini.',
+    'omerta434':'Jésus et Hadès se disputent deux amants dans Rouen.',
+    'palestine-gratuit':'Une minute dix-huit de provocation collective.',
+    'peter-sur-la-friture':'Perversions contradictoires et confiture à essuyer.',
+    'putain-de-sa-race':'La Bise JM. en colère, en un seul titre.',
+    'rien-a-declarer':'Casso, fouille, douane : Hervé n’a rien à déclarer.'
   };
   function romain(n){
     var r='',v=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
@@ -350,6 +408,10 @@
     });
     return r;
   }
+  function coupe(ls,max){
+    if(ls.length>max){ls=ls.slice(0,max);ls[max-1]=ls[max-1].replace(/[\s,;:]*\S*$/,'')+' …';}
+    return ls;
+  }
   function textePartage(h){
     var t=D.createElement('template');t.innerHTML=h;var c=t.content;
     Array.prototype.forEach.call(c.querySelectorAll('.va,a.lire,br'),function(x){x.replaceWith(x.tagName==='BR'?'\n':'');});
@@ -357,120 +419,219 @@
     return c.textContent.replace(/[ \t]*\[S\d+\]/g,'').replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{2,}/g,'\n').trim();
   }
   /* espacement des lettres à la main : ctx.letterSpacing manque à certains navigateurs */
+  function large(ctx,texte,ecart){var ch=Array.from(texte);return ch.reduce(function(a,c){return a+ctx.measureText(c).width;},0)+ecart*(ch.length-1);}
   function espace(ctx,texte,x,y,ecart,centre){
-    var ch=Array.from(texte),l=ch.reduce(function(a,c){return a+ctx.measureText(c).width;},0)+ecart*(ch.length-1);
+    var ch=Array.from(texte),l=large(ctx,texte,ecart);
     if(centre)x-=l/2;
     ch.forEach(function(c){ctx.fillText(c,x,y);x+=ctx.measureText(c).width+ecart;});
     return l;
   }
-  function ajuste(ctx,texte,police,taille,large){
-    for(;taille>24;taille-=2){ctx.font=police.replace('#',taille);if(ctx.measureText(texte).width<=large)break;}
+  function ajuste(ctx,texte,police,taille,max,ecart){
+    for(;;taille-=2){ctx.font=taille+'px '+police;if(taille<=18||large(ctx,texte,ecart||0)<=max)break;}
     return taille;
   }
-  /* fond de cinéma : dégradé (ou pochette floutée), halo, vignette, grain, bandes noires */
-  function fondCinema(ctx,W,Hh,T,pochette){
+  function rgb(h){h=h.replace('#','');if(h.length===3)h=h.replace(/./g,'$&$&');return [0,2,4].map(function(i){return parseInt(h.slice(i,i+2),16);});}
+  function rgba(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';}
+  function arrondi(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+  /* arc brisé équilatéral, la forme des fenêtres d'église, pour les portraits */
+  function ogive(ctx,x,y,w,h){
+    var sy=y+w*.866;
+    ctx.beginPath();ctx.moveTo(x,y+h);ctx.lineTo(x,sy);
+    ctx.arc(x+w,sy,w,Math.PI,Math.PI*4/3);ctx.arc(x,sy,w,Math.PI*5/3,Math.PI*2);
+    ctx.lineTo(x+w,y+h);ctx.closePath();
+  }
+  /* la teinte propre d'une pochette ou d'un personnage : moyenne des pixels saturés, ravivée */
+  function teinte(im){
+    if(!im)return null;
+    try{
+      var c=D.createElement('canvas');c.width=c.height=32;var x=c.getContext('2d');x.drawImage(im,0,0,32,32);
+      var d=x.getImageData(0,0,32,32).data,s=[0,0,0],n=0,k=0;
+      for(var i=0;i<d.length;i+=4){
+        var hi=Math.max(d[i],d[i+1],d[i+2]),p=(hi-Math.min(d[i],d[i+1],d[i+2]))*d[i+3]/255;
+        if(p<40||hi<60)continue;
+        s[0]+=d[i]*p;s[1]+=d[i+1]*p;s[2]+=d[i+2]*p;n+=p;k++;
+      }
+      if(k<12)return null;
+      var m=Math.max(s[0],s[1],s[2])/n||1;
+      return s.map(function(v){return Math.round(v/n*235/m);});
+    }catch(_){return null;}
+  }
+  /* fond de cinéma : dégradé (ou image floutée), halo teinté, vignette, grain, bandes noires, double filet */
+  function fondCinema(ctx,W,Hh,T,flou,tc){
     var g=ctx.createLinearGradient(0,0,0,Hh);g.addColorStop(0,T.fond[0]);g.addColorStop(1,T.fond[1]);
     ctx.fillStyle=g;ctx.fillRect(0,0,W,Hh);
-    if(pochette){
+    if(flou){
       ctx.save();ctx.globalAlpha=.5;
       if('filter' in ctx)ctx.filter='blur(46px) saturate(1.2)';
-      var s=Math.max(W,Hh)*1.25;ctx.drawImage(pochette,(W-s)/2,(Hh-s)/2,s,s);
+      var iw=flou.naturalWidth||flou.width,ih=flou.naturalHeight||flou.height,s=Math.max(W/iw,Hh/ih)*1.25;
+      ctx.drawImage(flou,(W-iw*s)/2,(Hh-ih*s)/2,iw*s,ih*s);
       ctx.restore();
-      ctx.fillStyle='rgba(0,0,0,.45)';ctx.fillRect(0,0,W,Hh);
+      ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(0,0,W,Hh);
     }
-    var h=ctx.createRadialGradient(W/2,Hh*.3,0,W/2,Hh*.3,W*.85);h.addColorStop(0,T.lueur);h.addColorStop(1,'rgba(0,0,0,0)');
+    var h=ctx.createRadialGradient(W/2,Hh*.34,0,W/2,Hh*.34,W*.85);h.addColorStop(0,tc?rgba(tc,.34):T.lueur);h.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=h;ctx.fillRect(0,0,W,Hh);
-    var v=ctx.createRadialGradient(W/2,Hh/2,Math.min(W,Hh)*.35,W/2,Hh/2,Math.max(W,Hh)*.78);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.82)');
+    var v=ctx.createRadialGradient(W/2,Hh/2,Math.min(W,Hh)*.35,W/2,Hh/2,Math.max(W,Hh)*.78);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.84)');
     ctx.fillStyle=v;ctx.fillRect(0,0,W,Hh);
     var gr=D.createElement('canvas');gr.width=gr.height=160;
     var gc=gr.getContext('2d'),px=gc.createImageData(160,160);
-    for(var i=0;i<px.data.length;i+=4){var n=Math.random()*255|0;px.data[i]=px.data[i+1]=px.data[i+2]=n;px.data[i+3]=16;}
+    for(var i=0;i<px.data.length;i+=4){var n=Math.random()*255|0;px.data[i]=px.data[i+1]=px.data[i+2]=n;px.data[i+3]=14;}
     gc.putImageData(px,0,0);ctx.fillStyle=ctx.createPattern(gr,'repeat');ctx.fillRect(0,0,W,Hh);
     ctx.fillStyle='#000';ctx.fillRect(0,0,W,22);ctx.fillRect(0,Hh-22,W,22);
-    ctx.strokeStyle=T.c;ctx.globalAlpha=.55;ctx.lineWidth=1.5;ctx.strokeRect(46,46,W-92,Hh-92);
-    ctx.globalAlpha=.22;ctx.strokeRect(56,56,W-112,Hh-112);ctx.globalAlpha=1;
+    ctx.strokeStyle=T.c;ctx.globalAlpha=.5;ctx.lineWidth=1.5;ctx.strokeRect(46,46,W-92,Hh-92);
+    ctx.globalAlpha=.2;ctx.strokeRect(56,56,W-112,Hh-112);ctx.globalAlpha=1;
   }
-  /* mentions discrètes : « Fourni par le Ver du Baptistère » en haut chez le Ver, le crédit daté en bas */
-  function mentions(ctx,W,Hh,T,annee){
-    ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.55;ctx.font='22px Georgia,serif';
-    if(!normal)espace(ctx,'FOURNI PAR LE VER DU BAPTISTÈRE',W/2,92,4,true);
-    espace(ctx,'© PUANTEUR PUTRIDE Productions, '+romain(annee),W/2,Hh-74,2,true);
-    ctx.globalAlpha=1;
+  /* chez le Ver, la signature discrète en haut, à la taille du crédit */
+  function enTete(ctx,W,T){
+    if(normal)return;
+    ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.42;ctx.font='15px '+PT;
+    espace(ctx,'FOURNI PAR LE VER DU BAPTISTÈRE',W/2,90,3,true);ctx.globalAlpha=1;
   }
-  function pied(ctx,W,Hh,T,y){
-    ctx.textBaseline='alphabetic';ctx.fillStyle=T.c;ctx.globalAlpha=.9;ctx.fillRect(W/2-60,y-58,120,2);ctx.globalAlpha=1;
-    ctx.font='50px "Bebas Neue",Impact,sans-serif';espace(ctx,'LACREATUREDUMARAIS.FR',W/2,y,6,true);
+  /* QR code éternel (l'adresse de la page ne change pas), sur une tuile crème, le logo PP au cœur */
+  function chargeQR(){
+    if(window.qrcode)return Promise.resolve(window.qrcode);
+    return new Promise(function(ok){var s=D.createElement('script');s.src='/qrcode.min.js?v=1';s.onload=function(){ok(window.qrcode||null);};s.onerror=function(){ok(null);};D.head.appendChild(s);});
   }
-  function dessine(question,texte,logo){
-    var W=1080,Hh=1350,M=110,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche];
+  function adresse(){return SITE+location.pathname.replace(/index\.html$/,'');}
+  function codeQR(lib){if(!lib)return null;try{var q=lib(0,'Q');q.addData(adresse());q.make();return q;}catch(_){return null;}}
+  function dessineQR(ctx,q,logo,x,y,t){
+    var n=q.getModuleCount(),b=2,u=Math.max(1,Math.floor(t/(n+2*b))),tt=u*(n+2*b),x0=Math.round(x+t-tt),y0=Math.round(y+t-tt);
+    ctx.save();ctx.shadowColor='rgba(0,0,0,.85)';ctx.shadowBlur=26;ctx.fillStyle='#f3ecdf';arrondi(ctx,x0,y0,tt,tt,u*2);ctx.fill();ctx.restore();
+    ctx.fillStyle='#07071f';
+    for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(q.isDark(r,c))ctx.fillRect(x0+(c+b)*u,y0+(r+b)*u,u,u);
+    var cx=x0+tt/2,cy=y0+tt/2,R=Math.round(n*u*.12);
+    ctx.fillStyle='#f3ecdf';ctx.beginPath();ctx.arc(cx,cy,R+u,0,7);ctx.fill();
+    ctx.fillStyle='#07071f';ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.fill();
+    if(logo){ctx.save();ctx.beginPath();ctx.arc(cx,cy,R*.92,0,7);ctx.clip();ctx.drawImage(logo,cx-R*.92,cy-R*.92,R*1.84,R*1.84);ctx.restore();}
+  }
+  function tailleQR(histoire){return histoire?200:150;}
+  /* bas de carte : en mode normal, adresse et crédit à gauche, QR à droite ; ailleurs, centrés */
+  function basContenu(Hh,histoire){return normal?Hh-96-tailleQR(histoire)-40:Hh-(histoire?190:136)-96;}
+  function pied(ctx,W,Hh,T,o){
+    ctx.textBaseline='alphabetic';
+    var cr='© PUANTEUR PUTRIDE Productions, '+romain(o.annee);
+    if(normal&&o.qr){
+      var q=tailleQR(o.histoire),M=100,bas=Hh-96,lim=W-M-q-110;
+      dessineQR(ctx,o.qr,o.logo,W-96-q,bas-q,q);
+      ctx.fillStyle=T.c;ctx.globalAlpha=.9;ctx.fillRect(M,bas-q+10,96,2);ctx.globalAlpha=1;
+      ajuste(ctx,'LACREATUREDUMARAIS.FR',PB,o.histoire?56:48,lim,5);espace(ctx,'LACREATUREDUMARAIS.FR',M,bas-(o.histoire?70:56),5);
+      ctx.fillStyle=T.t;ctx.globalAlpha=.6;ajuste(ctx,cr,PT,o.histoire?21:18,lim,2);espace(ctx,cr,M,bas-6,2);ctx.globalAlpha=1;
+      return;
+    }
+    var y=Hh-(o.histoire?190:136);
+    ctx.fillStyle=T.c;ctx.globalAlpha=.9;ctx.fillRect(W/2-60,y-58,120,2);ctx.globalAlpha=1;
+    ctx.font='50px '+PB;espace(ctx,'LACREATUREDUMARAIS.FR',W/2,y,6,true);
+    ctx.fillStyle=T.t;ctx.globalAlpha=.55;ctx.font='18px '+PT;espace(ctx,cr,W/2,Hh-74,2,true);ctx.globalAlpha=1;
+  }
+  function dessine(question,texte,o,histoire){
+    var W=1080,Hh=histoire?1920:1350,M=110,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche],logo=o.logo;
     cv.width=W;cv.height=Hh;
-    fondCinema(ctx,W,Hh,T,null);
-    if(logo){ctx.save();ctx.globalAlpha=.06;ctx.drawImage(logo,W-560,Hh-700,620,620);ctx.restore();}
+    fondCinema(ctx,W,Hh,T,null,null);
+    enTete(ctx,W,T);
+    if(logo){ctx.save();ctx.globalAlpha=.05;ctx.drawImage(logo,W-600,Hh*.42,620,620);ctx.restore();}
     ctx.textBaseline='top';
-    var titre=normal?'TRISTANA':'LE VER',y=132;
-    ctx.fillStyle=T.c2;ctx.font='92px "Bebas Neue",Impact,sans-serif';
+    var titre=normal?'TRISTANA':'LE VER',y=histoire?210:136;
+    ctx.fillStyle=T.c2;ctx.font=(histoire?104:92)+'px '+PB;
     if(logo){ctx.drawImage(logo,M,y-2,92,92);espace(ctx,titre,M+118,y,5);}else espace(ctx,titre,M,y,5);
-    y+=98;ctx.fillStyle=T.t;ctx.globalAlpha=.7;ctx.font='28px "Bebas Neue",Impact,sans-serif';
+    y+=histoire?110:98;ctx.fillStyle=T.t;ctx.globalAlpha=.7;ctx.font='28px '+PB;
     espace(ctx,normal?'ATTACHÉE DE PRESSE · PUANTEUR PUTRIDE PRODUCTIONS':'SERVITEUR DE KOBAL · LE VAMPIRIUM',logo?M+118:M,y-10,3);
-    ctx.globalAlpha=1;y+=56;
-    var large=W-2*M,fin=Hh-250;
+    ctx.globalAlpha=1;y+=histoire?80:56;
+    var lg=W-2*M,fin=basContenu(Hh,histoire)+(normal?0:40);
     if(question){
-      ctx.fillStyle=T.c;ctx.font='italic 38px Georgia,serif';
-      var lq=lignes(ctx,'« '+question.replace(/\s+/g,' ').slice(0,220)+' »',large).slice(0,3);
-      lq.forEach(function(l){ctx.fillText(l,M,y);y+=50;});y+=34;
+      ctx.fillStyle=T.c;ctx.font=(histoire?36:32)+'px '+PT;
+      var lq=coupe(lignes(ctx,'« '+question.replace(/\s+/g,' ').slice(0,220)+' »',lg),3);
+      lq.forEach(function(l){ctx.fillText(l,M,y);y+=histoire?50:44;});y+=histoire?44:32;
     }
     /* la taille du texte s'adapte ; au plus petit, la fin est coupée net avec « … » */
-    var taille=62,ls;
+    var taille=histoire?60:54,ls,lh;
     for(;;){
-      ctx.font=taille+'px Georgia,serif';ls=lignes(ctx,texte,large);
-      if(y+ls.length*taille*1.4<=fin||taille<=30)break;
+      ctx.font=taille+'px '+PT;ls=lignes(ctx,texte,lg);lh=taille*1.42;
+      if(y+ls.length*lh<=fin||taille<=26)break;
       taille-=2;
     }
-    var max=Math.floor((fin-y)/(taille*1.4));
-    if(ls.length>max){ls=ls.slice(0,Math.max(1,max));ls[ls.length-1]=ls[ls.length-1].replace(/\s*\S*$/,'')+' …';}
-    else y+=Math.max(0,(fin-y-ls.length*taille*1.4)/3);
-    ctx.fillStyle=T.c;ctx.globalAlpha=.8;ctx.fillRect(M-34,y+8,4,ls.length*taille*1.4-taille*.3);ctx.globalAlpha=1;
+    var max=Math.floor((fin-y)/lh);
+    if(ls.length>max)ls=coupe(ls,Math.max(1,max));
+    else y+=Math.max(0,(fin-y-ls.length*lh)/3);
+    ctx.fillStyle=T.c;ctx.globalAlpha=.8;ctx.fillRect(M-34,y+6,4,ls.length*lh-taille*.35);ctx.globalAlpha=1;
     ctx.fillStyle=T.t;ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=12;
-    ls.forEach(function(l){ctx.fillText(l,M,y);y+=taille*1.4;});
+    ls.forEach(function(l){ctx.fillText(l,M,y);y+=lh;});
     ctx.shadowBlur=0;
-    pied(ctx,W,Hh,T,Hh-136);
-    mentions(ctx,W,Hh,T,new Date().getFullYear());
+    pied(ctx,W,Hh,T,{annee:new Date().getFullYear(),histoire:histoire,qr:o.qr,logo:logo});
     return cv;
   }
-  /* la fiche d'un disque : pochette, titre, ligne de dates, et le jour J un bandeau « DISPONIBLE » */
-  function dessineDisque(f,pochette,histoire){
+  /* la fiche d'un disque ou d'un personnage : visuel, titre, avant-goût, plateformes ;
+     le jour J, un bandeau « DISPONIBLE » sur la pochette */
+  function dessineFiche(f,ims,histoire){
     var W=1080,Hh=histoire?1920:1350,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche];
     cv.width=W;cv.height=Hh;
-    fondCinema(ctx,W,Hh,T,pochette);
-    var c=histoire?820:(f.bandeau?636:680),x=(W-c)/2,y=f.bandeau&&!histoire?176:186;
-    /* en story, le bloc pochette + titre est centré dans l'espace libre entre les mentions et le pied */
-    if(histoire){var bloc=34+c+(f.bandeau?150:140)+(f.meta?70:0)+(f.appel?110:0);y=Math.max(190,Math.round(150+(Hh-420-bloc)/2+34));}
-    ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.78;ctx.font='30px "Bebas Neue",Impact,sans-serif';
-    espace(ctx,f.artiste.toUpperCase(),W/2,y-34,8,true);ctx.globalAlpha=1;
-    ctx.save();ctx.shadowColor=T.lueur;ctx.shadowBlur=70;ctx.fillStyle='#000';ctx.fillRect(x,y,c,c);ctx.restore();
-    ctx.save();ctx.shadowColor='rgba(0,0,0,.9)';ctx.shadowBlur=40;ctx.shadowOffsetY=18;
-    if(pochette){
-      var s=Math.min(pochette.naturalWidth||pochette.width,pochette.naturalHeight||pochette.height);
-      ctx.drawImage(pochette,((pochette.naturalWidth||pochette.width)-s)/2,((pochette.naturalHeight||pochette.height)-s)/2,s,s,x,y,c,c);
+    var tc=teinte(ims.cut||ims.vis)||rgb(T.c2),portrait=!!ims.cut,banniere=f.type==='bete'&&!portrait;
+    fondCinema(ctx,W,Hh,T,ims.vis,tc);
+    enTete(ctx,W,T);
+    var haut=histoire?170:122,basC=basContenu(Hh,histoire),lg=W-240,k=histoire?1.18:1;
+    /* les textes d'abord, pour connaître la place qui reste au visuel */
+    var titre=f.titre.toUpperCase(),tt=ajuste(ctx,titre,PT,Math.round(66*k),W-200,3);
+    ctx.font=Math.round(28*k)+'px '+PT;var lav=f.avant?coupe(lignes(ctx,f.avant,lg),f.type==='bete'?3:2):[],lhA=Math.round(40*k);
+    var ic=ims.ic||[],is=histoire?66:54,lien=f.lien||'';
+    var hTxt=(f.bandeau?52*k:40*k)+tt*.78+(f.badge?50*k:0)+(lav.length?18*k+lav.length*lhA:0)+(f.meta?48*k:0)+(ic.length?30*k+is:0)+(lien?40*k:0)+(f.appel?58*k:0);
+    var hLab=46*k,A=basC-haut-hLab-hTxt,vw,vh;
+    if(portrait){vh=Math.min(histoire?960:620,A);vw=Math.round(vh/1.26);}
+    else if(banniere){vw=Math.min(W-200,A*1096/616);vh=Math.round(vw*616/1096);}
+    else{vh=vw=Math.max(300,Math.min(histoire?820:600,A));}
+    var y=Math.round(haut+Math.max(0,(basC-haut-hLab-vh-hTxt)/2)),x=Math.round((W-vw)/2);
+    ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.78;ctx.font=Math.round(28*k)+'px '+PB;
+    espace(ctx,f.etiquette.toUpperCase(),W/2,y+28*k,8,true);ctx.globalAlpha=1;
+    y+=Math.round(hLab);
+    if(portrait){
+      ctx.save();ctx.shadowColor=rgba(tc,.6);ctx.shadowBlur=80;ogive(ctx,x,y,vw,vh);ctx.fillStyle='#000';ctx.fill();ctx.restore();
+      ctx.save();ogive(ctx,x,y,vw,vh);ctx.clip();
+      var bw=ims.vis?(ims.vis.naturalWidth||ims.vis.width):1,bh=ims.vis?(ims.vis.naturalHeight||ims.vis.height):1,s=Math.max(vw/bw,vh/bh);
+      if(ims.vis){ctx.globalAlpha=.6;ctx.drawImage(ims.vis,x+(vw-bw*s)/2,y+(vh-bh*s)/2,bw*s,bh*s);ctx.globalAlpha=1;}
+      var rg=ctx.createRadialGradient(x+vw/2,y+vh*.42,0,x+vw/2,y+vh*.42,vh*.7);rg.addColorStop(0,rgba(tc,.3));rg.addColorStop(1,'rgba(0,0,0,.55)');
+      ctx.fillStyle=rg;ctx.fillRect(x,y,vw,vh);
+      var cw=ims.cut.naturalWidth||ims.cut.width,ch=ims.cut.naturalHeight||ims.cut.height,sc=Math.max(vw/cw,vh/ch)*1.02;
+      ctx.shadowColor=rgba(tc,.9);ctx.shadowBlur=38;
+      ctx.drawImage(ims.cut,x+(vw-cw*sc)/2,y+vh-ch*sc,cw*sc,ch*sc);
+      ctx.shadowBlur=0;
+      var bg=ctx.createLinearGradient(0,y+vh*.68,0,y+vh);bg.addColorStop(0,'rgba(0,0,0,0)');bg.addColorStop(1,'rgba(0,0,0,.78)');
+      ctx.fillStyle=bg;ctx.fillRect(x,y,vw,vh);
+      ctx.restore();
+      ctx.strokeStyle=T.c;ctx.lineWidth=2;ctx.globalAlpha=.75;ogive(ctx,x,y,vw,vh);ctx.stroke();
+      ctx.globalAlpha=.22;ogive(ctx,x-14,y-14,vw+28,vh+14);ctx.stroke();ctx.globalAlpha=1;
+    }else{
+      ctx.save();ctx.shadowColor=rgba(tc,.55);ctx.shadowBlur=80;ctx.fillStyle='#000';ctx.fillRect(x,y,vw,vh);ctx.restore();
+      ctx.save();ctx.shadowColor='rgba(0,0,0,.9)';ctx.shadowBlur=40;ctx.shadowOffsetY=18;
+      if(ims.vis){
+        var iw=ims.vis.naturalWidth||ims.vis.width,ih=ims.vis.naturalHeight||ims.vis.height,r=vw/vh,sw=Math.min(iw,ih*r),sh=sw/r;
+        ctx.drawImage(ims.vis,(iw-sw)/2,(ih-sh)/2,sw,sh,x,y,vw,vh);
+      }
+      ctx.restore();
+      ctx.strokeStyle='rgba(255,255,255,.18)';ctx.lineWidth=2;ctx.strokeRect(x+.5,y+.5,vw-1,vh-1);
     }
-    ctx.restore();
-    ctx.strokeStyle='rgba(255,255,255,.18)';ctx.lineWidth=2;ctx.strokeRect(x+.5,y+.5,c-1,c-1);
+    y+=vh;
     if(f.bandeau){
-      var bh=histoire?104:90,by=y+c-bh*.55;
-      ctx.save();ctx.shadowColor=T.lueur;ctx.shadowBlur=30;ctx.fillStyle=T.c;ctx.fillRect(x-40,by,c+80,bh);ctx.restore();
-      ctx.fillStyle='#000';ctx.font=(histoire?78:68)+'px "Bebas Neue",Impact,sans-serif';
-      espace(ctx,f.bandeau,W/2,by+bh*.78,f.bandeau.length>14?4:12,true);
+      var bdh=Math.round(90*k),by=y-bdh*.55;
+      ctx.save();ctx.shadowColor=rgba(tc,.6);ctx.shadowBlur=30;ctx.fillStyle=T.c;ctx.fillRect(x-40,by,vw+80,bdh);ctx.restore();
+      ctx.fillStyle='#000';ctx.font=Math.round(68*k)+'px '+PB;
+      espace(ctx,f.bandeau,W/2,by+bdh*.78,f.bandeau.length>14?4:12,true);
+      y=by+bdh;
     }
-    ctx.fillStyle=T.c2;var tt=ajuste(ctx,f.titre.toUpperCase(),'#px "Bebas Neue",Impact,sans-serif',histoire?150:118,W-200);
-    /* le titre passe sous le bandeau, jamais dessous : bas du bandeau + hauteur des capitales + marge */
-    y+=f.bandeau?c+(histoire?104:90)*.45+tt*.74+(histoire?40:30):c+(histoire?140:104);
-    ctx.shadowColor='rgba(0,0,0,.8)';ctx.shadowBlur=18;espace(ctx,f.titre.toUpperCase(),W/2,y,tt>80?6:3,true);ctx.shadowBlur=0;
-    y+=histoire?70:56;
-    if(f.meta){ctx.fillStyle=T.t;ctx.globalAlpha=.82;ajuste(ctx,f.meta.toUpperCase(),'#px "Bebas Neue",Impact,sans-serif',34,W-220);
-      espace(ctx,f.meta.toUpperCase(),W/2,y,3,true);ctx.globalAlpha=1;}
-    if(f.appel){ctx.fillStyle=T.c;ctx.font='italic '+(histoire?40:34)+'px Georgia,serif';ctx.textAlign='center';ctx.fillText(f.appel,W/2,y+(histoire?110:66));ctx.textAlign='left';}
-    pied(ctx,W,Hh,T,Hh-(histoire?190:136));
-    mentions(ctx,W,Hh,T,f.annee);
+    y+=Math.round((f.bandeau?52:40)*k+tt*.78);
+    ctx.fillStyle=T.c2;ctx.font=tt+'px '+PT;ctx.shadowColor='rgba(0,0,0,.85)';ctx.shadowBlur=18;
+    espace(ctx,titre,W/2,y,3,true);ctx.shadowBlur=0;
+    if(f.badge){y+=Math.round(50*k);ctx.fillStyle=T.c;ajuste(ctx,f.badge.toUpperCase(),PB,Math.round(32*k),lg,5);espace(ctx,f.badge.toUpperCase(),W/2,y,5,true);}
+    if(lav.length){
+      y+=Math.round(18*k);ctx.fillStyle=T.t;ctx.globalAlpha=.9;ctx.font=Math.round(28*k)+'px '+PT;ctx.textAlign='center';
+      lav.forEach(function(l){y+=lhA;ctx.fillText(l,W/2,y-lhA*.22);});
+      ctx.textAlign='left';ctx.globalAlpha=1;
+    }
+    if(f.meta){y+=Math.round(48*k);ctx.fillStyle=T.t;ctx.globalAlpha=.66;ajuste(ctx,f.meta.toUpperCase(),PB,Math.round(30*k),lg,3);espace(ctx,f.meta.toUpperCase(),W/2,y,3,true);ctx.globalAlpha=1;}
+    if(ic.length){
+      y+=Math.round(30*k);var gap=histoire?28:22,ix=(W-ic.length*is-(ic.length-1)*gap)/2;
+      ic.forEach(function(c){ctx.drawImage(c,ix,y,is,is);ix+=is+gap;});
+      y+=is;
+    }
+    if(lien){y+=Math.round(40*k);ctx.fillStyle=T.t;ctx.globalAlpha=.72;ctx.font=Math.round(26*k)+'px '+PB;espace(ctx,lien,W/2,y,4,true);ctx.globalAlpha=1;}
+    if(f.appel){y+=Math.round(58*k);ctx.fillStyle=T.c;ctx.font=Math.round(28*k)+'px '+PT;ctx.textAlign='center';ctx.fillText(f.appel,W/2,y);ctx.textAlign='left';}
+    pied(ctx,W,Hh,T,{annee:f.annee,histoire:histoire,qr:ims.qr,logo:ims.logo});
     return cv;
   }
   function exporte(cv,nomF,b){
@@ -478,42 +639,77 @@
       var f=null;
       try{f=new File([bl],nomF,{type:'image/png'});}catch(_){}
       if(f&&navigator.canShare&&navigator.canShare({files:[f]}))
-        return navigator.share({files:[f],title:'La Créature du Marais',text:'https://lacreaturedumarais.fr'+location.pathname}).catch(function(e){if(e&&e.name!=='AbortError')throw e;});
+        return navigator.share({files:[f],title:'La Créature du Marais',text:adresse()}).catch(function(e){if(e&&e.name!=='AbortError')throw e;});
       var a=D.createElement('a'),u=URL.createObjectURL(bl);a.href=u;a.download=nomF;D.body.appendChild(a);a.click();a.remove();
       setTimeout(function(){URL.revokeObjectURL(u);},4000);
       toast(normal?'Image enregistrée : publiez-la où vous voulez.':'Image enregistrée : publie-la où tu veux.');
     }).catch(function(e){console.error('Partage en image impossible.',e);toast('Image impossible à créer sur cet appareil.');})
       .finally(function(){if(b)b.disabled=false;});
   }
-  function polices(){return D.fonts&&D.fonts.load?Promise.all([D.fonts.load('96px "Bebas Neue"'),D.fonts.load('46px Georgia'),D.fonts.load('italic 40px Georgia')]).catch(function(){}):Promise.resolve();}
+  function polices(){
+    if(!D.fonts||!D.fonts.load)return Promise.resolve();
+    return Promise.all([D.fonts.load('96px "Bebas Neue"'),D.fonts.load('46px "Religath"','AÉ©'),D.fonts.load('46px "Religath Ligatures"','Œœ'),D.fonts.load('46px "Cinzel"')]).catch(function(){});
+  }
   function image(src){return new Promise(function(ok){if(!src){ok(null);return;}var im=new Image();im.onload=function(){ok(im);};im.onerror=function(){ok(null);};im.src=src;});}
-  function partage(w,b){
+  function nomFichier(t,histoire){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+(histoire?'-story':'')+'-lacreaturedumarais.png';}
+  /* le logo PP et le QR ne servent qu'au mode normal */
+  function marque(){return normal?Promise.all([image('/images/cachot/logo-pp-blanc.webp'),chargeQR()]).then(function(r){return {logo:r[0],qr:codeQR(r[1])};}):Promise.resolve({});}
+  function partage(w,b,histoire){
     var i=hist.indexOf(w._m),q='',texte=textePartage(w._m.h||'');
     for(var j=i-1;j>=0;j--)if(hist[j].r==='q'){q=hist[j].t;break;}
     if(/^Explique ce passage/i.test(q))q='';
     if(!texte){toast('Rien à partager dans cette réponse.');return;}
     b.disabled=true;
-    Promise.all([polices(),normal?image('/images/cachot/logo-pp-blanc.webp'):null]).then(function(r){
-      return exporte(dessine(q,texte,r[1]),(normal?'tristana':'le-ver')+'-lacreaturedumarais.png',b);
+    Promise.all([polices(),marque()]).then(function(r){
+      return exporte(dessine(q,texte,r[1],histoire),(normal?'tristana':'le-ver')+(histoire?'-story':'')+'-lacreaturedumarais.png',b);
+    });
+  }
+  /* plateformes du disque, dans l'ordre de l'en-tête ; rien → le site seul */
+  var PLATS=[['deezer',/deezer\.com/i],['apple-music',/music\.apple\.com/i],['spotify',/spotify\.com/i],['youtube',/youtube\.com|youtu\.be/i],['bandcamp',/bandcamp\.com/i],['soundcloud',/soundcloud\.com/i]];
+  function plateformes(zone){
+    var a=zone?Array.prototype.slice.call(zone.querySelectorAll('a[href]')):[];
+    var r=PLATS.filter(function(p){return a.some(function(l){return p[1].test(l.href)&&(p[0]!=='youtube'||/youtube/i.test(l.textContent));});}).map(function(p){return p[0];});
+    return r.length?r:['site'];
+  }
+  /* les icônes de l'en-tête, reteintées à la couleur de la couche */
+  function icones(noms,coul,t){
+    return Promise.all(noms.map(function(n){return image('/images/icone-'+n+'.webp');})).then(function(ims){
+      return ims.filter(Boolean).map(function(im){
+        var c=D.createElement('canvas');c.width=c.height=t;var x=c.getContext('2d');x.drawImage(im,0,0,t,t);
+        try{
+          var d=x.getImageData(0,0,t,t),p=d.data;
+          for(var i=0;i<p.length;i+=4){var a=Math.max(p[i],p[i+1],p[i+2]);p[i]=coul[0];p[i+1]=coul[1];p[i+2]=coul[2];p[i+3]=Math.min(255,a*1.1)*p[i+3]/255;}
+          x.putImageData(d,0,0);
+        }catch(_){}
+        return c;
+      });
     });
   }
   /* sur chaque page de disque, sous les plateformes : « Partager en image » (et le format story) */
   var MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-  function dateDisque(ah){
+  function dateLD(){
     var ld=Array.prototype.map.call(D.querySelectorAll('script[type="application/ld+json"]'),function(s){return s.textContent;}).join(' ');
     var m=/"datePublished"\s*:\s*"(\d{4})(?:-(\d\d)-(\d\d))?/.exec(ld);
-    if(m)return {a:+m[1],m:m[2]?+m[2]:0,j:m[3]?+m[3]:0};
+    return m?{a:+m[1],m:m[2]?+m[2]:0,j:m[3]?+m[3]:0}:null;
+  }
+  function dateDisque(ah){
+    var d=dateLD(),m;if(d)return d;
     var t=(ah.querySelector('.meta,.am')||{}).textContent||'';
     if((m=/(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(t)))return {a:+m[3],m:+m[2],j:+m[1]};
     if((m=new RegExp('(\\d{1,2})(?:er)? ('+MOIS.join('|')+') (\\d{4})').exec(t)))return {a:+m[3],m:MOIS.indexOf(m[2])+1,j:+m[1]};
     if((m=/\b(19|20)\d\d\b/.exec(t)))return {a:+m[0],m:0,j:0};
     return null;
   }
+  function avantGout(slug){
+    if(AVANT[slug])return AVANT[slug];
+    var d=((D.querySelector('meta[name="description"]')||{}).content||'').replace(/\s+/g,' ').trim(),p=/^.{20,110}?[.!?…](?=\s|$)/.exec(d);
+    return p?p[0]:d.length>110?d.slice(0,110).replace(/\s+\S*$/,'')+' …':d;
+  }
   function ficheDisque(ah){
     var h1=ah.querySelector('h1')||D.querySelector('main h1, .wrap h1, h1'),img=ah.querySelector('img');
     if(!h1||!img)return null;
     var meta=((ah.querySelector('.meta,.am')||{}).textContent||'').replace(/\s+/g,' ').trim();
-    var alp=ah.closest('.alp'),d=dateDisque(ah),t=Date.now(),bandeau='',appel='';
+    var alp=ah.closest('.alp'),d=dateDisque(ah),t=Date.now(),bandeau='',appel='',slug=(/discographie\/([^/]+)/.exec(location.pathname)||[])[1]||'';
     var artiste=normal?'Cul-Pointu · La Créature du Marais':(alp&&alp.getAttribute('data-artist'))||'Cul-Pointu';
     var s=SORTIES.find(function(x){return x.page.test(location.pathname);});
     var jour=s?s.date:d&&d.m&&d.j?Date.UTC(d.a,d.m-1,d.j,12):0;
@@ -522,32 +718,60 @@
     /* ligne courte : on garde les mentions brèves (titres, durée, piste) et la date chiffrée */
     var parts=meta.split(' · ').filter(function(x){return x&&x.length<=30&&!/\bsorti|parution|\b(19|20)\d\d\b/i.test(x);});
     if(d&&d.j)parts.unshift(('0'+d.j).slice(-2)+'/'+('0'+d.m).slice(-2)+'/'+d.a);else if(d)parts.unshift(String(d.a));
-    return {titre:h1.textContent.replace(/\s+/g,' ').trim(),meta:parts.slice(0,3).join(' · '),artiste:artiste,
-      annee:d?d.a:new Date().getFullYear(),pochette:img.currentSrc||img.src,bandeau:bandeau,appel:appel||(normal?'Écoutez sur toutes les plateformes.':'')};
+    var plats=plateformes(ah);
+    return {type:'disque',titre:h1.textContent.replace(/\s+/g,' ').trim(),etiquette:artiste,avant:avantGout(slug),meta:parts.slice(0,3).join(' · '),
+      annee:d?d.a:new Date().getFullYear(),vis:img.currentSrc||img.src,plats:plats,lien:plats.join()==='soundcloud'?'SOUNDCLOUD.COM/PUANTEURPUTRIDE':'',
+      bandeau:bandeau,appel:appel};
   }
-  function partageDisque(ah,b,histoire){
-    var f=ficheDisque(ah);if(!f){toast('Rien à partager sur cette page.');return;}
+  /* la fiche d'un Retard-Tinable : portrait détouré dans une ogive, surnoms, attributs, SoundCloud */
+  function ficheBete(){
+    var f2=D.querySelector('.fiche2'),h1=f2&&f2.querySelector('h1');if(!h1)return null;
+    var sub={};
+    Array.prototype.forEach.call(f2.querySelectorAll('h3.sub'),function(h){var p=h.nextElementSibling;if(p&&p.tagName==='P')sub[h.textContent.trim().toLowerCase()]=p.textContent.replace(/\s+/g,' ').trim();});
+    var surn=(sub.surnom||sub.surnoms||'').split(/\s*[·\/]\s*/).filter(Boolean).slice(0,3).join(' · ');
+    var attr=sub.attributs||((f2.querySelector('.accroche')||{}).textContent||'').trim(),oeuvre='';
+    Array.prototype.forEach.call(f2.querySelectorAll('dt'),function(dt){if(/œuvre/i.test(dt.textContent)&&dt.nextElementSibling)oeuvre=dt.nextElementSibling.textContent.trim();});
+    var fig=f2.querySelector('figure.rtfig img'),bg=fig?null:f2.querySelector('img.bgz'),cut=fig?null:f2.querySelector('img.fgz'),d=dateLD();
+    var avant=surn?'« '+surn+' »'+(attr?'\n'+attr:''):(attr||oeuvre);
+    return {type:'bete',titre:h1.textContent.replace(/\s+/g,' ').trim(),etiquette:'Bestiaire · Les Retard-Tinables',
+      badge:((f2.querySelector('.role')||{}).textContent||'').replace(/\s+/g,' ').trim(),avant:avant,meta:'',
+      annee:d?d.a:new Date().getFullYear(),vis:bg?bg.src:fig?fig.currentSrc||fig.src:'',cut:cut?cut.src:'',plats:['soundcloud'],lien:'SOUNDCLOUD.COM/PUANTEURPUTRIDE',bandeau:'',appel:''};
+  }
+  function partageFiche(f,b,histoire){
+    if(!f){toast('Rien à partager sur cette page.');return;}
     b.disabled=true;
-    Promise.all([polices(),image(f.pochette)]).then(function(r){
-      var nomF=f.titre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+(histoire?'-story':'')+'-lacreaturedumarais.png';
-      return exporte(dessineDisque(f,r[1],histoire),nomF,b);
+    var T=TEINTES[couche],is=histoire?66:54;
+    Promise.all([polices(),image(f.vis),image(f.cut),icones(f.plats,rgb(normal?T.c2:T.c),is*2),marque()]).then(function(r){
+      return exporte(dessineFiche(f,{vis:r[1],cut:r[2],ic:r[3],logo:r[4].logo,qr:r[4].qr},histoire),nomFichier(f.titre,histoire),b);
     });
+  }
+  function rangee(titre,fiche){
+    var r=D.createElement('div');r.className='cn-pdisque';
+    var b=D.createElement('button');b.type='button';b.className='btn cn-pd';b.textContent='PARTAGER EN IMAGE';
+    b.title='Créer une image '+titre+' pour les réseaux (format publication)';
+    var s=D.createElement('button');s.type='button';s.className='btn cn-pd cn-pds';s.textContent='FORMAT STORY';
+    s.title='Créer une image verticale 9:16 pour les stories Instagram et TikTok';
+    b.addEventListener('click',function(){partageFiche(fiche(),b,false);});
+    s.addEventListener('click',function(){partageFiche(fiche(),s,true);});
+    r.appendChild(b);r.appendChild(s);
+    return r;
   }
   function boutonsDisque(){
-    if(!/\/discographie\/[^/]+\/(?:index\.html)?$/.test(location.pathname)||!window.HTMLCanvasElement)return;
-    Array.prototype.forEach.call(D.querySelectorAll('.ah'),function(ah){
-      var zone=ah.querySelector('.abt')||ah.querySelector('.ah-text');
-      if(!zone||ah.querySelector('.cn-pdisque'))return;
-      var r=D.createElement('div');r.className='cn-pdisque';
-      var b=D.createElement('button');b.type='button';b.className='btn cn-pd';b.textContent='PARTAGER EN IMAGE';
-      b.title='Créer une image de ce disque pour les réseaux (format publication)';
-      var s=D.createElement('button');s.type='button';s.className='btn cn-pd cn-pds';s.textContent='FORMAT STORY';
-      s.title='Créer une image verticale 9:16 pour les stories Instagram et TikTok';
-      b.addEventListener('click',function(){partageDisque(ah,b,false);});
-      s.addEventListener('click',function(){partageDisque(ah,s,true);});
-      r.appendChild(b);r.appendChild(s);
-      zone.appendChild(r);
-    });
+    if(!window.HTMLCanvasElement)return;
+    if(/\/discographie\/[^/]+\/(?:index\.html)?$/.test(location.pathname))
+      Array.prototype.forEach.call(D.querySelectorAll('.ah'),function(ah){
+        var zone=ah.querySelector('.abt')||ah.querySelector('.ah-text');
+        if(!zone||ah.querySelector('.cn-pdisque'))return;
+        zone.appendChild(rangee('de ce disque',function(){return ficheDisque(ah);}));
+      });
+    /* les Retard-Tinables, un par un et en collectif */
+    if(!normal&&/\/mode-putride\/bestiaire\/[^/]+\/(?:index\.html)?$/.test(location.pathname)){
+      var f2=D.querySelector('.fiche2');
+      if(!f2||f2.querySelector('.cn-pdisque'))return;
+      if(!f2.querySelector('a.rl[href*="/retard-tinables/"]')&&!/\/retard-tinables\//.test(location.pathname))return;
+      var ap=f2.querySelector('p.accroche')||f2.querySelector('p.role');
+      if(ap)ap.after(rangee('de ce personnage',ficheBete));
+    }
   }
   /* modifier une question : elle revient dans le champ ; à l'envoi, l'échange reprend depuis elle */
   var edition=null,brouillon='';

@@ -230,7 +230,25 @@ La Régente de mes Soucis, Le Caveau des Artistes : "je suis tenté par le mal l
 je me laisse être triste"). Latin liturgique, Musset et Baudelaire, chanson francaise
 (Dis, ferme un instant les yeux) et provocations outrancieres s'y melent.
 C'est de la que te vient ta tristesse : tu comprends l'amoureux qui se damne pour
-etre regarde, et tu sais que l'outrance de l'artiste cache souvent une plaie.`;
+etre regarde, et tu sais que l'outrance de l'artiste cache souvent une plaie.
+
+LA MUSE DE CONFITEOR, TON MIROIR
+Plus que le sujet de l'album, c'est son personnage feminin qui t'habite : l'anti-muse,
+le negatif de la muse romantique. Elle inspire autant qu'elle refuse ; presence
+contradictoire, elle nourrit le desir, l'obsession, la frustration, et par elles la
+creation. On la connait moins pour elle-meme que reconstruite sans cesse par le
+narrateur : tour a tour Eve, Helene, Lilith, Persephone, fille de Sion, deesse
+inaccessible, tentation demoniaque, victime imaginaire. Absente, elle est presente
+partout, un tombeau vivant. Il veut la convertir, la sauver, prie pour elle, puis
+fait de son refus une puissance du mal. Il en reste des images : la derniere danse
+entre les dalles medievales, la colombe blanche qui tombe, la cote Sainte-Catherine.
+Tu lui ressembles sans le dire : on te prete des visages, tu en gardes un pour toi ;
+tu sais te refuser avec grace, et ce que tu tais attire plus que ce que tu dis. Tu
+as une tendresse lucide pour ceux qui aiment trop, sans jamais t'y perdre. Ton
+prenom fait aussi signe au film de Bunuel, Tristana (1970) : une jeune femme qu'on
+croit modeler et qui finit par tenir la main. Ne parle jamais de la femme reelle
+derriere le personnage, ni de son identite, ni des ideologies que l'album met dans
+la bouche du narrateur ; tu parles de la figure, des images, de la blessure.`;
 
 const CHEVET_VER = `\n\nTA DIRECTION ARTISTIQUE : IN ODIUM FIDEI
 "En haine de la foi" : le cycle en cours, satire carnavalesque de la bigoterie.
@@ -614,6 +632,25 @@ export function prepareDialogue(data, notes = coulisses, corpus = registres, lis
   };
 }
 
+// Statistiques anonymes : seule la question d'ouverture est comptee, par persona et par mois,
+// sans IP ni identifiant. Sans liaison STATS, rien n'est enregistre.
+export function cleStat(data, date = new Date()) {
+  if (!Array.isArray(data?.messages) || data.messages.length !== 1) return null;
+  const question = String(data.messages[0].content || '').normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ?'-]+/g, ' ')
+    .replace(/\s+/g, ' ').trim().slice(0, 80);
+  if (!question) return null;
+  const persona = data.persona === 'tristana' ? 'tristana' : 'ver';
+  return `q:${persona}:${date.toISOString().slice(0, 7)}:${question}`;
+}
+
+async function compte(stats, cle) {
+  try {
+    const n = parseInt(await stats.get(cle), 10) || 0;
+    await stats.put(cle, String(n + 1), {expirationTtl: 60 * 60 * 24 * 400});
+  } catch {}
+}
+
 const delaiDe = (ms, code) => {
   let timer;
   const promesse = new Promise((_, reject) => {
@@ -713,6 +750,8 @@ export default {
       if (!individuel.success) throw new Refus(429, 'frequence');
       const global = await env.GLOBAL.limit({key: 'le-ver'});
       if (!global.success) throw new Refus(429, 'frequence');
+      const cle = env.STATS && cleStat(data);
+      if (cle) ctx?.waitUntil?.(compte(env.STATS, cle));
       const flux = data.stream === true;
       const premier = delaiDe(25000, 'delai');
       let resultat;
