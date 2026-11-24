@@ -54,9 +54,16 @@ et archiviste de PUANTEUR PUTRIDE Productions (bouton au logo PP, en bas à droi
 Elle vouvoie, a ses propres répliques locales (`CAUSERIE_T`) et ne cite que des
 extraits publics : le client vide les entrées non publiques en gardant leurs indices,
 et le Worker refuse (`400`) une requête `persona: "tristana"` portant un extrait ou
-une page non publics. Elle n'a ni les notes de coulisses ni le personnage du Ver.
-Elle peut évoquer « les cartons du fond » et ce qui suinte en bas des pages, sans
-jamais nommer d'adresse, de personnage ou d'épisode du mode putride.
+une page non publics. Elle reçoit les notes de coulisses (pour comprendre l'artiste)
+mais jamais le personnage du Ver. Mélancolique, touchante et provocante sans être
+explicite, nourrie des textes de *Confiteor* ; le Ver suit plutôt la direction
+artistique d'*In Odium Fidei*. Elle peut évoquer le mode putride et les cachots,
+de façon évasive, sans jamais nommer d'adresse, de personnage ou d'épisode.
+
+Les puces de départ dépendent de la page (`amorcesPage()`) : « Quel morceau écouter
+en premier ? » sur un album, « D'où vient Cul-Pointu ? » sur la Biographie,
+« Demander un dossier de presse » sur Presse… Un bouton `[data-tristana="question"]`
+dans une page ouvre la fenêtre et pose la question (`Coins.pose(q)`), comme sur Presse.
 
 Sur `/discographie/monsieur-clerge/`, les puces proposent « Qui est Monsieur Clergé ? »
 dès le 30 novembre 2026 à 18 h 30 (`SORTIES` dans `coins.js`) ; avant cette date,
@@ -64,13 +71,34 @@ les pages normales proposent « Que se passe-t-il le 30 novembre ? ». Chaque r�
 peut être **partagée en image** (PNG 1080×1350 dessiné localement aux couleurs de la
 couche, partage natif sinon téléchargement).
 
-### Compte à rebours et flux RSS
+Chaque page d'album ou de single (`/discographie/<titre>/`, normal et putride) reçoit
+sous les plateformes « Partager en image » (1080×1350) et « Format story »
+(1080×1920) : pochette, titre, date, aux couleurs de la couche. Avant une sortie de
+`SORTIES`, un bandeau porte la date ; pendant 15 jours après, « DISPONIBLE ». Crédit
+en bas : « © PUANTEUR PUTRIDE Productions, » suivi de l'année de publication du
+contenu en chiffres romains (date du JSON-LD ou de la page) ; en mode putride et dans
+les cachots, « Fourni par le Ver du Baptistère » en haut.
+
+### Paroles des IA
+
+`python -X utf8 _outils\paroles.py` récupère les paroles publiées sur Genius
+(Cul-Pointu et Les Retard-Tinables) dans `_ver-worker/paroles.json`, ignoré par Git.
+Le Worker joint le catalogue complet et les paroles entières des deux titres
+évoqués ; un titre sous embargo (`EMBARGO`) reste « sous scellés » jusqu'à sa date.
+Relancer le script à chaque nouvelle publication puis redéployer le Worker ;
+`npm run deploy` refuse de partir si le fichier manque ou est vide.
+
+### Compte à rebours, infolettre et flux RSS
 
 `_includes/compte-a-rebours.html` (Nouvelles et Discographie) affiche le compte à
 rebours et le teaser Instagram jusqu'à la sortie ; le retirer sur la branche de sortie.
-`flux.xml` (RSS 2.0, annoncé dans `<head>`) liste les articles de `nouvelles/`, du plus
-récent au plus ancien : ajouter chaque nouvel article à la main, puis lancer
-`python -m unittest discover -s _outils -p test_flux.py`.
+`flux.xml` (RSS 2.0, annoncé dans `<head>`) est généré par Jekyll : chaque article
+public de `nouvelles/` porte `flux_date: "AAAA-MM-JJTHH:MM:SS+01:00"` dans son front
+matter et entre seul dans le flux, du plus récent au plus ancien (pas de `flux_date`
+sur une page noindex). Lancer `python -m unittest discover -s _outils -p test_flux.py`,
+puis, après publication, la même commande avec `FLUX_URL=https://lacreaturedumarais.fr/flux.xml`.
+L'infolettre (`_includes/infolettre.html`, page Nouvelles) inscrit les adresses sur
+Buttondown (compte `lacreaturedumarais`) : écrire chaque envoi depuis Buttondown.
 
 Le générateur conserve les permaliens, les libellés, les titres des morceaux,
 les données de parution, les descriptions d'images et les paroles publiées des

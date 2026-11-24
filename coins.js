@@ -58,6 +58,8 @@
   +'.cn-wq .cn-m{max-width:calc(100% - 30px)}.cn-wa .cn-m{max-width:94%}'
   +'.cn-w.cn-edit .cn-m{outline:2px dashed var(--c);outline-offset:2px}'
   +'.cn-act{display:flex;gap:2px;margin-top:2px}'
+  /* « Partager en image » des pages de disque, sous les plateformes, au style des boutons de la page */
+  +'.cn-pdisque{display:flex;flex-wrap:wrap;gap:8px;flex-basis:100%;width:100%;margin-top:10px}.cn-pd{cursor:pointer;font:inherit}.cn-pd:disabled{opacity:.5;cursor:progress}.cn-pds{opacity:.78}'
   +'.cn-ic{flex:none;display:grid;place-items:center;width:27px;height:27px;margin:0;padding:0;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--t);opacity:.55;cursor:pointer;-webkit-tap-highlight-color:transparent}'
   +'.cn-ic svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}'
   +'@media (hover:hover) and (pointer:fine){.cn-wq .cn-ic{opacity:0}.cn-wq:hover .cn-ic{opacity:.6}}'
@@ -322,12 +324,19 @@
     }
     if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,repli);else repli();
   }
-  /* partager une réponse : une image 1080×1350 aux couleurs de la couche, pour les réseaux */
+  /* partager en image : une réponse, ou la fiche d'un disque, en 1080×1350 (ou 1080×1920 pour les stories),
+     aux couleurs de la couche ; crédit daté en chiffres romains de l'année de publication du contenu */
   var TEINTES={
-    putride:{fond:['#1a0033','#05000a'],c:'#39ff6a',c2:'#d6b0ff',t:'#f1e8ff'},
-    cachot:{fond:['#2a0006','#000'],c:'#ff1736',c2:'#ffe23f',t:'#ffe9a8'},
-    normal:{fond:['#000080','#00001a'],c:'#fc0',c2:'#ff3b3b',t:'#fff'}
+    putride:{fond:['#14002a','#030007'],c:'#39ff6a',c2:'#d6b0ff',t:'#f1e8ff',lueur:'rgba(122,45,214,.55)'},
+    cachot:{fond:['#220005','#000'],c:'#ff1736',c2:'#ffe23f',t:'#ffe9a8',lueur:'rgba(225,0,25,.45)'},
+    normal:{fond:['#00006e','#000012'],c:'#fc0',c2:'#ff3b3b',t:'#fff',lueur:'rgba(255,0,0,.35)'}
   };
+  function romain(n){
+    var r='',v=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+    n=Math.floor(n);if(!(n>0))return '';
+    v.forEach(function(x){while(n>=x[0]){r+=x[1];n-=x[0];}});
+    return r;
+  }
   function lignes(ctx,texte,large){
     var r=[];
     texte.split('\n').forEach(function(par){
@@ -347,60 +356,194 @@
     Array.prototype.forEach.call(c.querySelectorAll('.src,q'),function(x){x.prepend('\n');x.append('\n');});
     return c.textContent.replace(/[ \t]*\[S\d+\]/g,'').replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{2,}/g,'\n').trim();
   }
-  function dessine(question,texte,logo){
-    var W=1080,Hh=1350,M=90,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche];
-    cv.width=W;cv.height=Hh;
+  /* espacement des lettres à la main : ctx.letterSpacing manque à certains navigateurs */
+  function espace(ctx,texte,x,y,ecart,centre){
+    var ch=Array.from(texte),l=ch.reduce(function(a,c){return a+ctx.measureText(c).width;},0)+ecart*(ch.length-1);
+    if(centre)x-=l/2;
+    ch.forEach(function(c){ctx.fillText(c,x,y);x+=ctx.measureText(c).width+ecart;});
+    return l;
+  }
+  function ajuste(ctx,texte,police,taille,large){
+    for(;taille>24;taille-=2){ctx.font=police.replace('#',taille);if(ctx.measureText(texte).width<=large)break;}
+    return taille;
+  }
+  /* fond de cinéma : dégradé (ou pochette floutée), halo, vignette, grain, bandes noires */
+  function fondCinema(ctx,W,Hh,T,pochette){
     var g=ctx.createLinearGradient(0,0,0,Hh);g.addColorStop(0,T.fond[0]);g.addColorStop(1,T.fond[1]);
     ctx.fillStyle=g;ctx.fillRect(0,0,W,Hh);
-    ctx.strokeStyle=T.c;ctx.lineWidth=6;ctx.strokeRect(36,36,W-72,Hh-72);
-    ctx.textBaseline='top';ctx.fillStyle=T.c2;ctx.font='96px "Bebas Neue",Impact,sans-serif';
-    var titre=normal?'TRISTANA':'LE VER',y=M;
-    if(logo){ctx.drawImage(logo,M,y-4,104,104);ctx.fillText(titre,M+128,y);}else ctx.fillText(titre,M,y);
-    y+=104;ctx.fillStyle=T.t;ctx.globalAlpha=.75;ctx.font='34px "Bebas Neue",Impact,sans-serif';
-    ctx.fillText(normal?'ATTACHÉE DE PRESSE · PUANTEUR PUTRIDE PRODUCTIONS':'SERVITEUR DE KOBAL · LE VAMPIRIUM',logo?M+128:M,y-14);
-    ctx.globalAlpha=1;y+=60;
-    var large=W-2*M,fin=Hh-M-120;
+    if(pochette){
+      ctx.save();ctx.globalAlpha=.5;
+      if('filter' in ctx)ctx.filter='blur(46px) saturate(1.2)';
+      var s=Math.max(W,Hh)*1.25;ctx.drawImage(pochette,(W-s)/2,(Hh-s)/2,s,s);
+      ctx.restore();
+      ctx.fillStyle='rgba(0,0,0,.45)';ctx.fillRect(0,0,W,Hh);
+    }
+    var h=ctx.createRadialGradient(W/2,Hh*.3,0,W/2,Hh*.3,W*.85);h.addColorStop(0,T.lueur);h.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=h;ctx.fillRect(0,0,W,Hh);
+    var v=ctx.createRadialGradient(W/2,Hh/2,Math.min(W,Hh)*.35,W/2,Hh/2,Math.max(W,Hh)*.78);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.82)');
+    ctx.fillStyle=v;ctx.fillRect(0,0,W,Hh);
+    var gr=D.createElement('canvas');gr.width=gr.height=160;
+    var gc=gr.getContext('2d'),px=gc.createImageData(160,160);
+    for(var i=0;i<px.data.length;i+=4){var n=Math.random()*255|0;px.data[i]=px.data[i+1]=px.data[i+2]=n;px.data[i+3]=16;}
+    gc.putImageData(px,0,0);ctx.fillStyle=ctx.createPattern(gr,'repeat');ctx.fillRect(0,0,W,Hh);
+    ctx.fillStyle='#000';ctx.fillRect(0,0,W,22);ctx.fillRect(0,Hh-22,W,22);
+    ctx.strokeStyle=T.c;ctx.globalAlpha=.55;ctx.lineWidth=1.5;ctx.strokeRect(46,46,W-92,Hh-92);
+    ctx.globalAlpha=.22;ctx.strokeRect(56,56,W-112,Hh-112);ctx.globalAlpha=1;
+  }
+  /* mentions discrètes : « Fourni par le Ver du Baptistère » en haut chez le Ver, le crédit daté en bas */
+  function mentions(ctx,W,Hh,T,annee){
+    ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.55;ctx.font='22px Georgia,serif';
+    if(!normal)espace(ctx,'FOURNI PAR LE VER DU BAPTISTÈRE',W/2,92,4,true);
+    espace(ctx,'© PUANTEUR PUTRIDE Productions, '+romain(annee),W/2,Hh-74,2,true);
+    ctx.globalAlpha=1;
+  }
+  function pied(ctx,W,Hh,T,y){
+    ctx.textBaseline='alphabetic';ctx.fillStyle=T.c;ctx.globalAlpha=.9;ctx.fillRect(W/2-60,y-58,120,2);ctx.globalAlpha=1;
+    ctx.font='50px "Bebas Neue",Impact,sans-serif';espace(ctx,'LACREATUREDUMARAIS.FR',W/2,y,6,true);
+  }
+  function dessine(question,texte,logo){
+    var W=1080,Hh=1350,M=110,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche];
+    cv.width=W;cv.height=Hh;
+    fondCinema(ctx,W,Hh,T,null);
+    if(logo){ctx.save();ctx.globalAlpha=.06;ctx.drawImage(logo,W-560,Hh-700,620,620);ctx.restore();}
+    ctx.textBaseline='top';
+    var titre=normal?'TRISTANA':'LE VER',y=132;
+    ctx.fillStyle=T.c2;ctx.font='92px "Bebas Neue",Impact,sans-serif';
+    if(logo){ctx.drawImage(logo,M,y-2,92,92);espace(ctx,titre,M+118,y,5);}else espace(ctx,titre,M,y,5);
+    y+=98;ctx.fillStyle=T.t;ctx.globalAlpha=.7;ctx.font='28px "Bebas Neue",Impact,sans-serif';
+    espace(ctx,normal?'ATTACHÉE DE PRESSE · PUANTEUR PUTRIDE PRODUCTIONS':'SERVITEUR DE KOBAL · LE VAMPIRIUM',logo?M+118:M,y-10,3);
+    ctx.globalAlpha=1;y+=56;
+    var large=W-2*M,fin=Hh-250;
     if(question){
-      ctx.fillStyle=T.c;ctx.font='italic 40px Georgia,serif';
+      ctx.fillStyle=T.c;ctx.font='italic 38px Georgia,serif';
       var lq=lignes(ctx,'« '+question.replace(/\s+/g,' ').slice(0,220)+' »',large).slice(0,3);
-      lq.forEach(function(l){ctx.fillText(l,M,y);y+=52;});y+=30;
+      lq.forEach(function(l){ctx.fillText(l,M,y);y+=50;});y+=34;
     }
     /* la taille du texte s'adapte ; au plus petit, la fin est coupée net avec « … » */
-    var taille=64,ls;
+    var taille=62,ls;
     for(;;){
       ctx.font=taille+'px Georgia,serif';ls=lignes(ctx,texte,large);
-      if(y+ls.length*taille*1.38<=fin||taille<=30)break;
+      if(y+ls.length*taille*1.4<=fin||taille<=30)break;
       taille-=2;
     }
-    var max=Math.floor((fin-y)/(taille*1.38));
+    var max=Math.floor((fin-y)/(taille*1.4));
     if(ls.length>max){ls=ls.slice(0,Math.max(1,max));ls[ls.length-1]=ls[ls.length-1].replace(/\s*\S*$/,'')+' …';}
-    else y+=Math.max(0,(fin-y-ls.length*taille*1.38)/3);
-    ctx.fillStyle=T.t;ls.forEach(function(l){ctx.fillText(l,M,y);y+=taille*1.38;});
-    ctx.fillStyle=T.c;ctx.fillRect(M,Hh-M-70,large,4);
-    ctx.font='58px "Bebas Neue",Impact,sans-serif';ctx.fillText('LACREATUREDUMARAIS.FR',M,Hh-M-46);
+    else y+=Math.max(0,(fin-y-ls.length*taille*1.4)/3);
+    ctx.fillStyle=T.c;ctx.globalAlpha=.8;ctx.fillRect(M-34,y+8,4,ls.length*taille*1.4-taille*.3);ctx.globalAlpha=1;
+    ctx.fillStyle=T.t;ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=12;
+    ls.forEach(function(l){ctx.fillText(l,M,y);y+=taille*1.4;});
+    ctx.shadowBlur=0;
+    pied(ctx,W,Hh,T,Hh-136);
+    mentions(ctx,W,Hh,T,new Date().getFullYear());
     return cv;
   }
+  /* la fiche d'un disque : pochette, titre, ligne de dates, et le jour J un bandeau « DISPONIBLE » */
+  function dessineDisque(f,pochette,histoire){
+    var W=1080,Hh=histoire?1920:1350,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche];
+    cv.width=W;cv.height=Hh;
+    fondCinema(ctx,W,Hh,T,pochette);
+    var c=histoire?820:680,x=(W-c)/2,y=186;
+    /* en story, le bloc pochette + titre est centré dans l'espace libre entre les mentions et le pied */
+    if(histoire){var bloc=34+c+(f.bandeau?150:140)+(f.meta?70:0)+(f.appel?110:0);y=Math.max(190,Math.round(150+(Hh-420-bloc)/2+34));}
+    ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.78;ctx.font='30px "Bebas Neue",Impact,sans-serif';
+    espace(ctx,f.artiste.toUpperCase(),W/2,y-34,8,true);ctx.globalAlpha=1;
+    ctx.save();ctx.shadowColor=T.lueur;ctx.shadowBlur=70;ctx.fillStyle='#000';ctx.fillRect(x,y,c,c);ctx.restore();
+    ctx.save();ctx.shadowColor='rgba(0,0,0,.9)';ctx.shadowBlur=40;ctx.shadowOffsetY=18;
+    if(pochette){
+      var s=Math.min(pochette.naturalWidth||pochette.width,pochette.naturalHeight||pochette.height);
+      ctx.drawImage(pochette,((pochette.naturalWidth||pochette.width)-s)/2,((pochette.naturalHeight||pochette.height)-s)/2,s,s,x,y,c,c);
+    }
+    ctx.restore();
+    ctx.strokeStyle='rgba(255,255,255,.18)';ctx.lineWidth=2;ctx.strokeRect(x+.5,y+.5,c-1,c-1);
+    if(f.bandeau){
+      var bh=histoire?104:90,by=y+c-bh*.55;
+      ctx.save();ctx.shadowColor=T.lueur;ctx.shadowBlur=30;ctx.fillStyle=T.c;ctx.fillRect(x-40,by,c+80,bh);ctx.restore();
+      ctx.fillStyle='#000';ctx.font=(histoire?78:68)+'px "Bebas Neue",Impact,sans-serif';
+      espace(ctx,f.bandeau,W/2,by+bh*.78,f.bandeau.length>14?4:12,true);
+    }
+    y+=c+(f.bandeau?(histoire?150:118):(histoire?140:104));
+    ctx.fillStyle=T.c2;var tt=ajuste(ctx,f.titre.toUpperCase(),'#px "Bebas Neue",Impact,sans-serif',histoire?150:118,W-200);
+    ctx.shadowColor='rgba(0,0,0,.8)';ctx.shadowBlur=18;espace(ctx,f.titre.toUpperCase(),W/2,y,tt>80?6:3,true);ctx.shadowBlur=0;
+    y+=histoire?70:56;
+    if(f.meta){ctx.fillStyle=T.t;ctx.globalAlpha=.82;ajuste(ctx,f.meta.toUpperCase(),'#px "Bebas Neue",Impact,sans-serif',34,W-220);
+      espace(ctx,f.meta.toUpperCase(),W/2,y,3,true);ctx.globalAlpha=1;}
+    if(f.appel){ctx.fillStyle=T.c;ctx.font='italic '+(histoire?40:34)+'px Georgia,serif';ctx.textAlign='center';ctx.fillText(f.appel,W/2,y+(histoire?110:66));ctx.textAlign='left';}
+    pied(ctx,W,Hh,T,Hh-(histoire?190:136));
+    mentions(ctx,W,Hh,T,f.annee);
+    return cv;
+  }
+  function exporte(cv,nomF,b){
+    return new Promise(function(ok,ko){cv.toBlob(function(bl){bl?ok(bl):ko(new Error('image'));},'image/png');}).then(function(bl){
+      var f=null;
+      try{f=new File([bl],nomF,{type:'image/png'});}catch(_){}
+      if(f&&navigator.canShare&&navigator.canShare({files:[f]}))
+        return navigator.share({files:[f],title:'La Créature du Marais',text:'https://lacreaturedumarais.fr'+location.pathname}).catch(function(e){if(e&&e.name!=='AbortError')throw e;});
+      var a=D.createElement('a'),u=URL.createObjectURL(bl);a.href=u;a.download=nomF;D.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(u);},4000);
+      toast(normal?'Image enregistrée : publiez-la où vous voulez.':'Image enregistrée : publie-la où tu veux.');
+    }).catch(function(e){console.error('Partage en image impossible.',e);toast('Image impossible à créer sur cet appareil.');})
+      .finally(function(){if(b)b.disabled=false;});
+  }
+  function polices(){return D.fonts&&D.fonts.load?Promise.all([D.fonts.load('96px "Bebas Neue"'),D.fonts.load('46px Georgia'),D.fonts.load('italic 40px Georgia')]).catch(function(){}):Promise.resolve();}
+  function image(src){return new Promise(function(ok){if(!src){ok(null);return;}var im=new Image();im.onload=function(){ok(im);};im.onerror=function(){ok(null);};im.src=src;});}
   function partage(w,b){
     var i=hist.indexOf(w._m),q='',texte=textePartage(w._m.h||'');
     for(var j=i-1;j>=0;j--)if(hist[j].r==='q'){q=hist[j].t;break;}
     if(/^Explique ce passage/i.test(q))q='';
     if(!texte){toast('Rien à partager dans cette réponse.');return;}
     b.disabled=true;
-    var polices=D.fonts&&D.fonts.load?Promise.all([D.fonts.load('96px "Bebas Neue"'),D.fonts.load('46px Georgia')]).catch(function(){}):Promise.resolve();
-    var logo=normal?new Promise(function(ok){var im=new Image();im.onload=function(){ok(im);};im.onerror=function(){ok(null);};im.src='/images/cachot/logo-pp-blanc.webp';}):Promise.resolve(null);
-    Promise.all([polices,logo]).then(function(r){
-      var cv=dessine(q,texte,r[1]);
-      return new Promise(function(ok,ko){cv.toBlob(function(bl){bl?ok(bl):ko(new Error('image'));},'image/png');});
-    }).then(function(bl){
-      var nomF=(normal?'tristana':'le-ver')+'-lacreaturedumarais.png',f=null;
-      try{f=new File([bl],nomF,{type:'image/png'});}catch(_){}
-      if(f&&navigator.canShare&&navigator.canShare({files:[f]}))
-        return navigator.share({files:[f],title:'La Créature du Marais',text:'https://lacreaturedumarais.fr/'}).catch(function(e){if(e&&e.name!=='AbortError')throw e;});
-      var a=D.createElement('a'),u=URL.createObjectURL(bl);a.href=u;a.download=nomF;D.body.appendChild(a);a.click();a.remove();
-      setTimeout(function(){URL.revokeObjectURL(u);},4000);
-      toast(normal?'Image enregistrée : publiez-la où vous voulez.':'Image enregistrée : publie-la où tu veux.');
-    }).catch(function(e){console.error('Partage en image impossible.',e);toast('Image impossible à créer sur cet appareil.');})
-      .finally(function(){b.disabled=false;});
+    Promise.all([polices(),normal?image('/images/cachot/logo-pp-blanc.webp'):null]).then(function(r){
+      return exporte(dessine(q,texte,r[1]),(normal?'tristana':'le-ver')+'-lacreaturedumarais.png',b);
+    });
+  }
+  /* sur chaque page de disque, sous les plateformes : « Partager en image » (et le format story) */
+  var MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  function dateDisque(ah){
+    var ld=Array.prototype.map.call(D.querySelectorAll('script[type="application/ld+json"]'),function(s){return s.textContent;}).join(' ');
+    var m=/"datePublished"\s*:\s*"(\d{4})(?:-(\d\d)-(\d\d))?/.exec(ld);
+    if(m)return {a:+m[1],m:m[2]?+m[2]:0,j:m[3]?+m[3]:0};
+    var t=(ah.querySelector('.meta,.am')||{}).textContent||'';
+    if((m=/(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(t)))return {a:+m[3],m:+m[2],j:+m[1]};
+    if((m=new RegExp('(\\d{1,2})(?:er)? ('+MOIS.join('|')+') (\\d{4})').exec(t)))return {a:+m[3],m:MOIS.indexOf(m[2])+1,j:+m[1]};
+    if((m=/\b(19|20)\d\d\b/.exec(t)))return {a:+m[0],m:0,j:0};
+    return null;
+  }
+  function ficheDisque(ah){
+    var h1=ah.querySelector('h1')||D.querySelector('main h1, .wrap h1, h1'),img=ah.querySelector('img');
+    if(!h1||!img)return null;
+    var meta=((ah.querySelector('.meta,.am')||{}).textContent||'').replace(/\s+/g,' ').trim();
+    var alp=ah.closest('.alp'),d=dateDisque(ah),t=Date.now(),bandeau='',appel='';
+    var artiste=normal?'Cul-Pointu · La Créature du Marais':(alp&&alp.getAttribute('data-artist'))||'Cul-Pointu';
+    var s=SORTIES.find(function(x){return x.page.test(location.pathname);});
+    var jour=s?s.date:d&&d.m&&d.j?Date.UTC(d.a,d.m-1,d.j,12):0;
+    if(jour&&t<jour){var dj=new Date(jour);bandeau=s&&s.libelle||'LE '+dj.getUTCDate()+' '+MOIS[dj.getUTCMonth()].toUpperCase();appel='Bientôt partout.';}
+    else if(jour&&t-jour<15*864e5){bandeau='DISPONIBLE';appel='Disponible partout.';}
+    return {titre:h1.textContent.replace(/\s+/g,' ').trim(),meta:meta.split(' · ').slice(0,3).join(' · '),artiste:artiste,
+      annee:d?d.a:new Date().getFullYear(),pochette:img.currentSrc||img.src,bandeau:bandeau,appel:appel||(normal?'Écoutez sur toutes les plateformes.':'')};
+  }
+  function partageDisque(ah,b,histoire){
+    var f=ficheDisque(ah);if(!f){toast('Rien à partager sur cette page.');return;}
+    b.disabled=true;
+    Promise.all([polices(),image(f.pochette)]).then(function(r){
+      var nomF=f.titre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+(histoire?'-story':'')+'-lacreaturedumarais.png';
+      return exporte(dessineDisque(f,r[1],histoire),nomF,b);
+    });
+  }
+  function boutonsDisque(){
+    if(!/\/discographie\/[^/]+\/(?:index\.html)?$/.test(location.pathname)||!window.HTMLCanvasElement)return;
+    Array.prototype.forEach.call(D.querySelectorAll('.ah'),function(ah){
+      var zone=ah.querySelector('.abt')||ah.querySelector('.ah-text');
+      if(!zone||ah.querySelector('.cn-pdisque'))return;
+      var r=D.createElement('div');r.className='cn-pdisque';
+      var b=D.createElement('button');b.type='button';b.className='btn cn-pd';b.textContent='PARTAGER EN IMAGE';
+      b.title='Créer une image de ce disque pour les réseaux (format publication)';
+      var s=D.createElement('button');s.type='button';s.className='btn cn-pd cn-pds';s.textContent='FORMAT STORY';
+      s.title='Créer une image verticale 9:16 pour les stories Instagram et TikTok';
+      b.addEventListener('click',function(){partageDisque(ah,b,false);});
+      s.addEventListener('click',function(){partageDisque(ah,s,true);});
+      r.appendChild(b);r.appendChild(s);
+      zone.appendChild(r);
+    });
   }
   /* modifier une question : elle revient dans le champ ; à l'envoi, l'échange reprend depuis elle */
   var edition=null,brouillon='';
@@ -455,6 +598,7 @@
     if(p&&Array.isArray(p.suites))p.suites.forEach(function(q){pousse(q);});
     if(p&&p.dialogue)(normal?['Et vous ?','Pourquoi ?','Que gardent vos archives ?']:['Et toi ?','Pourquoi ?','Qui est ton maître ?']).forEach(function(q){pousse(q,2);});
     sortie().forEach(function(q){pousse(q,choix.length+2);});
+    if(!p||p.ac)amorcesPage().forEach(function(q){pousse(q,choix.length+2);});
     if(KB){
       n0=choix.length;suitesSujet(p).forEach(function(q){pousse(q,n0+2);});
       n0=choix.length;suitesPage(p).forEach(function(q){pousse(q,n0+2);});
@@ -463,7 +607,7 @@
     choix.forEach(function(q){var b=D.createElement('button');b.type='button';b.textContent=q;b.addEventListener('click',function(){demande(q);});sug.appendChild(b);});
   }
   /* sorties annoncées : des amorces propres à leurs pages, et avant la date, une invitation sur le site normal */
-  var SORTIES=[{page:/monsieur-clerge/,date:Date.parse('2026-11-30T17:30:00Z'),
+  var SORTIES=[{page:/monsieur-clerge/,date:Date.parse('2026-11-30T17:30:00Z'),libelle:'LE 30 NOVEMBRE · 18 H 30',
     avant:['Que se passe-t-il le 30 novembre ?'],
     page_normal:['Qui est Monsieur Clergé ?','Où écouter Monsieur Clergé ?','Que raconte le clip ?'],
     page_autre:['Qui est Monsieur Clergé ?','Monsieur Clergé, c’est qui au Vampirium ?']}];
@@ -474,6 +618,23 @@
       else if(normal&&t<s.date)r=r.concat(s.avant);
     });
     return r;
+  }
+  /* amorces propres à la page consultée : un disque, la biographie, la presse… */
+  function amorcesPage(){
+    var u=location.pathname.replace(/index\.html$/,''),img=D.querySelector('.ah img');
+    if(/\/discographie\/[^/]+\/$/.test(u)){
+      var single=img&&/du single|single/i.test(img.alt+' '+((D.querySelector('.ah .meta,.ah .am')||{}).textContent||''));
+      return normal?(single?['Que raconte ce single ?','D’où vient ce titre ?']:['Quel morceau écouter en premier ?','Que raconte cet album ?'])
+        :(single?['Que raconte ce single ?']:['Quel morceau écouter en premier ?','Que cache cet album ?']);
+    }
+    if(!normal)return [];
+    if(/^\/discographie\/$/.test(u))return ['Par quel disque commencer ?','Quelle est la dernière sortie ?'];
+    if(/^\/biographie\/$/.test(u))return ['D’où vient Cul-Pointu ?','Qui est Tancrède Charon ?'];
+    if(/^\/presse\/$/.test(u))return ['Demander un dossier de presse','Quelle est l’actualité du label ?'];
+    if(/^\/videos?\//.test(u))return ['Quel clip regarder d’abord ?'];
+    if(/^\/nouvelles\//.test(u))return ['Quelle est la prochaine sortie ?','Comment suivre les sorties ?'];
+    if(/^\/contact\/$/.test(u))return ['Comment proposer un concert ?'];
+    return [];
   }
   function pageDe(url){
     if(!KB||typeof url!=='string')return -1;url=url.split('#')[0];
@@ -557,7 +718,7 @@
   });
   /* un lien de l'Oracle mène à sa page : il se referme (le mode putride change de page sans recharger) */
   log.addEventListener('click',function(e){if(e.target.closest('a'))setTimeout(ferme,30);});
-  D.addEventListener('putride:page',function(){ferme();selB.hidden=true;choisi='';});
+  D.addEventListener('putride:page',function(){ferme();selB.hidden=true;choisi='';boutonsDisque();});
 
   /* ---------- la dictée : reconnaissance vocale du navigateur, jamais d'envoi automatique ---------- */
   var Reco=window.SpeechRecognition||window.webkitSpeechRecognition,reco=null;
@@ -677,7 +838,7 @@
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
     var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},12000);
-    attente=fetch('/oracle-'+(normal?'putride':couche)+'.json?v=27',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+    attente=fetch('/oracle-'+(normal?'putride':couche)+'.json?v=28',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
       if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
         !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
         !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
@@ -852,17 +1013,19 @@
   ];
   var CAUSERIE_T=[
     {id:'salut',test:/^(salut|bonjour|bonsoir|coucou|hello|hey)( a (toi|vous))?( tristana)?$/,
-      lignes:['Bonjour. Le bureau de presse est ouvert, les archives aussi, à quelques cartons près. Vous cherchez un disque, une date, ou simplement à bavarder ?','Rebonjour. J’ai rangé deux communiqués et perdu une agrafe : journée ordinaire. Que puis-je pour vous ?']},
+      lignes:['Bonsoir. Le bureau de presse est ouvert, les archives aussi, à quelques cartons près. Vous cherchez un disque, une date… ou juste quelqu’un à qui parler ?','Rebonjour. J’ai rangé deux communiqués, perdu une agrafe et gardé mon rouge à lèvres : journée ordinaire. Que puis-je pour vous ?']},
     {id:'identite',test:/\b(qui es tu|qui etes vous|presente toi|presentez vous|ton nom|votre nom|qui est tristana|ton role|votre role|ton metier|votre metier)\b/,
       lignes:['Tristana : « triste » et « tana », un prénom qui annonce la couleur. Je suis l’attachée de presse et l’archiviste de PUANTEUR PUTRIDE Productions, le label de la Créature du Marais. Je rédige les annonces, je classe les sorties, je réponds aux curieux. Certaines boîtes, en revanche, restent fermées.','Communiqués, pochettes, coupures de presse, dates de sortie : je connais le catalogue par cœur. Ce qui dort dans la réserve du fond, je le connais aussi ; ce n’est simplement pas mon rayon de le raconter.']},
     {id:'humeur',test:/\b(comment (vas tu|allez vous|ca va|tu vas)|ca va( et (toi|vous))?|tu vas bien|vous allez bien)\b/,
-      lignes:['Mélancolique, mais à jour dans mon classement : c’est mon état normal. Et vous, votre journée ?','Assez bien pour une archiviste : il pleut sur Rouen, les cartons sont secs. Vous venez pour la musique ?']},
+      lignes:['Mélancolique, mais à jour dans mon classement : c’est mon état normal. Il y a des jours où Confiteor tourne en boucle, et je ne m’en plains pas. Et vous ?','Assez bien pour une archiviste : il pleut sur Rouen, les cartons sont secs, et j’ai l’air plus sage que je ne le suis. Vous venez pour la musique ?']},
     {id:'indice',test:/\b(secrets?|cach\w*|myster\w*|dessous|envers|autre (mode|site|cote|face|monde)|cartons?|reserve|fond du marais|egouts?|vase|lore|easter egg|passage secret|sous sol|caves?|cote obscur|interdit\w*)\b/,
       lignes:['Il y a des cartons que je n’ouvre pas pendant les heures de bureau. Ils sentent la vase, et leurs étiquettes sont écrites d’une main qui tremble. Je ne vous dirai pas ce qu’ils contiennent ; seulement qu’un site, comme un marais, a un fond.','Regardez tout en bas des pages, là où quelque chose suinte. Je n’en dis pas plus : certaines choses se trouvent mieux qu’elles ne se racontent.','Les disques publiés ici ne racontent qu’une moitié de l’histoire. L’autre se lit plus bas, dans l’humidité, avec d’autres visages et d’autres noms. Moi, je reste à la surface : c’est mon métier.','Si vous avez trouvé le passage, vous savez déjà que je ne peux pas vous y accompagner. Sinon : penchez-vous davantage.']},
     {id:'ailleurs',test:/\b(le ver|kobal|vampir\w*|edwarda|epheb\w*|gargouille|cachots?)\b/,
-      lignes:['Ce nom-là n’est pas dans mes communiqués. Il circule peut-être dans les étages inférieurs ; je n’y descends pas, et je ne vous y conduirai pas par la main.','Vous avez de bonnes lectures, ou de mauvaises fréquentations. Dans les deux cas, ce dossier n’est pas classé à la surface.']},
+      lignes:['Ce nom-là n’est pas dans mes communiqués. Je sais où il traîne, évidemment ; mais je ne vous y conduirai pas par la main.','Vous avez de bonnes lectures, ou de mauvaises fréquentations. J’aime assez les deux. Ce dossier-là, pourtant, ne se consulte pas à la surface.']},
     {id:'suivre',test:/\b(abonne\w*|newsletter|rss|flux|prevenir|previens|alertes?|suivre les sorties|etre au courant)\b/,
-      lignes:['Le plus sûr, sans algorithme : le flux RSS des Nouvelles, lacreaturedumarais.fr/flux.xml. Ajoutez-le à votre lecteur de flux ; chaque sortie et chaque annonce y passent. Les réseaux de la Créature sont en bas de page.']},
+      lignes:['Le plus sûr, sans algorithme : l’infolettre, en bas de la page Nouvelles. Une adresse e-mail, et chaque sortie vous arrive directement. Il y a aussi le flux RSS, lacreaturedumarais.fr/flux.xml, pour les lecteurs de flux. Les réseaux de la Créature sont en bas de page.']},
+    {id:'dossier',test:/\b(dossier de presse|kit presse|press kit|epk)\b/,
+      lignes:['Le dossier de presse est prêt : la page Presse le propose en PDF, avec les visuels HD et une archive ZIP. En deux mots : Tancrède Charon, Rouen, chanson gothique et baroque, post-punk et poésie décadente ; Confiteor (2024), puis le cycle In Odium Fidei. Pour une interview, la page Contact. Vous voulez que je vous résume la dernière sortie ?']},
     {id:'presse',test:/\b(contacter|contact|journalist\w*|concerts?|booking|interview|programmat\w*|visuels?|photos? presse|kit presse)\b/,
       lignes:['Pour une interview, un concert ou une demande particulière : la page Contact. Les visuels et leurs conditions sont sur la page Presse et dans les Droits d’utilisation, avec le crédit « © PUANTEUR PUTRIDE Productions ».']},
     {id:'rire',test:/\b(blague|fais moi rire|humour|plaisanterie|drole|farce)\b/,
@@ -1271,5 +1434,9 @@
     }
   }
   if(D.body)pose();else D.addEventListener('DOMContentLoaded',pose);
-  window.Coins={ouvre:ouvre,ferme:ferme,calme:function(){return calme;},cherche:function(q){return KB?cherche(q).slice(0,5).map(function(r){return [r.s.toFixed(2),nom(r.e),r.e.t.slice(0,80)];}):null;},charge:charge};
+  boutonsDisque();
+  function poseQuestion(q){ouvre();if(typeof q==='string'&&q.trim()&&!occupeQuestion)demande(q.trim());}
+  /* un bouton [data-tristana] de la page (Presse…) pose sa question dans la fenêtre */
+  D.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-tristana]');if(b){e.preventDefault();poseQuestion(b.getAttribute('data-tristana'));}});
+  window.Coins={pose:poseQuestion,ouvre:ouvre,ferme:ferme,calme:function(){return calme;},cherche:function(q){return KB?cherche(q).slice(0,5).map(function(r){return [r.s.toFixed(2),nom(r.e),r.e.t.slice(0,80)];}):null;},charge:charge};
 })();

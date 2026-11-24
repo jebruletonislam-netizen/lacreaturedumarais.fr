@@ -5,3 +5,6 @@ node_modules/
 # Notes privees de l'auteur : jamais dans le depot public.
 coulisses.json
 coulisses-source.md
+
+# Paroles completes (Genius) : regenerer avec _outils/paroles.py.
+paroles.json
