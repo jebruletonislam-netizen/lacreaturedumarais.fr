@@ -9,6 +9,11 @@
 (function(){
   'use strict';
   if(window.Coins)return;
+  /* Cloudflare Web Analytics : mesure d'audience sans cookie, seulement sur le domaine public */
+  if(/(^|\.)lacreaturedumarais\.fr$/.test(location.hostname)&&!document.querySelector('script[data-cf-beacon]')){
+    var cf=document.createElement('script');cf.defer=true;cf.src='https://static.cloudflareinsights.com/beacon.min.js';
+    cf.setAttribute('data-cf-beacon','{"token": "a3ea00b1e6b1468eaffbfc66d80cc642"}');document.head.appendChild(cf);
+  }
   var D=document,H=D.documentElement,LS='lcdm-calme',SS='lcdm-oracle';
   var couche=/^\/cachot\//.test(location.pathname)?'cachot':/^\/mode-putride\//.test(location.pathname)?'putride':'normal';
   var normal=couche==='normal',NOM=normal?'Tristana':'le Ver';
