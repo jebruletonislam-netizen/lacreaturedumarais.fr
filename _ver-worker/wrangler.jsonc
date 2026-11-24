@@ -10,6 +10,7 @@
     {"name": "PAR_VISITEUR", "namespace_id": "17301", "simple": {"limit": 6, "period": 60}},
     {"name": "GLOBAL", "namespace_id": "17302", "simple": {"limit": 30, "period": 60}}
   ],
+  "kv_namespaces": [{"binding": "STATS", "id": "f8995819fc4c4c99946a90fed1953d69"}],
   "vars": {
     "ORIGINES": "https://lacreaturedumarais.fr,https://www.lacreaturedumarais.fr"
   },

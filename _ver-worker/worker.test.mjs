@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {prepareDialogue, choisitCoulisses, choisitParoles, separeSuites, MODELE} from './worker.mjs';
+import worker, {prepareDialogue, choisitCoulisses, choisitParoles, separeSuites, cleStat, MODELE} from './worker.mjs';
 import corpus from '../oracle-putride.json' with {type: 'json'};
 
 const origine = 'https://lacreaturedumarais.fr';
@@ -422,4 +422,21 @@ test('paroles : catalogue complet, titres cites en entier, embargo et reserve', 
     messages: [{role: 'user', content: 'Jubilé ?'}]}, {noyau: '', sections: []}, corpus, liste, avant);
   assert.match(messages[0].content, /IN ODIUM FIDEI[^]*PAROLES DE L'ARTISTE[^]*La bestiole[^]*EXTRAITS/);
   assert.doesNotMatch(messages[0].content, /le ver qui danse/);
+});
+
+test('statistiques anonymes de la question d ouverture', async () => {
+  const d = new Date('2026-11-24T10:00:00Z');
+  assert.equal(cleStat({persona: 'tristana', messages: [{role: 'user', content: 'Qui est  Monsieur Clerg\u00e9 ?'}]}, d),
+    'q:tristana:2026-11:qui est monsieur clerge ?');
+  assert.equal(cleStat({messages: [{role: 'user', content: 'a'}, {role: 'assistant', content: 'b'}, {role: 'user', content: 'c'}]}, d), null);
+  const env = environnement();
+  const ecrits = [];
+  env.STATS = {get: async () => '2', put: async (k, v) => ecrits.push([k, v])};
+  const attentes = [];
+  const reponse = await worker.fetch(requete(), env, {waitUntil: p => attentes.push(p)});
+  assert.equal(reponse.status, 200);
+  await Promise.all(attentes);
+  assert.equal(ecrits.length, 1);
+  assert.match(ecrits[0][0], /^q:ver:\d{4}-\d{2}:qui est ton maitre \?$/);
+  assert.equal(ecrits[0][1], '3');
 });
