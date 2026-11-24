@@ -66,6 +66,7 @@
   +'.cn-nl{margin:6px 0 2px;padding:8px 10px;max-width:94%;box-sizing:border-box;border:1px solid var(--c);border-radius:11px;background:rgba(0,0,0,.35);font-size:12.5px;line-height:1.3}'
   +'.cn-nl div{display:flex;gap:6px;margin-top:6px}.cn-nl input[type=email]{flex:1;min-width:0;height:34px;padding:0 9px;border:1px solid var(--l);border-radius:8px;background:#000;color:#fff;font:inherit;font-size:14px}'
   +'.cn-nl button{flex:none;height:34px;padding:0 10px;border:1px solid var(--c);border-radius:8px;background:var(--c);color:#000;font:400 16px/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.06em;cursor:pointer}'
+  +'a.cn-kit{display:block;color:inherit;text-decoration:none}.cn-kit b{display:inline-block;padding:7px 10px 5px;border-radius:8px;background:var(--c);color:#000;font:400 16px/1 "Bebas Neue",Impact,sans-serif;letter-spacing:.06em}.cn-kit:hover b,.cn-kit:focus-visible b{filter:brightness(1.15)}'
   /* « Partager en image » des pages de disque, sous les plateformes, au style des boutons de la page */
   +'.cn-pdisque{display:flex;flex-wrap:wrap;gap:8px;flex-basis:100%;width:100%;margin-top:10px}.cn-pd{cursor:pointer;font:inherit}.cn-pd:disabled{opacity:.5;cursor:progress}.cn-pds{opacity:.78}'
   +'.cn-ic{flex:none;display:grid;place-items:center;width:27px;height:27px;margin:0;padding:0;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--t);opacity:.55;cursor:pointer;-webkit-tap-highlight-color:transparent}'
@@ -85,10 +86,14 @@
   +'.cn-fo{font:inherit;font-size:12px;line-height:1;margin:0 0 0 2px;padding:5px 8px;border:1px solid var(--l);border-radius:999px;background:transparent;color:var(--t);opacity:.8;cursor:pointer}'
   +'.cn-fo:hover,.cn-fo:focus-visible{opacity:1;border-color:var(--c);color:var(--c);outline:none}'
   +'.cn-act{flex-wrap:wrap;align-items:center}'
-  +'.cn-ai{flex:none;padding:6px 12px;border-bottom:1px solid var(--l);font:12px/1.4 system-ui,sans-serif;max-height:165px;max-height:min(165px,25dvh);overflow:auto}.cn-ai[hidden]{display:none}'
-  +'.cn-ai-settings .cn-sug{display:none}.cn-ai-settings .cn-lw{min-height:50px}'
-  +'.cn-ai summary{cursor:pointer;color:var(--c2)}.cn-ai p{margin:8px 0}.cn-ai a{color:var(--c2)}'
-  +'.cn-ai button{font:inherit;border:1px solid var(--l);border-radius:6px;padding:6px;margin:2px;background:#000;color:var(--t);cursor:pointer}.cn-ai button[hidden]{display:none}'
+  +'.cn-ai{flex:none;display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--l);font:12px/1.35 system-ui,sans-serif;background:linear-gradient(90deg,rgba(0,0,0,.35),transparent)}.cn-ai[hidden]{display:none}'
+  +'.cn-ai p{margin:0;flex:1;opacity:.82}.cn-ai a{color:var(--c2)}'
+  +'.cn-ai-on{flex:none;display:flex;flex-direction:column;align-items:center;font:20px/1 var(--tf);letter-spacing:.08em;border:1px solid var(--c);border-radius:8px;padding:7px 12px 6px;background:#000;color:var(--c);cursor:pointer;box-shadow:0 0 14px var(--o);animation:cnAi 2.6s ease-in-out infinite}'
+  +'.cn-ai-on small{font:10.5px/1.2 system-ui,sans-serif;letter-spacing:0;color:var(--t);opacity:.8;margin-top:3px}'
+  +'.cn-ai-on:hover,.cn-ai-on:focus-visible{background:var(--c);color:#000;outline:none}.cn-ai-on:hover small,.cn-ai-on:focus-visible small{color:#000}'
+  +'@keyframes cnAi{50%{box-shadow:0 0 26px var(--o),0 0 4px var(--c)}}@media (prefers-reduced-motion:reduce){.cn-ai-on{animation:none}}'
+  +'.cn-ai.on{padding:4px 12px}.cn-ai.on p{color:var(--c)}.cn-ai-off{flex:none;font:inherit;border:1px solid var(--l);border-radius:6px;padding:3px 8px;background:#000;color:var(--t);cursor:pointer}'
+  +'.cn-ai button[hidden],.cn-ai p[hidden]{display:none}'
   +'.cn-ed{display:flex;align-items:center;gap:8px;padding:6px 10px 0 14px;font-size:12.5px;line-height:1.3;color:var(--c2)}.cn-ed[hidden]{display:none}.cn-ed span{flex:1}'
   +'.cn-ed button{font:inherit;border:1px solid var(--l);border-radius:8px;background:transparent;color:var(--t);padding:3px 9px;cursor:pointer}.cn-ed button:hover,.cn-ed button:focus-visible{border-color:var(--c);color:var(--c);outline:none}'
   +'.cn-f{display:flex;align-items:flex-end;gap:7px;padding:9px 10px 10px;border-top:1px solid var(--l)}'
@@ -167,9 +172,11 @@
     +'<button type="button" class="cn-hx cn-new" aria-label="Nouvelle conversation" title="Nouvelle conversation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M12 7.5v6M9 10.5h6"/></svg></button>'
     +'<button type="button" class="cn-hx cn-gr" aria-pressed="false"></button>'
     +'<button type="button" class="cn-x" aria-label="Fermer la conversation">×</button></span></div>'
-    +'<details class="cn-ai" hidden><summary>Conversation IA et confidentialité</summary>'
-    +'<p>Sur ton accord, Cloudflare reçoit tes messages, jusqu’à six échanges IA précédents, l’adresse de la page consultée, les passages que tu soumets '+(normal?'à Tristana':'au Ver')+' et des extraits '+(normal?'publics ':'')+'du site. Aucun modèle à télécharger. L’IA peut se tromper ; quota gratuit partagé. N’envoie rien de confidentiel. <a href="/mentions-legales/#dialogue-ver">Détails</a>.</p>'
-    +'<button type="button" class="cn-ai-on">J’accepte, activer l’IA</button><button type="button" class="cn-ai-off" hidden>Revenir au dialogue local</button></details>'
+    +'<div class="cn-ai" hidden>'
+    +'<button type="button" class="cn-ai-on" aria-describedby="cn-ai-d">ACTIVER L’IA<small>'+(normal?'Tristana vous répond librement':'le Ver sort de sa torpeur')+'</small></button>'
+    +'<p id="cn-ai-d">'+(normal?'Votre question, la page lue et quelques passages du site sont confiés à l’IA pour vous répondre. Elle peut se tromper ; n’envoyez rien de confidentiel. ':'Ta question, la page lue et quelques passages du site sont confiés à l’IA pour te répondre. Elle peut se tromper ; n’envoie rien de confidentiel. ')+'<a href="/mentions-legales/#dialogue-ver">En savoir plus</a></p>'
+    +'<p class="cn-ai-etat" hidden>'+(normal?'IA active : Tristana répond librement.':'IA active : le Ver répond librement.')+'</p>'
+    +'<button type="button" class="cn-ai-off" hidden>Revenir au dialogue local</button></div>'
     +'<div class="cn-lw"><div class="cn-log" aria-live="polite"></div><button type="button" class="cn-bas" hidden aria-label="Revenir en bas" title="Revenir en bas">↓</button></div><div class="cn-sug"></div>'
     +'<div class="cn-ed" hidden><span>Tu modifies ta question : les réponses suivantes seront remplacées.</span><button type="button">Annuler</button></div>'
     +'<form class="cn-f" autocomplete="off"><label class="cn-sr" for="cn-q">Ta question '+(normal?'à Tristana':'au Ver')+'</label><textarea id="cn-q" rows="1" maxlength="2000" enterkeyhint="send" placeholder="'+(normal?'Écrire à Tristana…':'Parle au Ver…')+'" title="Entrée pour envoyer, Maj+Entrée pour aller à la ligne"></textarea>'
@@ -180,12 +187,14 @@
   var basB=pan.querySelector('.cn-bas'),grandB=pan.querySelector('.cn-gr'),mic=pan.querySelector('.cn-mic');
   try{hist=JSON.parse(sessionStorage.getItem(SS+'-'+couche)||'[]');}catch(_){hist=[];}
   var IA_CLE=SS+'-ia'+(normal?'-normal':''),iaURL='',iaActive=false,iaConfig=null,iaRequete=null,iaOptions=pan.querySelector('.cn-ai');
-  iaOptions.addEventListener('toggle',function(){pan.classList.toggle('cn-ai-settings',iaOptions.open);});
   function majIA(){
     pan.querySelector('.cn-h small').textContent=iaActive?
-      ROLE+' Conversation IA via Cloudflare ; réponses à vérifier.':
+      ROLE+' IA active ; réponses à vérifier.':
       ROLE+' Dialogue local, sans IA générative.';
+    iaOptions.classList.toggle('on',iaActive);
     iaOptions.querySelector('.cn-ai-on').hidden=iaActive;
+    iaOptions.querySelector('#cn-ai-d').hidden=iaActive;
+    iaOptions.querySelector('.cn-ai-etat').hidden=!iaActive;
     iaOptions.querySelector('.cn-ai-off').hidden=!iaActive;
     majRelance();
   }
@@ -212,13 +221,14 @@
     if(occupeQuestion){toast('Attends la fin de cette réponse.');return;}
     iaActive=true;
     try{sessionStorage.setItem(IA_CLE,iaURL);}catch(e){console.warn('Le Ver : consentement non mémorisé.');toast('Accord valable sur cette page seulement.');}
-    majIA();iaOptions.open=false;toast('Conversation IA activée. Les échanges restent limités à cette session.');
+    majIA();toast(normal?'IA activée. Tristana vous écoute.':'IA activée. Le Ver t’écoute.');
+    try{inp.focus({preventScroll:true});}catch(_){}
   });
   iaOptions.querySelector('.cn-ai-off').addEventListener('click',function(){
     iaActive=false;
     if(iaRequete)iaRequete.controleur.abort();
     try{sessionStorage.removeItem(IA_CLE);}catch(e){console.warn('Le Ver : retrait du consentement non mémorisé.');toast('Retrait valable sur cette page seulement.');}
-    majIA();iaOptions.open=false;toast('Dialogue local : aucun nouvel échange envoyé à l’IA.');
+    majIA();toast('Dialogue local : plus rien n’est confié à l’IA.');
   });
   pan.querySelector('.cn-new').addEventListener('click',function(){
     if(occupeQuestion){toast('Attends la fin de la réponse, ou arrête-la avec ■.');return;}
@@ -257,6 +267,18 @@
     var i=hist.indexOf(w._m),q=i>0&&hist[i-1].r==='q'?hist[i-1].t:'';
     return RE_SORTIE.test(q+' '+textePartage(w._m.h||''));
   }
+  /* même principe pour la presse : le kit complet, en un clic, une fois par conversation */
+  var RE_PRESSE=/\b(dossier de presse|kit presse|press kit|epk|journalist|visuels? (hd|presse)|photos? (hd|presse))/i;
+  function kitUtile(w){
+    if(log.querySelector('.cn-kit'))return false;
+    var i=hist.indexOf(w._m),q=i>0&&hist[i-1].r==='q'?hist[i-1].t:'';
+    return RE_PRESSE.test(q)||/dossier de presse|kit presse/i.test(textePartage(w._m.h||''));
+  }
+  function kitPresse(){
+    var a=D.createElement('a');a.className='cn-nl cn-kit';a.href='/presse/dossier-de-presse.zip';a.setAttribute('download','');
+    a.innerHTML='<span>Kit presse complet : dossier PDF, biographie, photos, pochettes et visuels des sorties.</span><div><b>TÉLÉCHARGER LE KIT (ZIP) ↓</b></div>';
+    return a;
+  }
   function infolettre(){
     var f=D.createElement('form');f.className='cn-nl';f.method='post';f.target='_blank';
     f.action='https://buttondown.com/api/emails/embed-subscribe/lacreaturedumarais';
@@ -292,7 +314,8 @@
         act.appendChild(icone('story','Partager en story (9:16)',function(b){partage(w,b,true);}));
       }
       w.appendChild(act);
-      if(normal&&!m.err&&infolettreUtile(w))w.appendChild(infolettre());}
+      if(normal&&!m.err&&kitUtile(w))w.appendChild(kitPresse());
+      else if(normal&&!m.err&&infolettreUtile(w))w.appendChild(infolettre());}
     log.appendChild(w);
     var corps=m.h;
     if(!anim||calme){d.innerHTML=corps;bas();return;}
@@ -404,7 +427,8 @@
     var r=[];
     texte.split('\n').forEach(function(par){
       var l='';
-      par.split(/\s+/).forEach(function(w){
+      /* la ponctuation haute et le guillemet fermant restent collés au mot d'avant */
+      par.replace(/[ \u00a0]+([:;!?»])/g,'\u00a0$1').replace(/(«)[ \u00a0]+/g,'$1\u00a0').split(/[ \t]+/).forEach(function(w){
         if(!w)return;
         var x=l?l+' '+w:w;
         if(ctx.measureText(x).width>large&&l){r.push(l);l=w;}else l=x;
@@ -413,7 +437,7 @@
     });
     return r;
   }
-  function coupe(ls,max){
+  function coupeLignes(ls,max){
     if(ls.length>max){ls=ls.slice(0,max);ls[max-1]=ls[max-1].replace(/[\s,;:]*\S*$/,'')+' …';}
     return ls;
   }
@@ -543,7 +567,7 @@
     var lg=W-2*M,fin=basContenu(Hh,histoire)+(normal?0:40);
     if(question){
       ctx.fillStyle=T.c;ctx.font=(histoire?36:32)+'px '+PT;
-      var lq=coupe(lignes(ctx,'« '+question.replace(/\s+/g,' ').slice(0,220)+' »',lg),3);
+      var lq=coupeLignes(lignes(ctx,'« '+question.replace(/\s+/g,' ').slice(0,220)+' »',lg),3);
       lq.forEach(function(l){ctx.fillText(l,M,y);y+=histoire?50:44;});y+=histoire?44:32;
     }
     /* la taille du texte s'adapte ; au plus petit, la fin est coupée net avec « … » */
@@ -554,7 +578,7 @@
       taille-=2;
     }
     var max=Math.floor((fin-y)/lh);
-    if(ls.length>max)ls=coupe(ls,Math.max(1,max));
+    if(ls.length>max)ls=coupeLignes(ls,Math.max(1,max));
     else y+=Math.max(0,(fin-y-ls.length*lh)/3);
     ctx.fillStyle=T.c;ctx.globalAlpha=.8;ctx.fillRect(M-34,y+6,4,ls.length*lh-taille*.35);ctx.globalAlpha=1;
     ctx.fillStyle=T.t;ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=12;
@@ -574,12 +598,12 @@
     var haut=histoire?170:122,basC=basContenu(Hh,histoire),lg=W-240,k=histoire?1.18:1;
     /* les textes d'abord, pour connaître la place qui reste au visuel */
     var titre=f.titre.toUpperCase(),tt=ajuste(ctx,titre,PT,Math.round(66*k),W-200,3);
-    ctx.font=Math.round(28*k)+'px '+PT;var lav=f.avant?coupe(lignes(ctx,f.avant,lg),f.type==='bete'?3:2):[],lhA=Math.round(40*k);
+    ctx.font=Math.round(28*k)+'px '+PT;var lav=f.avant?coupeLignes(lignes(ctx,f.avant,lg),f.type==='bete'?3:2):[],lhA=Math.round(40*k);
     var ic=ims.ic||[],is=histoire?66:54,lien=f.lien||'';
     var hTxt=(f.bandeau?52*k:40*k)+tt*.78+(f.badge?50*k:0)+(lav.length?18*k+lav.length*lhA:0)+(f.meta?48*k:0)+(ic.length?30*k+is:0)+(lien?40*k:0)+(f.appel?58*k:0);
     var hLab=46*k,A=basC-haut-hLab-hTxt,vw,vh;
-    if(portrait){vh=Math.min(histoire?960:620,A);vw=Math.round(vh/1.26);}
-    else if(banniere){vw=Math.min(W-200,A*1096/616);vh=Math.round(vw*616/1096);}
+    if(portrait){vh=Math.max(320,Math.min(histoire?960:620,A));vw=Math.round(vh/1.26);}
+    else if(banniere){vw=Math.max(420,Math.min(W-200,A*1096/616));vh=Math.round(vw*616/1096);}
     else{vh=vw=Math.max(300,Math.min(histoire?820:600,A));}
     var y=Math.round(haut+Math.max(0,(basC-haut-hLab-vh-hTxt)/2)),x=Math.round((W-vw)/2);
     ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.78;ctx.font=Math.round(28*k)+'px '+PB;
@@ -637,6 +661,49 @@
     if(lien){y+=Math.round(40*k);ctx.fillStyle=T.t;ctx.globalAlpha=.72;ctx.font=Math.round(26*k)+'px '+PB;espace(ctx,lien,W/2,y,4,true);ctx.globalAlpha=1;}
     if(f.appel){y+=Math.round(58*k);ctx.fillStyle=T.c;ctx.font=Math.round(28*k)+'px '+PT;ctx.textAlign='center';ctx.fillText(f.appel,W/2,y);ctx.textAlign='left';}
     pied(ctx,W,Hh,T,{annee:f.annee,histoire:histoire,qr:ims.qr,logo:ims.logo});
+    return cv;
+  }
+  /* aperçu des liens partagés (og:image, 1200×630) : la fiche du disque à l'horizontale, sans QR */
+  function dessineApercu(f,ims){
+    var W=1200,Hh=630,cv=D.createElement('canvas'),ctx=cv.getContext('2d'),T=TEINTES[couche];
+    cv.width=W;cv.height=Hh;
+    var tc=teinte(ims.vis)||rgb(T.c2),v=420,x=96,y=Math.round((Hh-v)/2);
+    fondCinema(ctx,W,Hh,T,ims.vis,tc);
+    ctx.save();ctx.shadowColor=rgba(tc,.55);ctx.shadowBlur=70;ctx.fillStyle='#000';ctx.fillRect(x,y,v,v);ctx.restore();
+    if(ims.vis){
+      var iw=ims.vis.naturalWidth||ims.vis.width,ih=ims.vis.naturalHeight||ims.vis.height,c=Math.min(iw,ih);
+      ctx.drawImage(ims.vis,(iw-c)/2,(ih-c)/2,c,c,x,y,v,v);
+    }
+    ctx.strokeStyle='rgba(255,255,255,.18)';ctx.lineWidth=2;ctx.strokeRect(x+.5,y+.5,v-1,v-1);
+    if(f.bandeau){
+      var bh=62,by=y+v-bh*.6;
+      ctx.save();ctx.shadowColor=rgba(tc,.6);ctx.shadowBlur=26;ctx.fillStyle=T.c;ctx.fillRect(x-22,by,v+44,bh);ctx.restore();
+      ctx.fillStyle='#000';ajuste(ctx,f.bandeau,PB,46,v,f.bandeau.length>14?3:10);
+      espace(ctx,f.bandeau,x+v/2,by+bh*.78,f.bandeau.length>14?3:10,true);
+    }
+    var L=x+v+64,R=W-96,lg=R-L,cx=(L+R)/2,titre=f.titre.toUpperCase();
+    ctx.font='60px '+PT;var tl=coupeLignes(lignes(ctx,titre,lg),2),tt=60;
+    tl.forEach(function(l){tt=Math.min(tt,ajuste(ctx,l,PT,60,lg,3));});
+    ctx.font='24px '+PT;var lav=f.avant?coupeLignes(lignes(ctx,f.avant,lg),2):[],ic=ims.ic||[],is=44;
+    var h=46+tl.length*tt*1.02+(lav.length?14+lav.length*33:0)+(f.meta?40:0)+(ic.length?28+is:0)+86;
+    var yy=Math.round((Hh-h)/2);
+    ctx.textBaseline='alphabetic';ctx.fillStyle=T.t;ctx.globalAlpha=.78;ajuste(ctx,f.etiquette.toUpperCase(),PB,22,lg,6);
+    espace(ctx,f.etiquette.toUpperCase(),cx,yy+22,6,true);ctx.globalAlpha=1;yy+=46;
+    ctx.fillStyle=T.c2;ctx.font=tt+'px '+PT;ctx.shadowColor='rgba(0,0,0,.85)';ctx.shadowBlur=16;
+    tl.forEach(function(l){yy+=tt*1.02;espace(ctx,l,cx,yy-tt*.2,3,true);});ctx.shadowBlur=0;
+    if(lav.length){
+      yy+=14;ctx.fillStyle=T.t;ctx.globalAlpha=.9;ctx.font='24px '+PT;ctx.textAlign='center';
+      lav.forEach(function(l){yy+=33;ctx.fillText(l,cx,yy-8);});ctx.textAlign='left';ctx.globalAlpha=1;
+    }
+    if(f.meta){yy+=40;ctx.fillStyle=T.t;ctx.globalAlpha=.66;ajuste(ctx,f.meta.toUpperCase(),PB,24,lg,3);espace(ctx,f.meta.toUpperCase(),cx,yy,3,true);ctx.globalAlpha=1;}
+    if(ic.length){
+      yy+=28;var gap=18,ix=cx-(ic.length*is+(ic.length-1)*gap)/2;
+      ic.forEach(function(c){ctx.drawImage(c,ix,yy,is,is);ix+=is+gap;});yy+=is;
+    }
+    yy+=24;ctx.fillStyle=T.c;ctx.globalAlpha=.9;ctx.fillRect(cx-48,yy,96,2);ctx.globalAlpha=1;
+    yy+=38;ajuste(ctx,'LACREATUREDUMARAIS.FR',PB,30,lg,5);espace(ctx,'LACREATUREDUMARAIS.FR',cx,yy,5,true);
+    ctx.fillStyle=T.t;ctx.globalAlpha=.55;ctx.font='15px '+PT;espace(ctx,'© PUANTEUR PUTRIDE Productions, '+romain(f.annee),cx,yy+24,2,true);ctx.globalAlpha=1;
+    if(ims.logo){ctx.globalAlpha=.85;ctx.drawImage(ims.logo,W-46-18-52,Hh-46-18-52,52,52);ctx.globalAlpha=1;}
     return cv;
   }
   function exporte(cv,nomF,b){
@@ -737,7 +804,8 @@
     var attr=sub.attributs||((f2.querySelector('.accroche')||{}).textContent||'').trim(),oeuvre='';
     Array.prototype.forEach.call(f2.querySelectorAll('dt'),function(dt){if(/œuvre/i.test(dt.textContent)&&dt.nextElementSibling)oeuvre=dt.nextElementSibling.textContent.trim();});
     var fig=f2.querySelector('figure.rtfig img'),bg=fig?null:f2.querySelector('img.bgz'),cut=fig?null:f2.querySelector('img.fgz'),d=dateLD();
-    var avant=surn?'« '+surn+' »'+(attr?'\n'+attr:''):(attr||oeuvre);
+    var premier=surn.split(' · ')[0];
+    var avant=surn&&!(premier&&attr.indexOf(premier)===0)?'« '+surn+' »'+(attr?'\n'+attr:''):(attr||oeuvre);
     return {type:'bete',titre:h1.textContent.replace(/\s+/g,' ').trim(),etiquette:'Bestiaire · Les Retard-Tinables',
       badge:((f2.querySelector('.role')||{}).textContent||'').replace(/\s+/g,' ').trim(),avant:avant,meta:'',
       annee:d?d.a:new Date().getFullYear(),vis:bg?bg.src:fig?fig.currentSrc||fig.src:'',cut:cut?cut.src:'',plats:['soundcloud'],lien:'SOUNDCLOUD.COM/PUANTEURPUTRIDE',bandeau:'',appel:''};
@@ -750,6 +818,15 @@
       return exporte(dessineFiche(f,{vis:r[1],cut:r[2],ic:r[3],logo:r[4].logo,qr:r[4].qr},histoire),nomFichier(f.titre,histoire),b);
     });
   }
+  /* _outils/apercus.py fabrique les og:image des sorties avec ce rendu (URL avec ?apercu) */
+  if(/[?&]apercu\b/.test(location.search))window.LCMApercu=function(bandeau){
+    var ah=D.querySelector('.ah'),f=ah&&ficheDisque(ah),T=TEINTES[couche];
+    if(!f)return Promise.reject(new Error('Aucune fiche de disque ici.'));
+    if(bandeau!=null)f.bandeau=bandeau;
+    return Promise.all([polices(),image(f.vis),icones(f.plats,rgb(normal?T.c2:T.c),88),normal?image('/images/cachot/logo-pp-blanc.webp'):null]).then(function(r){
+      return dessineApercu(f,{vis:r[1],ic:r[2],logo:r[3]}).toDataURL('image/jpeg',.9);
+    });
+  };
   function rangee(titre,fiche){
     var r=D.createElement('div');r.className='cn-pdisque';
     var b=D.createElement('button');b.type='button';b.className='btn cn-pd';b.textContent='PARTAGER EN IMAGE';
@@ -1071,7 +1148,7 @@
     if(KB)return Promise.resolve(KB);
     if(attente)return attente;
     var controleur=new AbortController(),timer=setTimeout(function(){controleur.abort();},12000);
-    attente=fetch('/oracle-'+(normal?'putride':couche)+'.json?v=28',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
+    attente=fetch('/oracle-'+(normal?'putride':couche)+'.json?v=29',{credentials:'same-origin',signal:controleur.signal}).then(function(r){if(!r.ok)throw new Error('Registres HTTP '+r.status);return r.json();}).then(function(d){
       if(!d||!Array.isArray(d.p)||!Array.isArray(d.e)||!d.e.length||
         !d.p.every(function(p){return Array.isArray(p)&&typeof p[0]==='string'&&typeof p[1]==='string'&&/^\/(?!\/)/.test(p[1]);})||
         !d.e.every(function(e){return Array.isArray(e)&&Number.isInteger(e[0])&&d.p[e[0]]&&typeof e[1]==='string'&&typeof e[2]==='string'&&typeof e[3]==='string';}))throw new Error('Registres invalides');
@@ -1258,7 +1335,7 @@
     {id:'suivre',test:/\b(abonne\w*|newsletter|rss|flux|prevenir|previens|alertes?|suivre les sorties|etre au courant)\b/,
       lignes:['Le plus sûr, sans algorithme : l’infolettre, en bas de la page Nouvelles. Une adresse e-mail, et chaque sortie vous arrive directement. Il y a aussi le flux RSS, lacreaturedumarais.fr/flux.xml, pour les lecteurs de flux. Les réseaux de la Créature sont en bas de page.']},
     {id:'dossier',test:/\b(dossier de presse|kit presse|press kit|epk)\b/,
-      lignes:['Le dossier de presse est prêt : la page Presse le propose en PDF, avec les visuels HD et une archive ZIP. En deux mots : Tancrède Charon, Rouen, chanson gothique et baroque, post-punk et poésie décadente ; Confiteor (2024), puis le cycle In Odium Fidei. Pour une interview, la page Contact. Vous voulez que je vous résume la dernière sortie ?']},
+      lignes:['Le kit presse est prêt, en un clic : dossier PDF, biographie, photos, pochettes et visuels des sorties, tout est dans l’archive juste en dessous. En deux mots : Tancrède Charon, Rouen, chanson gothique et baroque, post-punk et poésie décadente ; Confiteor (2024), puis le cycle In Odium Fidei. Pour une interview, la page Contact. Vous voulez que je vous résume la dernière sortie ?']},
     {id:'presse',test:/\b(contacter|contact|journalist\w*|concerts?|booking|interview|programmat\w*|visuels?|photos? presse|kit presse)\b/,
       lignes:['Pour une interview, un concert ou une demande particulière : la page Contact. Les visuels et leurs conditions sont sur la page Presse et dans les Droits d’utilisation, avec le crédit « © PUANTEUR PUTRIDE Productions ».']},
     {id:'rire',test:/\b(blague|fais moi rire|humour|plaisanterie|drole|farce)\b/,
@@ -1601,7 +1678,7 @@
     frequence:'Trop de demandes rapprochées. Attends une minute avant de réessayer.',
     registres:'Les registres et l’IA ne sont plus synchronisés. Recharge la page ; si cela persiste, le service doit être mis à jour.',
     delai:'L’IA a mis trop de temps à répondre. Aucune réponse reçue ; tu peux réessayer.',
-    annule:'Envoi arrêté. Une demande déjà transmise peut encore être traitée par Cloudflare.',
+    annule:'Envoi arrêté. Une demande déjà transmise peut encore être traitée.',
     sources:'L’IA a donné une référence invalide. Sa réponse n’est pas affichée ; réessaie.',
     reponse:'La réponse reçue de l’IA est vide ou invalide. Réessaie.',
     taille:'Cet échange dépasse la limite de taille du service. Ouvre une nouvelle conversation pour recommencer.',
