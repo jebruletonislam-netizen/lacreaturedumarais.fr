@@ -103,6 +103,8 @@ Le Worker compte la première question de chaque conversation IA dans le KV `STA
 expirée après environ 13 mois). Lire les totaux :
 `npx wrangler kv key list --binding STATS --remote` puis
 `npx wrangler kv key get "<clé>" --binding STATS --remote` dans `_ver-worker`.
+La fréquentation des pages passe par Cloudflare Web Analytics (sans cookie) :
+`coins.js` injecte le beacon, seulement sur le domaine lacreaturedumarais.fr.
 
 ### Paroles des IA
 
