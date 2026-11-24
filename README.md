@@ -91,10 +91,29 @@ de publication du contenu en chiffres romains (date du JSON-LD ou de la page) ; 
 mode putride et dans les cachots, « Fourni par le Ver du Baptistère » en haut, en
 petit. Les réponses de Tristana et du Ver se partagent aussi en post ou en story.
 Quand Tristana parle d'une sortie, sa bulle propose une fois l'inscription à
-l'infolettre (formulaire Buttondown, mode normal seulement).
+l'infolettre (formulaire Buttondown, mode normal seulement). Quand on lui demande
+un dossier ou un kit presse, elle propose à la place le lien de téléchargement
+`/presse/dossier-de-presse.zip`.
 
-Les singles du mode normal portent leurs paroles en clair (`.tp-r .paroles`, sans
-`data-g`, donc sans lecteur Genius) et le JSON-LD `recordingOf` → `lyrics`.
+Le panneau affiche un gros bouton « ACTIVER L'IA » (`.cn-ai-on`) dès que la
+configuration du Worker répond ; l'interface ne nomme pas le fournisseur, que
+seules les mentions légales (`#dialogue-ver`) déclarent.
+
+### Aperçus de partage et kit presse
+
+Chaque page de `discographie/` a pour `og_image` une carte paysage 1200 × 630
+« DISPONIBLE » (`images/apercu/<slug>.jpg`), dessinée par le même moteur que les
+cartes (`LCMApercu`, actif seulement avec `?apercu` dans l'adresse). Serveur local
+sur le port 8851 lancé, régénérer avec `python -X utf8 _outils/apercus.py` : le
+script écrit les images et met à jour `og_image` / `og_alt`.
+`python -X utf8 _outils/kit_presse.py` reconstruit `presse/dossier-de-presse.zip`
+(PDF, biographie tirée de `presse/index.html`, photos, pochettes, aperçus).
+Relancer les deux après une nouvelle sortie.
+
+Toutes les paroles passent par le lecteur Genius (`data-g` sur `.tp-static`, ou
+titre de `.tl details` présent dans `putride-genius.js`). L'iframe `srcdoc` n'est
+créée qu'au chargement ou au clic : aucun texte de paroles dans le HTML ni le
+JSON-LD, pour que les moteurs ne les indexent pas.
 
 ### Statistiques des questions
 
@@ -102,7 +121,11 @@ Le Worker compte la première question de chaque conversation IA dans le KV `STA
 (clé `q:<tristana|ver>:<AAAA-MM>:<question normalisée, 80 caractères>`, sans IP,
 expirée après environ 13 mois). Lire les totaux :
 `npx wrangler kv key list --binding STATS --remote` puis
-`npx wrangler kv key get "<clé>" --binding STATS --remote` dans `_ver-worker`.
+`npx wrangler kv key get "<clé>" --binding STATS --remote` dans `_ver-worker`, ou
+d'un coup, triées : `python -X utf8 _outils/faq_questions.py [AAAA-MM] [--tous]`
+(Tristana seule par défaut ; `--tous` ajoute le Ver, à ne jamais verser dans la FAQ).
+Chaque mois, les questions récurrentes de Tristana enrichissent `faq/index.html`
+(texte visible et JSON-LD `FAQPage` identiques, rien du mode putride).
 La fréquentation des pages passe par Cloudflare Web Analytics (sans cookie) :
 `coins.js` injecte le beacon, seulement sur le domaine lacreaturedumarais.fr.
 

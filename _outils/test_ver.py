@@ -97,8 +97,7 @@ def dialogue_ia(browser, width):
     page.wait_for_selector(".cn-ai")
     assert "Gargouille" in question(page, "Tu es ami avec la Gargouille ?")
     assert not envois
-    page.locator(".cn-ai summary").click()
-    page.get_by_role("button", name="J’accepte, activer l’IA").click()
+    page.get_by_role("button", name="ACTIVER L’IA").click()
     question(page, "Qui sont tes amis ?")
     assert len(envois) == 1
     assert envois[0]["consent"] is True
@@ -182,7 +181,7 @@ def dialogue_ia(browser, width):
         assert any(all(expression in t for expression in expressions) for t in textes), (query, textes)
     etat["mode"] = "quota"
     assert "quota gratuit" in question(page, "Question qui échoue")
-    assert "via Cloudflare" in page.locator(".cn-h small").inner_text()
+    assert "IA active" in page.locator(".cn-h small").inner_text()
     etat["mode"] = "ok"
     question(page, "Reprenons")
     assert all(m["content"] != "Question qui échoue" for m in envois[-1]["messages"])
@@ -192,14 +191,12 @@ def dialogue_ia(browser, width):
     assert sum(len(m["content"]) for m in envois[-1]["messages"]) <= 10000
     page.reload()
     page.locator(".cn-or").click()
-    page.wait_for_function("document.querySelector('.cn-h small').textContent.includes('via Cloudflare')")
-    page.locator(".cn-ai summary").click()
+    page.wait_for_function("document.querySelector('.cn-h small').textContent.includes('IA active')")
     page.set_viewport_size({"width": width, "height": 560})
     assert page.locator(".cn-f").bounding_box()["y"] + page.locator(".cn-f").bounding_box()["height"] <= 560
     page.get_by_role("button", name="Nouvelle conversation").click()
     assert page.locator(".cn-log .cn-m").count() == 1
     page.set_viewport_size({"width": width, "height": 844})
-    page.locator(".cn-ai summary").click()
     # un flux coupé en route : le début reste lisible, sans renvois
     page.evaluate("""(url) => {
       const original = window.fetch;
@@ -231,7 +228,6 @@ def dialogue_ia(browser, width):
     page.locator("#cn-q").fill("Une réponse en attente")
     with page.expect_request(lambda r: r.url == endpoint and r.method == "POST"):
         page.locator(".cn-f button[type=submit]").click()
-    page.locator(".cn-ai summary").click()
     page.get_by_role("button", name="Revenir au dialogue local").click()
     libre(page)
     assert "Envoi arrêté" in page.locator(".cn-log .a").last.inner_text()
@@ -276,11 +272,16 @@ def tristana(browser, width):
     bouton.click()
     page.wait_for_selector(".cn-ai")
     assert "Tristana" in page.locator("#cn-oracle").inner_text()
+    assert page.locator(".cn-ai-on").is_visible() and "Cloudflare" not in page.locator("#cn-oracle").inner_text()
     puces(page)
     question(page, "Bonjour, qui êtes-vous ?")
     assert not envois
-    page.locator(".cn-ai summary").click()
-    page.locator(".cn-ai button").first.click()
+    question(page, "Pouvez-vous me préparer un dossier de presse ?")
+    kit = page.locator(".cn-log a.cn-kit[href='/presse/dossier-de-presse.zip'][download]")
+    kit.wait_for()
+    assert kit.count() == 1 and "kit presse" in kit.locator("xpath=..").inner_text().lower(), kit.locator("xpath=..").inner_text()
+    assert not envois
+    page.locator(".cn-ai-on").click()
     question(page, "Par quel disque commencer ?")
     assert len(envois) == 1 and envois[0]["persona"] == "tristana", envois
     corpus = page.request.get(BASE + "/oracle-putride.json").json()
