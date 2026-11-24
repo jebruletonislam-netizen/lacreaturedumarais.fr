@@ -1,3 +1,4 @@
+// Meme garde pour paroles.json (paroles completes, _outils/paroles.py).
 // coulisses.json contient les notes privees de l'auteur : il n'est jamais versionne.
 // Tests et previsualisation : un fichier vide est cree s'il manque.
 // Deploiement (argument "deploiement") : refus si les notes manquent ou sont vides,
@@ -10,6 +11,23 @@ const deploiement = process.argv[2] === 'deploiement';
 function echec(message) {
   console.error('coulisses.json : ' + message);
   process.exit(1);
+}
+
+const cheminParoles = new URL('./paroles.json', import.meta.url);
+if (!existsSync(cheminParoles)) {
+  if (deploiement) echec('paroles.json absent. Lancer python -X utf8 _outils/paroles.py.');
+  writeFileSync(cheminParoles, '[]\n');
+  console.warn('paroles.json absent : liste vide creee (les IA seront sans paroles).');
+} else {
+  let liste;
+  try {
+    liste = JSON.parse(readFileSync(cheminParoles, 'utf8'));
+  } catch {
+    echec('paroles.json : JSON invalide.');
+  }
+  if (!Array.isArray(liste) || !liste.every(e => typeof e?.t === 'string' && typeof e.x === 'string'))
+    echec('paroles.json : structure attendue [{t, a, al, d, x}].');
+  if (deploiement && !liste.length) echec('paroles.json vide. Relancer _outils/paroles.py.');
 }
 
 if (!existsSync(chemin)) {

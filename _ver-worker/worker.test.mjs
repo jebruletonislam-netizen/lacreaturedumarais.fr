@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {prepareDialogue, choisitCoulisses, separeSuites, MODELE} from './worker.mjs';
+import worker, {prepareDialogue, choisitCoulisses, choisitParoles, separeSuites, MODELE} from './worker.mjs';
 import corpus from '../oracle-putride.json' with {type: 'json'};
 
 const origine = 'https://lacreaturedumarais.fr';
@@ -387,9 +387,39 @@ test('Tristana : persona du site normal, extraits et page publics seulement', ()
   const {messages} = prepareDialogue({...base, page: '/discographie/'},
     {noyau: 'Kobal secret', sections: []});
   assert.match(messages[0].content, /Tu es Tristana/);
-  assert.doesNotMatch(messages[0].content, /Kobal|Vampirium|mode-putride|cachot/);
+  assert.match(messages[0].content, /pour le comprendre\)\nElles[^]*Kobal secret/);
+  assert.match(messages[0].content, /CONFITEOR/);
+  assert.doesNotMatch(messages[0].content, /\/mode-putride\/|\/cachot\/|IN ODIUM FIDEI/);
   assert.throws(() => prepareDialogue({...base, ids: [id]}), {code: 'extraits'});
   assert.throws(() => prepareDialogue({...base, page: '/mode-putride/bestiaire/ver/'}), {code: 'page'});
   assert.throws(() => prepareDialogue({...base, persona: 'kobal'}), {code: 'persona'});
   assert.match(prepareDialogue({...base, persona: undefined}).messages[0].content, /Ver du bapt/);
+});
+
+test('paroles : catalogue complet, titres cites en entier, embargo et reserve', () => {
+  const liste = [
+    {t: 'Jubilé', a: 'Cul-Pointu', al: 'In Odium Fidei', d: '2025-12-06', x: 'La bestiole se doit de revenir'},
+    {t: 'Caverne', a: 'Cul-Pointu', al: 'Confiteor', d: '2024-09-11', x: 'Aux tréfonds de la nuit'},
+    {t: 'Le Repas', a: 'Cul-Pointu', al: 'Gémissements', d: '2020-12-21', x: 'Table dressée pour personne'},
+    {t: 'Monsieur Clergé', a: 'Cul-Pointu', al: 'In Odium Fidei', d: '2026-11-30',
+      x: 'Il scrute les persiennes', embargo: '2026-11-30T17:30:00Z'}
+  ];
+  const avant = Date.parse('2026-11-29T12:00:00Z');
+  const dit = (content, options = {}) => choisitParoles([{role: 'user', content}], {liste, maintenant: avant, ...options});
+  const neutre = dit('Bonsoir');
+  assert.match(neutre, /- Confiteor \(2024\) : Caverne/);
+  assert.match(neutre, /Monsieur Clergé \(a paraitre le 30 novembre 2026, paroles sous scelles\)/);
+  assert.doesNotMatch(neutre, /tréfonds|persiennes/);
+  assert.match(dit('Que veut dire Caverne ?'), /« Caverne » - Confiteor, 11 septembre 2024\nAux tréfonds/);
+  assert.match(dit('Bonsoir', {page: 'Jubilé - single'}), /La bestiole/);
+  assert.doesNotMatch(dit('Parle-moi de Monsieur Clergé'), /persiennes/);
+  assert.match(choisitParoles([{role: 'user', content: 'Monsieur Clergé ?'}],
+    {liste, maintenant: Date.parse('2026-12-01T00:00:00Z')}), /persiennes/);
+  assert.match(dit('Le Repas ?', {tristana: true}), /« Le Repas »[^\n]*reserve/);
+  assert.doesNotMatch(dit('Le Repas ?'), /reserve/);
+  assert.equal(choisitParoles([{role: 'user', content: 'x'}], {liste: []}), '');
+  const {messages} = prepareDialogue({consent: true, revision: corpus.revision, ids: [],
+    messages: [{role: 'user', content: 'Jubilé ?'}]}, {noyau: '', sections: []}, corpus, liste, avant);
+  assert.match(messages[0].content, /IN ODIUM FIDEI[^]*PAROLES DE L'ARTISTE[^]*La bestiole[^]*EXTRAITS/);
+  assert.doesNotMatch(messages[0].content, /le ver qui danse/);
 });

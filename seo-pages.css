@@ -185,3 +185,10 @@ body{min-height:100vh;background:#000;color:#fff;font:400 2.25rem/2rem "Bebas Ne
 .route-ppp::after{content:"";position:absolute;right:calc(2.71rem - 0.727rem);top:calc(2.31rem - 0.727rem);height:calc(8.93rem + 1.453rem);aspect-ratio:1329/686;max-width:calc(100% - 3.4rem + 1.453rem);background:url(/images/lueur-ppp.webp) right center/contain no-repeat;mix-blend-mode:screen;opacity:0;transition:opacity .25s;pointer-events:none}
 .route-ppp:hover::after,.route-ppp:focus-visible::after{opacity:1}
 }
+
+/* Presse : Tristana, attachée de presse du label (boutons [data-tristana] servis par coins.js) */
+.tristana-presse{display:flex;gap:18px;align-items:flex-start;margin:28px 0;padding:18px 20px;border:1px solid rgba(255,204,0,.45);border-radius:14px;background:linear-gradient(180deg,rgba(0,0,94,.55),rgba(0,0,22,.75));box-shadow:0 0 22px rgba(255,0,0,.18)}
+.tristana-presse img{flex:none;width:64px;height:64px}
+.tristana-presse h2{margin:0 0 6px}
+.tristana-presse p{margin:0 0 10px}
+@media (max-width:560px){.tristana-presse{flex-direction:column}}
