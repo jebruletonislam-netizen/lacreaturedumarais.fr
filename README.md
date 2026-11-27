@@ -28,6 +28,20 @@ Sur les fiches du bestiaire, les galeries d’au moins trois clips affichent tro
 clips par rangée dès 900 px et un seul en dessous. Les surnoms de Vampirix et
 d’Éphébus figurent sur leurs fiches respectives, pas dans l’index ni sur les pages d’album.
 
+### Merch (cabinet de curiosités)
+
+- Mode normal : `merch/` (rubrique MERCH avant CONTACT), en `noindex,follow` et hors
+  `sitemap.xml` tant qu'il est « en construction ». L'ajouter au sitemap quand des
+  pièces existent.
+- Mode putride : `mode-putride/merch/` remplace l'ancienne rubrique MÉFAITS ;
+  `mode-putride/mefaits/` et `mode-putride-mefaits.html` y redirigent. Les planches
+  (posters) et le bon de commande sont sur la page ; le script en bas de page porte
+  la configuration `MERCH` (`ouvert`, `prix` par format, `port` par zone).
+- Commandes fermées (`ouvert:false`, bouton désactivé). Avant de les ouvrir, choisir
+  le mode de vente : vente directe (PayPal Business au nom de PUANTEUR PUTRIDE
+  Productions, mentions légales et CGV complètes obligatoires) ou impression à la
+  demande (la plateforme est le vendeur). L'adresse de livraison se saisit chez PayPal.
+
 Sur les fiches du bestiaire, Instagram conserve les proportions du Reel. La largeur
 de `.rt-video.reel` limite son encombrement ; `reel-instagram.js` ajuste la hauteur
 à celle que le lecteur annonce, commandes comprises, sans masquer de contenu.
